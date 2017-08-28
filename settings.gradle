@@ -1,0 +1,7 @@
+include ':battle-common'
+include ':battle-dao'
+include ':battle-models'
+include ':battle-service'
+include ':battle-action'
+include ':battle-api'
+include ':battle-filter'

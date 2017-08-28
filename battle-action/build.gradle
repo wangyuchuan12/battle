@@ -1,0 +1,24 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+
+compileJava.options.encoding = 'UTF-8'
+dependencies{
+	compile project(':battle-common');
+	
+	compile project(':battle-models');
+	
+	compile project(':battle-service');
+	
+	compile project(':battle-filter');
+	
+	
+	
+	
+}

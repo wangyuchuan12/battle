@@ -1,0 +1,93 @@
+buildscript {
+    repositories {
+        //maven { url "http://maven.oschina.net/content/groups/public/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+compileJava.options.encoding = 'UTF-8'
+
+war {
+    baseName = 'battle'
+    version =  '0.1.0'
+}
+
+
+task copylib(type:Copy){
+	delete(new File("build/lib"));
+	from configurations.runtime
+  	into 'build/lib'
+  	println "copy libs to build/lib"
+}
+
+gretty {
+    servletContainer = 'jetty9'
+    managedClassReload = true
+    contextPath = "/"
+    fileLogEnabled = false
+    loggingLevel = "ALL"
+    httpPort = 80
+}
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+uploadArchives {
+	repositories {
+	   flatDir {
+		   dirs 'repos'
+	   }
+	}
+}
+repositories {
+    mavenLocal()
+    //maven {
+        //url "http://maven.oschina.net/content/groups/public/"
+    //}
+    mavenCentral()
+}
+
+configurations {
+    compile.exclude module: "commons-logging"
+    providedRuntime
+    providedCompile
+}
+
+
+loadConfiguration()
+def loadConfiguration() {
+    def environment = hasProperty('env') ? env : 'dev'
+    sourceSets.main.resources.srcDirs = [ 'src/main/resources/global' ]
+    //setProperty 'environment', environment
+    if (environment.equals('prod'))
+        sourceSets.main.resources.srcDirs 'src/main/resources/prod'
+    else if (environment.equals('dev'))
+        sourceSets.main.resources.srcDirs 'src/main/resources/dev'
+    else if(environment.equals('win'))
+    		sourceSets.main.resources.srcDirs 'src/main/resources/win'
+    else
+        sourceSets.main.resources.srcDirs 'src/main/resources/local'
+}
+
+dependencies{
+	compile project(':battle-common');
+	
+	compile project(':battle-models');
+	
+	compile project(':battle-service');
+	
+	compile project(':battle-filter');
+}
+
+

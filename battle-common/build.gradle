@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        //maven { url "http://maven.oschina.net/content/groups/public/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
+repositories {
+    mavenLocal()
+    //maven {
+        //url "http://maven.oschina.net/content/groups/public/"
+    //}
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+
+compileJava.options.encoding = 'UTF-8'
+
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'jstl:jstl:1.2'
+  //  compile 'javax.servlet.jsp.jstl:jstl-api:1.2'
+    compile 'org.springframework:spring-aspects:4.2.0.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
+
+    compile 'mysql:mysql-connector-java:5.1.33'
+    compile 'com.alibaba:druid:1.0.12'
+    compile 'org.springframework.data:spring-data-jpa:1.7.1.RELEASE'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.6.Final'
+    //compile 'com.zaxxer:HikariCP:2.2.5'
+
+    compile 'org.apache.tiles:tiles-servlet:3.0.5'
+    compile 'org.apache.tiles:tiles-jsp:3.0.5'
+
+    compile 'org.apache.shiro:shiro-spring:1.2.3'
+
+    compile 'joda-time:joda-time:2.5'
+    compile 'joda-time:joda-time-jsptags:1.1.1'
+    compile 'org.jadira.usertype:usertype.core:3.2.0.GA'
+
+    //compile 'org.slf4j:slf4j-log4j12:1.7.7'
+    compile 'ch.qos.logback:logback-classic:1.1.8'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'	
+    compile 'jdom:jdom:1.1'
+    
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    
+    compile 'commons-fileupload:commons-fileupload:1.3.1'
+    compile 'commons-lang:commons-lang:2.6'
+    compile fileTree(dir:'lib',include:'*.jar')
+    
+    compile 'com.qiniu:qiniu-java-sdk:7.0.+'
+
+    compile 'org.springframework.session:spring-session-data-redis:1.0.2.RELEASE'
+    
+    
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+	compile group: 'redis.clients', name: 'jedis', version: '2.5.2'
+	
+	compile group: 'biz.paluch.redis', name: 'lettuce', version: '3.0.3.Final'
+	
+	compile 'com.esotericsoftware:kryo:3.0.1'
+    
+   // testCompile("junit:junit")
+}

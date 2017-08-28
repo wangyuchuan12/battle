@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+ 
+    <definition name="frameLayout" template="/WEB-INF/views/column/layout.jsp">
+        <!--<put-attribute name="dashboard_active" value="" />-->
+        <!--<put-attribute name="admin_active" value="" />-->
+        <put-attribute name="header" value="/WEB-INF/views/column/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/views/column/menu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/column/footer.jsp" />
+        <put-attribute name="resource" value="/WEB-INF/views/column/resource.jsp"></put-attribute>
+        <put-attribute name="baseLayout" value="/WEB-INF/views/column/baseLayout.jsp"></put-attribute>
+    </definition>
+    
+    <definition name="infoLayout" template="/WEB-INF/views/column/infoLayout.jsp">
+        <!--<put-attribute name="dashboard_active" value="" />-->
+        <!--<put-attribute name="admin_active" value="" />-->
+        <put-attribute name="header" value="/WEB-INF/views/column/header.jsp" />
+        <put-attribute name="resource" value="/WEB-INF/views/column/resource.jsp"></put-attribute>
+        <put-attribute name="baseLayout" value="/WEB-INF/views/column/baseLayout.jsp"></put-attribute>
+    </definition>
+    
+    
+    <definition name="formLayout" template="/WEB-INF/views/column/formLayout.jsp">
+        <put-attribute name="resource" value="/WEB-INF/views/column/resource.jsp"></put-attribute>
+        <put-attribute name="formResource" value="/WEB-INF/views/column/formResource.jsp"></put-attribute>
+        <put-attribute name="baseLayout" value="/WEB-INF/views/column/baseLayout.jsp"></put-attribute>
+    </definition>
+    
+    
+    <definition name="resourceLayout" template="/WEB-INF/views/column/resourceLayout.jsp">
+        <put-attribute name="resource" value="/WEB-INF/views/column/resource.jsp"></put-attribute>
+        <put-attribute name="baseLayout" value="/WEB-INF/views/column/baseLayout.jsp"></put-attribute>
+    </definition>
+    
+    <definition name="plugLayout" template="/WEB-INF/views/column/plugLayout.jsp">
+        <put-attribute name="plugResource" value="/WEB-INF/views/column/plugResource.jsp"></put-attribute>
+    </definition>
+    
+    <definition name="paperLayout" template="/WEB-INF/views/column/paperLayout.jsp">
+        <put-attribute name="resource" value="/WEB-INF/views/column/resource.jsp"></put-attribute>
+        <put-attribute name="baseLayout" value="/WEB-INF/views/column/baseLayout.jsp"></put-attribute>
+    </definition>
+ 
+</tiles-definitions>
