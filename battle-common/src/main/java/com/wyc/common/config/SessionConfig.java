@@ -37,9 +37,9 @@ public class SessionConfig {
 	@Bean
 	public JedisConnectionFactory jedisConnectionFactory(){
 		JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-		jedisConnectionFactory.setHostName("www.chengxihome.com");
+		jedisConnectionFactory.setHostName("10.66.160.31");
 		jedisConnectionFactory.setPort(6379);
-		jedisConnectionFactory.setPassword("wyc");
+		jedisConnectionFactory.setPassword("jingyingfanwei12");
 		return jedisConnectionFactory;
 	}
 	
@@ -53,7 +53,7 @@ public class SessionConfig {
         final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("www.chengxihome.com");
+        corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
