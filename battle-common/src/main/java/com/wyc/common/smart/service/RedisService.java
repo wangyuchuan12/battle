@@ -1,4 +1,4 @@
-package com.wyc.common.smart.service;
+/*package com.wyc.common.smart.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -137,4 +137,4 @@ public class RedisService {
 		return this.getJedis().ping();
 	}
 	
-}
+}*/
