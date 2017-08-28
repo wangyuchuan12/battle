@@ -111,8 +111,8 @@ public class SessionManager {
 	@Autowired
 	private DbServiceExecuter updateExecuter;
 	
-	//@Autowired
-	//private RedisService redisService;
+	@Autowired
+	private RedisService redisService;
 	
 
 //	private static final ThreadLocal<SessionManager> filterManagerThreadLocal = new ThreadLocal<>();
@@ -263,13 +263,13 @@ public class SessionManager {
 		servletContext.setAttribute(key, value);
 	}
 	
-	/*public void rawSaveToRedis(String key,Object value)throws Exception{
+	public void rawSaveToRedis(String key,Object value)throws Exception{
 		redisService.setObject(key, value);
 	}
 	
 	public Object rawGetByRedis(String key , Class<?> type){
 		return redisService.getObject(key, type);
-	}*/
+	}
 	
 	public void rawRemoveKeyByRequest(String key){
 		httpServletRequest.removeAttribute(key);
