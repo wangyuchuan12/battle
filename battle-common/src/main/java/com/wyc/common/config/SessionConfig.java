@@ -37,9 +37,9 @@ public class SessionConfig {
 	@Bean
 	public JedisConnectionFactory jedisConnectionFactory(){
 		JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-		jedisConnectionFactory.setHostName("10.66.160.31");
+		jedisConnectionFactory.setHostName("www.chengxihome.com");
 		jedisConnectionFactory.setPort(6379);
-		jedisConnectionFactory.setPassword("jingyingfanwei12");
+		jedisConnectionFactory.setPassword("wyc");
 		return jedisConnectionFactory;
 	}
 	
