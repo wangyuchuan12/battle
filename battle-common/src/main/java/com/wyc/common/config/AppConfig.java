@@ -50,7 +50,7 @@ import com.wyc.common.wx.domain.WxContext;
 @ComponentScan(basePackages = "com", excludeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebConfig.class),
         @Filter(type = FilterType.ASSIGNABLE_TYPE, value = DatabaseConfig.class),
-        @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
+    //    @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
 })
 //@ImportResource("classpath:applicationContext.xml")
