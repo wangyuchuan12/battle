@@ -14,7 +14,7 @@ import com.wyc.common.util.ObjectsTranscoder;
 
 import redis.clients.jedis.Jedis;
 
-@Service
+//@Service
 public class RedisService {
 	private static final Class<Serializable> T = null;
 	@Autowired
