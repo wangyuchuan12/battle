@@ -10,9 +10,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/luck_draw/luck_draw.log</file>
+        <file>/var/log/battle/battle.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/luck_draw/luck_draw-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/var/log/battle/battle-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <append>true</append>
