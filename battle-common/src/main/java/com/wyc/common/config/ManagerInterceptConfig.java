@@ -53,28 +53,13 @@ public class ManagerInterceptConfig {
 		}
 	}
 	
-	@Around(value="execution (* com.wyc.pay.api.*.*(..))")
-	public Object payApi(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
-		return aroundAction(proceedingJoinPoint);
-	}
-	
 	@Around(value="execution (* com.wyc.common.api.*.*(..))")
-	public Object commonApi(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
+	public Object common(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
 		return aroundAction(proceedingJoinPoint);
 	}
 	
-	@Around(value="execution (* com.wyc.draw.web.controller.*.*(..))")
-	public Object aroundController(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
-		return aroundAction(proceedingJoinPoint);
-	}
-	
-	@Around(value="execution (* com.wyc.draw.web.api.*.*(..))")
-	public Object aroundApi(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
-		return aroundAction(proceedingJoinPoint);
-	}
-	
-	@Around(value="execution (* com.wyc.controller.*.*(..))")
-	public Object gameController(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
+	@Around(value="execution (* com.battle.api.*.*(..))")
+	public Object api(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
 		return aroundAction(proceedingJoinPoint);
 	}
 	

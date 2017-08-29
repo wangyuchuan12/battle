@@ -8,4 +8,6 @@ public interface WxUserInfoRepository extends CrudRepository<UserInfo, String>{
     public UserInfo findByToken(String token);
 
     public UserInfo findByOpenid(String openid);
+
+	public UserInfo findByOpenidAndSource(String openid, int source);
 }

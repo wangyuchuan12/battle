@@ -1,11 +1,10 @@
 package com.wyc.common.wx.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.wyc.common.util.Request;
 import com.wyc.common.util.RequestFactory;
 import com.wyc.common.util.Response;
+import com.wyc.common.wx.domain.OpenIdVo;
 import com.wyc.common.wx.domain.UserInfo;
 import com.wyc.common.wx.domain.WxContext;
 
@@ -15,6 +14,15 @@ public class UserService {
     private WxContext wxContext;
     @Autowired
     private RequestFactory requestFactory;
+
+    
+    public OpenIdVo getOpenIdFromJsCode(String jsCode)throws Exception{
+    	
+    	 Request request = requestFactory.jsCodeUserInfoRequest(wxContext.getAppid(), wxContext.getAppsecret(), "authorization_code", jsCode);
+    	 Response response = request.get(null);
+       	 return response.readObject(OpenIdVo.class);
+    }
+    
     public UserInfo getUserInfo(String accessToken,String openid,int lang_type)throws Exception{
         String lang="zh_CN";
         if(lang_type==1){

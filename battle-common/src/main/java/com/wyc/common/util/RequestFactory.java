@@ -192,6 +192,12 @@ public class RequestFactory {
 		return getRequestByConnection(url);
 	}
 	
+	public Request jsCodeUserInfoRequest(String appid,String secret,String grantType,String code)throws Exception{
+		URL url = new URL(
+				"https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&grant_type"+grantType+"&js_code="+code);
+		return getRequestByConnection(url);
+	}
+	
 	//网页用户获取用户信息，通过code获取的opid
 	public Request snsUserInfoRequest(String accessToken,String openid,String lang)throws Exception{
             URL url = new URL("https://api.weixin.qq.com/sns/userinfo?access_token="+accessToken+"&openid="+openid+"&lang="+lang);

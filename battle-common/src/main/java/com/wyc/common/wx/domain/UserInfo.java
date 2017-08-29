@@ -77,11 +77,20 @@ public class UserInfo {
     @Transient
     private List<Object> tagid_list;
     
+    //0表示从 公众号来 1表示从小程序而来
+    //来源
+    @Column
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    private Integer source;
+    
     @Column(name = "create_at")
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
+    
     private DateTime createAt;
     @Column(name = "update_at")
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime updateAt;
@@ -212,4 +221,10 @@ public class UserInfo {
     public void setUnionid(String unionid) {
         this.unionid = unionid;
     }
+	public Integer getSource() {
+		return source;
+	}
+	public void setSource(Integer source) {
+		this.source = source;
+	}
 }

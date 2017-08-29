@@ -7,7 +7,6 @@ import com.battle.filter.element.TestCostCreateFilter;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.domain.vo.WxChooseWxPayBean;
 import com.wyc.common.filter.Filter;
-import com.wyc.common.filter.UserInfoFilter;
 import com.wyc.common.filter.pay.ChooseWxPayFilter;
 import com.wyc.common.session.SessionManager;
 
@@ -34,7 +33,6 @@ public class WxPayFilterApi extends Filter{
 	@Override
 	public List<Class<? extends Filter>> dependClasses() {
 		List<Class<? extends Filter>> classes = new ArrayList<>();
-		classes.add(UserInfoFilter.class);
 		classes.add(TestCostCreateFilter.class);
 		classes.add(ChooseWxPayFilter.class);
 		return classes;

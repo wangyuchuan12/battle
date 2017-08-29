@@ -1,4 +1,4 @@
-package com.wyc.common.smart.service;
+/*package com.wyc.common.smart.service;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -201,4 +201,4 @@ public class UserSmartService implements SmartService<UserInfo>{
     }
 
     
-}
+}*/
