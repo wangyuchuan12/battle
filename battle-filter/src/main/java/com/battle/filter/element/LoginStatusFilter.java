@@ -34,7 +34,7 @@ public class LoginStatusFilter extends Filter{
 		}else if(token!=null){
 			if(userInfo==null){
 				userInfo = userInfoService.findByToken(token);
-				sessionManager.save(userInfo);
+		
 			}
 			
 			if(userInfo==null){
@@ -43,11 +43,16 @@ public class LoginStatusFilter extends Filter{
 				resultVo.setErrorMsg("用户未登陆");
 				sessionManager.setReturnValue(resultVo);
 				sessionManager.setEnd(true);
-				return null;
 			}
-			
-			
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorCode(401);
+			resultVo.setErrorMsg("用户未登陆");
+			sessionManager.setReturnValue(resultVo);
+			sessionManager.setEnd(true);
 		}
+		
+		sessionManager.save(userInfo);
 		return null;
 	}
 

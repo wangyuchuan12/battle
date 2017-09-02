@@ -52,6 +52,7 @@ public class Battle {
 	//当前期 序号
 	@ParamAnnotation
 	@Column(name="current_period_index")
+	@AttrAnnotation(name=AttrEnum.periodIndex)
 	private Integer currentPeriodIndex;
 	
 	@ParamAnnotation

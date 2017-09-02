@@ -3,6 +3,9 @@ package com.battle.filter.element;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.battle.domain.Battle;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.service.BattlePeriodMemberService;
 import com.wyc.AttrEnum;
@@ -17,10 +20,11 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
+		BattlePeriod battlePeriod = sessionManager.getObject(BattlePeriod.class);
+		Battle battle = sessionManager.getObject(Battle.class);
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
-		
 		UserInfo userInfo = (UserInfo)sessionManager.getObject(UserInfo.class);
 		String nickname = userInfo.getNickname();
 		String imgUrl = userInfo.getHeadimgurl();

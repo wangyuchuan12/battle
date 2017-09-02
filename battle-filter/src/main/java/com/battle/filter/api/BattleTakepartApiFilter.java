@@ -29,11 +29,7 @@ public class BattleTakepartApiFilter extends Filter{
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
-		System.out.println("............2a");
-		
 		String periodMemberId = (String)sessionManager.getAttribute(AttrEnum.periodMemberId);
-		
-		System.out.println("periodMemberId:"+periodMemberId);
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
 		
@@ -55,9 +51,6 @@ public class BattleTakepartApiFilter extends Filter{
 			resultVo.setErrorMsg("状态不对");
 			sessionManager.setReturn(true);
 			sessionManager.setReturnValue(resultVo);
-			
-			System.out.println("2222222222222");
-			
 			return null;
 		}
 		
@@ -65,8 +58,6 @@ public class BattleTakepartApiFilter extends Filter{
 
 	@Override
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
-		
-		System.out.println("2333232:"+sessionManager.getObject(UserInfo.class));
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
 		if(!CommonUtil.isEmpty(battleId)){
@@ -74,6 +65,8 @@ public class BattleTakepartApiFilter extends Filter{
 		}
 		
 		Battle battle = battleService.findOne(battleId);
+		
+		
 		
 		sessionManager.save(battle);
 		
