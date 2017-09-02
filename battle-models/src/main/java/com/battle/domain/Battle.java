@@ -9,6 +9,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wyc.AttrEnum;
+import com.wyc.annotation.AttrAnnotation;
 import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
@@ -19,6 +21,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 public class Battle {
 	@Id
 	@IdAnnotation
+	@AttrAnnotation(name=AttrEnum.battleId)
 	private String id;
 	
 	//名称

@@ -1,4 +1,6 @@
 package com.wyc.common.filter.manager;
+import java.util.List;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
@@ -21,53 +23,57 @@ public class FilterEntrySession {
 		this.filterEntryFactory.instance();	
 	}
 	
-	
-	public void pointInit(){
-		filterEntryManager.pointInit();
-	}
-	
-	public void pointLeafFilterStep(){
-		this.filterEntryManager.pointLeafFilterStep();
-	}
-	
-	public void executeHandler()throws Exception{
+	public void execute()throws Exception{
 		
-		FilterEntry filterEntry = filterEntryManager.reverseSeqOut();
+		FilterStep firstFilterStep = filterEntryManager.getInitFilterStep();
 		
-		executeHandle(filterEntry);
-		
-		if(!filterEntryManager.getCurrentFilterStep().isInit()){
-			executeHandler();
+		if(firstFilterStep!=null){
+			
+			executeHandle(firstFilterStep);
 		}else{
-			executeHandle(filterEntryManager.getCurrentFilterStep().getFilterEntry());
+			System.out.println("..........................11");
 		}
 		
-		sessionManager.addNotExecuteFilterClass(filterEntry.getFilter().getClass());
 	}
 	
-	public void exectePreHandler()throws Exception{
-		FilterEntry filterEntry = filterEntryManager.posSeqOut();
+	
+	private void printFilterStep(FilterStep filterStep){
 		
-		executePre(filterEntry);
-		
-		if(!filterEntryManager.getCurrentFilterStep().isEnd()){
-			exectePreHandler();
-		}else{
-			executePre(filterEntryManager.getCurrentFilterStep().getFilterEntry());
+		System.out.println(".............................................");
+		System.out.println(filterStep.getFilterEntry().getFilter().getClass());
+	
+		if(filterStep.getNextFilterStep()!=null){
+			System.out.println("nextStep:"+filterStep.getNextFilterStep().getFilterEntry().getFilter().getClass());
 		}
+		
+		
+		System.out.println("isFirst:"+filterStep.isFirst());
+		
+		System.out.println("isInit:"+filterStep.isInit());
+		
+		System.out.println("isLast:"+filterStep.isLast());
+		
+		System.out.println("isLeaf:"+filterStep.isLeaf());
+		
+		System.out.println("isEnd:"+filterStep.isEnd());
+		
+		System.out.println(".............................................");
 	}
 	
-	public void executeAfterHandler()throws Exception{
-		FilterEntry filterEntry = filterEntryManager.posSeqOut();
+	
+	public void executeHandle(FilterStep filterStep)throws Exception{
 		
-		executeAfter(filterEntry);
+		executePre(filterStep.getFilterEntry());
 		
-		if(!filterEntryManager.getCurrentFilterStep().isEnd()){
-			executeAfterHandler();
-		}else{
-			executeAfter(filterEntryManager.getCurrentFilterStep().getFilterEntry());
+		if(filterStep.getChildrenFilterStep()!=null){
+			for(FilterStep childFilterStep:filterStep.getChildrenFilterStep()){
+				executeHandle(childFilterStep);
+			}
 		}
+		
+		executeHandle(filterStep.getFilterEntry());
 	}
+
 	
 	private void executeAfter(FilterEntry filterEntry)throws Exception {
 			FilterEntryHandler filterEntryHandler = new FilterEntryHandler(filterEntry, sessionManager,filterEntryManager);
@@ -83,6 +89,7 @@ public class FilterEntrySession {
 	
 	
 	private void executeHandle(FilterEntry filterEntry)throws Exception{
+
 		if(isExecuteAble(filterEntry)){
 			FilterEntryHandler filterEntryHandler = new FilterEntryHandler(filterEntry, sessionManager,filterEntryManager);
 			filterEntryHandler.executeHandler();
@@ -90,10 +97,12 @@ public class FilterEntrySession {
 	}
 	
 	private boolean isExecuteAble(FilterEntry filterEntry){
+		boolean b = false;
 		if(!sessionManager.isEnd()&&!sessionManager.containNotExecuteFilter(filterEntry.getFilter().getClass())&&!sessionManager.isReturn()){
-			return true;
+			b = true;
 		}else{
-			return false;
+			b = false;
 		}
+		return b;
 	}
 }

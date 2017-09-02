@@ -10,7 +10,7 @@ import com.wyc.common.filter.Filter;
 import com.wyc.common.filter.pay.ChooseWxPayFilter;
 import com.wyc.common.session.SessionManager;
 
-public class WxPayFilterApi extends Filter{
+public class WxPayApiFilter extends Filter{
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {

@@ -9,6 +9,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wyc.AttrEnum;
+import com.wyc.annotation.AttrAnnotation;
 import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
@@ -20,10 +22,12 @@ import com.wyc.annotation.ParamEntityAnnotation;
 public class BattlePeriod {
 	@Id
 	@IdAnnotation
+	@AttrAnnotation(name=AttrEnum.periodId)
 	private String id;
 	
 	@ParamAnnotation
 	@Column(name="z_index")
+	@AttrAnnotation(name=AttrEnum.periodIndex)
 	private Integer index;
 	
 	@ParamAnnotation

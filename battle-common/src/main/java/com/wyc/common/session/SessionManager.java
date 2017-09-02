@@ -17,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.wyc.AttrEnum;
+import com.wyc.annotation.AttrAnnotation;
 import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
@@ -32,6 +34,13 @@ class Param{
 	private Field field;
 	private boolean isId;
 	private boolean isMap;
+	private AttrEnum attrEnum;
+	public AttrEnum getAttrEnum() {
+		return attrEnum;
+	}
+	public void setAttrEnum(AttrEnum attrEnum) {
+		this.attrEnum = attrEnum;
+	}
 	public boolean isMap() {
 		return isMap;
 	}
@@ -141,12 +150,13 @@ public class SessionManager {
 		return httpServletResponse;
 	}
 	
-	public void setAttribute(String name , Object value){
-		attributes.put(name, value);
+	public void setAttribute(AttrEnum name , Object value){
+		attributes.put(name.name(), value);
 	}
 	
-	public Object getAttribute(String name){
-		return attributes.get(name);
+	public Object getAttribute(AttrEnum name){
+		Object value = attributes.get(name.name());
+		return value;
 	}
 
 
@@ -576,7 +586,6 @@ public class SessionManager {
 	}
 	
 	public void save(Object obj)throws Exception{
-		
 		if(obj==null){
 			return;
 		}
@@ -591,6 +600,10 @@ public class SessionManager {
 		}*/
 		
 		for(Param param:params){
+			
+			if(param.getAttrEnum()!=null){
+				this.setAttribute(param.getAttrEnum(), param.getValue());
+			}
 			String type = param.getType();
 			if(param.isId()){
 				idValue = param.getValue();
@@ -728,6 +741,7 @@ public class SessionManager {
 			if(paramAnnotation2!=null){
 				paramFields.add(field);
 			}
+			
 		}
 		
 		String idName = null;
@@ -760,11 +774,20 @@ public class SessionManager {
 		idParam.setType(paramEntityAnnotation2.type());
 		idParam.setValue(idValue);
 		
+		AttrAnnotation idAnnotation = idField.getAnnotation(AttrAnnotation.class);
+		
+		if(idAnnotation!=null){
+			AttrEnum name = idAnnotation.name();
+			idParam.setAttrEnum(name);
+		}
+		
 		params.add(idParam);
 		for(Field paramField:paramFields){
 			
 			paramField.setAccessible(true);
 			ParamAnnotation paramAnnotation2 = paramField.getAnnotation(ParamAnnotation.class);
+			
+			
 			
 			String paramName = name(paramField);
 			String paramType = paramAnnotation2.type();
@@ -773,6 +796,11 @@ public class SessionManager {
 			Object paramValue = paramField.get(obj);
 
 			Param param = new Param();
+			AttrAnnotation attrAnnotation = paramField.getAnnotation(AttrAnnotation.class);
+			if(attrAnnotation!=null){
+				AttrEnum name = attrAnnotation.name();
+				param.setAttrEnum(name);
+			}
 			param.setEntityName(entityName);
 			param.setField(paramField);
 			param.setId(idValue);

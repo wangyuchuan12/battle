@@ -13,6 +13,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wyc.AttrEnum;
+import com.wyc.annotation.AttrAnnotation;
 import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
@@ -25,28 +27,36 @@ import com.wyc.annotation.ParamEntityAnnotation;
 public class UserInfo {
     @Id
     @IdAnnotation
+    @AttrAnnotation(name=AttrEnum.userInfoId)
     private String id;
     
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Column(unique=true,updatable=false)
+    @AttrAnnotation(name=AttrEnum.userInfoOpenId)
     private String openid;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoNickname)
     private String nickname;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoGender)
     private String sex;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoProvince)
     private String province;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoCity)
     private String city;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoCountry)
     private String country;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    @AttrAnnotation(name=AttrEnum.userInfoAvatarUrl)
     private String headimgurl;
     @Column
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)

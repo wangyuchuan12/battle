@@ -95,14 +95,8 @@ public class ManagerInterceptConfig {
 			 
 			FilterEntrySession filterEntrySession = new FilterEntrySession(filterManager, filterClass, factory);
 			
-			filterEntrySession.pointInit();
+			 filterEntrySession.execute();
 			
-			filterEntrySession.exectePreHandler();
-			
-			filterEntrySession.pointInit();
-			filterEntrySession.pointLeafFilterStep();
-			
-			filterEntrySession.executeHandler();
 			 
 			 try{
 
@@ -120,8 +114,7 @@ public class ManagerInterceptConfig {
 				 
 				 returnValue = proceedingJoinPoint.proceed();
 				 
-				 filterEntrySession.pointInit();
-				 filterEntrySession.executeAfterHandler();
+				
 				 
 				 /**
 				  * 现在先不要后置处理，等以后框架成熟再加此功能，目前bug还很多

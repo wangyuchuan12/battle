@@ -183,7 +183,7 @@ public class ChooseWxPayFilter extends Filter{
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String orderId = httpServletRequest.getParameter("orderId");
-		sessionManager.setAttribute("orderId", orderId);
+		
 		return null;
 	}
 
