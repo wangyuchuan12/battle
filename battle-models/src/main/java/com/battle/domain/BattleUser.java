@@ -33,6 +33,10 @@ public class BattleUser {
 	private String battleId;
 	
 	@ParamAnnotation
+	@Column(name="open_id")
+	private String openId;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -50,6 +54,14 @@ public class BattleUser {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public String getUserId() {

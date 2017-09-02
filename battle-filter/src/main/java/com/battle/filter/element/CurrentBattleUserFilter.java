@@ -19,12 +19,13 @@ public class CurrentBattleUserFilter extends Filter{
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String userId = (String)sessionManager.getAttribute(AttrEnum.userInfoId);
+		String openId = (String)sessionManager.getAttribute(AttrEnum.userInfoOpenId);
 		BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userId,battleId);
 		if(battleUser==null){
 			battleUser = new BattleUser();
 			battleUser.setBattleId(battleId);
 			battleUser.setUserId(userId);
-		
+			battleUser.setOpenId(openId);
 			battleUserService.add(battleUser);
 		}
 		

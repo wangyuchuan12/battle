@@ -45,14 +45,25 @@ public class BattleTakepartApiFilter extends Filter{
 			resultVo.setData(battlePeriodMember);
 			
 			return resultVo;
-		}else{
+		}else if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
+			resultVo.setErrorCode(0);
+			resultVo.setErrorMsg("状态不对");
+			sessionManager.setReturn(true);
+			sessionManager.setReturnValue(resultVo);
+			return null;
+		}else if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_COMPLETE){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(1);
 			resultVo.setErrorMsg("状态不对");
 			sessionManager.setReturn(true);
 			sessionManager.setReturnValue(resultVo);
 			return null;
 		}
+		
+		return null;
 		
 	}
 
