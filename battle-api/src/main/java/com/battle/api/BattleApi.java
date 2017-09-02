@@ -50,9 +50,6 @@ public class BattleApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleTakepartApiFilter.class)
 	public Object takepart(HttpServletRequest httpServletRequest)throws Exception{
-		
-		
-		System.out.println("............1");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		if(sessionManager.isReturn()){
 			ResultVo resultVo = (ResultVo)sessionManager.getReturnValue();
