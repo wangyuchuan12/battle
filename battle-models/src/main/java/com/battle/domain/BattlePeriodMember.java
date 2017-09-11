@@ -51,13 +51,23 @@ public class BattlePeriodMember {
 	@Column
 	private Integer process;
 	
+	
+	//爱心数量上限
+	@ParamAnnotation
+	@Column(name="love_count")
+	private Integer loveCount;
+	
+	//爱心剩余
+	@ParamAnnotation
+	@Column(name="love_residule")
+	private Integer loveResidule;
+	
 	//0游离状态 1进行中 2完成
 	@ParamAnnotation
 	@Column
 	@AttrAnnotation(name = AttrEnum.battlePeriodMemberStatus)
 	private Integer status;
-	
-	//0游离状态 1进行中 2完成
+
 	@ParamAnnotation
 	@Column
 	private String nickname;
@@ -142,6 +152,22 @@ public class BattlePeriodMember {
 
 	public void setHeadImg(String headImg) {
 		this.headImg = headImg;
+	}
+	
+	public Integer getLoveCount() {
+		return loveCount;
+	}
+
+	public void setLoveCount(Integer loveCount) {
+		this.loveCount = loveCount;
+	}
+
+	public Integer getLoveResidule() {
+		return loveResidule;
+	}
+
+	public void setLoveResidule(Integer loveResidule) {
+		this.loveResidule = loveResidule;
 	}
 
 	public DateTime getCreateAt() {

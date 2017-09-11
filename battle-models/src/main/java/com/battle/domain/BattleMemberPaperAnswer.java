@@ -13,46 +13,26 @@ import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
-@Entity
-@Table(name="question_answer")
 @ParamEntityAnnotation
-public class QuestionAnswer {
-	
-	//比赛模式
-	public static final Integer BATTLE_TYPE = 0;
+@Entity
+@Table(name="battle_paper_answer")
+public class BattleMemberPaperAnswer {
 	@Id
 	@IdAnnotation
 	private String id;
 	
 	@ParamAnnotation
-	@Column
-	private String questions;
+	@Column(name="battle_period_member_id")
+	private String battlePeriodMemberId;
 	
 	@ParamAnnotation
-	@Column
-	private Integer type;
-	
-	@ParamAnnotation
-	@Column(name="target_id")
-	private String targetId;
-	
-	@ParamAnnotation
-	@Column(name="wrong_sum")
-	private Integer wrongSum;
-	
-	@ParamAnnotation
-	@Column(name="right_sum")
-	private Integer rightSum;
-	
-	
 	@Column(name = "create_at")
-	@ParamAnnotation
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime createAt;
 	
+	@ParamAnnotation
     @Column(name = "update_at")
-    @ParamAnnotation
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime updateAt;
@@ -65,44 +45,12 @@ public class QuestionAnswer {
 		this.id = id;
 	}
 
-	public String getQuestions() {
-		return questions;
+	public String getBattlePeriodMemberId() {
+		return battlePeriodMemberId;
 	}
 
-	public void setQuestions(String questions) {
-		this.questions = questions;
-	}
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
-	public String getTargetId() {
-		return targetId;
-	}
-
-	public void setTargetId(String targetId) {
-		this.targetId = targetId;
-	}
-
-	public Integer getWrongSum() {
-		return wrongSum;
-	}
-
-	public void setWrongSum(Integer wrongSum) {
-		this.wrongSum = wrongSum;
-	}
-
-	public Integer getRightSum() {
-		return rightSum;
-	}
-
-	public void setRightSum(Integer rightSum) {
-		this.rightSum = rightSum;
+	public void setBattlePeriodMemberId(String battlePeriodMemberId) {
+		this.battlePeriodMemberId = battlePeriodMemberId;
 	}
 
 	public DateTime getCreateAt() {
@@ -120,4 +68,5 @@ public class QuestionAnswer {
 	public void setUpdateAt(DateTime updateAt) {
 		this.updateAt = updateAt;
 	}
+	
 }

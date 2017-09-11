@@ -26,6 +26,9 @@ public enum AttrEnum {
 	//期数阶段序列号
 	periodStageIndex,
 	
+	
+	periodStageId,
+	
 	//问题id
 	questionId,
 	

@@ -17,12 +17,18 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Table(name="question")
 @ParamEntityAnnotation
 public class Question {
+	
+	public static final Integer SELECT_TYPE = 0;
+	
+	public static final Integer INPUT_TYPE=1;
+	
+	public static final Integer FILL_TYPE=2;
 	@Id
 	@IdAnnotation
 	private String id;
 	
 	
-	//0表示选择题，1表示填字体
+	//0表示选择题，1表示填空题 2表示填词题
 	@Column
 	@ParamAnnotation
 	private Integer type;

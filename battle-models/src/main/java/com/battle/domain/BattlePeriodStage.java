@@ -15,8 +15,8 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="period_stage")
-public class PeriodStage {
+@Table(name="battle_period_stage")
+public class BattlePeriodStage {
 	@Id
 	@IdAnnotation
 	private String id;

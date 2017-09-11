@@ -49,6 +49,11 @@ public class Battle {
 	@Column(name="is_activation")
 	private Integer isActivation;
 	
+	//距离
+	@ParamAnnotation
+	@Column
+	private Integer distance;
+	
 	//当前期 序号
 	@ParamAnnotation
 	@Column(name="current_period_index")
@@ -121,6 +126,14 @@ public class Battle {
 
 	public void setCurrentPeriodIndex(Integer currentPeriodIndex) {
 		this.currentPeriodIndex = currentPeriodIndex;
+	}
+
+	public Integer getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Integer distance) {
+		this.distance = distance;
 	}
 
 	public DateTime getCreateAt() {

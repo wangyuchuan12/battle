@@ -53,6 +53,10 @@ public class QuestionAnswerItem {
 	@Column(name="is_right")
 	private Integer isRight;
 	
+	@ParamAnnotation
+	@Column
+	private Integer type;
+	
 	@Column(name = "create_at")
 	@ParamAnnotation
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -136,6 +140,14 @@ public class QuestionAnswerItem {
 
 	public void setRightOptionId(String rightOptionId) {
 		this.rightOptionId = rightOptionId;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public DateTime getCreateAt() {

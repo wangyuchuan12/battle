@@ -13,46 +13,48 @@ import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
-@Entity
-@Table(name="question_answer")
 @ParamEntityAnnotation
-public class QuestionAnswer {
-	
-	//比赛模式
-	public static final Integer BATTLE_TYPE = 0;
+@Entity
+@Table(name="battle_subject")
+public class BattleSubject {
+
+	//主题id
 	@Id
 	@IdAnnotation
 	private String id;
 	
+	//比赛id
+	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	//名称
 	@ParamAnnotation
 	@Column
-	private String questions;
+	private String name;
 	
+	//图片地址
+	@ParamAnnotation
+	@Column(name="img_url")
+	private String imgUrl;
+	
+	//序号
 	@ParamAnnotation
 	@Column
-	private Integer type;
+	private Integer seq;
 	
 	@ParamAnnotation
-	@Column(name="target_id")
-	private String targetId;
+	@Column(name="battle_question_ids")
+	private String battleQuestionIds;
 	
 	@ParamAnnotation
-	@Column(name="wrong_sum")
-	private Integer wrongSum;
-	
-	@ParamAnnotation
-	@Column(name="right_sum")
-	private Integer rightSum;
-	
-	
 	@Column(name = "create_at")
-	@ParamAnnotation
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime createAt;
 	
+	@ParamAnnotation
     @Column(name = "update_at")
-    @ParamAnnotation
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime updateAt;
@@ -64,47 +66,47 @@ public class QuestionAnswer {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getQuestions() {
-		return questions;
+	
+	public String getBattleId() {
+		return battleId;
 	}
 
-	public void setQuestions(String questions) {
-		this.questions = questions;
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
 	}
 
-	public Integer getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getTargetId() {
-		return targetId;
+	public String getImgUrl() {
+		return imgUrl;
 	}
 
-	public void setTargetId(String targetId) {
-		this.targetId = targetId;
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	
+	public Integer getSeq() {
+		return seq;
 	}
 
-	public Integer getWrongSum() {
-		return wrongSum;
+	public void setSeq(Integer seq) {
+		this.seq = seq;
 	}
 
-	public void setWrongSum(Integer wrongSum) {
-		this.wrongSum = wrongSum;
+	public String getBattleQuestionIds() {
+		return battleQuestionIds;
 	}
 
-	public Integer getRightSum() {
-		return rightSum;
+	public void setBattleQuestionIds(String battleQuestionIds) {
+		this.battleQuestionIds = battleQuestionIds;
 	}
-
-	public void setRightSum(Integer rightSum) {
-		this.rightSum = rightSum;
-	}
-
+	
 	public DateTime getCreateAt() {
 		return createAt;
 	}

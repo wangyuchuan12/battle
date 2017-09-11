@@ -3,14 +3,13 @@ package com.battle.filter.element;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.battle.domain.Battle;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.service.BattlePeriodMemberService;
 import com.wyc.AttrEnum;
+import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 public class CurrentBattlePeriodMemberFilter extends Filter{
@@ -20,8 +19,6 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
-		BattlePeriod battlePeriod = sessionManager.getObject(BattlePeriod.class);
-		Battle battle = sessionManager.getObject(Battle.class);
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
@@ -39,6 +36,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setNickname(nickname);
 			battlePeriodMember.setHeadImg(imgUrl);
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
+			battlePeriodMember.setLoveCount(5);
+			battlePeriodMember.setLoveResidule(5);
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
 		
@@ -49,6 +48,42 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	@Override
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 	
+		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
+		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
+		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
+		
+		if(CommonUtil.isEmpty(battleId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("battleId不能为空");
+			
+			sessionManager.setReturn(true);
+			sessionManager.setReturnValue(resultVo);
+			
+			return null;
+		}
+		
+		if(CommonUtil.isEmpty(battleUserId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("battleUserId不能为空");
+			
+			sessionManager.setReturn(true);
+			sessionManager.setReturnValue(resultVo);
+			
+			return null;
+		}
+		
+		if(CommonUtil.isEmpty(periodId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("periodId不能为空");
+			
+			sessionManager.setReturn(true);
+			sessionManager.setReturnValue(resultVo);
+			
+			return null;
+		}
 		return null;
 	}
 

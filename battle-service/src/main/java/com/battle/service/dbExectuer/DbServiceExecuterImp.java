@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.QuestionAnswer;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleService;
+import com.battle.service.QuestionAnswerService;
 import com.wyc.common.session.DbServiceExecuter;
 
 @Service
@@ -19,6 +21,9 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private QuestionAnswerService questionAnswerService;
 	@Override
 	public void update(List<Object> objs) {
 		if(objs!=null&&objs.size()>0){
@@ -29,6 +34,8 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 						battleService.update((Battle)target);
 					}else if(type.equals(BattlePeriodMember.class)){
 						battlePeriodMemberService.update((BattlePeriodMember)target);
+					}else if(type.equals(QuestionAnswer.class)){
+						questionAnswerService.update((QuestionAnswer)target);
 					}
 				}
 			}
@@ -40,6 +47,10 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 		if(clazz.equals(Battle.class)){
 			Battle battle = battleService.findOne(id);
 			return (T)battle;
+		}else if(clazz.equals(QuestionAnswer.class)){
+			QuestionAnswer questionAnswer = questionAnswerService.findOne(id);
+			
+			return (T)questionAnswer;
 		}
 		return null;
 	}
