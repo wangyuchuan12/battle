@@ -29,6 +29,37 @@ public class BattleMemberQuestionAnswer {
 	@Column(name="battle_member_paper_answer_id")
 	private String battleMemberPaperAnswerId;
 	
+	
+	//0选择题 1填空题 2填词题
+	@Column
+	@ParamAnnotation
+	private Integer type;
+	
+	//图片地址
+	@Column
+	@ParamAnnotation
+	private String imgUrl;
+	
+	@Column
+	@ParamAnnotation
+	private String question;
+	
+	
+	//答案（把可见部分的答案提取出来放进去）
+	@Column
+	@ParamAnnotation
+	private String answer;
+	
+	//正确答案
+	@Column(name="right_answer")
+	@ParamAnnotation
+	private String rightAnswer;
+	
+	//选项
+	@Column
+	@ParamAnnotation
+	private String options;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -63,6 +94,58 @@ public class BattleMemberQuestionAnswer {
 
 	public void setBattleMemberPaperAnswerId(String battleMemberPaperAnswerId) {
 		this.battleMemberPaperAnswerId = battleMemberPaperAnswerId;
+	}
+	
+	
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	
+	
+
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
+	public String getRightAnswer() {
+		return rightAnswer;
+	}
+
+	public void setRightAnswer(String rightAnswer) {
+		this.rightAnswer = rightAnswer;
 	}
 
 	public DateTime getCreateAt() {

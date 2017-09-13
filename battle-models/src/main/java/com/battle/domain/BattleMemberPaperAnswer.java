@@ -15,7 +15,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_paper_answer")
+@Table(name="battle_member_paper_answer")
 public class BattleMemberPaperAnswer {
 	@Id
 	@IdAnnotation
@@ -24,6 +24,24 @@ public class BattleMemberPaperAnswer {
 	@ParamAnnotation
 	@Column(name="battle_period_member_id")
 	private String battlePeriodMemberId;
+	
+	//扣掉爱心
+	@ParamAnnotation
+	@Column(name="sub_love")
+	private Integer subLove;
+	
+	@ParamAnnotation
+	@Column(name="wrong_sum")
+	private Integer wrongSum;
+	
+	@ParamAnnotation
+	@Column(name="right_sum")
+	private Integer rightSum;
+	
+	//前进距离
+	@ParamAnnotation
+	@Column(name="add_distance")
+	private Integer addDistance;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -51,6 +69,41 @@ public class BattleMemberPaperAnswer {
 
 	public void setBattlePeriodMemberId(String battlePeriodMemberId) {
 		this.battlePeriodMemberId = battlePeriodMemberId;
+	}
+	
+
+	public Integer getSubLove() {
+		return subLove;
+	}
+
+	public void setSubLove(Integer subLove) {
+		this.subLove = subLove;
+	}
+
+	
+
+	public Integer getWrongSum() {
+		return wrongSum;
+	}
+
+	public void setWrongSum(Integer wrongSum) {
+		this.wrongSum = wrongSum;
+	}
+
+	public Integer getRightSum() {
+		return rightSum;
+	}
+
+	public void setRightSum(Integer rightSum) {
+		this.rightSum = rightSum;
+	}
+
+	public Integer getAddDistance() {
+		return addDistance;
+	}
+
+	public void setAddDistance(Integer addDistance) {
+		this.addDistance = addDistance;
 	}
 
 	public DateTime getCreateAt() {

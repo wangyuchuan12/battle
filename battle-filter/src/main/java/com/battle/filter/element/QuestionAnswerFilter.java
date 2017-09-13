@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
 import com.battle.domain.QuestionAnswerItem;
+import com.battle.domain.QuestionOption;
 import com.battle.service.QuestionAnswerItemService;
+import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.wyc.AttrEnum;
 import com.wyc.common.filter.Filter;
@@ -20,6 +22,9 @@ public class QuestionAnswerFilter extends Filter{
 	
 	@Autowired
 	private QuestionAnswerItemService questionAnswerItemService;
+	
+	@Autowired
+	private QuestionOptionService questionOptionService;
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		QuestionAnswer questionAnswer = sessionManager.getObject(QuestionAnswer.class);
@@ -41,6 +46,14 @@ public class QuestionAnswerFilter extends Filter{
 			}
 		}else if(question.getType()==Question.SELECT_TYPE){
 			String optionId = (String)sessionManager.getAttribute(AttrEnum.questionOptionId);
+			
+			QuestionOption questionOption = questionOptionService.findOne(optionId);
+			
+			QuestionOption rightQuestionOption = questionOptionService.findOne(question.getRightOptionId());
+			
+			questionAnswerItem.setMyAnswer(questionOption.getContent());
+			questionAnswerItem.setRightAnswer(rightQuestionOption.getContent());
+			
 			questionAnswerItem.setMyOptionId(optionId);
 			questionAnswerItem.setRightOptionId(question.getRightOptionId());
 			if(question.getRightOptionId().equals(optionId)){
@@ -76,9 +89,6 @@ public class QuestionAnswerFilter extends Filter{
 		String questionId = (String)sessionManager.getAttribute(AttrEnum.questionId);
 		Question question = questionService.findOne(questionId);
 		sessionManager.save(question);
-		
-		System.out.println(".............questionId:"+questionId);
-		System.out.println(".............question:"+question);
 		return null;
 	}
 

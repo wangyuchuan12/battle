@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.battle.domain.QuestionAnswerItem;
+import com.battle.filter.element.BattleQuestionAnswerHandleFilter;
 import com.battle.filter.element.CurrentQuestionAnswerFilter;
 import com.battle.filter.element.QuestionAnswerFilter;
 import com.wyc.AttrEnum;
@@ -29,16 +30,19 @@ public class BattleQuestionAnswerApiFilter extends Filter{
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String questionId  = httpServletRequest.getParameter("questionId");
 		String type = httpServletRequest.getParameter("type");
-		String targetId = httpServletRequest.getParameter("targetId");
+		String memberId = httpServletRequest.getParameter("memberId");
+		String stageIndex = httpServletRequest.getParameter("stageIndex");
 		String answer = httpServletRequest.getParameter("answer");
 		String optionId = httpServletRequest.getParameter("optionId");
 	
-		sessionManager.setAttribute(AttrEnum.questionAnswerTargetId,targetId);
+		sessionManager.setAttribute(AttrEnum.questionAnswerTargetId,memberId+"_"+stageIndex);
 		sessionManager.setAttribute(AttrEnum.questionAnswerType,Integer.parseInt(type));
 		sessionManager.setAttribute(AttrEnum.questionId,questionId);
 		
 		sessionManager.setAttribute(AttrEnum.questionAnswer,answer);
 		sessionManager.setAttribute(AttrEnum.questionOptionId,optionId);
+		
+		sessionManager.setAttribute(AttrEnum.periodMemberId, memberId);
 		return null;
 	}
 
@@ -48,6 +52,7 @@ public class BattleQuestionAnswerApiFilter extends Filter{
 		List<Class<? extends Filter>> classes = new ArrayList<>();
 		classes.add(CurrentQuestionAnswerFilter.class);
 		classes.add(QuestionAnswerFilter.class);
+		classes.add(BattleQuestionAnswerHandleFilter.class);
 		return classes;
 	}
 

@@ -7,9 +7,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.battle.domain.Battle;
+import com.battle.domain.BattlePeriod;
+import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleSubject;
+import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
+import com.battle.filter.element.CurrentBattleUserFilter;
+import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattlePeriodService;
+import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
@@ -24,16 +33,30 @@ public class BattleSubjectApiFilter extends Filter{
 	@Autowired
 	private BattleQuestionService battleQuestionService;
 	
+	@Autowired
+	private BattlePeriodStageService battlePeriodStageService;
+	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
+	
+	@Autowired
+	private BattleService battleService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
-		String periodStageId = (String)sessionManager.getAttribute(AttrEnum.periodStageId);
+		Integer periodStageIndex = (Integer)sessionManager.getAttribute(AttrEnum.periodStageIndex);
+		
+		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
+		
+		System.out.println("battleId:"+battleId+",periodStageIndex:"+periodStageIndex+",periodId:"+periodId);
+		
+		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdOrderBySeqAsc(battleId);
 		
 		
-		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageId(battleId,periodStageId);
+		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageId(battleId,battlePeriodStage.getId());
 		
 		Map<String, Integer> battleQuestionMap = new HashMap<>();
 		for(BattleQuestion battleQuestion:battleQuestions){
@@ -75,18 +98,24 @@ public class BattleSubjectApiFilter extends Filter{
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		
-		String periodStageId = httpServletRequest.getParameter("periodStageId");
 		
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		
-		sessionManager.setAttribute(AttrEnum.periodStageId, periodStageId);
+		Battle battle = battleService.findOne(battleId);
 		
+		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battle.getId(), battle.getCurrentPeriodIndex());
+		
+		sessionManager.save(battlePeriod);
 		return null;
 	}
 
 	@Override
 	public List<Class<? extends Filter>> dependClasses() {
-		return null;
+		List<Class<? extends Filter>> classes = new ArrayList<>();
+		classes.add(LoginStatusFilter.class);
+		classes.add(CurrentBattleUserFilter.class);
+		classes.add(CurrentBattlePeriodMemberFilter.class);
+		return classes;
 	}
 
 	@Override

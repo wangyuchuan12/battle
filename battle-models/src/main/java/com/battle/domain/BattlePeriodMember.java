@@ -77,6 +77,11 @@ public class BattlePeriodMember {
 	private String headImg;
 	
 	@ParamAnnotation
+	@Column(name="stage_index")
+	@AttrAnnotation(name = AttrEnum.periodStageIndex)
+	private Integer stageIndex;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -168,6 +173,15 @@ public class BattlePeriodMember {
 
 	public void setLoveResidule(Integer loveResidule) {
 		this.loveResidule = loveResidule;
+	}
+	
+
+	public Integer getStageIndex() {
+		return stageIndex;
+	}
+
+	public void setStageIndex(Integer stageIndex) {
+		this.stageIndex = stageIndex;
 	}
 
 	public DateTime getCreateAt() {

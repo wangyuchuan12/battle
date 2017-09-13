@@ -1,9 +1,10 @@
 package com.battle.dao;
 
 import org.springframework.data.repository.CrudRepository;
+import com.battle.domain.BattlePeriodStage;
 
-import com.battle.domain.BattlePeriod;
+public interface BattlePeriodStageDao extends CrudRepository<BattlePeriodStage, String>{
 
-public interface BattlePeriodStageDao extends CrudRepository<BattlePeriod, String>{
+	BattlePeriodStage findOneByBattleIdAndPeriodIdAndIndex(String battleId, String periodId, Integer stageIndex);
 
 }

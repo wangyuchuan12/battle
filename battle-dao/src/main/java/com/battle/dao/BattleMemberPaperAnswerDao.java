@@ -6,4 +6,6 @@ import com.battle.domain.BattleMemberPaperAnswer;
 
 public interface BattleMemberPaperAnswerDao extends CrudRepository<BattleMemberPaperAnswer, String>{
 
+	BattleMemberPaperAnswer findOneByBattlePeriodMemberId(String memberId);
+
 }

@@ -18,4 +18,9 @@ public class QuestionOptionService {
 		
 		return questionOptionDao.findAllByQuestionId(questionId);
 	}
+
+	public QuestionOption findOne(String id) {
+		
+		return questionOptionDao.findOne(id);
+	}
 }

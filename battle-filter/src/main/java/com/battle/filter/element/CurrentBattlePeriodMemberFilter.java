@@ -37,10 +37,12 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setHeadImg(imgUrl);
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
 			battlePeriodMember.setLoveCount(5);
+			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setLoveResidule(5);
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
 		
+		System.out.println("..............battlePeriodMember:"+battlePeriodMember);
 		return battlePeriodMember;
 	}
 

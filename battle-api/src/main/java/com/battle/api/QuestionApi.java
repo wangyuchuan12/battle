@@ -54,9 +54,7 @@ public class QuestionApi {
 		String id = httpServletRequest.getParameter("id");
 		
 		Question question = questionService.findOne(id);
-		
-		
-		
+
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("id", question.getId());
 		responseData.put("answer", question.getAnswer());

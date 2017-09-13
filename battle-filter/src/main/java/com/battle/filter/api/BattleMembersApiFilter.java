@@ -7,9 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
-import com.battle.filter.element.CurrentBattlePeriodFilter;
+import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
+import com.battle.filter.element.CurrentBattleUserFilter;
+import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattlePeriodService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
@@ -19,6 +23,9 @@ public class BattleMembersApiFilter extends Filter{
 
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
@@ -38,17 +45,25 @@ public class BattleMembersApiFilter extends Filter{
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
-		String index = httpServletRequest.getParameter("index");
-		sessionManager.setAttribute(AttrEnum.periodIndex, Integer.parseInt(index));
+		
+		String periodIndex = httpServletRequest.getParameter("periodIndex");
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
+		
+		sessionManager.setAttribute(AttrEnum.periodIndex, Integer.parseInt(periodIndex));
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, Integer.parseInt(periodIndex));
+		
+		sessionManager.save(battlePeriod);
+		
 		return null;
 	}
 
 	@Override
 	public List<Class<? extends Filter>> dependClasses() {
 		List<Class<? extends Filter>> classes = new ArrayList<>();
-		classes.add(CurrentBattlePeriodFilter.class);
-		
+		classes.add(LoginStatusFilter.class);
+		classes.add(CurrentBattleUserFilter.class);
+		classes.add(CurrentBattlePeriodMemberFilter.class);
 		return classes;
 	}
 
