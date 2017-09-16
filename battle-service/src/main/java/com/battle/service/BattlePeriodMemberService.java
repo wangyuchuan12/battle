@@ -39,9 +39,14 @@ public class BattlePeriodMemberService {
 		
 	}
 
-	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndStatus(String battleId, String periodId, Integer status) {
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndStatusIn(String battleId, String periodId, List<Integer> statuses) {
 		
-		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndStatus(battleId,periodId,status);
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndStatusIn(battleId,periodId,statuses);
 		
+	}
+
+	public BattlePeriodMember findOne(String id) {
+		
+		return battlePeriodMemberDao.findOne(id);
 	}
 }

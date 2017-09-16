@@ -44,6 +44,14 @@ public class QuestionAnswer {
 	@Column(name="right_sum")
 	private Integer rightSum;
 	
+	@ParamAnnotation
+	@Column(name="question_count")
+	private Integer questionCount;
+	
+	@ParamAnnotation
+	@Column(name="question_index")
+	private Integer questionIndex;
+	
 	
 	@Column(name = "create_at")
 	@ParamAnnotation
@@ -103,6 +111,24 @@ public class QuestionAnswer {
 
 	public void setRightSum(Integer rightSum) {
 		this.rightSum = rightSum;
+	}
+	
+	
+
+	public Integer getQuestionCount() {
+		return questionCount;
+	}
+
+	public void setQuestionCount(Integer questionCount) {
+		this.questionCount = questionCount;
+	}
+
+	public Integer getQuestionIndex() {
+		return questionIndex;
+	}
+
+	public void setQuestionIndex(Integer questionIndex) {
+		this.questionIndex = questionIndex;
 	}
 
 	public DateTime getCreateAt() {

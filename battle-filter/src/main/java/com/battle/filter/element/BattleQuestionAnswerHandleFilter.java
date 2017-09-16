@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.battle.domain.Battle;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
+import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
 import com.battle.domain.QuestionAnswerItem;
 import com.battle.domain.QuestionOption;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
+import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.QuestionOptionService;
 import com.wyc.AttrEnum;
 import com.wyc.common.filter.Filter;
@@ -27,6 +30,7 @@ public class BattleQuestionAnswerHandleFilter extends Filter{
 	
 	@Autowired
 	private QuestionOptionService questionOptionService;
+
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
@@ -53,7 +57,15 @@ public class BattleQuestionAnswerHandleFilter extends Filter{
 			battleMemberPaperAnswerSerivice.update(battleMemberPaperAnswer);
 		}
 		
+		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, memberId);
 		
+		Battle battle = sessionManager.findOne(Battle.class, battlePeriodMember.getBattleId());
+		
+		if(battlePeriodMember.getStageIndex()<battle.getCurrentPeriodIndex()){
+			battlePeriodMember.setStageIndex(battlePeriodMember.getStageIndex()+1);
+			
+			sessionManager.update(battlePeriodMember);
+		}
 		
 		QuestionAnswerItem questionAnswerItem = sessionManager.getObject(QuestionAnswerItem.class);
 		

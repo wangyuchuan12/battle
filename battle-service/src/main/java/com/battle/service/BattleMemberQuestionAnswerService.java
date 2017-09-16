@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -23,5 +24,9 @@ public class BattleMemberQuestionAnswerService {
 		
 		memberQuestionAnswerDao.save(battleMemberQuestionAnswer);
 		
+	}
+
+	public List<BattleMemberQuestionAnswer> findAllByBattleMemberPaperAnswerId(String battleMemberPaperAnswerId) {
+		return memberQuestionAnswerDao.findAllByBattleMemberPaperAnswerId(battleMemberPaperAnswerId);
 	}
 }

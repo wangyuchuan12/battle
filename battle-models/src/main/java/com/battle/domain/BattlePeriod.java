@@ -48,6 +48,10 @@ public class BattlePeriod {
 	private Integer maxMembers;
 	
 	@ParamAnnotation
+	@Column(name="stage_count")
+	private Integer stageCount;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -107,6 +111,15 @@ public class BattlePeriod {
 
 	public void setMaxMembers(Integer maxMembers) {
 		this.maxMembers = maxMembers;
+	}
+	
+
+	public Integer getStageCount() {
+		return stageCount;
+	}
+
+	public void setStageCount(Integer stageCount) {
+		this.stageCount = stageCount;
 	}
 
 	public DateTime getCreateAt() {

@@ -37,4 +37,9 @@ public class BattleMemberPaperAnswerService {
 		battleMemberPaperAnswerDao.save(battleMemberPaperAnswer);
 		
 	}
+
+	public BattleMemberPaperAnswer findOneByQuestionAnswerId(String id) {
+		
+		return battleMemberPaperAnswerDao.findOneByQuestionAnswerId(id);
+	}
 }

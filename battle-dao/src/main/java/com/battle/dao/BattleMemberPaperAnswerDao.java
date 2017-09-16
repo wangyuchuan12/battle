@@ -8,4 +8,6 @@ public interface BattleMemberPaperAnswerDao extends CrudRepository<BattleMemberP
 
 	BattleMemberPaperAnswer findOneByBattlePeriodMemberId(String memberId);
 
+	BattleMemberPaperAnswer findOneByQuestionAnswerId(String id);
+
 }

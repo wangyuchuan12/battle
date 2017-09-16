@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
@@ -32,7 +33,11 @@ public class BattleMembersApiFilter extends Filter{
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
 	
-		List<BattlePeriodMember> members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndStatus(battleId,periodId,BattlePeriodMember.STATUS_IN);
+		List<Integer> statuses = new ArrayList<>();
+		
+		statuses.add(BattlePeriodMember.STATUS_IN);
+		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
+		List<BattlePeriodMember> members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndStatusIn(battleId,periodId,statuses);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
@@ -46,12 +51,13 @@ public class BattleMembersApiFilter extends Filter{
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
 		
-		String periodIndex = httpServletRequest.getParameter("periodIndex");
+		Battle battle = sessionManager.findOne(Battle.class, battleId);
+	
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		
-		sessionManager.setAttribute(AttrEnum.periodIndex, Integer.parseInt(periodIndex));
+		sessionManager.setAttribute(AttrEnum.periodIndex, battle.getCurrentPeriodIndex());
 		
-		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, Integer.parseInt(periodIndex));
+		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, battle.getCurrentPeriodIndex());
 		
 		sessionManager.save(battlePeriod);
 		
@@ -60,11 +66,7 @@ public class BattleMembersApiFilter extends Filter{
 
 	@Override
 	public List<Class<? extends Filter>> dependClasses() {
-		List<Class<? extends Filter>> classes = new ArrayList<>();
-		classes.add(LoginStatusFilter.class);
-		classes.add(CurrentBattleUserFilter.class);
-		classes.add(CurrentBattlePeriodMemberFilter.class);
-		return classes;
+		return null;
 	}
 
 	@Override

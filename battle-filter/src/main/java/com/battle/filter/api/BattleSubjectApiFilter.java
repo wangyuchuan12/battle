@@ -49,8 +49,7 @@ public class BattleSubjectApiFilter extends Filter{
 		Integer periodStageIndex = (Integer)sessionManager.getAttribute(AttrEnum.periodStageIndex);
 		
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
-		
-		System.out.println("battleId:"+battleId+",periodStageIndex:"+periodStageIndex+",periodId:"+periodId);
+	
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdOrderBySeqAsc(battleId);
@@ -58,14 +57,16 @@ public class BattleSubjectApiFilter extends Filter{
 		
 		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageId(battleId,battlePeriodStage.getId());
 		
-		Map<String, Integer> battleQuestionMap = new HashMap<>();
+		Map<String, List<String>> battleQuestionMap = new HashMap<>();
 		for(BattleQuestion battleQuestion:battleQuestions){
-			Integer num = battleQuestionMap.get(battleQuestion.getBattleSubjectId());
-			if(num==null){
-				num = 0;
+			List<String> questions = battleQuestionMap.get(battleQuestion.getBattleSubjectId());
+			
+			if(questions==null){
+				questions = new ArrayList<>();
 			}
-			num++;
-			battleQuestionMap.put(battleQuestion.getBattleSubjectId(), num);
+			
+			questions.add(battleQuestion.getQuestionId());
+			battleQuestionMap.put(battleQuestion.getBattleSubjectId(), questions);
 		}
 		
 		List<Map<String, Object>> battleSubjectsData = new ArrayList<>();
@@ -77,12 +78,14 @@ public class BattleSubjectApiFilter extends Filter{
 			battleSubjectMap.put("name", battleSubject.getName());
 			battleSubjectMap.put("seq", battleSubject.getSeq());
 			
-			Integer num = battleQuestionMap.get(battleSubject.getId());
-			if(num==null){
-				num = 0;
-			}
+			List<String> questions = battleQuestionMap.get(battleSubject.getId());
 			
-			battleSubjectMap.put("num", num);
+			if(questions!=null){
+				battleSubjectMap.put("num", questions.size());
+				battleSubjectMap.put("questions", questions);
+			}else{
+				battleSubjectMap.put("num", 0);
+			}
 			
 			battleSubjectsData.add(battleSubjectMap);
 		}

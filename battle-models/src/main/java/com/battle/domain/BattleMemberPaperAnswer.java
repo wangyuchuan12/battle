@@ -17,6 +17,15 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle_member_paper_answer")
 public class BattleMemberPaperAnswer {
+	
+	//游离状态
+	public static Integer FREE_STATUS=0;
+	
+	//进行中
+	public static Integer IN_STATUS=1;
+	
+	//结束
+	public static Integer END_STATUS=2;
 	@Id
 	@IdAnnotation
 	private String id;
@@ -42,6 +51,20 @@ public class BattleMemberPaperAnswer {
 	@ParamAnnotation
 	@Column(name="add_distance")
 	private Integer addDistance;
+	
+	
+	//第几阶段
+	@ParamAnnotation
+	@Column(name="stage_index")
+	private Integer stageIndex;
+	
+	@ParamAnnotation
+	@Column(name="question_answer_id")
+	private String questionAnswerId;
+	
+	@ParamAnnotation
+	@Column
+	private Integer status;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -104,6 +127,32 @@ public class BattleMemberPaperAnswer {
 
 	public void setAddDistance(Integer addDistance) {
 		this.addDistance = addDistance;
+	}
+
+	public Integer getStageIndex() {
+		return stageIndex;
+	}
+
+	public void setStageIndex(Integer stageIndex) {
+		this.stageIndex = stageIndex;
+	}
+	
+	
+
+	public String getQuestionAnswerId() {
+		return questionAnswerId;
+	}
+
+	public void setQuestionAnswerId(String questionAnswerId) {
+		this.questionAnswerId = questionAnswerId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public DateTime getCreateAt() {

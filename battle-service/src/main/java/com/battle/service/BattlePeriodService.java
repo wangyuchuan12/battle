@@ -16,4 +16,9 @@ public class BattlePeriodService {
 		
 		return battlePeriodDao.findOneByBattleIdAndIndex(battleId,index);
 	}
+
+	public BattlePeriod findOne(String id) {
+		
+		return battlePeriodDao.findOne(id);
+	}
 }

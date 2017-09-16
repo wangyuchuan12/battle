@@ -3,8 +3,10 @@ package com.battle.filter.element;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattlePeriodService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
@@ -17,6 +19,9 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
 	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
+	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
@@ -28,6 +33,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		
 		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByBattleIdAndBattleUserIdAndPeriodId(battleId,battleUserId,periodId);
 		if(battlePeriodMember==null){
+			
+			BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 			battlePeriodMember = new BattlePeriodMember();
 			battlePeriodMember.setBattleId(battleId);
 			battlePeriodMember.setBattleUserId(battleUserId);
@@ -37,12 +44,13 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setHeadImg(imgUrl);
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
 			battlePeriodMember.setLoveCount(5);
-			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setLoveResidule(5);
+			battlePeriodMember.setStageIndex(1);
+			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
+			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
-		
-		System.out.println("..............battlePeriodMember:"+battlePeriodMember);
+	
 		return battlePeriodMember;
 	}
 
