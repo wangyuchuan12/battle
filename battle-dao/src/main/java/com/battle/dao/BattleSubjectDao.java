@@ -8,7 +8,7 @@ import com.battle.domain.BattleSubject;
 
 public interface BattleSubjectDao extends CrudRepository<BattleSubject, String>{
 
-	List<BattleSubject> findAllByBattleIdOrderBySeqAsc(String battleId);
+	List<BattleSubject> findAllByBattleIdAndIsDelOrderBySeqAsc(String battleId,Integer isDel);
 
 	List<BattleSubject> findAllByIdIn(String[] subjectIds);
 

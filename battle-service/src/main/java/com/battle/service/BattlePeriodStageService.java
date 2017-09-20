@@ -1,5 +1,7 @@
 package com.battle.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,13 @@ public class BattlePeriodStageService {
 			Integer stageIndex) {
 		
 		return battlePeriodStageDao.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,stageIndex);
+	}
+
+	public List<BattlePeriodStage> findAllByPeriodIdOrderByIndexAsc(String periodId) {
+		return battlePeriodStageDao.findAllByPeriodIdOrderByIndexAsc(periodId);
+	}
+
+	public BattlePeriodStage findOne(String id) {
+		return battlePeriodStageDao.findOne(id);
 	}
 }

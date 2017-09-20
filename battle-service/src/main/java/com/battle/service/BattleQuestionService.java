@@ -22,4 +22,13 @@ public class BattleQuestionService {
 		
 		return battleQuestionDao.findAllByIdIn(ids);
 	}
+
+	public List<BattleQuestion> findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(String stageId,
+			String subjectId) {
+		return battleQuestionDao.findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(stageId,subjectId);
+	}
+
+	public List<BattleQuestion> findAllByPeriodStageIdOrderBySeqAsc(String stageId) {
+		return battleQuestionDao.findAllByPeriodStageIdOrderBySeqAsc(stageId);
+	}
 }

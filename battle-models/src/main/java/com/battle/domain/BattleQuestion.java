@@ -68,6 +68,27 @@ public class BattleQuestion {
 	@Column(name="period_stage_id")
 	private String periodStageId;
 	
+	
+	//0选择题 1填空题 2填词题
+	@Column
+	@ParamAnnotation
+	private Integer type;
+	
+	//答案（把可见部分的答案提取出来放进去）
+	@Column
+	@ParamAnnotation
+	private String answer;
+	
+	//正确答案
+	@Column(name="right_answer")
+	@ParamAnnotation
+	private String rightAnswer;
+	
+	//选项
+	@Column
+	@ParamAnnotation
+	private String options;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -160,6 +181,39 @@ public class BattleQuestion {
 
 	public void setBattlePeriodIndex(Integer battlePeriodIndex) {
 		this.battlePeriodIndex = battlePeriodIndex;
+	}
+	
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+	public String getRightAnswer() {
+		return rightAnswer;
+	}
+
+	public void setRightAnswer(String rightAnswer) {
+		this.rightAnswer = rightAnswer;
+	}
+
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
 	}
 
 	public DateTime getCreateAt() {

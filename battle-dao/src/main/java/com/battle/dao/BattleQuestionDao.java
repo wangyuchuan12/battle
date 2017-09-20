@@ -12,4 +12,8 @@ public interface BattleQuestionDao extends CrudRepository<BattleQuestion, String
 
 	List<BattleQuestion> findAllByIdIn(List<String> ids);
 
+	List<BattleQuestion> findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(String stageId, String subjectId);
+
+	List<BattleQuestion> findAllByPeriodStageIdOrderBySeqAsc(String stageId);
+
 }

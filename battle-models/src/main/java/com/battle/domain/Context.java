@@ -15,41 +15,22 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_subject")
-public class BattleSubject {
-
-	//主题id
+@Table(name="context")
+public class Context {
+	
+	//question表的index节点的最大值，每次添加一条数据就增加1，
+	public final static String QUESTION_MAX_INDEX_CODE="question_max_index";
 	@Id
 	@IdAnnotation
 	private String id;
 	
-	//比赛id
-	@ParamAnnotation
-	@Column(name="battle_id")
-	private String battleId;
-	
-	//名称
 	@ParamAnnotation
 	@Column
-	private String name;
+	private String code;
 	
-	//图片地址
-	@ParamAnnotation
-	@Column(name="img_url")
-	private String imgUrl;
-	
-	//序号
 	@ParamAnnotation
 	@Column
-	private Integer seq;
-	
-	@ParamAnnotation
-	@Column(name="battle_question_ids")
-	private String battleQuestionIds;
-	
-	@ParamAnnotation
-	@Column(name="is_del")
-	private Integer isDel;
+	private String value;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -70,55 +51,21 @@ public class BattleSubject {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getBattleId() {
-		return battleId;
+
+	public String getCode() {
+		return code;
 	}
 
-	public void setBattleId(String battleId) {
-		this.battleId = battleId;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getName() {
-		return name;
+	public String getValue() {
+		return value;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-	
-	public Integer getSeq() {
-		return seq;
-	}
-
-	public void setSeq(Integer seq) {
-		this.seq = seq;
-	}
-
-	public String getBattleQuestionIds() {
-		return battleQuestionIds;
-	}
-
-	public void setBattleQuestionIds(String battleQuestionIds) {
-		this.battleQuestionIds = battleQuestionIds;
-	}
-	
-	
-	
-	public Integer getIsDel() {
-		return isDel;
-	}
-
-	public void setIsDel(Integer isDel) {
-		this.isDel = isDel;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public DateTime getCreateAt() {

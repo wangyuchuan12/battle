@@ -1,5 +1,7 @@
 package com.battle.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,9 @@ public class BattlePeriodService {
 	public BattlePeriod findOne(String id) {
 		
 		return battlePeriodDao.findOne(id);
+	}
+
+	public List<BattlePeriod> findAllByBattleIdOrderByIndexAsc(String battleId) {
+		return battlePeriodDao.findAllByBattleIdOrderByIndexAsc(battleId);
 	}
 }

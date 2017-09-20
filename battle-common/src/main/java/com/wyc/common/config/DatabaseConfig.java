@@ -48,8 +48,8 @@ public class DatabaseConfig {
         ds.setUsername(databaseUsername);
         ds.setPassword(databasePassword);
 
-        ds.setInitialSize(20);
-        ds.setMinIdle(20);
+        ds.setInitialSize(5);
+        ds.setMinIdle(5);
         ds.setMaxActive(54);
         ds.setMaxWait(60000);
         ds.setTimeBetweenEvictionRunsMillis(60000);

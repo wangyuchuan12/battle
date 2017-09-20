@@ -52,7 +52,7 @@ public class BattleSubjectApiFilter extends Filter{
 	
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
-		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdOrderBySeqAsc(battleId);
+		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId,0);
 		
 		
 		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageId(battleId,battlePeriodStage.getId());

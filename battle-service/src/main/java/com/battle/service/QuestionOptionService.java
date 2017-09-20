@@ -1,7 +1,9 @@
 package com.battle.service;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,15 @@ public class QuestionOptionService {
 	public QuestionOption findOne(String id) {
 		
 		return questionOptionDao.findOne(id);
+	}
+
+	public void add(QuestionOption questionOption) {
+		
+		questionOption.setId(UUID.randomUUID().toString());
+		questionOption.setCreateAt(new DateTime());
+		questionOption.setUpdateAt(new DateTime());
+		
+		questionOptionDao.save(questionOption);
+		
 	}
 }
