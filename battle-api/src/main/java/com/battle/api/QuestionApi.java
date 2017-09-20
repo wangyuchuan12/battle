@@ -326,6 +326,8 @@ public class QuestionApi {
 	public Object info(HttpServletRequest httpServletRequest){
 		String id = httpServletRequest.getParameter("id");
 		
+		System.out.println("......................id:"+id);
+		
 		Question question = questionService.findOne(id);
 
 		Map<String, Object> responseData = new HashMap<>();

@@ -120,10 +120,15 @@ public class BattleApi {
 				
 				battleQuestionIds.add(thisQuestionIds[0]);
 				
+				System.out.println("............1");
+				
 			}else if(thisQuestionIds!=null&&thisQuestionIds.length>1){
+				
 				
 				Random random = new Random();
 				Integer index = random.nextInt(thisQuestionIds.length-1);
+				
+				System.out.println("............index:"+index+",length"+thisQuestionIds.length);
 				battleQuestionIds.add(thisQuestionIds[index]);
 				
 			}

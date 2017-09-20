@@ -56,7 +56,7 @@ public class BattleQuestion {
 	//期数id
 	@ParamAnnotation
 	@Column(name="battle_period_id")
-	private Integer battlePeriodId;
+	private String battlePeriodId;
 	
 	//期数序号
 	@ParamAnnotation
@@ -167,11 +167,11 @@ public class BattleQuestion {
 		this.battleId = battleId;
 	}
 
-	public Integer getBattlePeriodId() {
+	public String getBattlePeriodId() {
 		return battlePeriodId;
 	}
 
-	public void setBattlePeriodId(Integer battlePeriodId) {
+	public void setBattlePeriodId(String battlePeriodId) {
 		this.battlePeriodId = battlePeriodId;
 	}
 

@@ -41,7 +41,7 @@ public class BattleSubjectService {
 
 	public void update(BattleSubject battleSubject) {
 		
-		battleSubject.setIsDel(1);
+		battleSubject.setUpdateAt(new DateTime());
 		
 		battleSubjectDao.save(battleSubject);
 		

@@ -185,6 +185,8 @@ public class ManagerApi {
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
 		
+		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodStage.getPeriodId());
+		
 		String periodId = battlePeriodStage.getPeriodId();
 		
 		String battleId = battlePeriodStage.getBattleId();
@@ -210,6 +212,31 @@ public class ManagerApi {
 		questionTarget.setIndex(Integer.parseInt(context.getValue()));
 		questionService.add(questionTarget);
 		
+		BattleQuestion battleQuestion = new BattleQuestion();
+		battleQuestion.setBattleId(battleId);
+		battleQuestion.setBattlePeriodId(periodId);
+		battleQuestion.setBattlePeriodIndex(battlePeriod.getIndex());
+		battleQuestion.setBattleSubjectId(subjectId);
+		battleQuestion.setImgUrl(imgUrl);
+		battleQuestion.setName("");
+		battleQuestion.setPeriodStageId(battlePeriodStage.getId());
+		battleQuestion.setQuestionId(questionTarget.getId());
+		battleQuestionService.add(battleQuestion);
+		
+		BattleSubject battleSubject = battleSubjectService.findOne(subjectId);
+		
+		String battleQuestionIds = battleSubject.getBattleQuestionIds();
+		
+		if(CommonUtil.isEmpty(battleQuestionIds)){
+			battleQuestionIds = questionTarget.getId();
+		}else{
+			battleQuestionIds = battleQuestionIds+","+questionTarget.getId();
+		}
+		
+		battleSubject.setBattleQuestionIds(battleQuestionIds);
+		
+		battleSubjectService.update(battleSubject);
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		TypeReference<List<Map<String, String>>> typeReference = new TypeReference<List<Map<String,String>>>() {
 		};
@@ -219,9 +246,12 @@ public class ManagerApi {
 			
 			
 			questionTarget.setType(0);
+			battleQuestion.setType(0);
 			
 			String options = httpServletRequest.getParameter("options");
 			List<Map<String, String>> questionOptions = objectMapper.readValue(options, typeReference);
+			
+			StringBuffer sbOptions = new StringBuffer();
 			
 			for(Map<String, String> questionOptionMap:questionOptions){
 				QuestionOption questionOption = new QuestionOption();
@@ -231,14 +261,29 @@ public class ManagerApi {
 				questionOption.setContent(questionOptionMap.get("content"));
 				questionOptionService.add(questionOption);
 				String isRight = questionOptionMap.get("isRight");
+				
+				sbOptions.append(questionOption.getContent()+",");
+				
 				if(!CommonUtil.isEmpty(isRight)&&isRight.equals("1")){
 					questionTarget.setRightOptionId(questionOption.getId());
 					questionTarget.setAnswer(questionOption.getContent());
+					
+					battleQuestion.setRightAnswer(questionOption.getContent());
 				}
 			}
+			
+			if(questionOptions!=null&&questionOptions.size()>0){
+				sbOptions.deleteCharAt(sbOptions.lastIndexOf(","));
+			}
+			battleQuestion.setOptions(sbOptions.toString());
 		}
 		
+		battleQuestionService.update(battleQuestion);
+		
 		questionService.update(questionTarget);
+		
+		
+	
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
