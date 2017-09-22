@@ -174,6 +174,30 @@ public class ManagerApi {
 		return resultVo;
 	}
 	
+	
+	@RequestMapping(value="updateStage")
+	@ResponseBody
+	@Transactional
+	public Object updateStage(HttpServletRequest httpServletRequest)throws Exception{
+		String stageId = httpServletRequest.getParameter("stageId");
+		String num = httpServletRequest.getParameter("num");
+		
+		System.out.println("..........num:"+num);
+		
+		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
+		
+		battlePeriodStage.setQuestionCount(Integer.parseInt(num));
+		
+		battlePeriodStageService.update(battlePeriodStage);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		
+		return resultVo;
+	}
+	
 	@RequestMapping(value="addStage")
 	@ResponseBody
 	@Transactional
@@ -206,6 +230,7 @@ public class ManagerApi {
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
+		resultVo.setData(battlePeriodStage);
 		return resultVo;
 				
 	}
