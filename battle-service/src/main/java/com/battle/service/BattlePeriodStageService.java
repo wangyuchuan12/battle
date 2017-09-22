@@ -1,7 +1,9 @@
 package com.battle.service;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,24 @@ public class BattlePeriodStageService {
 
 	public BattlePeriodStage findOne(String id) {
 		return battlePeriodStageDao.findOne(id);
+	}
+
+	public void update(BattlePeriodStage battlePeriodStage) {
+		
+		battlePeriodStage.setUpdateAt(new DateTime());
+		
+		battlePeriodStageDao.save(battlePeriodStage);
+		
+	}
+
+	public void add(BattlePeriodStage battlePeriodStage) {
+		battlePeriodStage.setId(UUID.randomUUID().toString());
+		
+		battlePeriodStage.setUpdateAt(new DateTime());
+		
+		battlePeriodStage.setCreateAt(new DateTime());
+		
+		battlePeriodStageDao.save(battlePeriodStage);
+		
 	}
 }

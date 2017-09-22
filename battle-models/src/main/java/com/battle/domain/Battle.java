@@ -61,6 +61,10 @@ public class Battle {
 	private Integer currentPeriodIndex;
 	
 	@ParamAnnotation
+	@Column(name="stage_count")
+	private Integer stageCount;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -134,6 +138,14 @@ public class Battle {
 
 	public void setDistance(Integer distance) {
 		this.distance = distance;
+	}
+
+	public Integer getStageCount() {
+		return stageCount;
+	}
+
+	public void setStageCount(Integer stageCount) {
+		this.stageCount = stageCount;
 	}
 
 	public DateTime getCreateAt() {

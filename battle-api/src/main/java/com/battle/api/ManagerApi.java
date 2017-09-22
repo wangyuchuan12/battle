@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
@@ -20,6 +21,7 @@ import com.battle.domain.QuestionOption;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
 import com.battle.service.QuestionOptionService;
@@ -54,6 +56,9 @@ public class ManagerApi {
 	
 	@Autowired
 	private ContextService contextService;
+	
+	@Autowired
+	private BattleService battleService;
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
@@ -146,7 +151,6 @@ public class ManagerApi {
 	
 	@RequestMapping(value="questions")
 	@ResponseBody
-	
 	public Object questions(HttpServletRequest httpServletRequest)throws Exception{
 		String stageId = httpServletRequest.getParameter("stageId");
 		String subjectId = httpServletRequest.getParameter("subjectId");
@@ -170,6 +174,42 @@ public class ManagerApi {
 		return resultVo;
 	}
 	
+	@RequestMapping(value="addStage")
+	@ResponseBody
+	@Transactional
+	public Object addStage(HttpServletRequest httpServletRequest)throws Exception{
+		String num = httpServletRequest.getParameter("num");
+		String periodId = httpServletRequest.getParameter("periodId");
+			
+		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
+		
+		Battle battle = battleService.findOne(battlePeriod.getBattleId());
+		
+		Integer stageCount = battle.getStageCount();
+		if(stageCount==null){
+			stageCount=0;
+		}
+		
+		stageCount++;
+		
+		battle.setStageCount(stageCount);
+		
+		battleService.update(battle);
+		
+		BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
+		battlePeriodStage.setBattleId(battlePeriod.getBattleId());
+		battlePeriodStage.setPeriodId(periodId);
+		battlePeriodStage.setQuestionCount(Integer.parseInt(num));
+		battlePeriodStage.setIndex(stageCount);
+		
+		battlePeriodStageService.add(battlePeriodStage);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		return resultVo;
+				
+	}
+	
 	@RequestMapping(value="addQuestion")
 	@ResponseBody
 	@Transactional
@@ -182,6 +222,10 @@ public class ManagerApi {
 		String question = httpServletRequest.getParameter("question");
 		
 		String imgUrl = httpServletRequest.getParameter("imgUrl");
+		
+		String answer = httpServletRequest.getParameter("answer");
+		
+		String fillWords = httpServletRequest.getParameter("fillWords");
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
 		
@@ -210,6 +254,9 @@ public class ManagerApi {
 		questionTarget.setImgUrl(imgUrl);
 		questionTarget.setIsImg(1);
 		questionTarget.setIndex(Integer.parseInt(context.getValue()));
+		questionTarget.setAnswer(answer);
+		questionTarget.setFillWords(fillWords);
+		
 		questionService.add(questionTarget);
 		
 		BattleQuestion battleQuestion = new BattleQuestion();
@@ -220,6 +267,9 @@ public class ManagerApi {
 		battleQuestion.setImgUrl(imgUrl);
 		battleQuestion.setName("");
 		battleQuestion.setPeriodStageId(battlePeriodStage.getId());
+		battleQuestion.setAnswer(answer);
+		battleQuestion.setQuestion(question);
+		
 		battleQuestion.setQuestionId(questionTarget.getId());
 		battleQuestionService.add(battleQuestion);
 		
@@ -240,10 +290,9 @@ public class ManagerApi {
 		ObjectMapper objectMapper = new ObjectMapper();
 		TypeReference<List<Map<String, String>>> typeReference = new TypeReference<List<Map<String,String>>>() {
 		};
+		
 		//选择题
 		if(questionType.equals("0")){
-			
-			
 			
 			questionTarget.setType(0);
 			battleQuestion.setType(0);
@@ -276,8 +325,13 @@ public class ManagerApi {
 				sbOptions.deleteCharAt(sbOptions.lastIndexOf(","));
 			}
 			battleQuestion.setOptions(sbOptions.toString());
+		}else if(questionType.equals("1")){
+			questionTarget.setType(1);
+			battleQuestion.setType(1);
+		}else if(questionType.equals("2")){
+			questionTarget.setType(2);
+			battleQuestion.setType(2);
 		}
-		
 		battleQuestionService.update(battleQuestion);
 		
 		questionService.update(questionTarget);

@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -25,7 +26,7 @@ public class QuestionAnswer {
 	private String id;
 	
 	@ParamAnnotation
-	@Column
+	@Lob
 	private String questions;
 	
 	@ParamAnnotation

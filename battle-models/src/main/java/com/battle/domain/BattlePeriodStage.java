@@ -33,6 +33,11 @@ public class BattlePeriodStage {
 	@Column(name="z_index")
 	private Integer index;
 	
+	//题目数量
+	@ParamAnnotation
+	@Column(name="question_count")
+	private Integer questionCount;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -77,6 +82,14 @@ public class BattlePeriodStage {
 
 	public void setBattleId(String battleId) {
 		this.battleId = battleId;
+	}
+
+	public Integer getQuestionCount() {
+		return questionCount;
+	}
+
+	public void setQuestionCount(Integer questionCount) {
+		this.questionCount = questionCount;
 	}
 
 	public DateTime getCreateAt() {

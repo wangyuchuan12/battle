@@ -74,6 +74,10 @@ public class BattleQuestion {
 	@ParamAnnotation
 	private Integer type;
 	
+	@Column
+	@ParamAnnotation
+	private String question;
+	
 	//答案（把可见部分的答案提取出来放进去）
 	@Column
 	@ParamAnnotation
@@ -214,6 +218,15 @@ public class BattleQuestion {
 
 	public void setOptions(String options) {
 		this.options = options;
+	}
+	
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
 	}
 
 	public DateTime getCreateAt() {
