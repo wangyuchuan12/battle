@@ -60,6 +60,11 @@ public class Battle {
 	@AttrAnnotation(name=AttrEnum.periodIndex)
 	private Integer currentPeriodIndex;
 	
+	//最大期数序号，为了可以一次递增
+	@ParamAnnotation
+	@Column(name="max_period_index")
+	private Integer maxPeriodIndex;
+	
 	@ParamAnnotation
 	@Column(name="stage_count")
 	private Integer stageCount;
@@ -146,6 +151,16 @@ public class Battle {
 
 	public void setStageCount(Integer stageCount) {
 		this.stageCount = stageCount;
+	}
+	
+	
+
+	public Integer getMaxPeriodIndex() {
+		return maxPeriodIndex;
+	}
+
+	public void setMaxPeriodIndex(Integer maxPeriodIndex) {
+		this.maxPeriodIndex = maxPeriodIndex;
 	}
 
 	public DateTime getCreateAt() {

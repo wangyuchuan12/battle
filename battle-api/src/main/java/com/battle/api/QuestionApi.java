@@ -1,5 +1,6 @@
 package com.battle.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleQuestion;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
 import com.battle.domain.QuestionAnswerItem;
@@ -22,6 +24,7 @@ import com.battle.domain.QuestionOption;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
+import com.battle.service.BattleQuestionService;
 import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
@@ -51,6 +54,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattleMemberQuestionAnswerService battleMemberQuestionAnswerService;
+	
+	@Autowired
+	private BattleQuestionService battleQuestionService;
 	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
@@ -320,6 +326,44 @@ public class QuestionApi {
 		return resultVo;
 	}
 	
+	
+	@RequestMapping(value="infoByBattleQuestionId")
+	@ResponseBody
+	@Transactional
+	public Object infoByBattleQuestionId(HttpServletRequest httpServletRequest){
+		String battleQuestionId = httpServletRequest.getParameter("battleQuestionId");
+		
+		BattleQuestion battleQuestion = battleQuestionService.findOne(battleQuestionId);
+		
+		Question question = questionService.findOne(battleQuestion.getQuestionId());
+
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("id", question.getId());
+		responseData.put("answer", question.getAnswer());
+		responseData.put("fillWords", question.getFillWords());
+		responseData.put("imgUrl", question.getImgUrl());
+		responseData.put("index", question.getIndex());
+		responseData.put("instruction", question.getInstruction());
+		responseData.put("isImg", question.getIsImg());
+		responseData.put("question", question.getQuestion());
+		responseData.put("type", question.getType());
+		
+		if(question.getType()==0){
+			List<QuestionOption> questionOptions = questionOptionService.findAllByQuestionId(battleQuestion.getQuestion());
+			responseData.put("options", questionOptions);
+		}
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setData(responseData);
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	
+	
 	@RequestMapping(value="info")
 	@ResponseBody
 	@Transactional
@@ -343,7 +387,20 @@ public class QuestionApi {
 		
 		if(question.getType()==0){
 			List<QuestionOption> questionOptions = questionOptionService.findAllByQuestionId(id);
-			responseData.put("options", questionOptions);
+			List<Map<String, Object>> questionOptionsList = new ArrayList<>();
+			for(QuestionOption questionOption:questionOptions){
+				Map<String, Object> questionOptionsMap = new HashMap<>();
+				questionOptionsMap.put("content", questionOption.getContent());
+				questionOptionsMap.put("id", questionOption.getId());
+				if(questionOption.getId().equals(question.getRightOptionId())){
+					questionOptionsMap.put("isRight", 1);
+				}else{
+					questionOptionsMap.put("isRight", 0);
+				}
+				questionOptionsList.add(questionOptionsMap);
+				
+			}
+			responseData.put("options", questionOptionsList);
 		}
 		ResultVo resultVo = new ResultVo();
 		

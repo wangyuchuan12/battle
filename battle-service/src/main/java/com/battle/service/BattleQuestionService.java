@@ -25,13 +25,13 @@ public class BattleQuestionService {
 		return battleQuestionDao.findAllByIdIn(ids);
 	}
 
-	public List<BattleQuestion> findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(String stageId,
-			String subjectId) {
-		return battleQuestionDao.findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(stageId,subjectId);
+	public List<BattleQuestion> findAllByPeriodStageIdAndBattleSubjectIdAndIsDelOrderBySeqAsc(String stageId,
+			String subjectId,Integer isDel) {
+		return battleQuestionDao.findAllByPeriodStageIdAndBattleSubjectIdAndIsDelOrderBySeqAsc(stageId,subjectId,isDel);
 	}
 
-	public List<BattleQuestion> findAllByPeriodStageIdOrderBySeqAsc(String stageId) {
-		return battleQuestionDao.findAllByPeriodStageIdOrderBySeqAsc(stageId);
+	public List<BattleQuestion> findAllByPeriodStageIdAndIsDelOrderBySeqAsc(String stageId,Integer isDel) {
+		return battleQuestionDao.findAllByPeriodStageIdAndIsDelOrderBySeqAsc(stageId,isDel);
 	}
 
 	public void add(BattleQuestion battleQuestion) {
@@ -47,5 +47,9 @@ public class BattleQuestionService {
 		battleQuestion.setUpdateAt(new DateTime());
 		battleQuestionDao.save(battleQuestion);
 		
+	}
+
+	public BattleQuestion findOne(String id) {
+		return battleQuestionDao.findOne(id);
 	}
 }

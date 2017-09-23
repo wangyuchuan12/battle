@@ -75,6 +75,64 @@ public class ManagerApi {
 		return resultVo;
 	}
 	
+	@RequestMapping(value="addBattleInfo")
+	@ResponseBody
+	public Object addBattleInfo(HttpServletRequest httpServletRequest)throws Exception{
+		String name = httpServletRequest.getParameter("name");
+		String instruction = httpServletRequest.getParameter("instruction");
+		String headImg = httpServletRequest.getParameter("headImg");
+		
+		Battle battle = new Battle();
+		battle.setHeadImg(headImg);
+		battle.setInstruction(instruction);
+		battle.setName(name);
+		
+		battleService.add(battle);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(battle);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="updateBattleInfo")
+	@ResponseBody
+	public Object updateBattleInfo(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		String name = httpServletRequest.getParameter("name");
+		String instruction = httpServletRequest.getParameter("instruction");
+		String headImg = httpServletRequest.getParameter("headImg");
+		
+		Battle battle = battleService.findOne(battleId);
+		battle.setHeadImg(headImg);
+		battle.setInstruction(instruction);
+		battle.setName(name);
+		
+		battleService.update(battle);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="battleInfo")
+	@ResponseBody
+	public Object battleInfo(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		Battle battle = battleService.findOne(battleId);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battle);
+		
+		return resultVo;
+	}
+	
 	
 	@RequestMapping(value="periods")
 	@ResponseBody
@@ -159,9 +217,9 @@ public class ManagerApi {
 		
 		
 		if(!CommonUtil.isEmpty(subjectId)){
-			battleQuestions = battleQuestionService.findAllByPeriodStageIdAndBattleSubjectIdOrderBySeqAsc(stageId,subjectId);
+			battleQuestions = battleQuestionService.findAllByPeriodStageIdAndBattleSubjectIdAndIsDelOrderBySeqAsc(stageId,subjectId,0);
 		}else{
-			battleQuestions = battleQuestionService.findAllByPeriodStageIdOrderBySeqAsc(stageId);
+			battleQuestions = battleQuestionService.findAllByPeriodStageIdAndIsDelOrderBySeqAsc(stageId,0);
 		}
 		
 	
@@ -235,6 +293,234 @@ public class ManagerApi {
 				
 	}
 	
+	@RequestMapping(value="delQuestion")
+	@ResponseBody
+	@Transactional
+	public Object deleteQuestion(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		
+		
+		BattleQuestion battleQuestion = battleQuestionService.findOne(id);
+		Question question = questionService.findOne(battleQuestion.getQuestionId());
+		
+		battleQuestion.setIsDel(1);
+		
+		question.setIsDel(1);
+		
+		battleQuestionService.update(battleQuestion);
+		
+		questionService.update(question);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="battleImgUpdate")
+	@ResponseBody
+	@Transactional
+	public Object battleImgUpdate(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		String imgUrl = httpServletRequest.getParameter("imgUrl");
+		Battle battle = battleService.findOne(battleId);
+		battle.setHeadImg(imgUrl);
+		
+		battleService.update(battle);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="updateQuestion")
+	@ResponseBody
+	@Transactional
+	public Object updateQuestion(HttpServletRequest httpServletRequest)throws Exception{
+		String battleQuestionId = httpServletRequest.getParameter("battleQuestionId");
+		
+		String stageId = httpServletRequest.getParameter("stageId");
+		String subjectId = httpServletRequest.getParameter("subjectId");
+		
+		String questionType = httpServletRequest.getParameter("questionType");
+		
+		String question = httpServletRequest.getParameter("question");
+		
+		String imgUrl = httpServletRequest.getParameter("imgUrl");
+		
+		String answer = httpServletRequest.getParameter("answer");
+		
+		String fillWords = httpServletRequest.getParameter("fillWords");
+		
+		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodStage.getPeriodId());
+		
+		String periodId = battlePeriodStage.getPeriodId();
+		
+		String battleId = battlePeriodStage.getBattleId();
+		
+		
+		BattleQuestion battleQuestion = battleQuestionService.findOne(battleQuestionId);
+		
+		
+		Question questionTarget = questionService.findOne(battleQuestion.getQuestionId());
+		
+		questionTarget.setQuestion(question);
+		questionTarget.setImgUrl(imgUrl);
+		questionTarget.setIsImg(1);
+		questionTarget.setAnswer(answer);
+		questionTarget.setFillWords(fillWords);
+		
+		
+		battleQuestion.setBattleId(battleId);
+		battleQuestion.setBattlePeriodId(periodId);
+		battleQuestion.setBattlePeriodIndex(battlePeriod.getIndex());
+		battleQuestion.setBattleSubjectId(subjectId);
+		battleQuestion.setImgUrl(imgUrl);
+		battleQuestion.setName("");
+		battleQuestion.setPeriodStageId(battlePeriodStage.getId());
+		battleQuestion.setAnswer(answer);
+		battleQuestion.setQuestion(question);
+		
+		battleQuestion.setQuestionId(questionTarget.getId());
+		
+		
+		String oldSubjectId = battleQuestion.getBattleSubjectId();
+		if(!oldSubjectId.equals(subjectId)){
+			BattleSubject oldBattleSubject = battleSubjectService.findOne(oldSubjectId);
+			
+			String oldBattleQuestionIdStr = oldBattleSubject.getBattleQuestionIds();
+			
+			if(!CommonUtil.isEmpty(oldBattleQuestionIdStr)){
+				String[] oldBattleQuestionIds = oldBattleQuestionIdStr.split(",");
+				StringBuffer sb = new StringBuffer();
+				for(String oldBattleQuestionId:oldBattleQuestionIds){
+					if(!oldBattleQuestionId.equals(battleQuestionId)){
+						sb.append(oldBattleQuestionId);
+					}
+				}
+				
+				oldBattleSubject.setBattleQuestionIds(sb.toString());
+				
+				battleSubjectService.update(oldBattleSubject);
+			}else{
+				BattleSubject battleSubject = battleSubjectService.findOne(subjectId);
+				
+				String battleQuestionIds = battleSubject.getBattleQuestionIds();
+				
+				if(CommonUtil.isEmpty(battleQuestionIds)){
+					battleQuestionIds = questionTarget.getId();
+				}else{
+					battleQuestionIds = battleQuestionIds+","+questionTarget.getId();
+				}
+				
+				battleSubject.setBattleQuestionIds(battleQuestionIds);
+				
+				battleSubjectService.update(battleSubject);
+			}
+			
+		}
+		
+		
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		TypeReference<List<Map<String, String>>> typeReference = new TypeReference<List<Map<String,String>>>() {
+		};
+		
+		//选择题
+		if(questionType.equals("0")){
+			
+			questionTarget.setType(0);
+			battleQuestion.setType(0);
+			
+			String options = httpServletRequest.getParameter("options");
+			List<Map<String, String>> questionOptions = objectMapper.readValue(options, typeReference);
+			
+			StringBuffer sbOptions = new StringBuffer();
+			
+			for(Map<String, String> questionOptionMap:questionOptions){
+				String id = questionOptionMap.get("id");
+				QuestionOption questionOption = questionOptionService.findOne(id);
+				questionOption.setQuestionId(questionTarget.getId());
+				questionOption.setSeq(Integer.parseInt(questionOptionMap.get("seq")));
+				questionOption.setIsDel(0);
+				questionOption.setContent(questionOptionMap.get("content"));
+				questionOptionService.update(questionOption);
+				String isRight = questionOptionMap.get("isRight");
+				
+				sbOptions.append(questionOption.getContent()+",");
+				
+				if(!CommonUtil.isEmpty(isRight)&&isRight.equals("1")){
+					questionTarget.setRightOptionId(questionOption.getId());
+					questionTarget.setAnswer(questionOption.getContent());
+					
+					battleQuestion.setRightAnswer(questionOption.getContent());
+				}
+			}
+			
+			if(questionOptions!=null&&questionOptions.size()>0){
+				sbOptions.deleteCharAt(sbOptions.lastIndexOf(","));
+			}
+			battleQuestion.setOptions(sbOptions.toString());
+		}else if(questionType.equals("1")){
+			questionTarget.setType(1);
+			battleQuestion.setType(1);
+		}else if(questionType.equals("2")){
+			questionTarget.setType(2);
+			battleQuestion.setType(2);
+		}
+		battleQuestionService.update(battleQuestion);
+		
+		questionService.update(questionTarget);
+
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="addPeriod")
+	@ResponseBody
+	@Transactional
+	public Object addPeriod(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		Battle battle = battleService.findOne(battleId);
+		Integer maxPeriodIndex = battle.getMaxPeriodIndex();
+		if(maxPeriodIndex==null){
+			maxPeriodIndex = 0;
+		}
+		maxPeriodIndex++;
+		BattlePeriod battlePeriod = new BattlePeriod();
+		battlePeriod.setBattleId(battleId);
+		battlePeriod.setIndex(maxPeriodIndex);
+		
+		battle.setMaxPeriodIndex(maxPeriodIndex);
+		
+		battlePeriodService.add(battlePeriod);
+		battleService.update(battle);
+		
+		
+		BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
+		battlePeriodStage.setBattleId(battleId);
+		battlePeriodStage.setIndex(1);
+		battlePeriodStage.setPeriodId(battlePeriod.getId());
+		battlePeriodStage.setQuestionCount(7);
+		
+		battlePeriodStageService.add(battlePeriodStage);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battlePeriod);
+		
+		return resultVo;
+	}
+	
 	@RequestMapping(value="addQuestion")
 	@ResponseBody
 	@Transactional
@@ -281,6 +567,7 @@ public class ManagerApi {
 		questionTarget.setIndex(Integer.parseInt(context.getValue()));
 		questionTarget.setAnswer(answer);
 		questionTarget.setFillWords(fillWords);
+		questionTarget.setIsDel(0);
 		
 		questionService.add(questionTarget);
 		
@@ -294,6 +581,7 @@ public class ManagerApi {
 		battleQuestion.setPeriodStageId(battlePeriodStage.getId());
 		battleQuestion.setAnswer(answer);
 		battleQuestion.setQuestion(question);
+		battleQuestion.setIsDel(0);
 		
 		battleQuestion.setQuestionId(questionTarget.getId());
 		battleQuestionService.add(battleQuestion);

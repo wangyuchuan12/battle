@@ -93,6 +93,10 @@ public class BattleQuestion {
 	@ParamAnnotation
 	private String options;
 	
+	@Column(name="is_del")
+	@ParamAnnotation
+	private Integer isDel;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -227,6 +231,16 @@ public class BattleQuestion {
 
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+	
+	
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {

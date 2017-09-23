@@ -35,4 +35,12 @@ public class QuestionOptionService {
 		questionOptionDao.save(questionOption);
 		
 	}
+
+	public void update(QuestionOption questionOption) {
+		
+		questionOption.setUpdateAt(new DateTime());
+		
+		questionOptionDao.save(questionOption);
+		
+	}
 }
