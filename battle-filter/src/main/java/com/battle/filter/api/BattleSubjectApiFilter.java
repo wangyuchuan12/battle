@@ -48,8 +48,10 @@ public class BattleSubjectApiFilter extends Filter{
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		Integer periodStageIndex = (Integer)sessionManager.getAttribute(AttrEnum.periodStageIndex);
 		
+		
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
 	
+		System.out.println("periodStageIndex:"+periodStageIndex+",periodId:"+periodId+",battleId:"+battleId);
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId,0);
