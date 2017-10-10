@@ -66,8 +66,8 @@ public class Battle {
 	private Integer maxPeriodIndex;
 	
 	@ParamAnnotation
-	@Column(name="stage_count")
-	private Integer stageCount;
+	@Column(name="default_room_id")
+	private String defaultRoomId;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -145,22 +145,20 @@ public class Battle {
 		this.distance = distance;
 	}
 
-	public Integer getStageCount() {
-		return stageCount;
-	}
-
-	public void setStageCount(Integer stageCount) {
-		this.stageCount = stageCount;
-	}
-	
-	
-
 	public Integer getMaxPeriodIndex() {
 		return maxPeriodIndex;
 	}
 
 	public void setMaxPeriodIndex(Integer maxPeriodIndex) {
 		this.maxPeriodIndex = maxPeriodIndex;
+	}
+	
+	public String getDefaultRoomId() {
+		return defaultRoomId;
+	}
+
+	public void setDefaultRoomId(String defaultRoomId) {
+		this.defaultRoomId = defaultRoomId;
 	}
 
 	public DateTime getCreateAt() {

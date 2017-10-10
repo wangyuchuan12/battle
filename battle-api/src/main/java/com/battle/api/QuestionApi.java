@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.Question;
@@ -24,6 +24,8 @@ import com.battle.domain.QuestionOption;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
+import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
@@ -58,6 +60,12 @@ public class QuestionApi {
 	@Autowired
 	private BattleQuestionService battleQuestionService;
 	
+	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
+	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	@ResponseBody
@@ -65,6 +73,8 @@ public class QuestionApi {
 	public Object battleQuestionAnswer(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		Integer unit = battlePeriodMember.getUnit();
 	
 		
 		String id = httpServletRequest.getParameter("id");
@@ -77,6 +87,7 @@ public class QuestionApi {
 		QuestionAnswer questionAnswer = questionAnswerService.findOneByTargetIdAndType(battlePeriodMember.getId()+"_"+stageIndex, QuestionAnswer.BATTLE_TYPE);
 		
 		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByQuestionAnswerId(questionAnswer.getId());
+		
 		
 		QuestionAnswerItem questionAnswerItem = new QuestionAnswerItem();
 		
@@ -117,11 +128,8 @@ public class QuestionApi {
 			questionAnswerItem.setMyOptionId(optionId);
 			questionAnswerItem.setRightAnswer(rightOption.getContent());
 			questionAnswerItem.setRightOptionId(question.getRightOptionId());
-			
-			
-			
+
 			battleMemberQuestionAnswer.setAnswer(myOption.getContent());
-			
 			
 			battleMemberQuestionAnswer.setOptions(sb.toString());
 			
@@ -132,14 +140,27 @@ public class QuestionApi {
 				questionAnswerItem.setIsRight(1);
 				
 				result.put("right", true);
+				result.put("process", unit);
+				
+				Integer process = battlePeriodMember.getProcess();
+				
+				process = process + unit;
+				
+				battlePeriodMember.setProcess(process);
 				
 				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 				
 				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
+				
 			}else{
 				
 				questionAnswerItem.setIsRight(0);
 				result.put("right", false);
+				result.put("process", 0);
+				
+				Integer loveResidule = battlePeriodMember.getLoveResidule();
+				loveResidule--;
+				battlePeriodMember.setLoveResidule(loveResidule);
 				
 				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
 				
@@ -164,12 +185,26 @@ public class QuestionApi {
 				
 				result.put("right", true);
 				
+				result.put("process", unit);
+				
+				Integer process = battlePeriodMember.getProcess();
+				
+				process = process + unit;
+				
+				battlePeriodMember.setProcess(process);
+				
 				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			}else{
 				
 				questionAnswerItem.setIsRight(0);
 				result.put("right", false);
+				
+				result.put("process", 0);
+				
+				Integer loveResidule = battlePeriodMember.getLoveResidule();
+				loveResidule--;
+				battlePeriodMember.setLoveResidule(loveResidule);
 				
 				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
 				battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
@@ -188,13 +223,25 @@ public class QuestionApi {
 				
 				questionAnswerItem.setIsRight(1);
 				result.put("right", true);
-				
+				result.put("process", unit);
 				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
+				
+				Integer process = battlePeriodMember.getProcess();
+				
+				process = process + unit;
+				
+				battlePeriodMember.setProcess(process);
+				
+
 				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			}else{
 				result.put("right", false);
-				
+				result.put("process",0);
 				questionAnswerItem.setIsRight(0);
+				
+				Integer loveResidule = battlePeriodMember.getLoveResidule();
+				loveResidule--;
+				battlePeriodMember.setLoveResidule(loveResidule);
 				
 				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
 				battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
@@ -206,6 +253,19 @@ public class QuestionApi {
 			
 		}
 		
+		battlePeriodMemberService.update(battlePeriodMember);
+		
+		if(questionAnswerItem.getIsRight()==1){
+			BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
+			Integer process = battleMemberPaperAnswer.getProcess();
+			if(process==null){
+				process = 0;
+			}
+			process = battlePeriod.getAverageProcess()+process;
+			battleMemberPaperAnswer.setProcess(process);
+			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+		}
+		
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
 		
 		result.put("battleMemberQuestionAnswerId",battleMemberQuestionAnswer.getId());
@@ -213,6 +273,18 @@ public class QuestionApi {
 		result.put("battleMemberPaperAnswerId",battleMemberPaperAnswer.getId());
 		
 		questionAnswerItemService.add(questionAnswerItem);
+		
+		Integer answerCount = battleMemberPaperAnswer.getAnswerCount();
+		
+		if(answerCount==null){
+			answerCount = 0;
+		}
+		
+		battleMemberPaperAnswer.setAnswerCount(answerCount+1);
+		
+		if(battleMemberPaperAnswer.getAnswerCount()==battleMemberPaperAnswer.getQuestionCount()){
+			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
+		}
 		
 		sessionManager.update(questionAnswer);
 		sessionManager.update(battleMemberPaperAnswer);
@@ -232,32 +304,36 @@ public class QuestionApi {
 
 		String questions = httpServletRequest.getParameter("questions");
 		
-		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		String memberId = battlePeriodMember.getId();
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		Integer stageIndex = battlePeriodMember.getStageIndex();
 		
+		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
+			
+			battlePeriodMember.setStageIndex(stageIndex+1);
+			
+			battlePeriodMemberService.update(battlePeriodMember);
+		}else{
+			
+			ResultVo result = new ResultVo();
+			
+			result.setSuccess(false);
+			result.setErrorMsg("不是正在进行中状态");
+			return result;
+		}
+		
+		if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
+			
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			battlePeriodMemberService.update(battlePeriodMember);
+			
+		}
+		
+		String memberId = battlePeriodMember.getId();
 		
 		Map<String, Object> data = new HashMap<>();
-		if(battlePeriodMember.getStageIndex()==battlePeriodMember.getStageCount()){
-			battlePeriodMember.setStageIndex(stageIndex);
-			data.put("isLast", 1);
-			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
-			sessionManager.update(battlePeriodMember);
-		}else if(battlePeriodMember.getStageIndex()<battlePeriodMember.getStageCount()){
-			
-			battlePeriodMember.setStageIndex(battlePeriodMember.getStageIndex()+1);
-			battlePeriodMember.setStageIndex(stageIndex);
-			data.put("isLast", 0);
-			sessionManager.update(battlePeriodMember);
-		}else{
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorCode(1);
-			resultVo.setErrorMsg("已经超过了，不能再创建了");
-			return resultVo;
-		}
 		
 		
 		QuestionAnswer questionAnswer = new QuestionAnswer();
@@ -281,22 +357,16 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setWrongSum(0);
 		battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.FREE_STATUS);
 		battleMemberPaperAnswer.setQuestionAnswerId(questionAnswer.getId());
+		battleMemberPaperAnswer.setQuestionCount(questions.split(",").length);
+		battleMemberPaperAnswer.setAnswerCount(0);
 		
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
-		
-		stageIndex++;
-		
-		
-		
-		
 		ResultVo resultVo = new ResultVo();
 		
-		
-		
-		data.put("stageIndex", stageIndex);
-		
 		data.put("battleMemberPaperAnswerId", battleMemberPaperAnswer.getId());
+		
+		data.put("stageIndex",stageIndex);
 		
 		resultVo.setData(data);
 		
@@ -314,13 +384,43 @@ public class QuestionApi {
 		
 		String battleMemberPaperAnswerId = httpServletRequest.getParameter("battleMemberPaperAnswerId");
 		
+		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOne(battleMemberPaperAnswerId);
 		
-		System.out.println("battleMemberPaperAnswerId:"+battleMemberPaperAnswerId);
+		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOne(battleMemberPaperAnswer.getBattlePeriodMemberId());
+		
+		Map<String, Object> data = new HashMap<>();
 		
 		List<BattleMemberQuestionAnswer> battleMemberQuestionAnswers = battleMemberQuestionAnswerService.findAllByBattleMemberPaperAnswerId(battleMemberPaperAnswerId);
-	
+		
+		
+		
+		Integer processAll = battlePeriodMember.getProcess();
+		
+		if(processAll==null){
+			processAll = 0;
+		}
+		
+		Integer processThis = battleMemberPaperAnswer.getProcess();
+		if(processThis==null){
+			processThis = 0;
+		}
+		
+		processAll = processAll+processThis;
+		
+		battlePeriodMember.setProcess(processAll);
+		
+		battlePeriodMemberService.update(battlePeriodMember);
+		
+		data.put("questionAnswers", battleMemberQuestionAnswers);
+		
+		data.put("memberStatus", battlePeriodMember.getStatus());
+		
+		data.put("status", battleMemberPaperAnswer.getStatus());
+		
+		data.put("process", battleMemberPaperAnswer.getProcess());
+		
 		ResultVo resultVo = new ResultVo();
-		resultVo.setData(battleMemberQuestionAnswers);
+		resultVo.setData(data);
 		resultVo.setSuccess(true);
 		
 		return resultVo;
@@ -369,8 +469,6 @@ public class QuestionApi {
 	@Transactional
 	public Object info(HttpServletRequest httpServletRequest){
 		String id = httpServletRequest.getParameter("id");
-		
-		System.out.println("......................id:"+id);
 		
 		Question question = questionService.findOne(id);
 

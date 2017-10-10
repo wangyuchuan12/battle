@@ -77,6 +77,10 @@ public class BattlePeriodMember {
 	private String headImg;
 	
 	@ParamAnnotation
+	@Column(name="room_id")
+	private String roomId;
+	
+	@ParamAnnotation
 	@Column(name="stage_index")
 	@AttrAnnotation(name = AttrEnum.periodStageIndex)
 	private Integer stageIndex;
@@ -84,6 +88,16 @@ public class BattlePeriodMember {
 	@ParamAnnotation
 	@Column(name="stage_count")
 	private Integer stageCount;
+	
+	
+	//答对一题前进几步
+	@ParamAnnotation
+	@Column
+	private Integer unit;
+	
+	@ParamAnnotation
+	@Column(name="is_del")
+	private Integer isDel;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -196,6 +210,30 @@ public class BattlePeriodMember {
 
 	public void setStageCount(Integer stageCount) {
 		this.stageCount = stageCount;
+	}
+	
+	public Integer getUnit() {
+		return unit;
+	}
+
+	public void setUnit(Integer unit) {
+		this.unit = unit;
+	}
+	
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+	
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {

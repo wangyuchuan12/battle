@@ -33,9 +33,13 @@ public class CurrentMemberInfoFilter extends Filter{
 		
 		Integer periodIndex = battle.getCurrentPeriodIndex();
 		
+		String detaultRoomId = battle.getDefaultRoomId();
+		
 		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, periodIndex);
 		
 		sessionManager.setAttribute(AttrEnum.periodId, battlePeriod.getId());
+		
+		sessionManager.setAttribute(AttrEnum.defaultRoomId, detaultRoomId);
 		return null;
 	}
 

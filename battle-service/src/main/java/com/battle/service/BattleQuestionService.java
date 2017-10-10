@@ -52,4 +52,9 @@ public class BattleQuestionService {
 	public BattleQuestion findOne(String id) {
 		return battleQuestionDao.findOne(id);
 	}
+
+	public List<BattleQuestion> findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(String battleId, String stageId,
+			String[] subjectIds) {
+		return battleQuestionDao.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(battleId,stageId,subjectIds);
+	}
 }

@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
-import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
-import com.battle.filter.element.CurrentBattleUserFilter;
-import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.wyc.AttrEnum;
@@ -32,12 +29,14 @@ public class BattleMembersApiFilter extends Filter{
 		
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
+		
+		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
 	
 		List<Integer> statuses = new ArrayList<>();
 		
 		statuses.add(BattlePeriodMember.STATUS_IN);
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
-		List<BattlePeriodMember> members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndStatusIn(battleId,periodId,statuses);
+		List<BattlePeriodMember> members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,0);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
@@ -51,11 +50,15 @@ public class BattleMembersApiFilter extends Filter{
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
 		
+		String roomId = httpServletRequest.getParameter("roomId");
+		
 		Battle battle = sessionManager.findOne(Battle.class, battleId);
 	
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		
 		sessionManager.setAttribute(AttrEnum.periodIndex, battle.getCurrentPeriodIndex());
+		
+		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		
 		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, battle.getCurrentPeriodIndex());
 		

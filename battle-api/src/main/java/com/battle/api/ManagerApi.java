@@ -265,18 +265,17 @@ public class ManagerApi {
 			
 		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 		
-		Battle battle = battleService.findOne(battlePeriod.getBattleId());
-		
-		Integer stageCount = battle.getStageCount();
+		Integer stageCount = battlePeriod.getStageCount();
 		if(stageCount==null){
 			stageCount=0;
 		}
 		
 		stageCount++;
 		
-		battle.setStageCount(stageCount);
+		battlePeriod.setStageCount(stageCount);
 		
-		battleService.update(battle);
+		battlePeriodService.update(battlePeriod);
+	
 		
 		BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
 		battlePeriodStage.setBattleId(battlePeriod.getBattleId());

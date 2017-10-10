@@ -16,9 +16,9 @@ public class BattlePeriodMemberService {
 	@Autowired
 	private BattlePeriodMemberDao battlePeriodMemberDao;
 
-	public BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodId(String battleId, String battleUserId,
-			String periodId) {
-		return battlePeriodMemberDao.findOneByBattleIdAndBattleUserIdAndPeriodId(battleId,battleUserId,periodId);
+	public BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(String battleId, String battleUserId,
+			String periodId,Integer isDel) {
+		return battlePeriodMemberDao.findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(battleId,battleUserId,periodId,isDel);
 	}
 
 	public void add(BattlePeriodMember battlePeriodMember) {
@@ -39,9 +39,9 @@ public class BattlePeriodMemberService {
 		
 	}
 
-	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndStatusIn(String battleId, String periodId, List<Integer> statuses) {
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel) {
 		
-		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndStatusIn(battleId,periodId,statuses);
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,isDel);
 		
 	}
 

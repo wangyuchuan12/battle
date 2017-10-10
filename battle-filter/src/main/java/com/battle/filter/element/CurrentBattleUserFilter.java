@@ -22,12 +22,16 @@ public class CurrentBattleUserFilter extends Filter{
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String userId = (String)sessionManager.getAttribute(AttrEnum.userInfoId);
 		String openId = (String)sessionManager.getAttribute(AttrEnum.userInfoOpenId);
+		String defaultRoomId = (String)sessionManager.getAttribute(AttrEnum.defaultRoomId);
 		BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userId,battleId);
 		if(battleUser==null){
 			battleUser = new BattleUser();
 			battleUser.setBattleId(battleId);
 			battleUser.setUserId(userId);
 			battleUser.setOpenId(openId);
+			battleUser.setIsCreater(0);
+			battleUser.setIsManager(0);
+			battleUser.setCurrentRoomId(defaultRoomId);
 			battleUserService.add(battleUser);
 		}
 		

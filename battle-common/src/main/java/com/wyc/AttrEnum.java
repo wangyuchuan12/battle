@@ -136,5 +136,6 @@ public enum AttrEnum {
 	userInfoProvince,
 	userInfoCountry,
 	userInfoAvatarUrl,
-	userInfoOpenId
+	userInfoOpenId, 
+	roomId, defaultRoomId
 }

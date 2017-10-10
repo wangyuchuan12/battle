@@ -34,10 +34,25 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		String periodMemberId = (String)sessionManager.getAttribute(AttrEnum.periodMemberId);
 		
+		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
+		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
+		
+		if(CommonUtil.isEmpty(roomId)){
+			ResultVo resultVo = new ResultVo();
+			
+			resultVo.setSuccess(false);
+			
+			resultVo.setMsg("roomId不能为空");
+			
+			resultVo.setData(battlePeriodMember);
+			
+			return resultVo;
+		}
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE){
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
+			battlePeriodMember.setRoomId(roomId);
 			sessionManager.update(battlePeriodMember);
 			ResultVo resultVo = new ResultVo();
 			
@@ -74,6 +89,9 @@ public class BattleTakepartApiFilter extends Filter{
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		if(!CommonUtil.isEmpty(battleId)){
 			sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		}

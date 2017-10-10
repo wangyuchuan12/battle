@@ -27,11 +27,12 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
+		String defaultRoomId = (String)sessionManager.getAttribute(AttrEnum.defaultRoomId);
 		UserInfo userInfo = (UserInfo)sessionManager.getObject(UserInfo.class);
 		String nickname = userInfo.getNickname();
 		String imgUrl = userInfo.getHeadimgurl();
 		
-		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByBattleIdAndBattleUserIdAndPeriodId(battleId,battleUserId,periodId);
+		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(battleId,battleUserId,periodId,0);
 		if(battlePeriodMember==null){
 			
 			BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
@@ -47,6 +48,9 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setLoveResidule(5);
 			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
+			battlePeriodMember.setUnit(2);
+			battlePeriodMember.setIsDel(0);
+			battlePeriodMember.setRoomId(defaultRoomId);
 			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}

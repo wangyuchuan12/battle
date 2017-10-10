@@ -42,4 +42,9 @@ public class BattleMemberPaperAnswerService {
 		
 		return battleMemberPaperAnswerDao.findOneByQuestionAnswerId(id);
 	}
+
+	public BattleMemberPaperAnswer findOne(String id) {
+		
+		return battleMemberPaperAnswerDao.findOne(id);
+	}
 }

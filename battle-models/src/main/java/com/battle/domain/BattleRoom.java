@@ -9,45 +9,46 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wyc.AttrEnum;
-import com.wyc.annotation.AttrAnnotation;
 import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_user")
-public class BattleUser {
+@Table(name="battle_room")
+public class BattleRoom {
 	@Id
 	@IdAnnotation
-	@AttrAnnotation(name=AttrEnum.battleUserId)
 	private String id;
 	
 	@ParamAnnotation
-	@Column(name="user_id")
-	private String userId;
+	@Column(name="maxinum")
+	private Integer maxinum;
+	
+	@ParamAnnotation
+	@Column(name="mininum")
+	private Integer mininum;
+	
+	@ParamAnnotation
+	@Column(name="num")
+	private Integer num;
+	
+	@ParamAnnotation
+	@Column(name="owner")
+	private String owner;
 	
 	@ParamAnnotation
 	@Column(name="battle_id")
 	private String battleId;
 	
 	@ParamAnnotation
-	@Column(name="open_id")
-	private String openId;
+	@Column(name="period_id")
+	private String periodId;
 	
 	@ParamAnnotation
-	@Column(name="is_manager")
-	private Integer isManager;
-	
-	@ParamAnnotation
-	@Column(name="is_creater")
-	private Integer isCreater;
-	
-	@ParamAnnotation
-	@Column(name="current_room_id")
-	private String currentRoomId;
-
+	@Column(name="creation_time")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime creationTime;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -69,20 +70,44 @@ public class BattleUser {
 		this.id = id;
 	}
 
-	public String getOpenId() {
-		return openId;
+	public Integer getMaxinum() {
+		return maxinum;
 	}
 
-	public void setOpenId(String openId) {
-		this.openId = openId;
+	public void setMaxinum(Integer maxinum) {
+		this.maxinum = maxinum;
 	}
 
-	public String getUserId() {
-		return userId;
+	public Integer getMininum() {
+		return mininum;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setMininum(Integer mininum) {
+		this.mininum = mininum;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public DateTime getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(DateTime creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public String getBattleId() {
@@ -93,29 +118,12 @@ public class BattleUser {
 		this.battleId = battleId;
 	}
 
-	public Integer getIsManager() {
-		return isManager;
+	public String getPeriodId() {
+		return periodId;
 	}
 
-	public void setIsManager(Integer isManager) {
-		this.isManager = isManager;
-	}
-
-	public Integer getIsCreater() {
-		return isCreater;
-	}
-
-	public void setIsCreater(Integer isCreater) {
-		this.isCreater = isCreater;
-	}
-
-
-	public String getCurrentRoomId() {
-		return currentRoomId;
-	}
-
-	public void setCurrentRoomId(String currentRoomId) {
-		this.currentRoomId = currentRoomId;
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
 	}
 
 	public DateTime getCreateAt() {

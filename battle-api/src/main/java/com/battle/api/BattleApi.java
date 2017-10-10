@@ -1,9 +1,10 @@
 package com.battle.api;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -13,10 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
+import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleSubject;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
@@ -24,14 +25,13 @@ import com.battle.filter.api.BattleSubjectApiFilter;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattlePeriodMemberService;
-import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRoomService;
 import com.battle.service.BattleSubjectService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
-import com.wyc.common.util.CommonUtil;
 
 @Controller
 @RequestMapping(value="/api/battle/")
@@ -44,24 +44,38 @@ public class BattleApi {
 	private BattlePeriodStageService battlePeriodStageService;
 	
 	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
 	private BattleQuestionService battleQuestionService;
 	
 	@Autowired
-	private BattlePeriodService battlePeriodService;
-	
-	@Autowired
-	private BattlePeriodMemberService battlePeriodMemberService;
-	
+	private BattleRoomService battleRoomService;
 
 	@RequestMapping(value="info")
 	@ResponseBody
 	public Object info(HttpServletRequest httpServletRequest)throws Exception{
 		String id = httpServletRequest.getParameter("id");
+		String roomId = httpServletRequest.getParameter("roomId");
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		
+		Map<String, Object> data = new HashMap<>();
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		Battle battle = sessionManager.findOne(Battle.class, id);
+		
+		data.put("id", battle.getId());
+		data.put("currentPeriodIndex", battle.getCurrentPeriodIndex());
+		data.put("distance", battle.getDistance());
+		data.put("headImg", battle.getHeadImg());
+		data.put("instruction", battle.getInstruction());
+		data.put("isActivation", battle.getIsActivation());
+		data.put("name", battle.getName());
+		data.put("maxinum", battleRoom.getMaxinum());
+		data.put("mininum", battleRoom.getMininum());
+		data.put("owner", battleRoom.getOwner());
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battle);
+		resultVo.setData(data);
 		return resultVo;
 	}
 	
@@ -110,6 +124,8 @@ public class BattleApi {
 	}
 	
 	
+	
+	//参加关卡
 	@RequestMapping(value="stageTakepart")
 	@ResponseBody
 	@Transactional
@@ -126,16 +142,50 @@ public class BattleApi {
 		
 		Integer stageCount = battlePeriodMember.getStageCount();
 		
+		Integer isLast = 0;
+		if(stageIndex==stageCount){
+			isLast = 1;
+		}else if(stageIndex>stageCount){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("已经超出了");
+			return resultVo;
+		}
+		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
-			if(stageIndex<stageCount){
-				stageIndex++;
-				
-				if(stageIndex==stageCount){
-					battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
-					
-				}
-				
-				battlePeriodMember.setStageIndex(stageIndex);
+			
+			String[] subjectIds = subjectIdStr.split(",");
+			
+			BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), stageIndex);
+			
+			Integer questionCount = battlePeriodStage.getQuestionCount();
+			
+			
+			
+			List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(battlePeriodStage.getBattleId(), battlePeriodStage.getId(),subjectIds);
+			
+			
+			
+			List<String> battleQuestionIdArray = new ArrayList<>();
+			for(BattleQuestion battleQuestion:battleQuestions){
+				battleQuestionIdArray.add(battleQuestion.getQuestionId());
+			}
+			
+			Collections.shuffle(battleQuestionIdArray);
+			
+			Integer length = battleQuestionIdArray.size();
+			
+			if(questionCount==null){
+				questionCount = 0;
+			}
+			
+			if(length>questionCount){
+				length = questionCount;
+			}
+			
+			battleQuestionIdArray = battleQuestionIdArray.subList(0, length);
+			
+			if(stageIndex<=stageCount){
 				
 				battlePeriodMemberService.update(battlePeriodMember);
 				
@@ -147,46 +197,19 @@ public class BattleApi {
 				
 			}
 			
-			String[] subjectIds = subjectIdStr.split(",");
+			Map<String, Object> data = new HashMap<>();
 			
-			BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), stageIndex);
+			data.put("isLast", isLast);
 			
-			Integer questionCount = battlePeriodStage.getQuestionCount();
+			data.put("questionIds", battleQuestionIdArray);
 			
 			
-			List<BattleSubject> battleSubjects = battleSubjectService.findAllByIdIn(subjectIds);
-			
-			List<String> questionIdArray = new ArrayList<>();
-			
-			for(BattleSubject battleSubject:battleSubjects){
-				String questionIdStr = battleSubject.getBattleQuestionIds();
-				if(!CommonUtil.isEmpty(questionIdStr)){
-					String[] questionIds = questionIdStr.split(",");
-					for(String questionId:questionIds){
-						questionIdArray.add(questionId);
-					}
-				}
-			}
-			
-			Collections.shuffle(questionIdArray);
-			
-			Integer length = questionIdArray.size();
-			
-			if(questionCount==null){
-				questionCount = 0;
-			}
-			
-			if(length>questionCount){
-				length = questionCount;
-			}
-			
-			questionIdArray = questionIdArray.subList(0, length);
 			
 			ResultVo resultVo = new ResultVo();
 			
 			resultVo.setSuccess(true);
 			
-			resultVo.setData(questionIdArray);
+			resultVo.setData(data);
 			
 			return resultVo;
 		}else{
@@ -232,15 +255,10 @@ public class BattleApi {
 				
 				battleQuestionIds.add(thisQuestionIds[0]);
 				
-				System.out.println("............1");
-				
 			}else if(thisQuestionIds!=null&&thisQuestionIds.length>1){
-				
-				
+
 				Random random = new Random();
-				Integer index = random.nextInt(thisQuestionIds.length-1);
-				
-				System.out.println("............index:"+index+",length"+thisQuestionIds.length);
+				Integer index = random.nextInt(thisQuestionIds.length-1);				
 				battleQuestionIds.add(thisQuestionIds[index]);
 				
 			}

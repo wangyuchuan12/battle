@@ -7,9 +7,9 @@ import com.battle.domain.BattlePeriodMember;
 
 public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember, String>{
 
-	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodId(String battleId, String battleUserId,
-			String periodId);
+	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(String battleId, String battleUserId,
+			String periodId,Integer isDel);
 
-	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndStatusIn(String battleId, String periodId, List<Integer> statuses);
+	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel);
 
 }

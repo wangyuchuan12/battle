@@ -66,6 +66,20 @@ public class BattleMemberPaperAnswer {
 	@Column
 	private Integer status;
 	
+	//问题总数
+	@ParamAnnotation
+	@Column(name="question_count")
+	private Integer questionCount;
+	
+	//答题数量
+	@ParamAnnotation
+	@Column(name="answer_count")
+	private Integer answerCount;
+	
+	@ParamAnnotation
+	@Column
+	private Integer process;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -153,6 +167,30 @@ public class BattleMemberPaperAnswer {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public Integer getQuestionCount() {
+		return questionCount;
+	}
+
+	public void setQuestionCount(Integer questionCount) {
+		this.questionCount = questionCount;
+	}
+
+	public Integer getAnswerCount() {
+		return answerCount;
+	}
+
+	public void setAnswerCount(Integer answerCount) {
+		this.answerCount = answerCount;
+	}
+	
+	public Integer getProcess() {
+		return process;
+	}
+
+	public void setProcess(Integer process) {
+		this.process = process;
 	}
 
 	public DateTime getCreateAt() {
