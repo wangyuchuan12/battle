@@ -28,18 +28,17 @@ public class CurrentMemberInfoFilter extends Filter{
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String battleId = httpServletRequest.getParameter("battleId");
+		String roomId = httpServletRequest.getParameter("roomId");
 		
 		Battle battle = sessionManager.findOne(Battle.class, battleId);
 		
 		Integer periodIndex = battle.getCurrentPeriodIndex();
 		
-		String detaultRoomId = battle.getDefaultRoomId();
-		
 		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, periodIndex);
 		
 		sessionManager.setAttribute(AttrEnum.periodId, battlePeriod.getId());
 		
-		sessionManager.setAttribute(AttrEnum.defaultRoomId, detaultRoomId);
+		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		return null;
 	}
 

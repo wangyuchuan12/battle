@@ -29,13 +29,25 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
+		
+		String memberId = (String)sessionManager.getAttribute(AttrEnum.periodMemberId);
+		
+		BattlePeriodMember battlePeriodMember = null;
+		if(!CommonUtil.isEmpty(memberId)){
+			battlePeriodMember = battlePeriodMemberService.findOne(memberId);
+		}
+		
+		if(battlePeriodMember!=null){
+			return battlePeriodMember;
+		}
+		
 		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
 		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
 		UserInfo userInfo = (UserInfo)sessionManager.getObject(UserInfo.class);
 		String nickname = userInfo.getNickname();
 		String imgUrl = userInfo.getHeadimgurl();
 		
-		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,0);
+		battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,0);
 		if(battlePeriodMember==null){
 			BattleRoom battleRoom = battleRoomService.findOne(roomId);
 			String periodId = battleRoom.getPeriodId();
