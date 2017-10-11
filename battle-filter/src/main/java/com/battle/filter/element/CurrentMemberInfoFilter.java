@@ -30,6 +30,8 @@ public class CurrentMemberInfoFilter extends Filter{
 		String battleId = httpServletRequest.getParameter("battleId");
 		String roomId = httpServletRequest.getParameter("roomId");
 		
+		String memberId = httpServletRequest.getParameter("memberId");
+		
 		Battle battle = sessionManager.findOne(Battle.class, battleId);
 		
 		Integer periodIndex = battle.getCurrentPeriodIndex();
@@ -39,6 +41,8 @@ public class CurrentMemberInfoFilter extends Filter{
 		sessionManager.setAttribute(AttrEnum.periodId, battlePeriod.getId());
 		
 		sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		
+		sessionManager.setAttribute(AttrEnum.periodMemberId, memberId);
 		return null;
 	}
 
