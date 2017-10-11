@@ -35,7 +35,7 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		String nickname = userInfo.getNickname();
 		String imgUrl = userInfo.getHeadimgurl();
 		
-		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndIsDel(roomId, 0);
+		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,0);
 		if(battlePeriodMember==null){
 			BattleRoom battleRoom = battleRoomService.findOne(roomId);
 			String periodId = battleRoom.getPeriodId();

@@ -12,6 +12,6 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel);
 
-	BattlePeriodMember findOneByRoomIdAndIsDel(String roomId, Integer isDel);
+	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 
 }

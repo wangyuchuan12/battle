@@ -21,8 +21,8 @@ public class BattlePeriodMemberService {
 		return battlePeriodMemberDao.findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(battleId,battleUserId,periodId,roomId,isDel);
 	}
 	
-	public BattlePeriodMember findOneByRoomIdAndIsDel(String roomId,Integer isDel){
-		return battlePeriodMemberDao.findOneByRoomIdAndIsDel(roomId,isDel);
+	public BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel){
+		return battlePeriodMemberDao.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,isDel);
 	}
 
 	public void add(BattlePeriodMember battlePeriodMember) {
