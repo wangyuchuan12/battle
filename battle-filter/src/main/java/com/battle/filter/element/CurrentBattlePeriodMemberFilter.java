@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleRoom;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
+import com.battle.service.BattleRoomService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
@@ -22,19 +24,22 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	@Autowired
 	private BattlePeriodService battlePeriodService;
 	
+	@Autowired
+	private BattleRoomService battleRoomService;
+	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
-		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
 		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
-		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
-		String defaultRoomId = (String)sessionManager.getAttribute(AttrEnum.defaultRoomId);
+		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
 		UserInfo userInfo = (UserInfo)sessionManager.getObject(UserInfo.class);
 		String nickname = userInfo.getNickname();
 		String imgUrl = userInfo.getHeadimgurl();
 		
-		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(battleId,battleUserId,periodId,0);
+		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndIsDel(roomId, 0);
 		if(battlePeriodMember==null){
-			
+			BattleRoom battleRoom = battleRoomService.findOne(roomId);
+			String periodId = battleRoom.getPeriodId();
+			String battleId = battleRoom.getBattleId();
 			BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 			battlePeriodMember = new BattlePeriodMember();
 			battlePeriodMember.setBattleId(battleId);
@@ -50,7 +55,7 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
 			battlePeriodMember.setUnit(2);
 			battlePeriodMember.setIsDel(0);
-			battlePeriodMember.setRoomId(defaultRoomId);
+			battlePeriodMember.setRoomId(roomId);
 			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}

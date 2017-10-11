@@ -103,6 +103,10 @@ public class BattleSubjectApiFilter extends Filter{
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		
 		
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		

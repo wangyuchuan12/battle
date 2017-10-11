@@ -16,9 +16,13 @@ public class BattlePeriodMemberService {
 	@Autowired
 	private BattlePeriodMemberDao battlePeriodMemberDao;
 
-	public BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(String battleId, String battleUserId,
-			String periodId,Integer isDel) {
-		return battlePeriodMemberDao.findOneByBattleIdAndBattleUserIdAndPeriodIdAndIsDel(battleId,battleUserId,periodId,isDel);
+	public BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
+			String periodId,String roomId,Integer isDel) {
+		return battlePeriodMemberDao.findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(battleId,battleUserId,periodId,roomId,isDel);
+	}
+	
+	public BattlePeriodMember findOneByRoomIdAndIsDel(String roomId,Integer isDel){
+		return battlePeriodMemberDao.findOneByRoomIdAndIsDel(roomId,isDel);
 	}
 
 	public void add(BattlePeriodMember battlePeriodMember) {

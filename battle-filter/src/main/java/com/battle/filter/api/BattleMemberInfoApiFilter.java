@@ -67,11 +67,15 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		
+		String roomId = httpServletRequest.getParameter("roomId");
+		
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		
 		Battle battle = sessionManager.findOne(Battle.class, battleId);
 		
 		sessionManager.setAttribute(AttrEnum.periodIndex, battle.getCurrentPeriodIndex());
+		
+		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		
 		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, battle.getCurrentPeriodIndex());
 		
