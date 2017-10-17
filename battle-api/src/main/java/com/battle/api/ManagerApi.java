@@ -245,8 +245,6 @@ public class ManagerApi {
 		String stageId = httpServletRequest.getParameter("stageId");
 		String num = httpServletRequest.getParameter("num");
 		
-		System.out.println("..........num:"+num);
-		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
 		
 		battlePeriodStage.setQuestionCount(Integer.parseInt(num));
@@ -502,8 +500,6 @@ public class ManagerApi {
 		battlePeriod.setStatus(BattlePeriod.IN_STATUS);
 		
 		battlePeriodService.update(battlePeriod);
-		
-		System.out.println(battlePeriod.getId()+":"+battlePeriod.getStatus());
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

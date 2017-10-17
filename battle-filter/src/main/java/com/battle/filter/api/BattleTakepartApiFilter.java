@@ -97,11 +97,6 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		
-		
-		System.out.println("......................btttleRoom:"+battleRoom);
-		
-		System.out.println("......................periodId:"+battleRoom.getPeriodId());
-		
 		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
 		
 		if(!CommonUtil.isEmpty(battleId)){

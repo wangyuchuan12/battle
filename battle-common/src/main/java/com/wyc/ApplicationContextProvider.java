@@ -6,7 +6,6 @@ public class ApplicationContextProvider{
     private static ApplicationContext context;
 
     public ApplicationContextProvider() {
-		System.out.println("......................ApplicationContextProvider");
 	}
 
     public static ApplicationContext getApplicationContext() {

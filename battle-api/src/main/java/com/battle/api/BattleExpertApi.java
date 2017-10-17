@@ -61,15 +61,13 @@ public class BattleExpertApi {
 		String code = httpServletRequest.getParameter("code");
 		
 		Object vCode = sessionManager.rawGetBySession("auth_msg_code_"+phonenum+"_"+wxContext.getApplyExpertProjectCode());
-		System.out.println("getApplyExpertProjectCode:"+wxContext.getApplyExpertProjectCode());
 		
 		String wechat = httpServletRequest.getParameter("wechat");
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		
 		String introduce = httpServletRequest.getParameter("introduce");
-		
-		System.out.println("code:"+code+",vCode:"+vCode);
+
 		if(CommonUtil.isEmpty(code)||CommonUtil.isEmpty(vCode)||!code.equals(vCode)){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
@@ -247,7 +245,6 @@ public class BattleExpertApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		if(sessionManager.isReturn()){
 			ResultVo resultVo = (ResultVo)sessionManager.getReturnValue();
-			System.out.println(".......errorMsg:"+resultVo.getErrorMsg());
 			return resultVo;
 		}else{
 			

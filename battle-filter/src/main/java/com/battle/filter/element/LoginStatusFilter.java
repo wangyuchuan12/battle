@@ -24,7 +24,6 @@ public class LoginStatusFilter extends Filter{
 		
 		String token = (String)sessionManager.getAttribute(AttrEnum.token);
 		
-		System.out.println("这里有没有进来：，tonen:"+token);
 		
 		LoginVo loginVo = sessionManager.getObject(LoginVo.class);
 		

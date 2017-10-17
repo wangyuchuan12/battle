@@ -36,7 +36,6 @@ public class SmsApi {
 			resultVo.setSuccess(true);
 		//	resultVo.setData(data);
 			
-			System.out.println("sss_project:"+project);
 			sessionManager.rawSaveToSession("auth_msg_code_"+phonenum+"_"+project, code);
 			
 			return resultVo;

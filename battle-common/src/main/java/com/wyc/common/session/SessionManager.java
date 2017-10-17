@@ -544,9 +544,7 @@ public class SessionManager {
 	public <T>T findOne(Class<T> type , String id)throws Exception{
 		Object obj = getObject(type,id);
 		if(obj!=null){
-			System.out.println("。。。。。。。。。。。。。从缓存获取");
 		}else{
-			System.out.println("。。。。。。。。。。。。。。。从数据库获取");
 			obj = updateExecuter.findOne(type, id);
 		}
 		

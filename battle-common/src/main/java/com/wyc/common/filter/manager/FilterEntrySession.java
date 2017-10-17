@@ -31,34 +31,11 @@ public class FilterEntrySession {
 			
 			executeHandle(firstFilterStep);
 		}else{
-			System.out.println("..........................11");
+
 		}
 		
 	}
 	
-	
-	private void printFilterStep(FilterStep filterStep){
-		
-		System.out.println(".............................................");
-		System.out.println(filterStep.getFilterEntry().getFilter().getClass());
-	
-		if(filterStep.getNextFilterStep()!=null){
-			System.out.println("nextStep:"+filterStep.getNextFilterStep().getFilterEntry().getFilter().getClass());
-		}
-		
-		
-		System.out.println("isFirst:"+filterStep.isFirst());
-		
-		System.out.println("isInit:"+filterStep.isInit());
-		
-		System.out.println("isLast:"+filterStep.isLast());
-		
-		System.out.println("isLeaf:"+filterStep.isLeaf());
-		
-		System.out.println("isEnd:"+filterStep.isEnd());
-		
-		System.out.println(".............................................");
-	}
 	
 	
 	public void executeHandle(FilterStep filterStep)throws Exception{

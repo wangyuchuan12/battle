@@ -84,7 +84,6 @@ public class CommonUtil {
         
         for (int i = 0; i < len; i++) {
             char codePoint = source.charAt(i);
-            System.out.println(codePoint);
             if (isEmojiCharacter(codePoint)) {
                 if (buf == null) {
                     buf = new StringBuilder(source.length());

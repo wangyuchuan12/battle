@@ -36,9 +36,6 @@ public class BattleMembersApiFilter extends Filter{
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
 		
 		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
-		
-		
-		System.out.println("battleId:"+battleId+",periodId:"+periodId+",roomId:"+roomId);
 	
 		List<Integer> statuses = new ArrayList<>();
 		

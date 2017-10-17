@@ -32,7 +32,6 @@ public class UploadToQNService {
     private Logger logger = LoggerFactory.getLogger(UploadToQNService.class);
     private String upload(String filePath , String key) throws IOException{
     	
-    	System.out.println("filePath:"+filePath+",key:"+key);
         String token = auth.uploadToken(bucketname,key);
         //调用put方法上传
         Response res = uploadManager.put(filePath, key, token);

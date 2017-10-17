@@ -36,7 +36,6 @@ public class CurrentMemberInfoFilter extends Filter{
 		
 		String memberId = httpServletRequest.getParameter("memberId");
 		
-		System.out.println("........roomId:"+roomId+",memberId:"+memberId);
 		
 		String periodId = battleRoom.getPeriodId();
 		

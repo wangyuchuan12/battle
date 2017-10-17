@@ -16,7 +16,6 @@ public class HrefService {
 	private HrefRepository hrefRepository;
 
 	public Href findOneByCode(String code) {
-		System.out.println("..............code:"+code);
 		return hrefRepository.findOneByCode(code);
 	}
 
