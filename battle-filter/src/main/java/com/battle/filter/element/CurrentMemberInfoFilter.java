@@ -6,16 +6,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
+import com.battle.domain.BattleRoom;
 import com.battle.service.BattlePeriodService;
+import com.battle.service.BattleRoomService;
 import com.wyc.AttrEnum;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
 
 public class CurrentMemberInfoFilter extends Filter{
 
+	@Autowired
+	private BattleRoomService battleRoomService;
+	
 	@Autowired
 	private BattlePeriodService battlePeriodService;
 	@Override
@@ -27,16 +30,17 @@ public class CurrentMemberInfoFilter extends Filter{
 	@Override
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
-		String battleId = httpServletRequest.getParameter("battleId");
 		String roomId = httpServletRequest.getParameter("roomId");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		
 		String memberId = httpServletRequest.getParameter("memberId");
 		
-		Battle battle = sessionManager.findOne(Battle.class, battleId);
+		System.out.println("........roomId:"+roomId+",memberId:"+memberId);
 		
-		Integer periodIndex = battle.getCurrentPeriodIndex();
+		String periodId = battleRoom.getPeriodId();
 		
-		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, periodIndex);
+		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 		
 		sessionManager.setAttribute(AttrEnum.periodId, battlePeriod.getId());
 		

@@ -32,6 +32,9 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		
 		String memberId = (String)sessionManager.getAttribute(AttrEnum.periodMemberId);
 		
+		
+		
+		
 		BattlePeriodMember battlePeriodMember = null;
 		if(!CommonUtil.isEmpty(memberId)){
 			battlePeriodMember = battlePeriodMemberService.findOne(memberId);
@@ -65,7 +68,6 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setLoveResidule(5);
 			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
-			battlePeriodMember.setUnit(2);
 			battlePeriodMember.setIsDel(0);
 			battlePeriodMember.setRoomId(roomId);
 			
@@ -79,42 +81,9 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	@Override
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
 	
-		String battleId = (String)sessionManager.getAttribute(AttrEnum.battleId);
-		String battleUserId = (String)sessionManager.getAttribute(AttrEnum.battleUserId);
-		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
+
 		
-		if(CommonUtil.isEmpty(battleId)){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("battleId不能为空");
-			
-			sessionManager.setReturn(true);
-			sessionManager.setReturnValue(resultVo);
-			
-			return null;
-		}
 		
-		if(CommonUtil.isEmpty(battleUserId)){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("battleUserId不能为空");
-			
-			sessionManager.setReturn(true);
-			sessionManager.setReturnValue(resultVo);
-			
-			return null;
-		}
-		
-		if(CommonUtil.isEmpty(periodId)){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("periodId不能为空");
-			
-			sessionManager.setReturn(true);
-			sessionManager.setReturnValue(resultVo);
-			
-			return null;
-		}
 		return null;
 	}
 

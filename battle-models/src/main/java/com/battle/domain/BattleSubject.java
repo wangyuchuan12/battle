@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -43,6 +44,7 @@ public class BattleSubject {
 	@Column
 	private Integer seq;
 	
+	@Lob
 	@ParamAnnotation
 	@Column(name="battle_question_ids")
 	private String battleQuestionIds;

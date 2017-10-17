@@ -33,6 +33,7 @@ public class BattleRoom {
 	@Column(name="num")
 	private Integer num;
 	
+	//引用battleUserId
 	@ParamAnnotation
 	@Column(name="owner")
 	private String owner;

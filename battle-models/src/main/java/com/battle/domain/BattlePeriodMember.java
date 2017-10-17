@@ -90,11 +90,6 @@ public class BattlePeriodMember {
 	private Integer stageCount;
 	
 	
-	//答对一题前进几步
-	@ParamAnnotation
-	@Column
-	private Integer unit;
-	
 	@ParamAnnotation
 	@Column(name="is_del")
 	private Integer isDel;
@@ -210,14 +205,6 @@ public class BattlePeriodMember {
 
 	public void setStageCount(Integer stageCount) {
 		this.stageCount = stageCount;
-	}
-	
-	public Integer getUnit() {
-		return unit;
-	}
-
-	public void setUnit(Integer unit) {
-		this.unit = unit;
 	}
 	
 	public String getRoomId() {

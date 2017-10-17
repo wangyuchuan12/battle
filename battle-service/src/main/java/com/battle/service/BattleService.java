@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -34,5 +35,10 @@ public class BattleService {
 		
 		battleDao.save(battle);
 		
+	}
+
+	public List<Battle> findAllByStatus(Integer status) {
+		
+		return battleDao.findAllByStatus(status);
 	}
 }

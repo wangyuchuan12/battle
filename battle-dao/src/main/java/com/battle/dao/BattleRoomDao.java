@@ -6,4 +6,6 @@ import com.battle.domain.BattleRoom;
 
 public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
+	BattleRoom findOneByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId);
+
 }

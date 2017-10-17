@@ -88,6 +88,7 @@ dependencies{
 	compile project(':battle-service');
 	
 	compile project(':battle-filter');
+	
 }
 
 

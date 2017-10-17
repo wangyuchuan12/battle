@@ -74,7 +74,10 @@ public class QuestionApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		Integer unit = battlePeriodMember.getUnit();
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
+		
+		Integer unit = battlePeriod.getAverageProcess();
 	
 		
 		String id = httpServletRequest.getParameter("id");
@@ -256,12 +259,12 @@ public class QuestionApi {
 		battlePeriodMemberService.update(battlePeriodMember);
 		
 		if(questionAnswerItem.getIsRight()==1){
-			BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
+			
 			Integer process = battleMemberPaperAnswer.getProcess();
 			if(process==null){
 				process = 0;
 			}
-			process = battlePeriod.getAverageProcess()+process;
+			process = unit+process;
 			battleMemberPaperAnswer.setProcess(process);
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 		}
@@ -394,7 +397,7 @@ public class QuestionApi {
 		
 		
 		
-		Integer processAll = battlePeriodMember.getProcess();
+		/*Integer processAll = battlePeriodMember.getProcess();
 		
 		if(processAll==null){
 			processAll = 0;
@@ -410,6 +413,8 @@ public class QuestionApi {
 		battlePeriodMember.setProcess(processAll);
 		
 		battlePeriodMemberService.update(battlePeriodMember);
+		
+		*/
 		
 		data.put("questionAnswers", battleMemberQuestionAnswers);
 		

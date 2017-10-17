@@ -39,6 +39,17 @@ public class WxContext {
     @Column(name="share_num_show_answer")
     private Integer shareNumShowAnswer;
     
+    //短信appid
+    @Column(name="submail_appid")
+    private String submailAppid;
+    
+    //短信秘钥
+    @Column(name="submail_signature")
+    private String submailSignature;
+    
+    @Column(name="apply_expert_project_code")
+    private String applyExpertProjectCode;
+    
     public Integer getShareNumShowAnswer() {
 		return shareNumShowAnswer;
 	}
@@ -113,4 +124,22 @@ public class WxContext {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+	public String getSubmailAppid() {
+		return submailAppid;
+	}
+	public void setSubmailAppid(String submailAppid) {
+		this.submailAppid = submailAppid;
+	}
+	public String getSubmailSignature() {
+		return submailSignature;
+	}
+	public void setSubmailSignature(String submailSignature) {
+		this.submailSignature = submailSignature;
+	}
+	public String getApplyExpertProjectCode() {
+		return applyExpertProjectCode;
+	}
+	public void setApplyExpertProjectCode(String applyExpertProjectCode) {
+		this.applyExpertProjectCode = applyExpertProjectCode;
+	}
 }

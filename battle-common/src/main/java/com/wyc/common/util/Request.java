@@ -47,7 +47,9 @@ public class Request {
 	        HttpPost httpPost = new HttpPost(url.toString());
 	        StringEntity entity = new StringEntity(data,charsetName);
 	        entity.setContentEncoding(charsetName);
+	        entity.setContentType("application/x-www-form-urlencoded");
 	        httpPost.setEntity(entity);
+	        
 	        HttpResponse httpResponse = httpClient.execute(httpPost);
 	        
 	        HttpEntity httpEntity = httpResponse.getEntity();

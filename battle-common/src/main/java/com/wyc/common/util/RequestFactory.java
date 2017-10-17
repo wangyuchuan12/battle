@@ -10,11 +10,18 @@ import org.springframework.stereotype.Service;
 public class RequestFactory {
     @Autowired
     private AutowireCapableBeanFactory autowireFactory;
-	private Request getRequestByConnection(URL url) throws IOException {
+	public Request getRequestByConnection(URL url) throws IOException {
 
 		Request request = new Request(url);
 		autowireFactory.autowireBean(request);
 		return request;
+	}
+	
+	
+	public Request submailMsgSendResultRequest()throws Exception{
+		URL url = new URL(
+				"https://api.mysubmail.com/message/xsend.json");
+		return getRequestByConnection(url);
 	}
 	
 	public Request accessTokenRequest(String appid, String secret)

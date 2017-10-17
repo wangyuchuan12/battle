@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleRoom;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodService;
+import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
@@ -27,7 +29,7 @@ public class BattleTakepartApiFilter extends Filter{
 	private BattleService battleService;
 	
 	@Autowired
-	private BattlePeriodService battlePeriodService;
+	private BattleRoomService battleRoomService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -92,6 +94,16 @@ public class BattleTakepartApiFilter extends Filter{
 		String roomId = httpServletRequest.getParameter("roomId");
 		
 		sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		
+		
+		System.out.println("......................btttleRoom:"+battleRoom);
+		
+		System.out.println("......................periodId:"+battleRoom.getPeriodId());
+		
+		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
+		
 		if(!CommonUtil.isEmpty(battleId)){
 			sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		}
@@ -101,10 +113,6 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		
 		sessionManager.save(battle);
-		
-		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battleId, battle.getCurrentPeriodIndex());
-		
-		sessionManager.save(battlePeriod);
 		
 		return null;
 	}

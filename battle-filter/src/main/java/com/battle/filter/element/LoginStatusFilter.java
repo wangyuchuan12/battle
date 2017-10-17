@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.LoginVo;
 import com.wyc.common.domain.vo.ResultVo;
@@ -15,11 +17,14 @@ import com.wyc.common.wx.domain.UserInfo;
 
 public class LoginStatusFilter extends Filter{
 
+	@Autowired
 	private WxUserInfoService userInfoService;
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
 		String token = (String)sessionManager.getAttribute(AttrEnum.token);
+		
+		System.out.println("这里有没有进来：，tonen:"+token);
 		
 		LoginVo loginVo = sessionManager.getObject(LoginVo.class);
 		

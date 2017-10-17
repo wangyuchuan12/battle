@@ -6,19 +6,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.battle.domain.Battle;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleSubject;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.LoginStatusFilter;
-import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
-import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
@@ -36,11 +31,6 @@ public class BattleSubjectApiFilter extends Filter{
 	@Autowired
 	private BattlePeriodStageService battlePeriodStageService;
 	
-	@Autowired
-	private BattlePeriodService battlePeriodService;
-	
-	@Autowired
-	private BattleService battleService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -105,16 +95,19 @@ public class BattleSubjectApiFilter extends Filter{
 		
 		String roomId = httpServletRequest.getParameter("roomId");
 		
+		String memberId = httpServletRequest.getParameter("memberId");
+		
+		String periodId = httpServletRequest.getParameter("periodId");
+		
 		sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		
+		sessionManager.setAttribute(AttrEnum.periodId, periodId);
 		
 		
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		
-		Battle battle = battleService.findOne(battleId);
+		sessionManager.setAttribute(AttrEnum.periodMemberId, memberId);
 		
-		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndIndex(battle.getId(), battle.getCurrentPeriodIndex());
-		
-		sessionManager.save(battlePeriod);
 		return null;
 	}
 

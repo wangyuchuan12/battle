@@ -15,6 +15,7 @@ import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.wx.domain.OpenIdVo;
 import com.wyc.common.wx.domain.UserInfo;
+import com.wyc.common.wx.domain.WxContext;
 import com.wyc.common.wx.service.UserService;
 
 
@@ -27,6 +28,9 @@ public class LoginApi{
 	
 	@Autowired
 	private WxUserInfoService wxUserInfoService;
+	
+	@Autowired
+	private WxContext wxContext;
 	@ResponseBody
 	@RequestMapping(value="loginByJsCode")
 	public Object loginByJsCode(HttpServletRequest httpServletRequest)throws Exception{

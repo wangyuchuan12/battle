@@ -25,12 +25,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.session.data.redis.config.ConfigureRedisAction;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import com.danga.MemCached.MemCachedClient;
 import com.danga.MemCached.SockIOPool;
@@ -39,7 +34,6 @@ import com.wyc.common.domain.Href;
 import com.wyc.common.domain.vo.ApplicationProperties;
 import com.wyc.common.domain.vo.ShareConfigVo;
 import com.wyc.common.service.HrefService;
-import com.wyc.common.service.WxContextService;
 import com.wyc.common.util.MyLongDateFormat;
 import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.WxContext;
@@ -86,6 +80,8 @@ public class AppConfig {
 	    public MemCachedClient memcachedClient(){
 	        return new MemCachedClient();
 	    }
+	    
+	   
 	    
 	    @Bean
 	    public HttpClient httpGet(ApplicationProperties applicationProperties,WxContext wxc){
@@ -158,6 +154,9 @@ public class AppConfig {
 	        wxContext.setInstantArrival(Integer.parseInt(myProperties.getProperty("instant_arrival")));
 	        wxContext.setArrivalNum(Integer.parseInt(myProperties.getProperty("arrival_num")));
 	        wxContext.setShareNumShowAnswer(Integer.parseInt(myProperties.getProperty("share_num_show_answer")));
+	        wxContext.setSubmailAppid(myProperties.getProperty("submail_appid"));
+	        wxContext.setSubmailSignature(myProperties.getProperty("submail_signature"));
+	        wxContext.setApplyExpertProjectCode(myProperties.getProperty("apply_expert_project_code"));
 //	        wxContext = wxContextService.getWxContextBean();
 	        return wxContext;
 	    }

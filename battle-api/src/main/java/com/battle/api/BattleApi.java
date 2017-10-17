@@ -9,29 +9,39 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleSubject;
+import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
 import com.battle.filter.api.BattleSubjectApiFilter;
 import com.battle.filter.api.BattleTakepartApiFilter;
+import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
+import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
+import com.battle.service.BattleUserService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/battle/")
@@ -51,20 +61,31 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
+	
+	@Autowired
+	private BattleService battleService;
+	
+	@Autowired
+	private BattleUserService battleUserService;
 
 	@RequestMapping(value="info")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public Object info(HttpServletRequest httpServletRequest)throws Exception{
-		String id = httpServletRequest.getParameter("id");
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
+		String battleId = httpServletRequest.getParameter("battleId");
 		String roomId = httpServletRequest.getParameter("roomId");
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		
 		Map<String, Object> data = new HashMap<>();
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		Battle battle = sessionManager.findOne(Battle.class, id);
+		Battle battle = sessionManager.findOne(Battle.class, battleId);
 		
 		data.put("id", battle.getId());
-		data.put("currentPeriodIndex", battle.getCurrentPeriodIndex());
+		data.put("currentPeriodId", battle.getCurrentPeriodId());
 		data.put("distance", battle.getDistance());
 		data.put("headImg", battle.getHeadImg());
 		data.put("instruction", battle.getInstruction());
@@ -73,6 +94,11 @@ public class BattleApi {
 		data.put("maxinum", battleRoom.getMaxinum());
 		data.put("mininum", battleRoom.getMininum());
 		data.put("owner", battleRoom.getOwner());
+		if(battleRoom.getOwner().equals(battleUser.getId())){
+			data.put("isOwner", 1);
+		}else{
+			data.put("isOwner", 0);
+		}
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
@@ -218,6 +244,184 @@ public class BattleApi {
 			resultVo.setErrorMsg("不是正在进行中状态");
 			return resultVo;
 		}
+	}
+	
+	
+	@RequestMapping(value="periodsByBattleId")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=CurrentBattleUserFilter.class)
+	public Object periodsByBattleId(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		if(CommonUtil.isEmpty(battleId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("参数battleId不能为空");
+			return resultVo;
+		}
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
+		
+		List<BattlePeriod> battlePeriods = battlePeriodService.findAllByBattleIdAndStatusAndAuthorBattleUserIdAndIsPublicOrderByIndexAsc(battleId,BattlePeriod.IN_STATUS,battleUser.getId(),0);
+		
+		List<BattlePeriod> battlePeriods2 = battlePeriodService.findAllByBattleIdAndStatusAndIsPublicOrderByIndexAsc(battleId,BattlePeriod.IN_STATUS,1);
+		
+		battlePeriods.addAll(battlePeriods2);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battlePeriods);
+		resultVo.setMsg("返回数据成功");
+		if(battlePeriods==null||battlePeriods.size()==0){
+			resultVo.setMsg("返回的数据为空");
+		}
+		return resultVo;
+	}
+	
+	@RequestMapping(value="battles")
+	@ResponseBody
+	public Object battles(HttpServletRequest httpServletRequest){
+		List<Battle> battles = battleService.findAllByStatus(Battle.IN_STATUS);
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battles);
+		
+		if(battles==null||battles.size()==0){
+			resultVo.setMsg("返回数据为空");
+		}else{
+			resultVo.setMsg("返回数据成功");
+		}
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="addRoom")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object addRoom(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		String battleId = httpServletRequest.getParameter("battleId");
+		String periodId = httpServletRequest.getParameter("periodId");
+		String maxinum = httpServletRequest.getParameter("maxinum");
+		String mininum = httpServletRequest.getParameter("mininum");
+		
+		
+		
+		if(CommonUtil.isEmpty(battleId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("参数battleId不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(CommonUtil.isEmpty(periodId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("参数periodId不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(CommonUtil.isEmpty(maxinum)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("参数maxinum不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(CommonUtil.isEmpty(mininum)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("参数mininum不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		
+		Integer maxinumInt = Integer.parseInt(maxinum);
+		Integer mininumInt = Integer.parseInt(mininum);
+		
+		if(maxinumInt<2){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("maxinumInt参数不能小于2");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(mininumInt<1){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("mininumInt参数不能小于1");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(maxinumInt>50){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("maxinumInt参数不能大于50");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(maxinumInt<mininumInt){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("maxinumInt参数不能小于mininumInt参数");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
+		if(CommonUtil.isEmpty(battlePeriod)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("返回的battlPeriod为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battleId);
+		if(battleUser==null){
+			battleUser = new BattleUser();
+			battleUser.setBattleId(battleId);
+			battleUser.setUserId(userInfo.getId());
+			battleUser.setIsManager(0);
+			battleUser.setOpenId(userInfo.getOpenid());
+			battleUserService.add(battleUser);
+		}
+		
+		
+		
+		
+		
+		BattleRoom battleRoom = battleRoomService.findOneByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
+		if(battleRoom!=null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(0);
+			resultVo.setErrorMsg("您已经创建过该主题的房间，不能重复创建");
+			resultVo.setData(battleRoom);
+			return resultVo;
+		}
+		battleRoom = new BattleRoom();
+		battleRoom.setBattleId(battleId);
+		battleRoom.setPeriodId(periodId);
+		battleRoom.setCreationTime(new DateTime());
+		battleRoom.setMaxinum(maxinumInt);
+		battleRoom.setMininum(mininumInt);
+		battleRoom.setPeriodId(periodId);
+		battleRoom.setOwner(battleUser.getId());
+		battleRoomService.add(battleRoom);
+		
+		
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setData(battleRoom);
+		resultVo.setMsg("添加成功");
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+		
 	}
 	
 	

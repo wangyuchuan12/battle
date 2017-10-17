@@ -19,6 +19,13 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle")
 public class Battle {
+	
+	//游离状态
+	public static Integer FREE_STATUS = 0;
+		
+	//进行中状态
+	public static Integer IN_STATUS = 1;
+	
 	@Id
 	@IdAnnotation
 	@AttrAnnotation(name=AttrEnum.battleId)
@@ -56,9 +63,9 @@ public class Battle {
 	
 	//当前期 序号
 	@ParamAnnotation
-	@Column(name="current_period_index")
-	@AttrAnnotation(name=AttrEnum.periodIndex)
-	private Integer currentPeriodIndex;
+	@Column(name="current_period_id")
+	@AttrAnnotation(name=AttrEnum.periodId)
+	private String currentPeriodId;
 	
 	//最大期数序号，为了可以一次递增
 	@ParamAnnotation
@@ -68,6 +75,11 @@ public class Battle {
 	@ParamAnnotation
 	@Column(name="default_room_id")
 	private String defaultRoomId;
+	
+	//状态 0表示 游离 1表示进行中
+	@ParamAnnotation
+	@Column
+	private Integer status;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -129,12 +141,21 @@ public class Battle {
 		this.isActivation = isActivation;
 	}
 
-	public Integer getCurrentPeriodIndex() {
-		return currentPeriodIndex;
+
+	public String getCurrentPeriodId() {
+		return currentPeriodId;
 	}
 
-	public void setCurrentPeriodIndex(Integer currentPeriodIndex) {
-		this.currentPeriodIndex = currentPeriodIndex;
+	public void setCurrentPeriodId(String currentPeriodId) {
+		this.currentPeriodId = currentPeriodId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getDistance() {

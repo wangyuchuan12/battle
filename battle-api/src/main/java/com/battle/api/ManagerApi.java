@@ -15,9 +15,11 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleSubject;
+import com.battle.domain.BattleUser;
 import com.battle.domain.Context;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionOption;
+import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
@@ -28,8 +30,11 @@ import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/manager/")
@@ -484,20 +489,83 @@ public class ManagerApi {
 	}
 	
 	
+	@RequestMapping(value="startUpPeriod")
+	@ResponseBody
+	@Transactional
+//	@HandlerAnnotation(hanlerFilter=CurrentBattleUserFilter.class)
+	public Object startUpPeriod(HttpServletRequest httpServletRequest)throws Exception{
+
+		String periodId = httpServletRequest.getParameter("periodId");
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
+		
+		battlePeriod.setStatus(BattlePeriod.IN_STATUS);
+		
+		battlePeriodService.update(battlePeriod);
+		
+		System.out.println(battlePeriod.getId()+":"+battlePeriod.getStatus());
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="addPeriod")
 	@ResponseBody
 	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentBattleUserFilter.class)
 	public Object addPeriod(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String battleId = httpServletRequest.getParameter("battleId");
+		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		Battle battle = battleService.findOne(battleId);
 		Integer maxPeriodIndex = battle.getMaxPeriodIndex();
 		if(maxPeriodIndex==null){
 			maxPeriodIndex = 0;
 		}
 		maxPeriodIndex++;
-		BattlePeriod battlePeriod = new BattlePeriod();
+		
+		BattlePeriod battlePeriod = battlePeriodService.findOneByBattleIdAndAuthorBattleUserIdAndStatus(battleId,battleUser.getId(),BattlePeriod.FREE_STATUS);
+		
+		if(battlePeriod!=null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battlePeriod);
+			return resultVo;
+		}
+		battlePeriod = new BattlePeriod();
 		battlePeriod.setBattleId(battleId);
 		battlePeriod.setIndex(maxPeriodIndex);
+		battlePeriod.setAuthorBattleUserId(battleUser.getId());
+		battlePeriod.setStatus(BattlePeriod.FREE_STATUS);
+		battlePeriod.setTakepartCount(0);
+		
+		battlePeriod.setIsDefault(0);
+		
+		battlePeriod.setOwnerImg(userInfo.getHeadimgurl());
+		
+		battlePeriod.setOwnerNickname(userInfo.getNickname());
+		
+		battlePeriod.setStageCount(1);
+		
+		battlePeriod.setUnit(1);
+		
+		battlePeriod.setRightCount(0);
+		
+		battlePeriod.setWrongCount(0);
+		
+		battlePeriod.setAverageProcess(0);
+		
+		if(battleUser.getIsManager()==1){
+			battlePeriod.setIsPublic(1);
+		}else{
+			battlePeriod.setIsPublic(0);
+		}
 		
 		battle.setMaxPeriodIndex(maxPeriodIndex);
 		

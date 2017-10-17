@@ -47,6 +47,10 @@ public class BattleUser {
 	@ParamAnnotation
 	@Column(name="current_room_id")
 	private String currentRoomId;
+	
+	@ParamAnnotation
+	@Column(name="battle_expert_id")
+	private String battleExpertId;
 
 	
 	@ParamAnnotation
@@ -116,6 +120,14 @@ public class BattleUser {
 
 	public void setCurrentRoomId(String currentRoomId) {
 		this.currentRoomId = currentRoomId;
+	}
+
+	public String getBattleExpertId() {
+		return battleExpertId;
+	}
+
+	public void setBattleExpertId(String battleExpertId) {
+		this.battleExpertId = battleExpertId;
 	}
 
 	public DateTime getCreateAt() {

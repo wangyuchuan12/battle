@@ -59,9 +59,9 @@ public class BattleQuestionAnswerHandleFilter extends Filter{
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, memberId);
 		
-		Battle battle = sessionManager.findOne(Battle.class, battlePeriodMember.getBattleId());
+	//	Battle battle = sessionManager.findOne(Battle.class, battlePeriodMember.getBattleId());
 		
-		if(battlePeriodMember.getStageIndex()<battle.getCurrentPeriodIndex()){
+		if(battlePeriodMember.getStageIndex()<battlePeriodMember.getStageCount()){
 			battlePeriodMember.setStageIndex(battlePeriodMember.getStageIndex()+1);
 			
 			sessionManager.update(battlePeriodMember);

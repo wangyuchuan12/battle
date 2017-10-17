@@ -26,7 +26,11 @@ public class BattlePeriodService {
 		return battlePeriodDao.findOne(id);
 	}
 
-	public List<BattlePeriod> findAllByBattleIdOrderByIndexAsc(String battleId) {
+	public List<BattlePeriod> findAllByBattleIdAndStatusAndIsPublicOrderByIndexAsc(String battleId,Integer status,Integer isPublic) {
+		return battlePeriodDao.findAllByBattleIdAndStatusAndIsPublicOrderByIndexAsc(battleId,status,isPublic);
+	}
+	
+	public List<BattlePeriod> findAllByBattleIdOrderByIndexAsc(String battleId){
 		return battlePeriodDao.findAllByBattleIdOrderByIndexAsc(battleId);
 	}
 
@@ -46,5 +50,22 @@ public class BattlePeriodService {
 		
 		battlePeriodDao.save(battlePeriod);
 		
+	}
+
+	public List<BattlePeriod> findAllByBattleIdAndAuthorBattleUserIdAndStatus(String battleId, String battleUserId,Integer status) {
+		
+		return battlePeriodDao.findAllByBattleIdAndAuthorBattleUserIdAndStatus(battleId,battleUserId,status);
+	}
+
+	public BattlePeriod findOneByBattleIdAndAuthorBattleUserIdAndStatus(String battleId, String battleUserId,
+			Integer status) {
+		
+		return battlePeriodDao.findOneByBattleIdAndAuthorBattleUserIdAndStatus(battleId,battleUserId,status);
+	}
+
+	public List<BattlePeriod> findAllByBattleIdAndStatusAndAuthorBattleUserIdAndIsPublicOrderByIndexAsc(String battleId,
+			Integer status, String battleUserId, int isPublic) {
+		
+		return battlePeriodDao.findAllByBattleIdAndStatusAndAuthorBattleUserIdAndIsPublicOrderByIndexAsc(battleId,status,battleUserId,isPublic);
 	}
 }
