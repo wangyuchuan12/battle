@@ -19,7 +19,7 @@ import com.battle.domain.BattleUser;
 import com.battle.domain.Context;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionOption;
-import com.battle.filter.element.CurrentBattleUserFilter;
+import com.battle.filter.element.BattleManagerFilter;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
@@ -67,6 +67,7 @@ public class ManagerApi {
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object subjects(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId,0);
@@ -106,6 +107,7 @@ public class ManagerApi {
 	
 	@RequestMapping(value="updateBattleInfo")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object updateBattleInfo(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		String name = httpServletRequest.getParameter("name");
@@ -127,6 +129,7 @@ public class ManagerApi {
 	
 	@RequestMapping(value="battleInfo")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object battleInfo(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		Battle battle = battleService.findOne(battleId);
@@ -141,6 +144,7 @@ public class ManagerApi {
 	
 	@RequestMapping(value="periods")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object periods(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		List<BattlePeriod> battlePeriods = battlePeriodService.findAllByBattleIdOrderByIndexAsc(battleId);
@@ -156,6 +160,7 @@ public class ManagerApi {
 
 	@RequestMapping(value="addSubject")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object addSubject(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		
@@ -198,6 +203,7 @@ public class ManagerApi {
 	
 	@RequestMapping(value="stages")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object stages(HttpServletRequest httpServletRequest)throws Exception{
 		String periodId = httpServletRequest.getParameter("periodId");
 		
@@ -324,6 +330,7 @@ public class ManagerApi {
 	@RequestMapping(value="battleImgUpdate")
 	@ResponseBody
 	@Transactional
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object battleImgUpdate(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		String imgUrl = httpServletRequest.getParameter("imgUrl");
@@ -511,7 +518,7 @@ public class ManagerApi {
 	@RequestMapping(value="addPeriod")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=CurrentBattleUserFilter.class)
+	@HandlerAnnotation(hanlerFilter=BattleManagerFilter.class)
 	public Object addPeriod(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
