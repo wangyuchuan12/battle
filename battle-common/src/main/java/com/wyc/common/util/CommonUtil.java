@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -22,7 +24,16 @@ import java.util.Random;
 public class CommonUtil {
 	
 	public static void main(String[]args){
-		System.out.println(filterEmoji("sdfsdfdsf所属💗❤🐶🐈️️️🐔🐦⏰"));
+	//	System.out.println(filterEmoji("sdfsdfdsf所属💗❤🐶🐈️️️🐔🐦⏰"));
+		List<String> list = new ArrayList<>();
+		list.add("1");
+		list.add("2");
+		list.add("3");
+		list.add("4");
+		list.add("5");
+		list.add("6");
+		list.add("7");
+		System.out.println(list.subList(0, 6));
 		
 		
 	}
@@ -358,6 +369,15 @@ public class CommonUtil {
 		}
 
 		return null;
+	}
+	
+	
+	public static Integer randomNum(Integer min,Integer max){
+		Random random = new Random();
+
+        int s = random.nextInt(max)%(max-min+1) + min;
+        
+        return s;
 	}
 	
 	/**

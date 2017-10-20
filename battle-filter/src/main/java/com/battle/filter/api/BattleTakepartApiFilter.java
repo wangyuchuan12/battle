@@ -8,13 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.battle.domain.Battle;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.LoginStatusFilter;
-import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.wyc.AttrEnum;

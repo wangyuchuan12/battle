@@ -48,6 +48,10 @@ public class BattlePeriodMember {
 	private String battleUserId;
 	
 	@ParamAnnotation
+	@Column(name="user_id")
+	private String userId;
+	
+	@ParamAnnotation
 	@Column
 	private Integer process;
 	
@@ -221,6 +225,14 @@ public class BattlePeriodMember {
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public DateTime getCreateAt() {

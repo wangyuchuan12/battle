@@ -1,5 +1,6 @@
 package com.battle.filter.api;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +72,18 @@ public class BattleSubjectApiFilter extends Filter{
 			List<String> questions = battleQuestionMap.get(battleSubject.getId());
 			
 			if(questions!=null){
-				battleSubjectMap.put("num", questions.size());
+				battleSubjectMap.put("num", 1);
 				battleSubjectMap.put("questions", questions);
+				battleSubjectsData.add(battleSubjectMap);
 			}else{
-				battleSubjectMap.put("num", 0);
+				//battleSubjectMap.put("num", 0);
 			}
-			
-			battleSubjectsData.add(battleSubjectMap);
+		}
+		
+		//如果大于6随机打乱抽取6个
+		if(battleSubjectsData.size()>6){
+			Collections.shuffle(battleSubjectsData);
+			battleSubjectsData = battleSubjectsData.subList(0, 6);
 		}
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

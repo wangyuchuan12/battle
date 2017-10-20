@@ -11,6 +11,9 @@ import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -102,6 +105,59 @@ public class BattleApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
+		return resultVo;
+	}
+	
+	@RequestMapping(value="randomRoom")
+	@ResponseBody
+	public Object randomRoom(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		Pageable pageable = new PageRequest(0, 1);
+		
+		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndStatusAndIsPublic(battleId, BattleRoom.STATUS_IN , 1, pageable);
+		
+		List<BattleRoom> battleRooms = battleRoomPage.getContent();
+		
+		if(battleRooms!=null&&battleRooms.size()>0){
+			BattleRoom battleRoom = battleRooms.get(0);
+			
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battleRoom);
+			
+			return resultVo;
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(false);
+		resultVo.setErrorCode(0);
+		resultVo.setErrorMsg("返回为空");
+		return resultVo;
+	}
+	
+	@RequestMapping(value="myRooms")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object myRooms(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		Pageable pageable = new PageRequest(0, 20);
+		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByUserId(userInfo.getId(),pageable);
+		
+		List<BattleRoom> battleRooms = battleRoomPage.getContent();
+		
+		if(battleRooms!=null&&battleRooms.size()>0){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battleRooms);
+			
+			return resultVo;
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(false);
+		resultVo.setErrorCode(0);
+		resultVo.setErrorMsg("返回为空");
 		return resultVo;
 	}
 	
@@ -391,7 +447,14 @@ public class BattleApi {
 		}
 		
 		
+		Battle battle = battleService.findOne(battleId);
 		
+		if(battle==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("battle为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
 		
 		
 		BattleRoom battleRoom = battleRoomService.findOneByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
@@ -411,6 +474,9 @@ public class BattleApi {
 		battleRoom.setMininum(mininumInt);
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setOwner(battleUser.getId());
+		battleRoom.setName(battle.getName());
+		battleRoom.setInstruction(battle.getInstruction());
+		battleRoom.setImgUrl(battle.getHeadImg());
 		battleRoomService.add(battleRoom);
 		
 		
@@ -421,6 +487,46 @@ public class BattleApi {
 		resultVo.setSuccess(true);
 		
 		return resultVo;
+		
+	}
+	
+	
+	@RequestMapping(value="rooms")
+	@ResponseBody
+	@Transactional
+	public Object rooms(HttpServletRequest httpServletRequest)throws Exception{
+		String page = httpServletRequest.getParameter("page");
+		String size = httpServletRequest.getParameter("size");
+		
+		if(CommonUtil.isEmpty(page)){
+			page = "0";
+		}
+		
+		if(CommonUtil.isEmpty(size)){
+			size = "10";
+		}
+		
+		Integer pageInt = Integer.parseInt(page);
+		
+		Integer sizeInt = Integer.parseInt(size);
+		
+		if(sizeInt>50){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("条数不能超过50");
+			return resultVo;
+		}
+		
+		
+		Pageable pageable = new PageRequest(pageInt,sizeInt);
+		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsPublicOrderByCreationTimeAsc(1,pageable);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRooms.getContent());
+		
+		return resultVo;
+		
 		
 	}
 	

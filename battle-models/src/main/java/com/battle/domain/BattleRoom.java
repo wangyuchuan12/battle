@@ -17,6 +17,15 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle_room")
 public class BattleRoom {
+	
+	public static final Integer STATUS_FREE = 0;
+	
+	public static final Integer STATUS_IN = 1;
+	
+	public static final Integer STATUS_FULL = 2;
+	
+	public static final Integer STATUS_END = 3;
+	
 	@Id
 	@IdAnnotation
 	private String id;
@@ -45,6 +54,26 @@ public class BattleRoom {
 	@ParamAnnotation
 	@Column(name="period_id")
 	private String periodId;
+	
+	@ParamAnnotation
+	@Column(name="is_public")
+	private Integer isPublic;
+	
+	@ParamAnnotation
+	@Column
+	private String name;
+	
+	@ParamAnnotation
+	@Column(name="img_url")
+	private String imgUrl;
+	
+	@ParamAnnotation
+	@Column
+	private String instruction;
+	
+	@ParamAnnotation
+	@Column
+	private Integer status;
 	
 	@ParamAnnotation
 	@Column(name="creation_time")
@@ -125,6 +154,46 @@ public class BattleRoom {
 
 	public void setPeriodId(String periodId) {
 		this.periodId = periodId;
+	}
+
+	public Integer getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Integer isPublic) {
+		this.isPublic = isPublic;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public DateTime getCreateAt() {
