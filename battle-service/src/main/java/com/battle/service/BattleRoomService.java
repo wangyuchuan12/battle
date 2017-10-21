@@ -41,5 +41,12 @@ public class BattleRoomService {
 	public Page<BattleRoom> findAllByUserId(String userId,Pageable pageable) {
 		return battleRoomDao.findAllByUserId(userId,pageable);
 	}
+	public void update(BattleRoom battleRoom) {
+		
+		battleRoom.setUpdateAt(new DateTime());
+		
+		battleRoomDao.save(battleRoom);
+		
+	}
 
 }

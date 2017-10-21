@@ -93,7 +93,38 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		
-		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);
+		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_FULL){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("房间已满");
+			resultVo.setErrorCode(0);
+			sessionManager.setReturnValue(resultVo);
+			sessionManager.setReturn(true);
+			return null;
+		}
+		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("已经结束");
+			resultVo.setErrorCode(1);
+			sessionManager.setReturnValue(resultVo);
+			sessionManager.setReturn(true);
+			return null;
+		}
+		
+		Integer num = battleRoom.getNum();
+		num++;
+		battleRoom.setNum(num);
+		
+		if(battleRoom.getNum()==battleRoom.getMaxinum()){
+			battleRoom.setStatus(BattleRoom.STATUS_FULL);
+		}else{
+			
+		}
+		battleRoomService.update(battleRoom);
 		
 		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
 		
@@ -121,7 +152,7 @@ public class BattleTakepartApiFilter extends Filter{
 
 	@Override
 	public Object handlerAfter(SessionManager sessionManager) {
-		// TODO Auto-generated method stub
+		System.out.println("...............handlerAfter");
 		return null;
 	}
 

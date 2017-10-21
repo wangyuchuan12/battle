@@ -14,7 +14,6 @@ public class BattleManagerFilter extends Filter{
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
 		if(battleUser.getIsManager()!=1){
-			System.out.println("没有权限");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("没有权限");

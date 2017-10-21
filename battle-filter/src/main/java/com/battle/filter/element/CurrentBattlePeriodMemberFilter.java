@@ -10,7 +10,6 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.wyc.AttrEnum;
-import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
@@ -70,6 +69,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
 			battlePeriodMember.setIsDel(0);
 			battlePeriodMember.setRoomId(roomId);
+			
+			battlePeriodMember.setUserId(userInfo.getId());
 			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}

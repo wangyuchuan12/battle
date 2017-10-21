@@ -146,6 +146,8 @@ public class BattleApi {
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
 		
+		System.out.println("userInfo.id:"+userInfo.getId()+",battleRooms:"+battleRooms);
+		
 		if(battleRooms!=null&&battleRooms.size()>0){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
@@ -477,6 +479,9 @@ public class BattleApi {
 		battleRoom.setName(battle.getName());
 		battleRoom.setInstruction(battle.getInstruction());
 		battleRoom.setImgUrl(battle.getHeadImg());
+		battleRoom.setStatus(BattleRoom.STATUS_FREE);
+		battleRoom.setNum(0);
+		battleRoom.setIsPublic(0);
 		battleRoomService.add(battleRoom);
 		
 		
@@ -544,7 +549,6 @@ public class BattleApi {
 			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
 			return resultVo;
 		}
-		
 	}
 	
 	@RequestMapping(value="battleQuestions")

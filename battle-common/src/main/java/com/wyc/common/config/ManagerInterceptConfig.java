@@ -135,7 +135,6 @@ public class ManagerInterceptConfig {
 					 if(transactional!=null){
 						 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					 }
-					 
 				 }
 				 return returnValue;
 			 }catch(Exception e){
