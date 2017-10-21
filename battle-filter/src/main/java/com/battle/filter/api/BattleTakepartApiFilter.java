@@ -99,7 +99,7 @@ public class BattleTakepartApiFilter extends Filter{
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("房间已满");
-			resultVo.setErrorCode(0);
+			resultVo.setErrorCode(2);
 			sessionManager.setReturnValue(resultVo);
 			sessionManager.setReturn(true);
 			return null;
@@ -109,7 +109,7 @@ public class BattleTakepartApiFilter extends Filter{
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("已经结束");
-			resultVo.setErrorCode(1);
+			resultVo.setErrorCode(3);
 			sessionManager.setReturnValue(resultVo);
 			sessionManager.setReturn(true);
 			return null;
@@ -119,10 +119,10 @@ public class BattleTakepartApiFilter extends Filter{
 		num++;
 		battleRoom.setNum(num);
 		
-		if(battleRoom.getNum()==battleRoom.getMaxinum()){
+		if(battleRoom.getNum()>=battleRoom.getMaxinum()){
 			battleRoom.setStatus(BattleRoom.STATUS_FULL);
 		}else{
-			
+			battleRoom.setStatus(BattleRoom.STATUS_IN);
 		}
 		battleRoomService.update(battleRoom);
 		

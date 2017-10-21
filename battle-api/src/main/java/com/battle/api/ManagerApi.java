@@ -562,8 +562,6 @@ public class ManagerApi {
 		
 		battlePeriod.setWrongCount(0);
 		
-		battlePeriod.setAverageProcess(0);
-		
 		if(battleUser.getIsManager()==1){
 			battlePeriod.setIsPublic(1);
 		}else{

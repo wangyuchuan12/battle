@@ -77,7 +77,7 @@ public class QuestionApi {
 		
 		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
 		
-		Integer unit = battlePeriod.getAverageProcess();
+		Integer unit = battlePeriod.getUnit();
 	
 		
 		String id = httpServletRequest.getParameter("id");
@@ -110,6 +110,7 @@ public class QuestionApi {
 		
 		
 		ResultVo resultVo = new ResultVo();
+		
 		if(question.getType()==Question.SELECT_TYPE){
 			String optionId = httpServletRequest.getParameter("optionId");
 			
@@ -142,32 +143,10 @@ public class QuestionApi {
 				
 				questionAnswerItem.setIsRight(1);
 				
-				result.put("right", true);
-				result.put("process", unit);
-				
-				Integer process = battlePeriodMember.getProcess();
-				
-				process = process + unit;
-				
-				battlePeriodMember.setProcess(process);
-				
-				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
-				
-				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
-				
 			}else{
 				
 				questionAnswerItem.setIsRight(0);
-				result.put("right", false);
-				result.put("process", 0);
 				
-				Integer loveResidule = battlePeriodMember.getLoveResidule();
-				loveResidule--;
-				battlePeriodMember.setLoveResidule(loveResidule);
-				
-				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
-				
-				battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 			}
 			resultVo.setSuccess(true);
 			resultVo.setData(result);
@@ -186,31 +165,10 @@ public class QuestionApi {
 				
 				questionAnswerItem.setIsRight(1);
 				
-				result.put("right", true);
-				
-				result.put("process", unit);
-				
-				Integer process = battlePeriodMember.getProcess();
-				
-				process = process + unit;
-				
-				battlePeriodMember.setProcess(process);
-				
-				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
-				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			}else{
 				
 				questionAnswerItem.setIsRight(0);
-				result.put("right", false);
-				
-				result.put("process", 0);
-				
-				Integer loveResidule = battlePeriodMember.getLoveResidule();
-				loveResidule--;
-				battlePeriodMember.setLoveResidule(loveResidule);
-				
-				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
-				battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
+			
 			}
 			resultVo.setSuccess(true);
 			resultVo.setData(result);
@@ -225,29 +183,10 @@ public class QuestionApi {
 			if(answer.equals(question.getAnswer())){
 				
 				questionAnswerItem.setIsRight(1);
-				result.put("right", true);
-				result.put("process", unit);
-				questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 				
-				Integer process = battlePeriodMember.getProcess();
-				
-				process = process + unit;
-				
-				battlePeriodMember.setProcess(process);
-				
-
-				battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			}else{
-				result.put("right", false);
-				result.put("process",0);
 				questionAnswerItem.setIsRight(0);
 				
-				Integer loveResidule = battlePeriodMember.getLoveResidule();
-				loveResidule--;
-				battlePeriodMember.setLoveResidule(loveResidule);
-				
-				questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
-				battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 			}
 			
 			
@@ -260,13 +199,39 @@ public class QuestionApi {
 		
 		if(questionAnswerItem.getIsRight()==1){
 			
-			Integer process = battleMemberPaperAnswer.getProcess();
+			Integer process = battlePeriodMember.getProcess();
 			if(process==null){
 				process = 0;
 			}
-			process = unit+process;
+			
+			
+			process = process + unit;
+			
+			System.out.println("battlePeriodMember.getProcess():"+battlePeriodMember.getProcess()+",process:"+process+",unit:"+unit);
+			
+			result.put("right", true);
+			result.put("process", unit);
+			
+			battlePeriodMember.setProcess(process);
+			
+			questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
+			
+			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
+			
+			
 			battleMemberPaperAnswer.setProcess(process);
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+		}else{
+			result.put("right", false);
+			result.put("process", 0);
+			
+			Integer loveResidule = battlePeriodMember.getLoveResidule();
+			loveResidule--;
+			battlePeriodMember.setLoveResidule(loveResidule);
+			
+			questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
+			
+			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 		}
 		
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);

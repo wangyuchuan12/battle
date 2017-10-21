@@ -53,12 +53,6 @@ public class BattlePeriod {
 	@Column(name="max_members")
 	private Integer maxMembers;
 	
-	
-	//每道题的进度
-	@ParamAnnotation
-	@Column(name="average_process")
-	private Integer averageProcess;
-	
 	@ParamAnnotation
 	@Column(name="stage_count")
 	private Integer stageCount;
@@ -181,14 +175,6 @@ public class BattlePeriod {
 
 	public void setStageCount(Integer stageCount) {
 		this.stageCount = stageCount;
-	}
-
-	public Integer getAverageProcess() {
-		return averageProcess;
-	}
-
-	public void setAverageProcess(Integer averageProcess) {
-		this.averageProcess = averageProcess;
 	}
 	
 	public Integer getStatus() {
