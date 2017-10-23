@@ -1,5 +1,6 @@
 package com.wyc.common.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="p_account")
 @ParamEntityAnnotation
-public class Account {
+public class Account implements Serializable{
 	@Id
 	@IdAnnotation
     private String id;

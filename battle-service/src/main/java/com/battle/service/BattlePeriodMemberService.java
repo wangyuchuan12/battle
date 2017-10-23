@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,12 +10,18 @@ import org.springframework.stereotype.Service;
 
 import com.battle.dao.BattlePeriodMemberDao;
 import com.battle.domain.BattlePeriodMember;
+import com.wyc.common.service.RedisService;
 
 @Service
 public class BattlePeriodMemberService {
+	
+	private final String  LIST_KEY = "peroid_members_key";
 
 	@Autowired
 	private BattlePeriodMemberDao battlePeriodMemberDao;
+	
+	@Autowired
+	private RedisService redisService;
 
 	public BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
 			String periodId,String roomId,Integer isDel) {
@@ -30,8 +37,17 @@ public class BattlePeriodMemberService {
 		battlePeriodMember.setId(UUID.randomUUID().toString());
 		battlePeriodMember.setUpdateAt(new DateTime());
 		battlePeriodMember.setCreateAt(new DateTime());
-		
+
 		battlePeriodMemberDao.save(battlePeriodMember);
+		
+		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(battlePeriodMember.getRoomId());
+		if(battlePeriodMembers==null){
+			battlePeriodMembers = new ArrayList<>();
+		}
+		
+		battlePeriodMembers.add(battlePeriodMember);
+		
+		saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);
 		
 	}
 
@@ -41,9 +57,94 @@ public class BattlePeriodMemberService {
 		
 		battlePeriodMemberDao.save(battlePeriodMember);
 		
+		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(battlePeriodMember.getRoomId());
+		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
+			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
+				if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
+					battlePeriodMember2.setBattleId(battlePeriodMember.getBattleId());
+					battlePeriodMember2.setBattleUserId(battlePeriodMember.getBattleUserId());
+					battlePeriodMember2.setHeadImg(battlePeriodMember.getHeadImg());
+					battlePeriodMember2.setIsDel(battlePeriodMember.getIsDel());
+					battlePeriodMember2.setLoveCount(battlePeriodMember.getLoveCount());
+					battlePeriodMember2.setLoveResidule(battlePeriodMember.getLoveResidule());
+					battlePeriodMember2.setNickname(battlePeriodMember.getNickname());
+					battlePeriodMember2.setPeriodId(battlePeriodMember.getPeriodId());
+					battlePeriodMember2.setProcess(battlePeriodMember.getProcess());
+					battlePeriodMember2.setRoomId(battlePeriodMember.getRoomId());
+					battlePeriodMember2.setStageCount(battlePeriodMember.getStageCount());
+					battlePeriodMember2.setStageIndex(battlePeriodMember.getStageIndex());
+					battlePeriodMember2.setStatus(battlePeriodMember.getStatus());
+					battlePeriodMember2.setUpdateAt(battlePeriodMember.getUpdateAt());
+					battlePeriodMember2.setUserId(battlePeriodMember.getUserId());
+					battlePeriodMember2.setCreateAt(battlePeriodMember.getCreateAt());
+				}
+			}
+			
+			saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);
+		}
+	}
+	
+	public List<BattlePeriodMember> findBattlePeriodMembersByRoomIdFromCache(String roomId){
+		String key = LIST_KEY;
+		key = key+"_"+roomId;
+		List<BattlePeriodMember> battlePeriodMembers = redisService.getList(key);
+		return battlePeriodMembers;
+	}
+	
+	public void saveBattlePeriodMembersToCache(String roomId,List<BattlePeriodMember> battlePeriodMembers){
+		try{
+			String key = LIST_KEY;
+			key = key+"_"+roomId;
+			
+			redisService.setList(key, battlePeriodMembers,BattlePeriodMember.class);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+
+	}
+	
+	
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId,String periodId,String roomId){
+		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(roomId);
+		if(battlePeriodMembers!=null){
+			return battlePeriodMembers;
+		}else{
+			battlePeriodMembers = battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomId(battleId, periodId, roomId);
+			try{
+				saveBattlePeriodMembersToCache(roomId, battlePeriodMembers);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			return battlePeriodMembers;
+			
+		}
+		
 	}
 
-	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel) {
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,int isDel) {
+		
+		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battleId, periodId, roomId);
+		
+		List<BattlePeriodMember> thisBattlePeriodMembers = new ArrayList<>();
+		
+		if(battlePeriodMembers!=null){
+			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+				
+				
+				int status2 = battlePeriodMember.getStatus();
+				int isDel2 = battlePeriodMember.getIsDel();
+				for(int status:statuses){
+					if(status==status2){
+						if(isDel2==isDel){
+							thisBattlePeriodMembers.add(battlePeriodMember);
+						}
+					}
+				}
+			}
+			return thisBattlePeriodMembers;
+		}
 		
 		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,isDel);
 		
