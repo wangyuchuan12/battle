@@ -1,7 +1,11 @@
 package com.battle.api;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -504,6 +508,50 @@ public class ManagerApi {
 		
 		BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 		
+		List<BattlePeriodStage> battlePeriodStages = battlePeriodStageService.findAllByPeriodIdOrderByIndexAsc(periodId);
+		
+		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndBattlePeriodIdAndIsDel(battlePeriod.getBattleId(),battlePeriod.getId(),0);
+		
+		//第一键值是battleStageId,第二个建是subjectId
+		Map<String, Map<String,List<BattleQuestion>>> battleQuestionMap = new HashMap<>();
+		
+		for(BattleQuestion battleQuestion: battleQuestions){
+			Map<String, List<BattleQuestion>> subjectMap = battleQuestionMap.get(battleQuestion.getPeriodStageId());
+			if(subjectMap==null){
+				subjectMap = new HashMap<>();
+				battleQuestionMap.put(battleQuestion.getPeriodStageId(), subjectMap);
+			}
+			List<BattleQuestion> subjectBattleQuestions = subjectMap.get(battleQuestion.getBattleSubjectId());
+			if(subjectBattleQuestions==null){
+				subjectBattleQuestions  = new ArrayList<>();
+				subjectMap.put(battleQuestion.getBattleSubjectId(), subjectBattleQuestions);
+			}
+			subjectBattleQuestions.add(battleQuestion);
+		}
+		
+		for(BattlePeriodStage battlePeriodStage:battlePeriodStages){
+			Map<String, List<BattleQuestion>> subjectQuestionMap = battleQuestionMap.get(battlePeriodStage.getId());
+			if(subjectQuestionMap.size()<4){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于4");
+				return resultVo;
+			}
+			
+			Integer num = 0;
+			for(Entry<String, List<BattleQuestion>> entry:subjectQuestionMap.entrySet()){
+				List<BattleQuestion> subjectQuestions = entry.getValue();
+				num = num + subjectQuestions.size();
+			}
+			
+			if(battlePeriodStage.getQuestionCount()<num){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目数量小于"+battlePeriodStage.getQuestionCount());
+				return resultVo;
+			}
+		}
+		
 		battlePeriod.setStatus(BattlePeriod.IN_STATUS);
 		
 		battlePeriodService.update(battlePeriod);
@@ -574,13 +622,14 @@ public class ManagerApi {
 		battleService.update(battle);
 		
 		
-		BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
-		battlePeriodStage.setBattleId(battleId);
-		battlePeriodStage.setIndex(1);
-		battlePeriodStage.setPeriodId(battlePeriod.getId());
-		battlePeriodStage.setQuestionCount(7);
-		
-		battlePeriodStageService.add(battlePeriodStage);
+		for(Integer i=1;i<11;i++){
+			BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
+			battlePeriodStage.setBattleId(battleId);
+			battlePeriodStage.setIndex(i);
+			battlePeriodStage.setPeriodId(battlePeriod.getId());
+			battlePeriodStage.setQuestionCount(4);
+			battlePeriodStageService.add(battlePeriodStage);
+		}
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
