@@ -34,6 +34,7 @@ import com.battle.service.QuestionService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 
 @Controller
 @RequestMapping(value="/api/question/")
@@ -114,7 +115,17 @@ public class QuestionApi {
 		if(question.getType()==Question.SELECT_TYPE){
 			String optionId = httpServletRequest.getParameter("optionId");
 			
-			QuestionOption myOption = questionOptionService.findOne(optionId);
+			if(CommonUtil.isEmpty(optionId)){
+				optionId = "";
+				questionAnswerItem.setMyAnswer("");
+				battleMemberQuestionAnswer.setAnswer("");
+			}else{
+				QuestionOption myOption = questionOptionService.findOne(optionId);
+				questionAnswerItem.setMyAnswer(myOption.getContent());
+				battleMemberQuestionAnswer.setAnswer(myOption.getContent());
+			}
+			
+			
 			
 			QuestionOption rightOption = questionOptionService.findOne(question.getRightOptionId());
 			StringBuffer sb = new StringBuffer();
@@ -128,12 +139,12 @@ public class QuestionApi {
 				sb.deleteCharAt(sb.lastIndexOf(","));
 			}
 			
-			questionAnswerItem.setMyAnswer(myOption.getContent());
+			
 			questionAnswerItem.setMyOptionId(optionId);
 			questionAnswerItem.setRightAnswer(rightOption.getContent());
 			questionAnswerItem.setRightOptionId(question.getRightOptionId());
 
-			battleMemberQuestionAnswer.setAnswer(myOption.getContent());
+			
 			
 			battleMemberQuestionAnswer.setOptions(sb.toString());
 			
@@ -195,7 +206,7 @@ public class QuestionApi {
 			
 		}
 		
-		battlePeriodMemberService.update(battlePeriodMember);
+		
 		
 		if(questionAnswerItem.getIsRight()==1){
 			
@@ -234,6 +245,8 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 		}
 		
+		
+		battlePeriodMemberService.update(battlePeriodMember);
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
 		
 		result.put("battleMemberQuestionAnswerId",battleMemberQuestionAnswer.getId());
