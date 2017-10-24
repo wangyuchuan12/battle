@@ -473,7 +473,8 @@ public class BattleApi {
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setCreationTime(new DateTime());
 		battleRoom.setMaxinum(maxinumInt);
-		battleRoom.setMininum(mininumInt);
+		//把最最小数量设置成最大数量，有利于控制
+		battleRoom.setMininum(maxinumInt);
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setOwner(battleUser.getId());
 		battleRoom.setName(battle.getName());
