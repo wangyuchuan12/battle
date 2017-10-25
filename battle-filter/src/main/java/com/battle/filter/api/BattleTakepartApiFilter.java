@@ -50,7 +50,7 @@ public class BattleTakepartApiFilter extends Filter{
 			return resultVo;
 		}
 		
-		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE){
+		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE||battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_OUT){
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
 			battlePeriodMember.setRoomId(roomId);
 			sessionManager.update(battlePeriodMember);

@@ -531,7 +531,15 @@ public class ManagerApi {
 		
 		for(BattlePeriodStage battlePeriodStage:battlePeriodStages){
 			Map<String, List<BattleQuestion>> subjectQuestionMap = battleQuestionMap.get(battlePeriodStage.getId());
-			if(subjectQuestionMap.size()<4){
+
+			if(subjectQuestionMap==null){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于4");
+				return resultVo;
+			}
+			
+			if(subjectQuestionMap!=null&&subjectQuestionMap.size()<4){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
 				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于4");
@@ -544,7 +552,9 @@ public class ManagerApi {
 				num = num + subjectQuestions.size();
 			}
 			
-			if(battlePeriodStage.getQuestionCount()<num){
+			System.out.println("num:"+battlePeriodStage.getQuestionCount()+",num2:"+num);
+			
+			if(battlePeriodStage.getQuestionCount()>num){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
 				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目数量小于"+battlePeriodStage.getQuestionCount());

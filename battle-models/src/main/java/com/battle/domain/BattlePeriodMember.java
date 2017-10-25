@@ -33,7 +33,11 @@ public class BattlePeriodMember implements Serializable{
 	//进行中
 	public static final Integer STATUS_IN = 1;
 	
+	//完成
 	public static final Integer STATUS_COMPLETE =2;
+	
+	//退出
+	public static final Integer STATUS_OUT=3;
 	
 	
 	@Id

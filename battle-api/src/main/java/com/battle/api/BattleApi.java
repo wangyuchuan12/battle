@@ -364,7 +364,15 @@ public class BattleApi {
 		String periodId = httpServletRequest.getParameter("periodId");
 		String maxinum = httpServletRequest.getParameter("maxinum");
 		String mininum = httpServletRequest.getParameter("mininum");
+		String isPublic = httpServletRequest.getParameter("isPublic");
 		
+		
+		if(CommonUtil.isEmpty(isPublic)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("参数isPublic不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
 		
 		
 		if(CommonUtil.isEmpty(battleId)){
@@ -391,6 +399,14 @@ public class BattleApi {
 		if(CommonUtil.isEmpty(mininum)){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setErrorMsg("参数mininum不能为空");
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		int isPublicInt = Integer.parseInt(isPublic);
+		if(isPublicInt!=0&&isPublicInt!=1){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("isPublic的值必须是0或者1");
 			resultVo.setSuccess(false);
 			return resultVo;
 		}
@@ -483,6 +499,7 @@ public class BattleApi {
 		battleRoom.setStatus(BattleRoom.STATUS_FREE);
 		battleRoom.setNum(0);
 		battleRoom.setIsPublic(0);
+		battleRoom.setIsPublic(isPublicInt);
 		battleRoomService.add(battleRoom);
 		
 		
@@ -530,6 +547,52 @@ public class BattleApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battleRooms.getContent());
+		
+		return resultVo;
+		
+		
+	}
+	
+	@RequestMapping(value="roomSignout")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
+	public Object roomSignOut(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		if(battlePeriodMember.getStatus()!=BattlePeriodMember.STATUS_IN){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("不是正在进行中，无法退出");
+			return resultVo;
+		}
+		
+		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
+		Integer num = battleRoom.getNum();
+		
+		int status = battleRoom.getStatus();
+		
+		if(status==BattleRoom.STATUS_FULL){
+			battleRoom.setStatus(BattleRoom.STATUS_IN);
+		}
+
+		battleRoom.setNum(num-1);
+		
+		
+		battleRoomService.update(battleRoom);
+		
+		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
+		
+		battlePeriodMemberService.update(battlePeriodMember);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
 		
 		return resultVo;
 		

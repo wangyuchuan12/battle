@@ -32,7 +32,7 @@ public class CurrentMemberInfoFilter extends Filter{
 		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
 		String roomId = httpServletRequest.getParameter("roomId");
 		
-		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);
 		
 		String memberId = httpServletRequest.getParameter("memberId");
 		
