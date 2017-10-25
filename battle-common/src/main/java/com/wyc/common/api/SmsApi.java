@@ -27,22 +27,30 @@ public class SmsApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String phonenum = httpServletRequest.getParameter("phonenumber");
 		String project = httpServletRequest.getParameter("project");
-		String code = submailMsgService.sendMsg(phonenum,project);
-		
-		if(!CommonUtil.isEmpty(code)){
-			Map<String, Object> data = new HashMap<>();
-			data.put("code", code);
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(true);
-		//	resultVo.setData(data);
+		try{
+			String code = submailMsgService.sendMsg(phonenum,project);
 			
-			sessionManager.rawSaveToSession("auth_msg_code_"+phonenum+"_"+project, code);
-			
-			return resultVo;
-		}else{
+			if(!CommonUtil.isEmpty(code)){
+				Map<String, Object> data = new HashMap<>();
+				data.put("code", code);
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(true);
+			//	resultVo.setData(data);
+				
+				sessionManager.rawSaveToSession("auth_msg_code_"+phonenum+"_"+project, code);
+				
+				return resultVo;
+			}else{
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				return resultVo;
+			}
+		}catch(Exception e){
 			ResultVo resultVo = new ResultVo();
+			resultVo.setErrorMsg("发生错误");
 			resultVo.setSuccess(false);
 			return resultVo;
 		}
+		
 	}
 }

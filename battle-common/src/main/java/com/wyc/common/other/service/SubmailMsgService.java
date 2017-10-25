@@ -24,25 +24,21 @@ public class SubmailMsgService {
 		String mailAppid = context.getSubmailAppid();
 		String mailSignature = context.getSubmailSignature();
 		Request request = requestFactory.submailMsgSendResultRequest();
-		try{
-			ObjectMapper objectMapper = new ObjectMapper();
-			Map<String, String> map = new HashMap<>();
-			String code = CommonUtil.createRandom(true, 4);
-			map.put("code", code);
-			map.put("time", "120s");
-			String json = objectMapper.writeValueAsString(map);
-			Response response = request.post("appid="+mailAppid+"&to="+phonenum+"&project="+project+"&signature="+mailSignature+"&vars="+json);
-	        SubmailMsgSendResultVo submailMsgSendResultVo = response.readObject(SubmailMsgSendResultVo.class);
-	        if(submailMsgSendResultVo.getStatus().equals("success")){
-	        	return code;
-	        }else{
-	        	return null;
-	        }
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+	
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, String> map = new HashMap<>();
+		String code = CommonUtil.createRandom(true, 4);
+		map.put("code", code);
+		map.put("time", "120s");
+		String json = objectMapper.writeValueAsString(map);
+		Response response = request.post("appid="+mailAppid+"&to="+phonenum+"&project="+project+"&signature="+mailSignature+"&vars="+json);
+        SubmailMsgSendResultVo submailMsgSendResultVo = response.readObject(SubmailMsgSendResultVo.class);
+        if(submailMsgSendResultVo.getStatus().equals("success")){
+        	return code;
+        }else{
+        	return null;
+        }
 		
-		return null;
         
 	}
 	

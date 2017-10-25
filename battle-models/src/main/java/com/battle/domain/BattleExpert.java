@@ -105,6 +105,19 @@ public class BattleExpert {
 	@Column
 	private String introduce;
 	
+	
+	@ParamAnnotation
+	@Column
+	private String nickname;
+	
+	@ParamAnnotation
+	@Column(name="user_img")
+	private String userImg;
+	
+	@ParamAnnotation
+	@Column
+	private String openid;
+	
 	@ParamAnnotation
 	@Column(name = "apply_date_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -287,6 +300,30 @@ public class BattleExpert {
 
 	public void setIntroduce(String introduce) {
 		this.introduce = introduce;
+	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getUserImg() {
+		return userImg;
+	}
+
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 	public DateTime getCreateAt() {
