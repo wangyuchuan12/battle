@@ -31,7 +31,7 @@ public class SubmailMsgService {
 			map.put("code", code);
 			map.put("time", "120s");
 			String json = objectMapper.writeValueAsString(map);
-			Response response = request.post("appid="+mailAppid+"&to=13738139702&project="+project+"&signature="+mailSignature+"&vars="+json);
+			Response response = request.post("appid="+mailAppid+"&to="+phonenum+"&project="+project+"&signature="+mailSignature+"&vars="+json);
 	        SubmailMsgSendResultVo submailMsgSendResultVo = response.readObject(SubmailMsgSendResultVo.class);
 	        if(submailMsgSendResultVo.getStatus().equals("success")){
 	        	return code;
