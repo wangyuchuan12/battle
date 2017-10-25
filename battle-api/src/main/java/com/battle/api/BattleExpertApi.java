@@ -129,6 +129,9 @@ public class BattleExpertApi {
 			battleExpert.setStatus(BattleExpert.APPLY_STATUS);
 			battleExpert.setWechat(wechat);
 			battleExpert.setIntroduce(introduce);
+			battleExpert.setUserImg(userInfo.getHeadimgurl());
+			battleExpert.setNickname(userInfo.getNickname());
+			battleExpert.setOpenid(userInfo.getOpenid());
 			battleExpertService.add(battleExpert);
 			
 			ResultVo resultVo = new ResultVo();
@@ -341,7 +344,7 @@ public class BattleExpertApi {
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put("id", battleExpert.getId());
-		data.put("applyDateTime", battleExpert.getApplyDateTime());
+	//	data.put("applyDateTime", battleExpert.getApplyDateTime());
 		data.put("auditBattleUserId", battleExpert.getAuditBattleUserId());
 		data.put("auditDateTime", battleExpert.getAuditDateTime());
 		data.put("battleId", battleExpert.getBattleId());
@@ -356,6 +359,10 @@ public class BattleExpertApi {
 		data.put("remark", battleExpert.getRemark());
 		data.put("status", battleExpert.getStatus());
 		data.put("wechat", battleExpert.getWechat());
+		
+		data.put("nickname", battleExpert.getNickname());
+		
+		data.put("userImg", battleExpert.getUserImg());
 		
 		data.put("headImg", battle.getHeadImg());
 		data.put("name", battle.getName());
