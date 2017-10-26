@@ -1,5 +1,7 @@
 package com.battle.service;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,12 +19,28 @@ public class BattleService {
 	private BattleDao battleDao;
 
 	public Battle findOne(String id) {
-		return battleDao.findOne(id);
+		Battle battle = battleDao.findOne(id);
+		String name = battle.getName();
+		try{
+			name = URLDecoder.decode(name,"utf-8");
+			battle.setName(name);
+		}catch(Exception e){
+			
+		}
+		
+		return battle;
 	}
 
 	public void update(Battle battle) {
 		
 		battle.setUpdateAt(new DateTime());
+		try{
+			String name = URLEncoder.encode(battle.getName(),"utf-8");
+			battle.setName(name);
+		}catch(Exception e){
+			
+		}
+		
 		battleDao.save(battle);
 		
 	}
