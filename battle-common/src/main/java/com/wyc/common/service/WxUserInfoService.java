@@ -47,6 +47,9 @@ public class WxUserInfoService {
     
     public UserInfo findByToken(String token){
         UserInfo userInfo = userInfoRepository.findByToken(token);
+        if(userInfo==null){
+        	return null;
+        }
         String nickname = userInfo.getNickname();
         try{
         	nickname = URLDecoder.decode(nickname, "utf-8");
@@ -60,6 +63,9 @@ public class WxUserInfoService {
     
     public UserInfo findByOpenid(String openid){
         UserInfo userInfo =  userInfoRepository.findByOpenid(openid);
+        if(userInfo==null){
+        	return null;
+        }
         String nickname = userInfo.getNickname();
         try{
         	nickname = URLDecoder.decode(nickname, "utf-8");
@@ -72,6 +78,9 @@ public class WxUserInfoService {
 
 	public UserInfo findByOpenidAndSource(String openid, int source) {
 		UserInfo userInfo = userInfoRepository.findByOpenidAndSource(openid,source);
+		if(userInfo==null){
+        	return null;
+        }
 		String nickname = userInfo.getNickname();
         try{
         	nickname = URLDecoder.decode(nickname, "utf-8");
