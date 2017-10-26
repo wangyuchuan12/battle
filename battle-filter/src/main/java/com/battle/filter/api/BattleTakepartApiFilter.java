@@ -38,6 +38,8 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
 		
+		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
 		if(CommonUtil.isEmpty(roomId)){
 			ResultVo resultVo = new ResultVo();
 			
@@ -48,6 +50,16 @@ public class BattleTakepartApiFilter extends Filter{
 			resultVo.setData(battlePeriodMember);
 			
 			return resultVo;
+		}
+		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_FULL&&battlePeriodMember.getStatus()!=BattlePeriodMember.STATUS_IN){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("房间已满");
+			resultVo.setErrorCode(2);
+			sessionManager.setReturnValue(resultVo);
+			sessionManager.setReturn(true);
+			return null;
 		}
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE||battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_OUT){
@@ -95,15 +107,6 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);
 		
-		if(battleRoom.getStatus()==BattleRoom.STATUS_FULL){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("房间已满");
-			resultVo.setErrorCode(2);
-			sessionManager.setReturnValue(resultVo);
-			sessionManager.setReturn(true);
-			return null;
-		}
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			ResultVo resultVo = new ResultVo();
