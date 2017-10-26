@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.battle.domain.Battle;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.wyc.AttrEnum;
@@ -28,6 +30,9 @@ public class BattleTakepartApiFilter extends Filter{
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private BattlePeriodService BattlePeriodService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -66,6 +71,16 @@ public class BattleTakepartApiFilter extends Filter{
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
 			battlePeriodMember.setRoomId(roomId);
 			sessionManager.update(battlePeriodMember);
+			
+			BattlePeriod battlePeriod = new BattlePeriod();
+			Integer takepartCount = battlePeriod.getTakepartCount();
+			if(takepartCount==null){
+				takepartCount = 0;
+			}
+			takepartCount++;
+			battlePeriod.setTakepartCount(takepartCount);
+			BattlePeriodService.update(battlePeriod);
+			
 			ResultVo resultVo = new ResultVo();
 			
 			resultVo.setSuccess(true);
