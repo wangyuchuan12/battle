@@ -20,13 +20,6 @@ public class BattleService {
 
 	public Battle findOne(String id) {
 		Battle battle = battleDao.findOne(id);
-		String name = battle.getName();
-		try{
-			name = URLDecoder.decode(name,"utf-8");
-			battle.setName(name);
-		}catch(Exception e){
-			
-		}
 		
 		return battle;
 	}
@@ -34,12 +27,6 @@ public class BattleService {
 	public void update(Battle battle) {
 		
 		battle.setUpdateAt(new DateTime());
-		try{
-			String name = URLEncoder.encode(battle.getName(),"utf-8");
-			battle.setName(name);
-		}catch(Exception e){
-			
-		}
 		
 		battleDao.save(battle);
 		
