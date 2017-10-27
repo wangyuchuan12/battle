@@ -33,6 +33,9 @@ public class BattleTakepartApiFilter extends Filter{
 	
 	@Autowired
 	private BattlePeriodService BattlePeriodService;
+	
+	@Autowired
+	private BattlePeriodService battlePeriodService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -72,7 +75,7 @@ public class BattleTakepartApiFilter extends Filter{
 			battlePeriodMember.setRoomId(roomId);
 			sessionManager.update(battlePeriodMember);
 			
-			BattlePeriod battlePeriod = new BattlePeriod();
+			BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
 			Integer takepartCount = battlePeriod.getTakepartCount();
 			if(takepartCount==null){
 				takepartCount = 0;
