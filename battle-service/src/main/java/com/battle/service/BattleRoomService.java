@@ -30,8 +30,8 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findOneByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUserId);
 	}
-	public Page<BattleRoom> findAllByIsPublicOrderByCreationTimeAsc(Integer isPublic , Pageable pageable) {
-		return battleRoomDao.findAllByIsPublicOrderByCreationTimeAsc(isPublic , pageable);
+	public Page<BattleRoom> findAllByIsPublicAndStatusOrderByCreationTimeAsc(Integer isPublic , Integer status ,Pageable pageable) {
+		return battleRoomDao.findAllByIsPublicAndStatusOrderByCreationTimeAsc(isPublic , status,pageable);
 	}
 
 	public Page<BattleRoom> findAllByBattleIdAndStatusAndIsPublic(String battleId, Integer status, int isPublic,

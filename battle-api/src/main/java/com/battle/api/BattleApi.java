@@ -520,6 +520,7 @@ public class BattleApi {
 	public Object rooms(HttpServletRequest httpServletRequest)throws Exception{
 		String page = httpServletRequest.getParameter("page");
 		String size = httpServletRequest.getParameter("size");
+		String status = httpServletRequest.getParameter("status");
 		
 		if(CommonUtil.isEmpty(page)){
 			page = "0";
@@ -529,9 +530,15 @@ public class BattleApi {
 			size = "10";
 		}
 		
+		if(CommonUtil.isEmpty(status)){
+			status = "1";
+		}
+		
 		Integer pageInt = Integer.parseInt(page);
 		
 		Integer sizeInt = Integer.parseInt(size);
+		
+		Integer statusInt = Integer.parseInt(status);
 		
 		if(sizeInt>50){
 			ResultVo resultVo = new ResultVo();
@@ -542,7 +549,7 @@ public class BattleApi {
 		
 		
 		Pageable pageable = new PageRequest(pageInt,sizeInt);
-		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsPublicOrderByCreationTimeAsc(1,pageable);
+		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsPublicAndStatusOrderByCreationTimeAsc(1,statusInt,pageable);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

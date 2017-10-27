@@ -11,7 +11,7 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	BattleRoom findOneByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId);
 
-	Page<BattleRoom> findAllByIsPublicOrderByCreationTimeAsc(Integer isPublic,Pageable pageable);
+	Page<BattleRoom> findAllByIsPublicAndStatusOrderByCreationTimeAsc(Integer isPublic,Integer status,Pageable pageable);
 
 
 	Page<BattleRoom> findAllByBattleIdAndStatusAndIsPublic(String battleId, Integer status, int isPublic,
