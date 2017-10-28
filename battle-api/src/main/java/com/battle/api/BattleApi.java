@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -489,8 +490,7 @@ public class BattleApi {
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setCreationTime(new DateTime());
 		battleRoom.setMaxinum(maxinumInt);
-		//把最最小数量设置成最大数量，有利于控制
-		battleRoom.setMininum(maxinumInt);
+		battleRoom.setMininum(mininumInt);
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setOwner(battleUser.getId());
 		battleRoom.setName(battle.getName());
