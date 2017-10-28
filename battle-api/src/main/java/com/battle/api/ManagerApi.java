@@ -404,41 +404,7 @@ public class ManagerApi {
 		battleQuestion.setQuestionId(questionTarget.getId());
 		
 		
-		String oldSubjectId = battleQuestion.getBattleSubjectId();
-		if(!oldSubjectId.equals(subjectId)){
-			BattleSubject oldBattleSubject = battleSubjectService.findOne(oldSubjectId);
-			
-			String oldBattleQuestionIdStr = oldBattleSubject.getBattleQuestionIds();
-			
-			if(!CommonUtil.isEmpty(oldBattleQuestionIdStr)){
-				String[] oldBattleQuestionIds = oldBattleQuestionIdStr.split(",");
-				StringBuffer sb = new StringBuffer();
-				for(String oldBattleQuestionId:oldBattleQuestionIds){
-					if(!oldBattleQuestionId.equals(battleQuestionId)){
-						sb.append(oldBattleQuestionId);
-					}
-				}
-				
-				oldBattleSubject.setBattleQuestionIds(sb.toString());
-				
-				battleSubjectService.update(oldBattleSubject);
-			}else{
-				BattleSubject battleSubject = battleSubjectService.findOne(subjectId);
-				
-				String battleQuestionIds = battleSubject.getBattleQuestionIds();
-				
-				if(CommonUtil.isEmpty(battleQuestionIds)){
-					battleQuestionIds = questionTarget.getId();
-				}else{
-					battleQuestionIds = battleQuestionIds+","+questionTarget.getId();
-				}
-				
-				battleSubject.setBattleQuestionIds(battleQuestionIds);
-				
-				battleSubjectService.update(battleSubject);
-			}
-			
-		}
+		
 		
 		
 		
@@ -713,19 +679,6 @@ public class ManagerApi {
 		battleQuestion.setQuestionId(questionTarget.getId());
 		battleQuestionService.add(battleQuestion);
 		
-		BattleSubject battleSubject = battleSubjectService.findOne(subjectId);
-		
-		String battleQuestionIds = battleSubject.getBattleQuestionIds();
-		
-		if(CommonUtil.isEmpty(battleQuestionIds)){
-			battleQuestionIds = questionTarget.getId();
-		}else{
-			battleQuestionIds = battleQuestionIds+","+questionTarget.getId();
-		}
-		
-		battleSubject.setBattleQuestionIds(battleQuestionIds);
-		
-		battleSubjectService.update(battleSubject);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		TypeReference<List<Map<String, String>>> typeReference = new TypeReference<List<Map<String,String>>>() {

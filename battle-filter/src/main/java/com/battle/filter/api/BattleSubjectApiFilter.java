@@ -7,6 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleSubject;
@@ -45,8 +48,10 @@ public class BattleSubjectApiFilter extends Filter{
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId,0);
 		
+		Pageable pageable = new PageRequest(0, 20);
 		
-		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageId(battleId,battlePeriodStage.getId());
+		
+		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdRandom(battleId,battlePeriodStage.getId(),pageable);
 		
 		Map<String, List<String>> battleQuestionMap = new HashMap<>();
 		for(BattleQuestion battleQuestion:battleQuestions){

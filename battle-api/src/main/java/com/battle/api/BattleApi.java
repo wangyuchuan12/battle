@@ -622,41 +622,4 @@ public class BattleApi {
 		}
 	}
 	
-	@RequestMapping(value="battleQuestions")
-	@ResponseBody
-	@Transactional
-	public Object battleQuestions(HttpServletRequest httpServletRequest)throws Exception{
-		String subjectIdStr = httpServletRequest.getParameter("subjectIds");
-		String[] subjectIds = subjectIdStr.split(",");
-		List<BattleSubject> battleSubjects = battleSubjectService.findAllByIdIn(subjectIds);
-		
-		List<String> battleQuestionIds = new ArrayList<>();
-		
-		for(BattleSubject battleSubject:battleSubjects){
-			String thisQuestionIdStr = battleSubject.getBattleQuestionIds();
-			
-			String[] thisQuestionIds = thisQuestionIdStr.split(",");
-			if(thisQuestionIds!=null&&thisQuestionIds.length==1){
-				
-				battleQuestionIds.add(thisQuestionIds[0]);
-				
-			}else if(thisQuestionIds!=null&&thisQuestionIds.length>1){
-
-				Random random = new Random();
-				Integer index = random.nextInt(thisQuestionIds.length-1);				
-				battleQuestionIds.add(thisQuestionIds[index]);
-				
-			}
-		}
-		
-		
-		ResultVo resultVo = new ResultVo();
-		resultVo.setSuccess(true);
-		
-		resultVo.setData(battleQuestionIds);
-		
-		return resultVo;
-		
-	}
-	
 }

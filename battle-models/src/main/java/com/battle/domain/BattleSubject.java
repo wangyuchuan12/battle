@@ -44,11 +44,6 @@ public class BattleSubject {
 	@Column
 	private Integer seq;
 	
-	@Lob
-	@ParamAnnotation
-	@Column(name="battle_question_ids")
-	private String battleQuestionIds;
-	
 	@ParamAnnotation
 	@Column(name="is_del")
 	private Integer isDel;
@@ -104,16 +99,6 @@ public class BattleSubject {
 	public void setSeq(Integer seq) {
 		this.seq = seq;
 	}
-
-	public String getBattleQuestionIds() {
-		return battleQuestionIds;
-	}
-
-	public void setBattleQuestionIds(String battleQuestionIds) {
-		this.battleQuestionIds = battleQuestionIds;
-	}
-	
-	
 	
 	public Integer getIsDel() {
 		return isDel;
