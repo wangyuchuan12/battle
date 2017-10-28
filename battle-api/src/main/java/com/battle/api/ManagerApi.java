@@ -535,14 +535,14 @@ public class ManagerApi {
 			if(subjectQuestionMap==null){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
-				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于4");
+				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于3");
 				return resultVo;
 			}
 			
-			if(subjectQuestionMap!=null&&subjectQuestionMap.size()<4){
+			if(subjectQuestionMap!=null&&subjectQuestionMap.size()<3){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
-				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于4");
+				resultVo.setErrorMsg("第"+battlePeriodStage.getIndex()+"阶段题目类别数量小于3");
 				return resultVo;
 			}
 			
