@@ -110,6 +110,12 @@ public class BattlePeriodMember implements Serializable{
 	private Integer isDel;
 	
 	@ParamAnnotation
+	@Column(name = "takepart_at")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+    private DateTime takepartAt;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -244,6 +250,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public DateTime getTakepartAt() {
+		return takepartAt;
+	}
+
+	public void setTakepartAt(DateTime takepartAt) {
+		this.takepartAt = takepartAt;
 	}
 
 	public DateTime getCreateAt() {

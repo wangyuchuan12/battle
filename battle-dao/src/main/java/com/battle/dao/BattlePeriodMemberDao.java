@@ -10,10 +10,10 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
 			String periodId,String roomId,Integer isDel);
 
-	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel);
+	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDelOrderByCreateAtAsc(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel);
 
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 
-	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId);
+	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdOrderByCreateAtAsc(String battleId, String periodId, String roomId);
 
 }

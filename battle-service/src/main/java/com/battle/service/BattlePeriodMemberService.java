@@ -110,7 +110,7 @@ public class BattlePeriodMemberService {
 		if(battlePeriodMembers!=null){
 			return battlePeriodMembers;
 		}else{
-			battlePeriodMembers = battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomId(battleId, periodId, roomId);
+			battlePeriodMembers = battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdOrderByCreateAtAsc(battleId, periodId, roomId);
 			try{
 				saveBattlePeriodMembersToCache(roomId, battlePeriodMembers);
 			}catch(Exception e){
@@ -146,7 +146,7 @@ public class BattlePeriodMemberService {
 			return thisBattlePeriodMembers;
 		}
 		
-		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,isDel);
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDelOrderByCreateAtAsc(battleId,periodId,roomId,statuses,isDel);
 		
 	}
 
