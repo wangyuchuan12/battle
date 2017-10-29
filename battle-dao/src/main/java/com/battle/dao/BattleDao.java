@@ -8,6 +8,6 @@ import com.battle.domain.Battle;
 
 public interface BattleDao extends CrudRepository<Battle, String>{
 
-	List<Battle> findAllByStatus(Integer status);
+	List<Battle> findAllByStatusOrderByIndexAsc(Integer status);
 
 }

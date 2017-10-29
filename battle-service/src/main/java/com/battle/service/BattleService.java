@@ -42,8 +42,8 @@ public class BattleService {
 		
 	}
 
-	public List<Battle> findAllByStatus(Integer status) {
+	public List<Battle> findAllByStatusOrderByIndexAsc(Integer status) {
 		
-		return battleDao.findAllByStatus(status);
+		return battleDao.findAllByStatusOrderByIndexAsc(status);
 	}
 }

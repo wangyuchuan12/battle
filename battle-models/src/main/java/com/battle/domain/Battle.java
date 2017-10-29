@@ -82,6 +82,10 @@ public class Battle {
 	private Integer status;
 	
 	@ParamAnnotation
+	@Column(name="z_index")
+	private Integer index;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -180,6 +184,14 @@ public class Battle {
 
 	public void setDefaultRoomId(String defaultRoomId) {
 		this.defaultRoomId = defaultRoomId;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
 	}
 
 	public DateTime getCreateAt() {

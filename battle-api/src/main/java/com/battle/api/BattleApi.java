@@ -357,7 +357,7 @@ public class BattleApi {
 	@RequestMapping(value="battles")
 	@ResponseBody
 	public Object battles(HttpServletRequest httpServletRequest){
-		List<Battle> battles = battleService.findAllByStatus(Battle.IN_STATUS);
+		List<Battle> battles = battleService.findAllByStatusOrderByIndexAsc(Battle.IN_STATUS);
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battles);
