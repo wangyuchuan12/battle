@@ -30,7 +30,9 @@ import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
 import com.battle.filter.api.BattleSubjectApiFilter;
 import com.battle.filter.api.BattleTakepartApiFilter;
+import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
+import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodMemberService;
@@ -182,6 +184,21 @@ public class BattleApi {
 	@ResponseBody
 	@HandlerAnnotation(hanlerFilter=BattleMembersApiFilter.class)
 	public Object members(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		if(sessionManager.isReturn()){
+			ResultVo resultVo = (ResultVo)sessionManager.getReturnValue();
+			return resultVo;
+		}else{
+			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
+			return resultVo;
+		}
+	}
+	
+	@RequestMapping(value="currentLoveCooling")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=CurrentLoveCoolingApiFilter.class)
+	public Object currentLoveCooling(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		if(sessionManager.isReturn()){

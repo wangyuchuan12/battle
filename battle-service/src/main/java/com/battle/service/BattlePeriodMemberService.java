@@ -107,7 +107,7 @@ public class BattlePeriodMemberService {
 	
 	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId,String periodId,String roomId){
 		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(roomId);
-		if(battlePeriodMembers!=null){
+		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 			return battlePeriodMembers;
 		}else{
 			battlePeriodMembers = battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdOrderByCreateAtAsc(battleId, periodId, roomId);
@@ -139,6 +139,7 @@ public class BattlePeriodMemberService {
 					if(status==status2){
 						if(isDel2==isDel){
 							thisBattlePeriodMembers.add(battlePeriodMember);
+							break;
 						}
 					}
 				}
