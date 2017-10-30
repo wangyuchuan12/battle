@@ -66,7 +66,7 @@ public class CurrentLoveCoolingFilter extends Filter{
 			
 			long time = schedule/upperLimit;
 			
-			schedule = schedule - unit*time;
+			schedule = schedule - upperLimit*time;
 			
 			battleMemberLoveCooling.setStartDatetime(new DateTime());
 			
