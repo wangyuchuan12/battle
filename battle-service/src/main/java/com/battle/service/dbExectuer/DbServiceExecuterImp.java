@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.battle.domain.Battle;
+import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.QuestionAnswer;
+import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
@@ -33,6 +35,9 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 	@Autowired
 	private BattlePeriodService battlePeriodService;
 	
+	@Autowired
+	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
+	
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
@@ -50,6 +55,8 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 						questionAnswerService.update((QuestionAnswer)target);
 					}else if(type.equals(BattleRoom.class)){
 						battleRoomService.update((BattleRoom)target);
+					}else if(type.equals(BattleMemberLoveCooling.class)){
+						battleMemberLoveCoolingService.update((BattleMemberLoveCooling)target);
 					}
 				}
 			}
@@ -76,6 +83,9 @@ public class DbServiceExecuterImp implements DbServiceExecuter{
 		}else if(clazz.equals(BattleRoom.class)){
 			BattleRoom battleRoom = battleRoomService.findOne(id);
 			return (T)battleRoom;
+		
+		}else if(clazz.equals(BattleMemberLoveCooling.class)){
+			BattleMemberLoveCooling battleMemberLoveCooling = battleMemberLoveCoolingService.findOne(id);
 		}
 		return null;
 	}

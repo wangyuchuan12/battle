@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
+import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
@@ -206,6 +207,40 @@ public class BattleApi {
 			return resultVo;
 		}else{
 			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
+			return resultVo;
+		}
+	}
+	
+	@RequestMapping(value="startCoolingLove")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=CurrentLoveCoolingApiFilter.class)
+	public Object startCoolingLove(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		if(sessionManager.isReturn()){
+			ResultVo resultVo = (ResultVo)sessionManager.getReturnValue();
+			return resultVo;
+		}else{
+			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
+			BattleMemberLoveCooling battleMemberLoveCooling = (BattleMemberLoveCooling)resultVo.getData();
+			BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+			
+			Integer loveResdule = battlePeriodMember.getLoveResidule();
+			Integer loveCount = battlePeriodMember.getLoveCount();
+			
+			if(loveResdule<loveCount){
+				battleMemberLoveCooling.setStartDatetime(new DateTime());
+				battleMemberLoveCooling.setStatus(BattleMemberLoveCooling.STATUS_IN);
+				battleMemberLoveCooling.setSchedule(0L);
+				resultVo.setSuccess(true);
+			}else{
+				battleMemberLoveCooling.setStatus(BattleMemberLoveCooling.STATUS_COMPLETE);
+				battleMemberLoveCooling.setSchedule(0L);
+				resultVo.setSuccess(false);
+				resultVo.setData(null);
+			}
+			
+			sessionManager.update(battleMemberLoveCooling);
+			
 			return resultVo;
 		}
 	}

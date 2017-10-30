@@ -10,6 +10,7 @@ import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleUser;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
+import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
@@ -72,6 +73,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		classes.add(LoginStatusFilter.class);
 		classes.add(CurrentBattleUserFilter.class);
 		classes.add(CurrentBattlePeriodMemberFilter.class);
+		classes.add(CurrentLoveCoolingFilter.class);
 		return classes;
 	}
 

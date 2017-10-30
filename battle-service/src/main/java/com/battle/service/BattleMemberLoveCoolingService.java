@@ -29,4 +29,17 @@ public class BattleMemberLoveCoolingService {
 		battleMemberLoveCoolingDao.save(battleMemberLoveCooling);
 		
 	}
+
+	public void update(BattleMemberLoveCooling battleMemberLoveCooling) {
+		
+		battleMemberLoveCooling.setUpdateAt(new DateTime());
+		
+		battleMemberLoveCoolingDao.save(battleMemberLoveCooling);
+		
+	}
+
+	public BattleMemberLoveCooling findOne(String id) {
+		
+		return battleMemberLoveCoolingDao.findOne(id);
+	}
 }

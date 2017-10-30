@@ -12,7 +12,7 @@ import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
 
 public class CurrentLoveCoolingFilter extends Filter{
-
+	
 	@Autowired
 	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 	@Override
@@ -40,7 +40,19 @@ public class CurrentLoveCoolingFilter extends Filter{
 			
 		}
 		
-		if(battlePeriodMember.getLoveCount()>battlePeriodMember.getLoveResidule()){
+		if(battleMemberLoveCooling.getStatus()!=BattlePeriodMember.STATUS_IN){
+			battleMemberLoveCooling.setStartDatetime(new DateTime());
+		}
+		
+		Integer loveCount = battlePeriodMember.getLoveCount();
+		
+		Integer loveResidule = battlePeriodMember.getLoveResidule();
+		if(loveResidule==null||loveResidule<0){
+			loveResidule = 0;
+		}
+		if(loveCount>loveResidule){
+			
+			battleMemberLoveCooling.setCoolLoveSeq(loveResidule+1);
 			Long millisec = battleMemberLoveCooling.getMillisec();
 			Integer unit = battleMemberLoveCooling.getUnit();
 			DateTime startDatetime = battleMemberLoveCooling.getStartDatetime();
@@ -52,19 +64,37 @@ public class CurrentLoveCoolingFilter extends Filter{
 			
 			long schedule = (differ/millisec)*unit+battleMemberLoveCooling.getSchedule();
 			
+			long time = schedule/upperLimit;
+			
+			schedule = schedule - unit*time;
+			
 			battleMemberLoveCooling.setStartDatetime(new DateTime());
 			
-			if(schedule<upperLimit){
+			Long loveResidule2 = time+loveResidule;
+			
+			if(loveResidule2<loveCount){
 				battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_IN);
 				battleMemberLoveCooling.setSchedule(schedule);
+				battlePeriodMember.setLoveResidule(loveResidule2.intValue());
+				battleMemberLoveCooling.setCoolLoveSeq(loveResidule2.intValue()+1);
+				battleMemberLoveCooling.setStartDatetime(new DateTime());
 			}else{
 				battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 				battleMemberLoveCooling.setSchedule(upperLimit);
+				battleMemberLoveCooling.setSchedule(0L);
+				battleMemberLoveCooling.setCoolLoveSeq(0);
+				battlePeriodMember.setLoveResidule(loveCount);
 			}
 		}else{
 			battleMemberLoveCooling.setSchedule(battleMemberLoveCooling.getUpperLimit());
+			battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			battleMemberLoveCooling.setSchedule(0L);
+			battleMemberLoveCooling.setCoolLoveSeq(0);
 		}
 		
+		sessionManager.update(battleMemberLoveCooling);
+		
+		sessionManager.update(battlePeriodMember);
 		
 		return battleMemberLoveCooling;
 	}

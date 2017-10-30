@@ -57,6 +57,11 @@ public class BattleMemberLoveCooling {
 	@Column
 	private Integer status;
 	
+	//冷却爱心序号
+	@ParamAnnotation
+	@Column(name="cool_love_seq")
+	private Integer coolLoveSeq;
+	
 	@ParamAnnotation
 	@Column(name="start_datetime")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -136,6 +141,14 @@ public class BattleMemberLoveCooling {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public Integer getCoolLoveSeq() {
+		return coolLoveSeq;
+	}
+
+	public void setCoolLoveSeq(Integer coolLoveSeq) {
+		this.coolLoveSeq = coolLoveSeq;
 	}
 
 	public DateTime getCreateAt() {
