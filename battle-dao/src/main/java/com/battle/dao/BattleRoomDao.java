@@ -17,7 +17,7 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 	Page<BattleRoom> findAllByBattleIdAndStatusAndIsPublic(String battleId, Integer status, int isPublic,
 			Pageable pageable);
 
-	@Query("from com.battle.domain.BattleRoom br where  br.id in (select bpm.roomId from com.battle.domain.BattlePeriodMember bpm where bpm.userId=:userId and bpm.status=1 or bpm.status==2) order by br.updateAt desc")
+	@Query("from com.battle.domain.BattleRoom br where  br.id in (select bpm.roomId from com.battle.domain.BattlePeriodMember bpm where bpm.userId=:userId and bpm.status=1 or bpm.status=2) order by br.updateAt desc")
 	Page<BattleRoom> findAllByUserId(@Param("userId") String userId,Pageable pageable);
 
 }
