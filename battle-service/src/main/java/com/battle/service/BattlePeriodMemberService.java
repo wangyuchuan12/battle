@@ -3,6 +3,8 @@ package com.battle.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import com.wyc.common.service.RedisService;
 
 @Service
 public class BattlePeriodMemberService {
+	
+	private static final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	
 	private final String  LIST_KEY = "peroid_members_key";
 
@@ -85,20 +89,33 @@ public class BattlePeriodMemberService {
 	}
 	
 	public List<BattlePeriodMember> findBattlePeriodMembersByRoomIdFromCache(String roomId){
-		String key = LIST_KEY;
-		key = key+"_"+roomId;
-		List<BattlePeriodMember> battlePeriodMembers = redisService.getList(key);
-		return battlePeriodMembers;
+		
+		try{
+			readWriteLock.readLock().lock();
+			String key = LIST_KEY;
+			key = key+"_"+roomId;
+			List<BattlePeriodMember> battlePeriodMembers = redisService.getList(key);
+			return battlePeriodMembers;
+		}catch(Exception e){
+			
+		}finally{
+			readWriteLock.readLock().unlock();
+			
+		}
+		return null;
+		
 	}
 	
 	public void saveBattlePeriodMembersToCache(String roomId,List<BattlePeriodMember> battlePeriodMembers){
 		try{
+			readWriteLock.writeLock().lock();
 			String key = LIST_KEY;
 			key = key+"_"+roomId;
-			
 			redisService.setList(key, battlePeriodMembers,BattlePeriodMember.class);
 		}catch(Exception e){
-			e.printStackTrace();
+			
+		}finally{
+			readWriteLock.writeLock().unlock();
 		}
 		
 

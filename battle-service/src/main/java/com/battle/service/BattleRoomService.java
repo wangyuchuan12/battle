@@ -1,4 +1,5 @@
 package com.battle.service;
+import java.util.List;
 import java.util.UUID;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class BattleRoomService {
 		battleRoomDao.save(battleRoom);
 		
 	}
-	public BattleRoom findOneByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId) {
+	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId) {
 		
-		return battleRoomDao.findOneByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUserId);
+		return battleRoomDao.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUserId);
 	}
 	public Page<BattleRoom> findAllByIsPublicAndStatusOrderByCreationTimeAsc(Integer isPublic , Integer status ,Pageable pageable) {
-		return battleRoomDao.findAllByIsPublicAndStatusOrderByCreationTimeAsc(isPublic , status,pageable);
+		return battleRoomDao.findAllByIsPublicAndStatusOrderByCreationTimeAsc(isPublic , status, pageable);
 	}
 
 	public Page<BattleRoom> findAllByBattleIdAndStatusAndIsPublic(String battleId, Integer status, int isPublic,

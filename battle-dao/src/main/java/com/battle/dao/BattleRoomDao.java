@@ -1,4 +1,6 @@
 package com.battle.dao;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +11,7 @@ import com.battle.domain.BattleRoom;
 
 public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
-	BattleRoom findOneByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId);
+	List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId);
 
 	Page<BattleRoom> findAllByIsPublicAndStatusOrderByCreationTimeAsc(Integer isPublic,Integer status,Pageable pageable);
 

@@ -482,7 +482,7 @@ public class BattleApi {
 			return resultVo;
 		}
 		
-		if(maxinumInt>50){
+		if(maxinumInt>500){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setErrorMsg("maxinumInt参数不能大于50");
 			resultVo.setSuccess(false);
@@ -528,8 +528,9 @@ public class BattleApi {
 		}
 		
 		
-		BattleRoom battleRoom = battleRoomService.findOneByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
-		if(battleRoom!=null){
+		List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
+		if(battleRooms!=null&&battleRooms.size()>0&&battleUser.getIsManager()!=1){
+			BattleRoom battleRoom = battleRooms.get(0);
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorCode(0);
@@ -537,7 +538,7 @@ public class BattleApi {
 			resultVo.setData(battleRoom);
 			return resultVo;
 		}
-		battleRoom = new BattleRoom();
+		BattleRoom battleRoom = new BattleRoom();
 		battleRoom.setBattleId(battleId);
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setCreationTime(new DateTime());
@@ -592,7 +593,7 @@ public class BattleApi {
 		
 		Integer statusInt = Integer.parseInt(status);
 		
-		if(sizeInt>50){
+		if(sizeInt>20){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("条数不能超过50");
