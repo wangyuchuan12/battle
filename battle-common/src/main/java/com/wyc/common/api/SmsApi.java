@@ -46,6 +46,7 @@ public class SmsApi {
 				return resultVo;
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			ResultVo resultVo = new ResultVo();
 			resultVo.setErrorMsg("发生错误");
 			resultVo.setSuccess(false);
