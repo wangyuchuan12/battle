@@ -86,7 +86,7 @@ public class BattlePeriodMemberService {
 				}
 			}
 			
-			if(flag){
+			if(!flag){
 				battlePeriodMembers.add(battlePeriodMember);
 			}
 			
