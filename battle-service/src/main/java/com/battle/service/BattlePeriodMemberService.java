@@ -38,16 +38,18 @@ public class BattlePeriodMemberService {
 
 	public void add(BattlePeriodMember battlePeriodMember) {
 		
-		battlePeriodMember.setId(UUID.randomUUID().toString());
-		battlePeriodMember.setUpdateAt(new DateTime());
-		battlePeriodMember.setCreateAt(new DateTime());
-
-		battlePeriodMemberDao.save(battlePeriodMember);
+		
 		
 		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers==null){
 			battlePeriodMembers = new ArrayList<>();
 		}
+		
+		battlePeriodMember.setId(UUID.randomUUID().toString());
+		battlePeriodMember.setUpdateAt(new DateTime());
+		battlePeriodMember.setCreateAt(new DateTime());
+
+		battlePeriodMemberDao.save(battlePeriodMember);
 		
 		battlePeriodMembers.add(battlePeriodMember);
 		
@@ -57,13 +59,10 @@ public class BattlePeriodMemberService {
 
 	public void update(BattlePeriodMember battlePeriodMember) {
 		
-		battlePeriodMember.setUpdateAt(new DateTime());
 		
-		battlePeriodMemberDao.save(battlePeriodMember);
 		
 		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
-			boolean flag = false;
 			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
 				
 				if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
@@ -85,6 +84,10 @@ public class BattlePeriodMemberService {
 					battlePeriodMember2.setCreateAt(battlePeriodMember.getCreateAt());
 				}
 			}
+			
+			battlePeriodMember.setUpdateAt(new DateTime());
+			
+			battlePeriodMemberDao.save(battlePeriodMember);
 			
 			saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);
 		}
