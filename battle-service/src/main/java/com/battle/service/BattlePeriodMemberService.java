@@ -44,7 +44,7 @@ public class BattlePeriodMemberService {
 
 		battlePeriodMemberDao.save(battlePeriodMember);
 		
-		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(battlePeriodMember.getRoomId());
+		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers==null){
 			battlePeriodMembers = new ArrayList<>();
 		}
@@ -61,9 +61,11 @@ public class BattlePeriodMemberService {
 		
 		battlePeriodMemberDao.save(battlePeriodMember);
 		
-		List<BattlePeriodMember> battlePeriodMembers = findBattlePeriodMembersByRoomIdFromCache(battlePeriodMember.getRoomId());
+		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
+			boolean flag = false;
 			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
+				flag = true;
 				if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
 					battlePeriodMember2.setBattleId(battlePeriodMember.getBattleId());
 					battlePeriodMember2.setBattleUserId(battlePeriodMember.getBattleUserId());
@@ -82,6 +84,10 @@ public class BattlePeriodMemberService {
 					battlePeriodMember2.setUserId(battlePeriodMember.getUserId());
 					battlePeriodMember2.setCreateAt(battlePeriodMember.getCreateAt());
 				}
+			}
+			
+			if(flag){
+				battlePeriodMembers.add(battlePeriodMember);
 			}
 			
 			saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);

@@ -33,6 +33,13 @@ public class RequestFactory {
 
 	}
 	
+	
+	public Request getwxacodeRequest(String accessToken)throws Exception{
+		URL url = new URL("https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken);
+		return getRequestByConnection(url);
+	}
+
+	
 	//通过code获取access_token
 	public Request oauth2AccessTokenRequest(String appid,String secret,String code , String grantType)throws Exception{
 	    URL url = new URL(

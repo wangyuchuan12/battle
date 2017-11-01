@@ -16,11 +16,15 @@ import org.apache.http.params.HttpParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
 public class Request {
 	private String charsetName = "UTF-8";
 	@Autowired
 	private HttpClient httpClient;
+	
+	@Autowired
+    private AutowireCapableBeanFactory autowireFactory;
 	private URL url;
 	final static Logger logger = LoggerFactory.getLogger(Request.class);
 	public Request(URL url){
@@ -40,7 +44,11 @@ public class Request {
 	        HttpResponse httpResponse = httpClient.execute(httpGet);
 	        HttpEntity httpEntity = httpResponse.getEntity();
 		logger.debug("request success");
-		return new Response(httpEntity.getContent(),charsetName);
+		Response response = new Response(httpEntity.getContent(),charsetName);
+		
+		autowireFactory.autowireBean(response);
+		
+		return response;
 	}
 	
 	public Response post(String data) throws IOException{
@@ -53,7 +61,10 @@ public class Request {
 	        HttpResponse httpResponse = httpClient.execute(httpPost);
 	        
 	        HttpEntity httpEntity = httpResponse.getEntity();
-		return new Response(httpEntity.getContent(),charsetName);
+		Response response = new Response(httpEntity.getContent(),charsetName);
+		autowireFactory.autowireBean(response);
+		
+		return response;
 		
 	}
 }

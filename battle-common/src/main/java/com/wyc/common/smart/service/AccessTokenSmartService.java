@@ -64,6 +64,29 @@ public class AccessTokenSmartService implements SmartService<AccessTokenBean>{
         logger.debug("get AccessTokenBean from database,the object is {}",accessTokenBean);
         return accessTokenBean;
     }
+    
+    public AccessTokenBean get()throws Exception{
+    	AccessTokenBean accessTokenBean = getFromDatabase(null);
+    	
+    	if(accessTokenBean!=null&&currentIsAvailable(accessTokenBean)){
+    		return accessTokenBean;
+    	}else{
+    		
+    		AccessTokenBean accessTokenBean2 =  getFromWx();
+    		if(accessTokenBean!=null){
+    			accessTokenBean.setAccessToken(accessTokenBean2.getAccessToken());
+    			accessTokenBean.setExpiresIn(accessTokenBean2.getExpiresIn());
+    			accessTokenBean.setToken(accessTokenBean2.getToken());
+    			wxAccessTokenService.save(accessTokenBean);
+    			
+    			return accessTokenBean;
+    		}else{
+    			wxAccessTokenService.add(accessTokenBean2);
+    			return accessTokenBean2;
+    		}
+    		
+    	}
+    }
 
     @Override
     public Token saveToDatabase(AccessTokenBean t,String tokenKey) {
