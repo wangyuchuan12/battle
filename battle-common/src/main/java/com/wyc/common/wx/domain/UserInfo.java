@@ -93,6 +93,11 @@ public class UserInfo {
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private Integer source;
     
+    //账户id
+    @Column
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    private String accountId;
+    
     @Column(name = "create_at")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -236,5 +241,11 @@ public class UserInfo {
 	}
 	public void setSource(Integer source) {
 		this.source = source;
+	}
+	public String getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 }
