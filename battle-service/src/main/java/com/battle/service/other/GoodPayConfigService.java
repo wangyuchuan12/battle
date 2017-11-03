@@ -35,9 +35,14 @@ public class GoodPayConfigService {
 	public ResultVo settlementOrder(Order order){
 		
 		Account account = accountService.fineOneSync(order.getAccountId());
+		
+		
 		Long beanNum = order.getBeanNum();
 		Long loveNum = order.getLoveNum();
+		
+		System.out.println("loveNum:"+loveNum+",accountLoveNum:"+account.getLoveLife());
 		Long masonryNum = order.getMasonryNum();
+		BigDecimal amountNum = order.getAmountNum();
 		Integer costBean = order.getCostBean();
 		Integer costMasonry = order.getCostMasonry();
 		BigDecimal costMoney = order.getCostMoney();
@@ -121,10 +126,6 @@ public class GoodPayConfigService {
 		Integer accountMasonry = account.getMasonry();
 		BigDecimal amountBalance = account.getAmountBalance();
 		
-		BigDecimal amountNum = order.getAmountNum();
-		beanNum = order.getBeanNum();
-		loveNum = order.getLoveNum();
-		masonryNum = order.getMasonryNum();
 		
 		Long wisdomLimit = account.getWisdomLimit();
 		Integer loveLifeLimit = account.getLoveLifeLimit();
@@ -173,6 +174,8 @@ public class GoodPayConfigService {
 		order.setIsPay(1);
 		order.setIsToAccount(1);
 		
+		
+		System.out.println("后面的accountLoveNum:"+account.getLoveLife());
 		orderService.update(order);
 		
 		accountService.update(account);
