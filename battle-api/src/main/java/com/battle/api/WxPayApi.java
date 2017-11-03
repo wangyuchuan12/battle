@@ -21,9 +21,11 @@ import com.battle.service.other.GoodPayConfigService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Good;
 import com.wyc.common.domain.Order;
+import com.wyc.common.domain.PaySuccess;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.GoodService;
 import com.wyc.common.service.OrderService;
+import com.wyc.common.service.PaySuccessService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.wx.domain.UserInfo;
 
@@ -40,6 +42,9 @@ public class WxPayApi{
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private PaySuccessService paySuccessService;
 	@RequestMapping(value="wxPayConfig")
 	@ResponseBody
 	@Transactional
@@ -52,13 +57,30 @@ public class WxPayApi{
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="paySuccess")
 	public Object paySuccess(HttpServletRequest httpServletRequest)throws Exception{
 		SAXBuilder saxBuilder = new SAXBuilder();
         Document document = saxBuilder.build(httpServletRequest.getInputStream());
         Element rootElement = document.getRootElement();
         
-        System.out.println(rootElement.getValue());
+        Class<PaySuccess> bean = PaySuccess.class;
+        PaySuccess paySuccess = bean.newInstance();
+        for(Field field:bean.getDeclaredFields()){
+           Column column = field.getAnnotation(Column.class);
+           if(column!=null){
+               String name = column.name();
+               if(name.equals("")){
+                   name = field.getName();
+               }
+               String value = rootElement.getChildText(name);
+               field.setAccessible(true);
+               field.set(paySuccess, value);
+           }
+        }
+        
+        paySuccessService.add(paySuccess);
+        
         
         return null;
 	}
