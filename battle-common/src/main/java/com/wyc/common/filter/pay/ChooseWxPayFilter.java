@@ -94,7 +94,7 @@ public class ChooseWxPayFilter extends Filter{
         String attach = "paytest";
         String mchId = wxContext.getMchId();
         String nonceStr = payCostVo.getNonceStr();
-        String notifyUrl = "http://"+wxContext.getDomainName()+payCostVo.getNotifyUrl();
+        String notifyUrl = wxContext.getDomainName()+payCostVo.getNotifyUrl();
         String spbillCreateIp = httpServletRequest.getRemoteAddr();
         String datetime = String.valueOf(System.currentTimeMillis() / 1000);
         BigDecimal totalFee = costBigDecimail.multiply(new BigDecimal(100));
