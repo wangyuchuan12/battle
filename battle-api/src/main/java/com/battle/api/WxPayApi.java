@@ -134,4 +134,40 @@ public class WxPayApi{
 		
 		return resultVo;
 	}
+	
+	@RequestMapping(value="beanPay")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object beanPay(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		String goodId = httpServletRequest.getParameter("goodId");
+		Good good = goodService.findOne(goodId);
+		
+		if(!good.getCostType().equals(Good.BEAN_COST_TYPE)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("该商品不是智慧豆支付的");
+			return resultVo;
+		}
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		
+		Order order = new Order();
+		order.setCostType(good.getCostType());
+		order.setAmountNum(good.getAmountNum());
+		order.setBeanNum(good.getBeanNum());
+		order.setCostMasonry(good.getCostMasonry());
+		order.setIsPay(0);
+		order.setIsToAccount(0);
+		order.setAccountId(userInfo.getAccountId());
+		
+		orderService.add(order);
+		
+		ResultVo resultVo = goodPayConfigService.settlementOrder(order);
+		
+		return resultVo;
+	}
 }
