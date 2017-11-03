@@ -1,12 +1,9 @@
 package com.battle.api;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -14,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.battle.filter.api.WxPayApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.other.GoodPayConfigService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Good;
 import com.wyc.common.domain.Order;
@@ -86,23 +81,20 @@ public class WxPayApi{
         
         if(paySuccess2==null){
         	paySuccessService.add(paySuccess);
-        	paySuccess2 = paySuccess;
+        	
+        	Order order = orderService.findOneByOutTradeNo(paySuccess.getOutTradeNo());
+        	
+        	if(order.getIsPay()==0&&paySuccess.getResultCode().equalsIgnoreCase("SUCCESS")&&paySuccess.getNonceStr().equals("jingyingfanwei12")){
+        		order.setIsPay(1);
+             
+        		goodPayConfigService.settlementOrder(order);
+        		
+        	}
+        	
         } 
         
-        Order order = orderService.findOneByOutTradeNo(paySuccess2.getOutTradeNo());
-        order.setIsPay(1);
-        
-        ResultVo resultVo = goodPayConfigService.settlementOrder(order);
-        
-        ObjectMapper objectMapper = new ObjectMapper();
-        
-       String value =  objectMapper.writeValueAsString(resultVo);
-        
-       System.out.println("value:"+value);
-        
-       System.out.println("errorMsg:"+resultVo.getErrorMsg());
        
-       System.out.println("isSuccess:"+resultVo.isSuccess());
+ 
         return null;
 	}
 	
