@@ -57,15 +57,13 @@ public class GoodApi {
 				map.put("cost", good.getCostMasonry());
 			}
 			
-			System.out.println("good.getCostType()==Good.MASONRY_COST_TYPE:"+(good.getCostType()==Good.MASONRY_COST_TYPE));
-			
-			System.out.println("good.getCostMasonry():"+good.getCostMasonry()+",cost"+map.get("cost"));
-			
 			
 			if(good.getType()==Good.BEAN_TYPE){
 				map.put("num", good.getBeanNum());
 			}else if(good.getType()==Good.MASONRY_type){
 				map.put("num", good.getMasonryNum());
+			}else if(good.getType()==Good.LOVE_TYPE){
+				map.put("num", good.getLoveNum());
 			}
 			resonseData.add(map);
 		}

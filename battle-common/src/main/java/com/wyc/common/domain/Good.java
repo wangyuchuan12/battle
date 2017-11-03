@@ -42,6 +42,9 @@ public class Good {
 	
 	//砖石类型
 	public static final Integer MASONRY_type = 2;
+	
+	//爱心
+	public static final Integer LOVE_TYPE=3;
 	@Id
 	@IdAnnotation
 	private String id;
@@ -227,6 +230,7 @@ public class Good {
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
+	
 	public DateTime getCreateAt() {
 		return createAt;
 	}
