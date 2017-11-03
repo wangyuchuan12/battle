@@ -138,7 +138,7 @@ public class GoodPayConfigService {
 			if(accountBean>wisdomLimit){
 				accountBean = wisdomLimit;
 			}
-			account.setWisdomCount(beanNum);
+			account.setWisdomCount(accountBean);
 		}
 		
 		if(loveNum!=null&&loveNum>0){
