@@ -123,6 +123,8 @@ public class WxPayApi{
 		order.setCostType(good.getCostType());
 		order.setAmountNum(good.getAmountNum());
 		order.setBeanNum(good.getBeanNum());
+		order.setLoveNum(good.getLoveNum());
+		order.setMasonryNum(good.getMasonryNum());
 		order.setCostMasonry(good.getCostMasonry());
 		order.setIsPay(0);
 		order.setIsToAccount(0);
@@ -159,6 +161,9 @@ public class WxPayApi{
 		order.setCostType(good.getCostType());
 		order.setAmountNum(good.getAmountNum());
 		order.setBeanNum(good.getBeanNum());
+		order.setLoveNum(good.getLoveNum());
+		order.setMasonryNum(good.getMasonryNum());
+		
 		order.setCostBean(good.getCostBean());
 		order.setIsPay(0);
 		order.setIsToAccount(0);
