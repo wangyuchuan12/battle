@@ -41,7 +41,7 @@ public class Good {
 	public static final Integer BEAN_TYPE = 1;
 	
 	//砖石类型
-	public static final Integer MASONRY_type = 2;
+	public static final Integer MASONRY_TYPE = 2;
 	
 	//爱心
 	public static final Integer LOVE_TYPE=3;

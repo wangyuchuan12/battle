@@ -119,12 +119,8 @@ public class WxPayApi{
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		
-		Order order = new Order();
-		order.setCostType(good.getCostType());
-		order.setAmountNum(good.getAmountNum());
-		order.setBeanNum(good.getBeanNum());
-		order.setLoveNum(good.getLoveNum());
-		order.setMasonryNum(good.getMasonryNum());
+		Order order = goodPayConfigService.createGoodOrder(good);
+		
 		order.setCostMasonry(good.getCostMasonry());
 		order.setIsPay(0);
 		order.setIsToAccount(0);
@@ -142,9 +138,6 @@ public class WxPayApi{
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object beanPay(HttpServletRequest httpServletRequest)throws Exception{
-		
-		
-		System.out.println("..............这里调用了几次..........");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String goodId = httpServletRequest.getParameter("goodId");
 		Good good = goodService.findOne(goodId);
@@ -159,16 +152,9 @@ public class WxPayApi{
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		
-		Order order = new Order();
+		Order order = goodPayConfigService.createGoodOrder(good);
 		order.setCostType(good.getCostType());
-		order.setAmountNum(good.getAmountNum());
-		order.setBeanNum(good.getBeanNum());
-		order.setLoveNum(good.getLoveNum());
-		order.setMasonryNum(good.getMasonryNum());
-		
 		order.setCostBean(good.getCostBean());
-		order.setIsPay(0);
-		order.setIsToAccount(0);
 		order.setAccountId(userInfo.getAccountId());
 		
 		orderService.add(order);

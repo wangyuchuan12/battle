@@ -60,7 +60,7 @@ public class GoodApi {
 			
 			if(good.getType()==Good.BEAN_TYPE){
 				map.put("num", good.getBeanNum());
-			}else if(good.getType()==Good.MASONRY_type){
+			}else if(good.getType()==Good.MASONRY_TYPE){
 				map.put("num", good.getMasonryNum());
 			}else if(good.getType()==Good.LOVE_TYPE){
 				map.put("num", good.getLoveNum());

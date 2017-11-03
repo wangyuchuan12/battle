@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,7 +23,6 @@ import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleRoom;
-import com.battle.domain.BattleSubject;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
@@ -33,7 +30,6 @@ import com.battle.filter.api.BattleSubjectApiFilter;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
-import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodMemberService;
@@ -42,7 +38,6 @@ import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
-import com.battle.service.BattleSubjectService;
 import com.battle.service.BattleUserService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
@@ -53,9 +48,6 @@ import com.wyc.common.wx.domain.UserInfo;
 @Controller
 @RequestMapping(value="/api/battle/")
 public class BattleApi {
-	
-	@Autowired
-	private BattleSubjectService battleSubjectService;
 	
 	@Autowired
 	private BattlePeriodStageService battlePeriodStageService;

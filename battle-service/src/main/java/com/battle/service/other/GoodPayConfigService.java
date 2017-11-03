@@ -15,13 +15,10 @@ import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.service.GoodService;
 import com.wyc.common.service.OrderService;
-import com.wyc.common.wx.domain.WxContext;
 
 @Service
 public class GoodPayConfigService {
 
-	@Autowired
-	private WxContext wxContext;
 	@Autowired
 	private GoodService goodService;
 	
@@ -30,6 +27,32 @@ public class GoodPayConfigService {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	
+	public Order createGoodOrder(Good good){
+		Order order = new Order();
+		order.setCostType(good.getCostType());
+		order.setOrderType(Order.GOOD_ORDER_TYPE);
+		
+		if(good.getType()==Good.BEAN_TYPE){
+			order.setBeanNum(good.getBeanNum());
+		}else if(good.getType()==Good.LOVE_TYPE){
+			order.setLoveNum(good.getLoveNum());
+		}else if(good.getType()==Good.MASONRY_TYPE){
+			order.setMasonryNum(good.getMasonryNum());
+		}
+		
+		order.setDetail(good.getDetail());
+		order.setImgUrl(good.getImgUrl());
+		order.setName(good.getName());
+		order.setSpec(good.getSpec());
+		order.setIsToAccount(0);
+		order.setIsPay(0);
+		order.setGoodId(good.getId());
+		
+		
+		return order;
+	}
 	
 	//结算订单
 	public ResultVo settlementOrder(Order order){
@@ -40,7 +63,6 @@ public class GoodPayConfigService {
 		Long beanNum = order.getBeanNum();
 		Long loveNum = order.getLoveNum();
 		
-		System.out.println("loveNum:"+loveNum+",accountLoveNum:"+account.getLoveLife());
 		Long masonryNum = order.getMasonryNum();
 		BigDecimal amountNum = order.getAmountNum();
 		Integer costBean = order.getCostBean();

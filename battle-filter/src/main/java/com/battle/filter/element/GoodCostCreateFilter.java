@@ -47,22 +47,11 @@ public class GoodCostCreateFilter extends Filter{
 		
 		
 		
-		Order order = new Order();
+		Order order = goodPayConfigService.createGoodOrder(good);
 		order.setCostMoney(good.getCostMoney());
 		order.setCostType(good.getCostType());
-		order.setDetail(good.getDetail());
-		order.setGoodId(good.getId());
-		order.setImgUrl(good.getImgUrl());
-		order.setIsPay(0);
-		order.setIsToAccount(0);
-		order.setAmountNum(good.getAmountNum());
-		order.setBeanNum(good.getBeanNum());
-		order.setLoveNum(good.getLoveNum());
-		order.setMasonryNum(good.getMasonryNum());
-		order.setName(good.getName());
 		order.setOrderType(Order.GOOD_ORDER_TYPE);
 		order.setOutTradeNo(payCostVo.getOutTradeNo());
-		order.setSpec(good.getSpec());
 		order.setAccountId(userInfo.getAccountId());
 		order.setIsPayFromBalance(0);
 		orderService.add(order);
