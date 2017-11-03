@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.filter.api.WxPayApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.other.GoodPayConfigService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Good;
 import com.wyc.common.domain.Order;
@@ -90,9 +91,17 @@ public class WxPayApi{
         Order order = orderService.findOneByOutTradeNo(paySuccess2.getOutTradeNo());
         order.setIsPay(1);
         
-        goodPayConfigService.settlementOrder(order);
+        ResultVo resultVo = goodPayConfigService.settlementOrder(order);
         
+        ObjectMapper objectMapper = new ObjectMapper();
         
+       String value =  objectMapper.writeValueAsString(resultVo);
+        
+       System.out.println("value:"+value);
+        
+       System.out.println("errorMsg:"+resultVo.getErrorMsg());
+       
+       System.out.println("isSuccess:"+resultVo.isSuccess());
         return null;
 	}
 	
