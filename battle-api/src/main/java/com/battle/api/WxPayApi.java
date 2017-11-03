@@ -58,7 +58,7 @@ public class WxPayApi{
         Document document = saxBuilder.build(httpServletRequest.getInputStream());
         Element rootElement = document.getRootElement();
         
-        System.out.println(rootElement.getText());
+        System.out.println(rootElement.getValue());
         
         return null;
 	}
