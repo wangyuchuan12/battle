@@ -143,6 +143,8 @@ public class WxPayApi{
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object beanPay(HttpServletRequest httpServletRequest)throws Exception{
 		
+		
+		System.out.println("..............这里调用了几次..........");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String goodId = httpServletRequest.getParameter("goodId");
 		Good good = goodService.findOne(goodId);
