@@ -58,6 +58,7 @@ public class WxPayApi{
 		
 	}
 	
+	@Transactional
 	@ResponseBody
 	@RequestMapping(value="paySuccess")
 	public Object paySuccess(HttpServletRequest httpServletRequest)throws Exception{
