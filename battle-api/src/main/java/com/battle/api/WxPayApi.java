@@ -159,7 +159,7 @@ public class WxPayApi{
 		order.setCostType(good.getCostType());
 		order.setAmountNum(good.getAmountNum());
 		order.setBeanNum(good.getBeanNum());
-		order.setCostMasonry(good.getCostMasonry());
+		order.setCostBean(good.getCostBean());
 		order.setIsPay(0);
 		order.setIsToAccount(0);
 		order.setAccountId(userInfo.getAccountId());
