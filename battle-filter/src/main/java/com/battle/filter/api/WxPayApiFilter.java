@@ -3,7 +3,11 @@ package com.battle.filter.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.battle.filter.element.TestCostCreateFilter;
+import javax.servlet.http.HttpServletRequest;
+
+import com.battle.filter.element.GoodCostCreateFilter;
+import com.battle.filter.element.LoginStatusFilter;
+import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.domain.vo.WxChooseWxPayBean;
 import com.wyc.common.filter.Filter;
@@ -26,14 +30,17 @@ public class WxPayApiFilter extends Filter{
 
 	@Override
 	public Object handlerPre(SessionManager sessionManager) throws Exception {
-		// TODO Auto-generated method stub
+		HttpServletRequest httpServletRequest = sessionManager.getHttpServletRequest();
+		String goodId = httpServletRequest.getParameter("goodId");
+		sessionManager.setAttribute(AttrEnum.goodId, goodId);
 		return null;
 	}
 
 	@Override
 	public List<Class<? extends Filter>> dependClasses() {
 		List<Class<? extends Filter>> classes = new ArrayList<>();
-		classes.add(TestCostCreateFilter.class);
+		classes.add(LoginStatusFilter.class);
+		classes.add(GoodCostCreateFilter.class);
 		classes.add(ChooseWxPayFilter.class);
 		return classes;
 	}

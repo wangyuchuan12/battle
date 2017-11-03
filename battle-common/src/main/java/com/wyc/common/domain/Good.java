@@ -19,6 +19,29 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Table(name="g_good")
 @ParamEntityAnnotation
 public class Good {
+	
+	//下架
+	public static final Integer STATUS_OFF_SHELVES = 0;
+	//上架
+	public static final Integer STATUS_ON_SHELVES = 1;
+	
+	//现金支付
+	public static final Integer AMOUNT_COST_TYPE = 0;
+	
+	//智慧豆支付类型
+	public static final Integer BEAN_COST_TYPE = 1;
+	
+	//砖石支付类型
+	public static final Integer MASONRY_COST_TYPE =2;
+	
+	//道具类型
+	public static final Integer PROP_TYPE = 0;
+	
+	//智慧豆类型
+	public static final Integer BEAN_TYPE = 1;
+	
+	//砖石类型
+	public static final Integer MASONRY_type = 2;
 	@Id
 	@IdAnnotation
 	private String id;
@@ -63,25 +86,6 @@ public class Good {
 	@ParamAnnotation
 	private Long masonryNum;
 	
-	//新增体力模块
-	@Column(name="phy_model_num")
-	@ParamAnnotation
-	private Long phyModelNum;
-	
-	//新增爱心模块
-	@Column(name="love_model_num")
-	@ParamAnnotation
-	private Long loveModelNum;
-	
-	//新增智慧豆模块
-	@Column(name="bean_model_num")
-	@ParamAnnotation
-	private Long beanModelNum;
-	
-	//新增随机模块
-	@Column(name="random_model_num")
-	@ParamAnnotation
-	private Long randomModelNum;
 	
 	//花费金额
 	@Column(name="cost_money")
@@ -107,6 +111,14 @@ public class Good {
 	@Column(name="cost_type")
 	@ParamAnnotation
 	private Integer costType;
+	
+	@Column
+	@ParamAnnotation
+	private Integer type;
+	
+	@Column(name="z_index")
+	@ParamAnnotation
+	private Integer index;
 
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -158,30 +170,6 @@ public class Good {
 	public void setMasonryNum(Long masonryNum) {
 		this.masonryNum = masonryNum;
 	}
-	public Long getPhyModelNum() {
-		return phyModelNum;
-	}
-	public void setPhyModelNum(Long phyModelNum) {
-		this.phyModelNum = phyModelNum;
-	}
-	public Long getLoveModelNum() {
-		return loveModelNum;
-	}
-	public void setLoveModelNum(Long loveModelNum) {
-		this.loveModelNum = loveModelNum;
-	}
-	public Long getBeanModelNum() {
-		return beanModelNum;
-	}
-	public void setBeanModelNum(Long beanModelNum) {
-		this.beanModelNum = beanModelNum;
-	}
-	public Long getRandomModelNum() {
-		return randomModelNum;
-	}
-	public void setRandomModelNum(Long randomModelNum) {
-		this.randomModelNum = randomModelNum;
-	}
 	public BigDecimal getCostMoney() {
 		return costMoney;
 	}
@@ -223,6 +211,21 @@ public class Good {
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+	
+	public void setIndex(Integer index) {
+		this.index = index;
 	}
 	public DateTime getCreateAt() {
 		return createAt;

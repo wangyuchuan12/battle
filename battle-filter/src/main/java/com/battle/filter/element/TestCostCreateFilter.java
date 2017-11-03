@@ -30,7 +30,7 @@ public class TestCostCreateFilter extends Filter{
                 +"-"+new Random().nextInt(10000)+"";
 		PayCostVo payCostVo = new PayCostVo();
 		payCostVo.setBody("body");
-		payCostVo.setCost(new BigDecimal("1"));
+		payCostVo.setCost(new BigDecimal("0.01"));
 		payCostVo.setDetail("detail");
 		payCostVo.setNonceStr("jingyingfanwei12");
 		payCostVo.setNotifyUrl("www.chengxihome.com");

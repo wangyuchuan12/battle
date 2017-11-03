@@ -19,6 +19,20 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Table(name = "g_order")
 @ParamEntityAnnotation
 public class Order {
+	
+	//购买商品
+	public static Integer GOOD_ORDER_TYPE = 0;
+	
+	
+	//现金支付
+	public static final Integer AMOUNT_COST_TYPE = 0;
+		
+	//智慧豆支付类型
+	public static final Integer BEAN_COST_TYPE = 1;
+		
+	//砖石支付类型
+	public static final Integer MASONRY_COST_TYPE =2;
+	
 	@Id
 	@IdAnnotation
 	private String id;
@@ -31,6 +45,11 @@ public class Order {
 	@Column
 	@ParamAnnotation
 	private String name;
+	
+	//从余额中扣款
+	@Column(name="is_pay_from_balance")
+	@ParamAnnotation
+	private Integer isPayFromBalance;
 	
 	//商品规格
 	@Column
@@ -66,26 +85,6 @@ public class Order {
 	@ParamAnnotation
 	private Long masonryNum;
 
-	// 新增体力模块
-	@Column(name = "phy_model_num")
-	@ParamAnnotation
-	private Long phyModelNum;
-
-	// 新增爱心模块
-	@Column(name = "love_model_num")
-	@ParamAnnotation
-	private Long loveModelNum;
-
-	// 新增智慧豆模块
-	@Column(name = "bean_model_num")
-	@ParamAnnotation
-	private Long beanModelNum;
-
-	// 新增随机模块
-	@Column(name = "random_model_num")
-	@ParamAnnotation
-	private Long randomModelNum;
-
 	// 花费金额
 	@Column(name = "cost_money")
 	@ParamAnnotation
@@ -116,7 +115,6 @@ public class Order {
 	@ParamAnnotation
 	private Integer costType;
 
-
 	// 微信支付的时候有这个编号
 	// 支付编号
 	@Column(name = "out_trade_no")
@@ -127,6 +125,10 @@ public class Order {
 	@Column(name = "order_type")
 	@ParamAnnotation
 	private Integer orderType;
+	
+	@Column(name = "account_id")
+	@ParamAnnotation
+	private String accountId;
 
 	@Column(name = "create_at")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -199,38 +201,6 @@ public class Order {
 
 	public void setMasonryNum(Long masonryNum) {
 		this.masonryNum = masonryNum;
-	}
-
-	public Long getPhyModelNum() {
-		return phyModelNum;
-	}
-
-	public void setPhyModelNum(Long phyModelNum) {
-		this.phyModelNum = phyModelNum;
-	}
-
-	public Long getLoveModelNum() {
-		return loveModelNum;
-	}
-
-	public void setLoveModelNum(Long loveModelNum) {
-		this.loveModelNum = loveModelNum;
-	}
-
-	public Long getBeanModelNum() {
-		return beanModelNum;
-	}
-
-	public void setBeanModelNum(Long beanModelNum) {
-		this.beanModelNum = beanModelNum;
-	}
-
-	public Long getRandomModelNum() {
-		return randomModelNum;
-	}
-
-	public void setRandomModelNum(Long randomModelNum) {
-		this.randomModelNum = randomModelNum;
 	}
 
 	public BigDecimal getCostMoney() {
@@ -312,6 +282,22 @@ public class Order {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+	
+	public Integer getIsPayFromBalance() {
+		return isPayFromBalance;
+	}
+
+	public void setIsPayFromBalance(Integer isPayFromBalance) {
+		this.isPayFromBalance = isPayFromBalance;
+	}
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	public DateTime getCreateAt() {
