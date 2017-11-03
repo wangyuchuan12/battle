@@ -32,4 +32,9 @@ public class OrderService {
 		orderRepository.save(order);
 		
 	}
+
+	public Order findOneByOutTradeNo(String outTradeNo) {
+		
+		return orderRepository.findOneByOutTradeNo(outTradeNo);
+	}
 }

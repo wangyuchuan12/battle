@@ -6,4 +6,6 @@ import com.wyc.common.domain.Order;
 
 public interface OrderRepository extends CrudRepository<Order, String>{
 
+	Order findOneByOutTradeNo(String outTradeNo);
+
 }

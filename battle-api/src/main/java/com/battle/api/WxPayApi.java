@@ -79,7 +79,18 @@ public class WxPayApi{
            }
         }
         
-        paySuccessService.add(paySuccess);
+        
+        PaySuccess paySuccess2 = paySuccessService.findOneByOutTradeNo(paySuccess.getOutTradeNo());
+        
+        if(paySuccess2==null){
+        	paySuccessService.add(paySuccess);
+        	paySuccess2 = paySuccess;
+        } 
+        
+        Order order = orderService.findOneByOutTradeNo(paySuccess2.getOutTradeNo());
+        order.setIsPay(1);
+        
+        goodPayConfigService.settlementOrder(order);
         
         
         return null;
