@@ -102,6 +102,8 @@ public class BattleApi {
 		data.put("maxinum", battleRoom.getMaxinum());
 		data.put("mininum", battleRoom.getMininum());
 		data.put("owner", battleRoom.getOwner());
+		data.put("speedCoolBean", battleRoom.getSpeedCoolBean());
+		data.put("speedCoolSecond", battleRoom.getSpeedCoolSecond());
 		if(battleRoom.getOwner().equals(battleUser.getId())){
 			data.put("isOwner", 1);
 		}else{
