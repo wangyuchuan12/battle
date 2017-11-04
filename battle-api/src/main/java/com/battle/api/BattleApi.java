@@ -32,6 +32,7 @@ import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
@@ -74,6 +75,9 @@ public class BattleApi {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 
 	@RequestMapping(value="info")
 	@ResponseBody
@@ -635,6 +639,9 @@ public class BattleApi {
 			battleMemberLoveCooling.setCoolLoveSeq(0);
 			battlePeriodMember.setLoveResidule(loveCount);
 		}
+		
+		battleMemberLoveCoolingService.update(battleMemberLoveCooling);
+		battlePeriodMemberService.update(battlePeriodMember);
 		
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("status", battleMemberLoveCooling.getStatus());
