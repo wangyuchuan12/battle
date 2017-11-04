@@ -163,7 +163,7 @@ public class LoginApi{
 		account.setLoveLifeLimit(1000);
 		account.setMasonry(0);
 		account.setWisdomCount(0L);
-		account.setWisdomLimit(1000L);
+		account.setWisdomLimit(1000000L);
 		accountService.add(account);
 		return account;
 	}
