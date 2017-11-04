@@ -40,7 +40,9 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -69,6 +71,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleUserService battleUserService;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@RequestMapping(value="info")
 	@ResponseBody
@@ -545,6 +550,10 @@ public class BattleApi {
 		battleRoom.setNum(0);
 		battleRoom.setIsPublic(0);
 		battleRoom.setIsPublic(isPublicInt);
+		
+		battleRoom.setSpeedCoolBean(10);
+		battleRoom.setSpeedCoolSecond(1800);
+		
 		battleRoomService.add(battleRoom);
 		
 		
@@ -556,6 +565,93 @@ public class BattleApi {
 		
 		return resultVo;
 		
+	}
+	
+	
+	@RequestMapping(value="speed_cool_bean")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentLoveCoolingApiFilter.class)
+	public Object speedCoolBean(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattleMemberLoveCooling battleMemberLoveCooling = sessionManager.getObject(BattleMemberLoveCooling.class);
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		
+		Integer loveResidule = battlePeriodMember.getLoveResidule();
+		Integer loveCount = battlePeriodMember.getLoveCount();
+		
+		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+		
+		Integer speedCoolBean = battleRoom.getSpeedCoolBean();
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Account account  = accountService.fineOneSync(userInfo.getAccountId());
+		
+		Long wisdomCount = account.getWisdomCount();
+		if(wisdomCount==null){
+			wisdomCount = 0L;
+		}
+		
+		if(wisdomCount<speedCoolBean){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("智慧豆不足");
+			return resultVo;
+		}
+		account.setWisdomCount(wisdomCount-speedCoolBean);
+		
+		accountService.update(account);
+		Integer second = battleRoom.getSpeedCoolSecond();
+		
+		Integer unit = battleMemberLoveCooling.getUnit();
+		Long upperLimit = battleMemberLoveCooling.getUpperLimit();
+		
+		Long schedule = battleMemberLoveCooling.getSchedule();
+		
+		schedule = schedule+second*unit;
+		
+		long time = schedule/upperLimit;
+		
+		schedule = schedule - upperLimit*time;
+		
+		battleMemberLoveCooling.setStartDatetime(new DateTime());
+		
+		Long loveResidule2 = time+loveResidule;
+		
+		if(loveResidule2<loveCount){
+			battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_IN);
+			battleMemberLoveCooling.setSchedule(schedule);
+			battlePeriodMember.setLoveResidule(loveResidule2.intValue());
+			battleMemberLoveCooling.setCoolLoveSeq(loveResidule2.intValue()+1);
+			battleMemberLoveCooling.setStartDatetime(new DateTime());
+		}else{
+			battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			battleMemberLoveCooling.setSchedule(upperLimit);
+			battleMemberLoveCooling.setSchedule(0L);
+			battleMemberLoveCooling.setCoolLoveSeq(0);
+			battlePeriodMember.setLoveResidule(loveCount);
+		}
+		
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("status", battleMemberLoveCooling.getStatus());
+		responseData.put("coolLoveSeq", battleMemberLoveCooling.getCoolLoveSeq());
+		responseData.put("millisec", battleMemberLoveCooling.getMillisec());
+		responseData.put("schedule", battleMemberLoveCooling.getSchedule());
+		responseData.put("startDatetime", battleMemberLoveCooling.getStartDatetime());
+		responseData.put("unit", battleMemberLoveCooling.getUnit());
+		responseData.put("upperLimit", battleMemberLoveCooling.getUpperLimit());
+		responseData.put("loveCount", battlePeriodMember.getLoveCount());
+		responseData.put("loveResidule", battlePeriodMember.getLoveResidule());
+		responseData.put("speedCoolBean", speedCoolBean);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(responseData);
+		return resultVo;
 	}
 	
 	

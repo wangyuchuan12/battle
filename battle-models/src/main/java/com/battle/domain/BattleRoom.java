@@ -75,6 +75,16 @@ public class BattleRoom {
 	@Column
 	private Integer status;
 	
+	//加速冷却消耗豆子数量
+	@ParamAnnotation
+	@Column(name="speed_cool_bean")
+	private Integer speedCoolBean;
+	
+	//加速一次多少秒
+	@ParamAnnotation
+	@Column(name="speed_cool_second")
+	private Integer speedCoolSecond;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -194,6 +204,22 @@ public class BattleRoom {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getSpeedCoolBean() {
+		return speedCoolBean;
+	}
+
+	public void setSpeedCoolBean(Integer speedCoolBean) {
+		this.speedCoolBean = speedCoolBean;
+	}
+
+	public Integer getSpeedCoolSecond() {
+		return speedCoolSecond;
+	}
+
+	public void setSpeedCoolSecond(Integer speedCoolSecond) {
+		this.speedCoolSecond = speedCoolSecond;
 	}
 
 	public DateTime getCreateAt() {
