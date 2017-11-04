@@ -32,7 +32,6 @@ import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
-import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
@@ -75,9 +74,6 @@ public class BattleApi {
 	
 	@Autowired
 	private AccountService accountService;
-	
-	@Autowired
-	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 
 	@RequestMapping(value="info")
 	@ResponseBody
@@ -152,8 +148,6 @@ public class BattleApi {
 		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByUserId(userInfo.getId(),pageable);
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
-		
-		System.out.println("userInfo.id:"+userInfo.getId()+",battleRooms:"+battleRooms);
 		
 		if(battleRooms!=null&&battleRooms.size()>0){
 			ResultVo resultVo = new ResultVo();
@@ -642,8 +636,9 @@ public class BattleApi {
 			battlePeriodMember.setLoveResidule(loveCount);
 		}
 		
-		battleMemberLoveCoolingService.update(battleMemberLoveCooling);
-		battlePeriodMemberService.update(battlePeriodMember);
+		
+		sessionManager.update(battleMemberLoveCooling);
+		sessionManager.update(battlePeriodMember);
 		
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("status", battleMemberLoveCooling.getStatus());

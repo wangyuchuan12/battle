@@ -39,10 +39,6 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("stageCount", battlePeriodMember.getStageCount());
 		data.put("stageIndex", battlePeriodMember.getStageIndex());
 		
-		data.put("loveCount", battlePeriodMember.getLoveCount());
-		
-		data.put("loveResidule", battlePeriodMember.getLoveResidule());
-		
 		data.put("status", battlePeriodMember.getStatus());
 		
 		data.put("isCreater", battleUser.getIsCreater());
