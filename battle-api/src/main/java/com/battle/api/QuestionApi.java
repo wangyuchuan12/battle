@@ -264,7 +264,7 @@ public class QuestionApi {
 			rightCount = 0;
 		}
 		Long rewardCountBean = 0L;
-		if(passCount>=rightCount&&battleMemberPaperAnswer.getIsPass()!=1){
+		if(passCount<=rightCount&&battleMemberPaperAnswer.getIsPass()!=1){
 			
 			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 			battleMemberPaperAnswer.setIsPass(1);
