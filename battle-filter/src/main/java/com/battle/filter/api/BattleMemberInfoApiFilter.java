@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
@@ -23,6 +24,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
 		
+		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, battlePeriodMember.getRoomId());
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put("battleId", battlePeriodMember.getBattleId());
@@ -44,6 +46,9 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("userId", battleUser.getUserId());
 		
 		data.put("roomId", battlePeriodMember.getRoomId());
+		
+		data.put("speedCoolBean", battleRoom.getSpeedCoolBean());
+		data.put("speedCoolSecond", battleRoom.getSpeedCoolSecond());
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
