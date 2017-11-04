@@ -71,6 +71,12 @@ public class BattleMemberPaperAnswer {
 	@Column(name="question_count")
 	private Integer questionCount;
 	
+	
+	//通过需要答对数量
+	@ParamAnnotation
+	@Column(name="pass_count")
+	private Integer passCount;
+	
 	//答题数量
 	@ParamAnnotation
 	@Column(name="answer_count")
@@ -79,6 +85,21 @@ public class BattleMemberPaperAnswer {
 	@ParamAnnotation
 	@Column
 	private Integer process;
+	
+	//该答题是否通过
+	@ParamAnnotation
+	@Column(name="is_pass")
+	private Integer isPass;
+	
+	//通过奖励豆子数量
+	@ParamAnnotation
+	@Column(name="pass_reward_bean")
+	private Integer passRewardBean;
+	
+	//本次答题获取了多少智慧豆
+	@ParamAnnotation
+	@Column(name="this_reward_bean")
+	private Long thisRewardBean;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -191,6 +212,40 @@ public class BattleMemberPaperAnswer {
 
 	public void setProcess(Integer process) {
 		this.process = process;
+	}
+	
+	public Integer getPassCount() {
+		return passCount;
+	}
+
+	public void setPassCount(Integer passCount) {
+		this.passCount = passCount;
+	}
+	
+	
+
+	public Integer getIsPass() {
+		return isPass;
+	}
+
+	public void setIsPass(Integer isPass) {
+		this.isPass = isPass;
+	}
+	
+	public Integer getPassRewardBean() {
+		return passRewardBean;
+	}
+
+	public void setPassRewardBean(Integer passRewardBean) {
+		this.passRewardBean = passRewardBean;
+	}
+	
+	public Long getThisRewardBean() {
+		return thisRewardBean;
+	}
+
+	public void setThisRewardBean(Long thisRewardBean) {
+		this.thisRewardBean = thisRewardBean;
 	}
 
 	public DateTime getCreateAt() {

@@ -38,6 +38,16 @@ public class BattlePeriodStage {
 	@Column(name="question_count")
 	private Integer questionCount;
 	
+	//通过数量
+	@ParamAnnotation
+	@Column(name="pass_count")
+	private Integer passCount;
+	
+	//通过奖励豆子数量
+	@ParamAnnotation
+	@Column(name="pass_reward_bean")
+	private Integer passRewardBean;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -90,6 +100,22 @@ public class BattlePeriodStage {
 
 	public void setQuestionCount(Integer questionCount) {
 		this.questionCount = questionCount;
+	}
+
+	public Integer getPassCount() {
+		return passCount;
+	}
+
+	public void setPassCount(Integer passCount) {
+		this.passCount = passCount;
+	}
+	
+	public Integer getPassRewardBean() {
+		return passRewardBean;
+	}
+
+	public void setPassRewardBean(Integer passRewardBean) {
+		this.passRewardBean = passRewardBean;
 	}
 
 	public DateTime getCreateAt() {

@@ -94,7 +94,7 @@ public class UserInfo {
     private Integer source;
     
     //账户id
-    @Column
+    @Column(name="account_id")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private String accountId;
     

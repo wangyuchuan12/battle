@@ -16,6 +16,7 @@ import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
@@ -26,15 +27,19 @@ import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
+import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/question/")
@@ -66,6 +71,12 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattlePeriodService battlePeriodService;
+	
+	@Autowired
+	private BattlePeriodStageService battlePeriodStageService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
@@ -218,8 +229,6 @@ public class QuestionApi {
 			
 			process = process + unit;
 			
-			System.out.println("battlePeriodMember.getProcess():"+battlePeriodMember.getProcess()+",process:"+process+",unit:"+unit);
-			
 			result.put("right", true);
 			result.put("process", unit);
 			
@@ -245,6 +254,39 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 		}
 		
+
+		Integer passCount = battleMemberPaperAnswer.getPassCount();
+		if(passCount==null){
+			passCount = 0;
+		}
+		Integer rightCount = battleMemberPaperAnswer.getRightSum();
+		if(rightCount==null){
+			rightCount = 0;
+		}
+		Long rewardCountBean = 0L;
+		if(passCount>=rightCount&&battleMemberPaperAnswer.getIsPass()!=1){
+			
+			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+			battleMemberPaperAnswer.setIsPass(1);
+			Integer passRewardBean = battleMemberPaperAnswer.getPassRewardBean();
+			if(passRewardBean==null){
+				passRewardBean=0;
+			}
+			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			Long wisdomLimit = account.getWisdomLimit();
+			Long wisdomCount = account.getWisdomCount();
+			Long wisdomCountOld = account.getWisdomCount();
+			wisdomCount = wisdomCount+passRewardBean;
+			if(wisdomCount>wisdomLimit){
+				wisdomCount = wisdomLimit;
+			}
+			rewardCountBean = wisdomCount-wisdomCountOld;
+			battleMemberPaperAnswer.setThisRewardBean(rewardCountBean);
+			account.setWisdomCount(wisdomCount);
+			accountService.update(account);
+		}
+		
+		
 		
 		battlePeriodMemberService.update(battlePeriodMember);
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
@@ -252,6 +294,10 @@ public class QuestionApi {
 		result.put("battleMemberQuestionAnswerId",battleMemberQuestionAnswer.getId());
 		
 		result.put("battleMemberPaperAnswerId",battleMemberPaperAnswer.getId());
+		
+		result.put("rewardBean", battleMemberPaperAnswer.getThisRewardBean());
+		
+		result.put("isPass", battleMemberPaperAnswer.getIsPass());
 		
 		questionAnswerItemService.add(questionAnswerItem);
 		
@@ -265,6 +311,11 @@ public class QuestionApi {
 		
 		if(battleMemberPaperAnswer.getAnswerCount()==battleMemberPaperAnswer.getQuestionCount()){
 			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
+			result.put("isLast", true);
+			
+			
+		}else{
+			result.put("isLast", false);
 		}
 		
 		sessionManager.update(questionAnswer);
@@ -280,7 +331,7 @@ public class QuestionApi {
 	public Object createPaperAnswer(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		
+
 		String type = httpServletRequest.getParameter("type");
 
 		String questions = httpServletRequest.getParameter("questions");
@@ -312,6 +363,22 @@ public class QuestionApi {
 			
 		}
 		
+		
+		BattlePeriodStage battlePeriodStage = battlePeriodStageService.
+				findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), 
+						battlePeriodMember.getPeriodId(), stageIndex);
+		Integer passCount = battlePeriodStage.getPassCount();
+		
+		if(passCount==null){
+			passCount = 0;
+		}
+		
+		Integer passRewardBean = battlePeriodStage.getPassRewardBean();
+		
+		if(passRewardBean==null){
+			passRewardBean = 0;
+		}
+		
 		String memberId = battlePeriodMember.getId();
 		
 		Map<String, Object> data = new HashMap<>();
@@ -340,6 +407,10 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setQuestionAnswerId(questionAnswer.getId());
 		battleMemberPaperAnswer.setQuestionCount(questions.split(",").length);
 		battleMemberPaperAnswer.setAnswerCount(0);
+		battleMemberPaperAnswer.setPassCount(passCount);
+		battleMemberPaperAnswer.setIsPass(0);
+		battleMemberPaperAnswer.setPassRewardBean(passRewardBean);
+		battleMemberPaperAnswer.setThisRewardBean(0L);
 		
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
