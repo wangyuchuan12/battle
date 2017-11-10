@@ -117,7 +117,7 @@ public class BattleApi {
 		String battleId = httpServletRequest.getParameter("battleId");
 		Pageable pageable = new PageRequest(0, 1);
 		
-		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndStatusAndIsPublic(battleId, BattleRoom.STATUS_IN , 1, pageable);
+		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndStatusAndIsSearchAble(battleId, BattleRoom.STATUS_IN , 1, pageable);
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
 		
@@ -548,8 +548,10 @@ public class BattleApi {
 		battleRoom.setImgUrl(battle.getHeadImg());
 		battleRoom.setStatus(BattleRoom.STATUS_FREE);
 		battleRoom.setNum(0);
-		battleRoom.setIsPublic(0);
-		battleRoom.setIsPublic(isPublicInt);
+		
+		battleRoom.setIsSearchAble(isPublicInt);
+		
+		battleRoom.setIsDisplay(0);
 		
 		battleRoom.setSpeedCoolBean(10);
 		battleRoom.setSpeedCoolSecond(1800);
@@ -694,7 +696,7 @@ public class BattleApi {
 		
 		
 		Pageable pageable = new PageRequest(pageInt,sizeInt);
-		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsPublicAndStatusOrderByCreationTimeAsc(1,statusInt,pageable);
+		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsDisplayAndStatusOrderByCreationTimeAsc(1,statusInt,pageable);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

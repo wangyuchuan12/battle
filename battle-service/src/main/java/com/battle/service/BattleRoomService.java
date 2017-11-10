@@ -31,13 +31,13 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUserId);
 	}
-	public Page<BattleRoom> findAllByIsPublicAndStatusOrderByCreationTimeAsc(Integer isPublic , Integer status ,Pageable pageable) {
-		return battleRoomDao.findAllByIsPublicAndStatusOrderByCreationTimeAsc(isPublic , status, pageable);
+	public Page<BattleRoom> findAllByIsDisplayAndStatusOrderByCreationTimeAsc(Integer isPublic , Integer status ,Pageable pageable) {
+		return battleRoomDao.findAllByIsDisplayAndStatusOrderByCreationTimeAsc(isPublic , status, pageable);
 	}
 
-	public Page<BattleRoom> findAllByBattleIdAndStatusAndIsPublic(String battleId, Integer status, int isPublic,
+	public Page<BattleRoom> findAllByBattleIdAndStatusAndIsSearchAble(String battleId, Integer status, int isSearchAble,
 			Pageable pageable) {
-		return battleRoomDao.findAllByBattleIdAndStatusAndIsPublic(battleId,status,isPublic,pageable);
+		return battleRoomDao.findAllByBattleIdAndStatusAndIsSearchAble(battleId,status,isSearchAble,pageable);
 	}
 	public Page<BattleRoom> findAllByUserId(String userId,Pageable pageable) {
 		return battleRoomDao.findAllByUserId(userId,pageable);
@@ -48,6 +48,10 @@ public class BattleRoomService {
 		
 		battleRoomDao.save(battleRoom);
 		
+	}
+	public Page<BattleRoom> findAll(Pageable pageable) {
+		
+		return battleRoomDao.findAll(pageable);
 	}
 
 }

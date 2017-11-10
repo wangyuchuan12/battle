@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +21,7 @@ import com.battle.domain.Battle;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
+import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleSubject;
 import com.battle.domain.BattleUser;
 import com.battle.domain.Context;
@@ -27,6 +31,7 @@ import com.battle.filter.element.BattleManagerFilter;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
@@ -68,6 +73,9 @@ public class ManagerApi {
 	
 	@Autowired
 	private BattleService battleService;
+	
+	@Autowired
+	private BattleRoomService battleRoomService;
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
@@ -610,6 +618,138 @@ public class ManagerApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battlePeriod);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="rooms")
+	@ResponseBody
+	@Transactional
+	public Object rooms(HttpServletRequest httpServletRequest)throws Exception{
+		Sort sort = new Sort(Direction.DESC,"creationTime");
+		Pageable pageable = new PageRequest(0,100,sort);
+		Page<BattleRoom> roomPage = battleRoomService.findAll(pageable);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(roomPage.getContent());
+		return resultVo;
+		
+	}
+	
+	@RequestMapping(value="roomInfo")
+	@ResponseBody
+	@Transactional
+	public Object roomInfo(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoom);
+		return resultVo;
+	}
+	
+	@RequestMapping(value="roomNameEdit")
+	@ResponseBody
+	@Transactional
+	public Object roomNameEdit(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		String name = httpServletRequest.getParameter("name");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		battleRoom.setName(name);
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="roomInstructionEdit")
+	@ResponseBody
+	@Transactional
+	public Object roomInstructionEdit(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		String instruction = httpServletRequest.getParameter("instruction");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		battleRoom.setInstruction(instruction);
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="roomImgEdit")
+	@ResponseBody
+	@Transactional
+	public Object roomImgEdit(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		String imgUrl = httpServletRequest.getParameter("imgUrl");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		battleRoom.setImgUrl(imgUrl);
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="roomSearchAbleEdit")
+	@ResponseBody
+	@Transactional
+	public Object roomSearchAbleEdit(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		String isSearchAble = httpServletRequest.getParameter("isSearchAble");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		battleRoom.setIsSearchAble(Integer.parseInt(isSearchAble));
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="roomIsDisplayEdit")
+	@ResponseBody
+	@Transactional
+	public Object roomIsDisplayEdit(HttpServletRequest httpServletRequest)throws Exception{
+		String id = httpServletRequest.getParameter("id");
+		String isDisplay = httpServletRequest.getParameter("isDisplay");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		battleRoom.setIsDisplay(Integer.parseInt(isDisplay));
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
 		
 		return resultVo;
 	}

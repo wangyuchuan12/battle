@@ -128,9 +128,15 @@ public class ManagerInterceptConfig {
 				 if(resultVo==null){
 					 resultVo = (ResultVo)filterManager.getReturnValue();
 				 }
+				
+				 if(returnValue!=null&&returnValue.getClass().equals(ResultVo.class)){
+					 resultVo = (ResultVo)returnValue;
+				 }
 				 
 				 filterManager.commitUpdate();
+
 				 if(resultVo!=null&&resultVo.isSuccess()==false){
+					 
 					 Transactional transactional = method.getAnnotation(Transactional.class);
 					 if(transactional!=null){
 						 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

@@ -56,8 +56,12 @@ public class BattleRoom {
 	private String periodId;
 	
 	@ParamAnnotation
-	@Column(name="is_public")
-	private Integer isPublic;
+	@Column(name="is_search_able")
+	private Integer isSearchAble;
+	
+	@ParamAnnotation
+	@Column(name="is_display")
+	private Integer isDisplay;
 	
 	@ParamAnnotation
 	@Column
@@ -166,14 +170,23 @@ public class BattleRoom {
 		this.periodId = periodId;
 	}
 
-	public Integer getIsPublic() {
-		return isPublic;
+	
+	public Integer getIsSearchAble() {
+		return isSearchAble;
 	}
 
-	public void setIsPublic(Integer isPublic) {
-		this.isPublic = isPublic;
+	public void setIsSearchAble(Integer isSearchAble) {
+		this.isSearchAble = isSearchAble;
 	}
-	
+
+	public Integer getIsDisplay() {
+		return isDisplay;
+	}
+
+	public void setIsDisplay(Integer isDisplay) {
+		this.isDisplay = isDisplay;
+	}
+
 	public String getName() {
 		return name;
 	}

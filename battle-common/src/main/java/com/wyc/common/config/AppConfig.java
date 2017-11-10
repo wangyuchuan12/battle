@@ -175,6 +175,7 @@ public class AppConfig {
 	    	return sdf;
 	    }
 	    
+	    
 	    @Bean
 	    @Transactional
 	    public ShareConfigVo initDataBase(){

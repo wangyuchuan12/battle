@@ -14,19 +14,21 @@ public class DistributionAmountUtil {
      * 1.总金额不能超过200*100 单位是分 
      * 2.每个红包都要有钱，最低不能低于1分，最大金额不能超过200*100 
      */  
-    private static final int MINMONEY =1;  
-    private static final int MAXMONEY =200*100;  
+    private int MINMONEY =1;  
+    private int MAXMONEY =200*100;  
     /** 
      * 这里为了避免某一个红包占用大量资金，我们需要设定非最后一个红包的最大金额，我们把他设置为红包金额平均值的N倍； 
      */  
-    private static final double TIMES =3;  
+    private static final double TIMES =3; 
     /** 
      * 拆分红包 
      * @param money ：红包总金额 
      * @param count ：个数 
      * @return 
      */  
-    public List<Integer> splitRedPackets(int money,int count){  
+    public List<Integer> splitRedPackets(int money,int count,int thisMin,int thisMax){
+    	MINMONEY = thisMin;
+    	MAXMONEY = thisMax;
         //红包 合法性校验  
         if(!isRight(money,count)){  
             return null;  
@@ -44,7 +46,9 @@ public class DistributionAmountUtil {
             money -=one;  
         }  
         return list;  
-    }  
+    }
+    
+    
     /** 
      * 随机分配一个红包 
      * @param money 
@@ -104,10 +108,10 @@ public class DistributionAmountUtil {
         return true;  
     }  
       
-    public static void main(String[] args) {  
+    public static void main(String[] args)throws Exception {  
         //随机一个188.88  5个红包  
     	DistributionAmountUtil dd = new DistributionAmountUtil();  
         //单位是分  
-        System.out.println(dd.splitRedPackets(50, 10));  
+    	System.out.println(dd.splitRedPackets(100,3,0,100));
     }  
 }  
