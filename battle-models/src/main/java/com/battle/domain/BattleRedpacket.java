@@ -214,6 +214,14 @@ public class BattleRedpacket {
 	private String name;
 	
 	@ParamAnnotation
+	@Column(name="sender_name")
+	private String senderName;
+	
+	@ParamAnnotation
+	@Column(name="sender_img")
+	private String senderImg;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -471,6 +479,22 @@ public class BattleRedpacket {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSenderName() {
+		return senderName;
+	}
+
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
+
+	public String getSenderImg() {
+		return senderImg;
+	}
+
+	public void setSenderImg(String senderImg) {
+		this.senderImg = senderImg;
 	}
 
 	public DateTime getCreateAt() {

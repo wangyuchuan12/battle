@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRedPacketAmountDistribution;
 import com.battle.domain.BattleRedPacketType;
 import com.battle.domain.BattleRedpacket;
@@ -25,7 +26,7 @@ import com.battle.service.BattleRedpacketService;
 import com.wyc.annotation.HandlerAnnotation;
 
 import com.wyc.common.domain.vo.ResultVo;
-
+import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.util.DistributionAmountUtil;
 import com.wyc.common.util.MySimpleDateFormat;
@@ -95,6 +96,10 @@ public class BattleRedpacketApi {
 		Integer personalScoreMeetInt = null;
 		Integer roomProcessMeetInt = null;
 		Integer roomScoreMeetInt = null;
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattlePeriodMember battlePeriodMember =sessionManager.getObject(BattlePeriodMember.class);
 		
 		if(CommonUtil.isEmpty(isPersonalProcessMeet)){
 			ResultVo resultVo = new ResultVo();
@@ -284,6 +289,9 @@ public class BattleRedpacketApi {
 		
 		battleRedpacket.setTypeId(typeId);
 		
+		battleRedpacket.setSenderImg(battlePeriodMember.getHeadImg());
+		battleRedpacket.setSenderName(battlePeriodMember.getNickname());
+		
 		BattleRedPacketType battleRedPacketType = battleRedPacketTypeService.findOne(typeId);
 		
 		if(battleRedPacketType==null){
@@ -395,6 +403,8 @@ public class BattleRedpacketApi {
 		for(BattleRedpacket battleRedpacket:battleRedpackets){
 			Map<String, Object> redPacketMap = new HashMap<>();
 			redPacketMap.put("amount", battleRedpacket.getAmount());
+			redPacketMap.put("beanNum", battleRedpacket.getBeanNum());
+			redPacketMap.put("masonryNum", battleRedpacket.getMasonryNum());
 			redPacketMap.put("costBean", battleRedpacket.getCostBean());
 			redPacketMap.put("costMasonry", battleRedpacket.getCostMasonry());
 			redPacketMap.put("id", battleRedpacket.getId());
@@ -419,6 +429,9 @@ public class BattleRedpacketApi {
 			redPacketMap.put("roomScoreMeet", battleRedpacket.getRoomScoreMeet());
 			
 			redPacketMap.put("handTime", mySimpleDateFormat.format(battleRedpacket.getHandTime().toDate()));
+			
+			redPacketMap.put("senderImg", battleRedpacket.getSenderImg());
+			redPacketMap.put("senderName", battleRedpacket.getSenderName());
 			
 			responseData.add(redPacketMap);
 		}
