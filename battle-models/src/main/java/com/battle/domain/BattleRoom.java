@@ -72,6 +72,10 @@ public class BattleRoom {
 	private String imgUrl;
 	
 	@ParamAnnotation
+	@Column(name="small_img_url")
+	private String smallImgUrl;
+	
+	@ParamAnnotation
 	@Column
 	private String instruction;
 	
@@ -233,6 +237,15 @@ public class BattleRoom {
 
 	public void setSpeedCoolSecond(Integer speedCoolSecond) {
 		this.speedCoolSecond = speedCoolSecond;
+	}
+
+
+	public String getSmallImgUrl() {
+		return smallImgUrl;
+	}
+
+	public void setSmallImgUrl(String smallImgUrl) {
+		this.smallImgUrl = smallImgUrl;
 	}
 
 	public DateTime getCreateAt() {

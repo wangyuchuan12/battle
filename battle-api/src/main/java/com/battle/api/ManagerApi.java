@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,7 @@ import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -76,6 +78,8 @@ public class ManagerApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	private MySimpleDateFormat mySimpleDateFormat;
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
@@ -631,9 +635,25 @@ public class ManagerApi {
 		Pageable pageable = new PageRequest(0,100,sort);
 		Page<BattleRoom> roomPage = battleRoomService.findAll(pageable);
 		
+		
+		List<Map<String, Object>> responseRooms = new ArrayList<>();
+		
+		for(BattleRoom battleRoom:roomPage.getContent()){
+			Map<String, Object> responseRoom = new HashMap<>();
+			responseRoom.put("id", battleRoom.getId());
+			responseRoom.put("name", battleRoom.getName());
+			responseRoom.put("imgUrl", battleRoom.getImgUrl());
+			responseRoom.put("smallImgUrl", battleRoom.getSmallImgUrl());
+			DateTime creationTime = battleRoom.getCreationTime();
+			if(creationTime!=null){
+				responseRoom.put("creationTime", creationTime.toDate());
+			}
+			responseRooms.add(responseRoom);
+		}
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(roomPage.getContent());
+		resultVo.setData(responseRooms);
 		return resultVo;
 		
 	}

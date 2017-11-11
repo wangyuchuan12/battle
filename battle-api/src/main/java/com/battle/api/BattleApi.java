@@ -549,6 +549,8 @@ public class BattleApi {
 		battleRoom.setStatus(BattleRoom.STATUS_FREE);
 		battleRoom.setNum(0);
 		
+		battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+		
 		battleRoom.setIsSearchAble(isPublicInt);
 		
 		battleRoom.setIsDisplay(0);
