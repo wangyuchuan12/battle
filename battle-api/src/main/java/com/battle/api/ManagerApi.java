@@ -644,6 +644,7 @@ public class ManagerApi {
 			responseRoom.put("name", battleRoom.getName());
 			responseRoom.put("imgUrl", battleRoom.getImgUrl());
 			responseRoom.put("smallImgUrl", battleRoom.getSmallImgUrl());
+			responseRoom.put("battleId", battleRoom.getBattleId());
 			DateTime creationTime = battleRoom.getCreationTime();
 			if(creationTime!=null){
 				responseRoom.put("creationTime", creationTime.toDate());
