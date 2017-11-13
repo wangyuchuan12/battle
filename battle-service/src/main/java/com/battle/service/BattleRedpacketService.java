@@ -30,4 +30,17 @@ public class BattleRedpacketService {
 		redpacketDao.save(battleRedpacket);
 		
 	}
+
+	public BattleRedpacket findOne(String id) {
+		
+		return redpacketDao.findOne(id);
+	}
+
+	public void update(BattleRedpacket battleRedpacket) {
+		
+		battleRedpacket.setUpdateAt(new DateTime());
+		
+		redpacketDao.save(battleRedpacket);
+		
+	}
 }

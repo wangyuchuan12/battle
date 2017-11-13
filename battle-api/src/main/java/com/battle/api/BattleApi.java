@@ -1,4 +1,5 @@
 package com.battle.api;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
+import com.battle.domain.BattleRedPacketAmountDistribution;
 import com.battle.domain.BattleRedpacket;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
@@ -37,6 +39,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedpacketService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
@@ -79,6 +82,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRedpacketService battleRedpacketService;
+	
+	@Autowired
+	private BattleRedPacketAmountDistributionService battleRedPacketAmountDistributionService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -806,6 +812,138 @@ public class BattleApi {
 		resultVo.setData(battleRedpackets);
 		
 		return resultVo;
+	}
+	
+	@RequestMapping(value="redPacketAmountDistributions")
+	@ResponseBody
+	@Transactional
+	public Object redPacketAmountDistributions(HttpServletRequest httpServletRequest){
+		return null;
+	}
+	
+	@RequestMapping(value="receiveRedpack")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=BattleMemberInfoApiFilter.class)
+	public Object receiveRedpack(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		String id = httpServletRequest.getParameter("id");
+		
+		BattleRedpacket battleRedpacket = battleRedpacketService.findOne(id);
+		
+		Integer isRoom = battleRedpacket.getIsRoom();
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		BattleRedPacketAmountDistribution battleRedPacketAmountDistribution = battleRedPacketAmountDistributionService.
+				findOneByRedPacketIdAndStatusAndMemberId(id,BattleRedPacketAmountDistribution.STATUS_DISTRIBUTION,battlePeriodMember.getId());
+		
+		if(isRoom==1){
+			String roomId = battleRedpacket.getRoomId();
+			BattleRoom battleRoom = battleRoomService.findOne(roomId);
+			Integer roomNum = battleRoom.getNum();
+			
+		}
+		
+		if(battleRedPacketAmountDistribution!=null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(0);
+			resultVo.setErrorMsg("您已经领取，不能再领取了");
+			return resultVo;
+		}
+		
+		Pageable pageable = new PageRequest(0, 1);
+		
+		List<BattleRedPacketAmountDistribution> battleRedPacketAmountDistributions = battleRedPacketAmountDistributionService.
+				findAllByRedPacketIdAndStatus(id,BattleRedPacketAmountDistribution.STATUS_FREE,pageable);
+		
+		if(battleRedPacketAmountDistributions!=null&&battleRedPacketAmountDistributions.size()>0){
+			battleRedPacketAmountDistribution = battleRedPacketAmountDistributions.get(0);
+			
+			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			
+			BigDecimal distributionAmount = battleRedPacketAmountDistribution.getAmount();
+			Long distributionBeanNum = battleRedPacketAmountDistribution.getBeanNum();
+			Long distributionMastonryNum = battleRedPacketAmountDistribution.getMastonryNum();
+			
+			if(distributionAmount==null){
+				distributionAmount = new BigDecimal(0);
+			}
+			
+			if(distributionBeanNum==null){
+				distributionBeanNum = 0L;
+			}
+			
+			if(distributionMastonryNum==null){
+				distributionMastonryNum = 0L;
+			}
+			
+			
+			BigDecimal amount = account.getAmountBalance();
+			Long beanNum = account.getWisdomCount();
+			Integer mastonryNum = account.getMasonry();
+			
+			if(amount==null){
+				amount = new BigDecimal(0);
+			}
+			
+			if(beanNum==null){
+				beanNum = 0L;
+			}
+			
+			if(mastonryNum==null){
+				mastonryNum = 0;
+			}
+			
+			amount = amount.add(distributionAmount);
+			beanNum = beanNum+distributionBeanNum;
+			mastonryNum = mastonryNum+distributionMastonryNum.intValue();
+			
+			account.setAmountBalance(amount);
+			account.setWisdomCount(beanNum);
+			account.setMasonry(mastonryNum);
+			
+			
+			accountService.update(account);
+			
+			battleRedPacketAmountDistribution.setStatus(BattleRedPacketAmountDistribution.STATUS_DISTRIBUTION);
+			
+			battleRedPacketAmountDistribution.setMemberId(battlePeriodMember.getId());
+			
+			battleRedPacketAmountDistributionService.update(battleRedPacketAmountDistribution);
+			
+			
+			Integer receiveNum = battleRedpacket.getReceiveNum();
+			if(receiveNum==null){
+				receiveNum = 0;
+			}
+			
+			receiveNum++;
+			
+			if(receiveNum>=battleRedpacket.getNum()){
+				battleRedpacket.setStatus(BattleRedpacket.STATUS_END);
+			}
+			
+			battleRedpacket.setReceiveNum(receiveNum);
+			
+			battleRedpacketService.update(battleRedpacket);
+			
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			
+			return resultVo;
+		}else{
+			battleRedpacket.setStatus(BattleRedpacket.STATUS_END);
+			battleRedpacketService.update(battleRedpacket);
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(1);
+			resultVo.setErrorMsg("已经领取完了");
+			return resultVo;
+		}
 	}
 	
 }
