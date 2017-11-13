@@ -1104,7 +1104,10 @@ public class BattleApi {
 			battleRoomRecord.setMemberId(battlePeriodMember.getId());
 			battleRoomRecord.setNickname(battlePeriodMember.getNickname());
 			battleRoomRecord.setRoomId(battlePeriodMember.getRoomId());
+			battleMemberPaperAnswer.setIsSyncData(1);
 			Integer process = battleMemberPaperAnswer.getProcess();
+			
+			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			if(process==null){
 				process = 0;
 			}
