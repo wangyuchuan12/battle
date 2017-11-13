@@ -56,6 +56,7 @@ import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -97,6 +98,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRoomRecordService battleRoomRecordService;
+	
+	@Autowired
+	private MySimpleDateFormat mySimpleDateFormat;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -843,9 +847,19 @@ public class BattleApi {
 		
 		List<BattleRoomRecord> battleRoomRecords = battleRoomRecordService.findAllByRoomId(roomId,pageable);
 		
+		List<Map<String, Object>> responseDatas = new ArrayList<>();
+		
+		for(BattleRoomRecord battleRoomRecord:battleRoomRecords){
+			Map<String, Object> responseData = new HashMap<>();
+			responseData.put("happenTime", mySimpleDateFormat.format(battleRoomRecord.getHappenTime().toDate()));
+			responseData.put("imgUrl", battleRoomRecord.getImgUrl());
+			responseData.put("log", battleRoomRecord.getLog());
+			responseDatas.add(responseData);
+		}
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleRoomRecords);
+		resultVo.setData(responseDatas);
 		
 		return resultVo;
 	}
@@ -1118,7 +1132,7 @@ public class BattleApi {
 				battleRoomService.update(battleRoom);
 				
 				StringBuffer sb = new StringBuffer();
-				sb.append(battlePeriodMember.getNickname()+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process*10)+"×2分");
+				sb.append("[battlePeriodMember.getNickname()]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process*10)+"×2分");
 				sb.append("，贡献距离："+(process*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				
@@ -1147,7 +1161,7 @@ public class BattleApi {
 				battleRoomService.update(battleRoom);
 				
 				StringBuffer sb = new StringBuffer();
-				sb.append(battlePeriodMember.getNickname()+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败，房间分数+0分");
+				sb.append("[battlePeriodMember.getNickname()]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败，房间分数+0分");
 				sb.append("，贡献距离："+(process*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				
