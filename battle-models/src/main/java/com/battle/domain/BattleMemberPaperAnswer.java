@@ -101,6 +101,12 @@ public class BattleMemberPaperAnswer {
 	@Column(name="this_reward_bean")
 	private Long thisRewardBean;
 	
+	
+	//是否已经同步数据
+	@ParamAnnotation
+	@Column(name="is_sync_data")
+	private Integer isSyncData;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -246,6 +252,14 @@ public class BattleMemberPaperAnswer {
 
 	public void setThisRewardBean(Long thisRewardBean) {
 		this.thisRewardBean = thisRewardBean;
+	}
+
+	public Integer getIsSyncData() {
+		return isSyncData;
+	}
+
+	public void setIsSyncData(Integer isSyncData) {
+		this.isSyncData = isSyncData;
 	}
 
 	public DateTime getCreateAt() {

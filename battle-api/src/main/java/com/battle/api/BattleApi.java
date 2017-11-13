@@ -14,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
 import com.battle.domain.BattleMemberLoveCooling;
+import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
@@ -26,6 +29,7 @@ import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleRedPacketAmountDistribution;
 import com.battle.domain.BattleRedpacket;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomRecord;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
@@ -35,12 +39,14 @@ import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedpacketService;
+import com.battle.service.BattleRoomRecordService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
@@ -85,6 +91,12 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRedPacketAmountDistributionService battleRedPacketAmountDistributionService;
+	
+	@Autowired
+	private BattleMemberPaperAnswerService battleMemberPaperAnswerService;
+	
+	@Autowired
+	private BattleRoomRecordService battleRoomRecordService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -821,6 +833,23 @@ public class BattleApi {
 		return null;
 	}
 	
+	@RequestMapping(value="roomRecords")
+	@ResponseBody
+	public Object roomRecords(HttpServletRequest httpServletRequest){
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		Sort sort = new Sort(Direction.DESC,"happenTime");
+		Pageable pageable = new PageRequest(0, 10,sort);
+		
+		List<BattleRoomRecord> battleRoomRecords = battleRoomRecordService.findAllByRoomId(roomId,pageable);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoomRecords);
+		
+		return resultVo;
+	}
+	
 	@RequestMapping(value="receiveRedpack")
 	@ResponseBody
 	@Transactional
@@ -1038,4 +1067,99 @@ public class BattleApi {
 		}
 	}
 	
+	@RequestMapping(value="syncPapersData")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
+	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+		
+		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.
+				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
+		
+		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
+			Integer isPass = battleMemberPaperAnswer.getIsPass();
+			BattleRoomRecord battleRoomRecord = new BattleRoomRecord();
+			battleRoomRecord.setHappenTime(new DateTime());
+			battleRoomRecord.setImgUrl(battlePeriodMember.getHeadImg());
+			battleRoomRecord.setNickname(battlePeriodMember.getNickname());
+			battleRoomRecord.setMemberId(battlePeriodMember.getId());
+			battleRoomRecord.setNickname(battlePeriodMember.getNickname());
+			battleRoomRecord.setRoomId(battlePeriodMember.getRoomId());
+			Integer process = battleMemberPaperAnswer.getProcess();
+			if(process==null){
+				process = 0;
+			}
+			
+			if(isPass==1){
+				
+				Integer roomProcess = battleRoom.getRoomProcess();
+				
+				Integer roomScore = battleRoom.getRoomScore();
+				
+				if(roomProcess==null){
+					roomProcess = 0;
+				}
+				
+				if(roomScore==null){
+					roomScore = 0;
+				}
+				
+				roomProcess = roomProcess+process;
+				roomScore = roomScore+process*2;
+				
+				battleRoom.setRoomProcess(roomProcess);
+				battleRoom.setRoomScore(roomScore);
+				
+				battleRoomService.update(battleRoom);
+				
+				StringBuffer sb = new StringBuffer();
+				sb.append(battlePeriodMember.getNickname()+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process*10)+"×2分");
+				sb.append("，贡献距离："+(process*10)+"米");
+				battleRoomRecord.setLog(sb.toString());
+				
+				battleRoomRecordService.add(battleRoomRecord);
+				
+			}else{
+				
+				Integer roomProcess = battleRoom.getRoomProcess();
+				
+				Integer roomScore = battleRoom.getRoomScore();
+				
+				if(roomProcess==null){
+					roomProcess = 0;
+				}
+				
+				if(roomScore==null){
+					roomScore = 0;
+				}
+				
+				roomProcess = roomProcess+process;
+				roomScore = roomScore-process;
+				
+				battleRoom.setRoomProcess(roomProcess);
+				battleRoom.setRoomScore(roomScore);
+				
+				battleRoomService.update(battleRoom);
+				
+				StringBuffer sb = new StringBuffer();
+				sb.append(battlePeriodMember.getNickname()+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败，房间分数+0分");
+				sb.append("，贡献距离："+(process*10)+"米");
+				battleRoomRecord.setLog(sb.toString());
+				
+				battleRoomRecordService.add(battleRoomRecord);
+			}
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		resultVo.setErrorMsg("同步成功");
+		
+		return resultVo;
+	}
 }

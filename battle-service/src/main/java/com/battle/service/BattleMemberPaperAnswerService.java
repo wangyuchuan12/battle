@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -46,5 +47,10 @@ public class BattleMemberPaperAnswerService {
 	public BattleMemberPaperAnswer findOne(String id) {
 		
 		return battleMemberPaperAnswerDao.findOne(id);
+	}
+
+	public List<BattleMemberPaperAnswer> findAllByBattlePeriodMemberIdAndIsSyncData(String memberId, int isSyncData) {
+		
+		return battleMemberPaperAnswerDao.findAllByBattlePeriodMemberIdAndIsSyncData(memberId,isSyncData);
 	}
 }

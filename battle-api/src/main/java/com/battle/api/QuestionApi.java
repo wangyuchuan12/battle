@@ -18,6 +18,7 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
+import com.battle.domain.BattleRoom;
 import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
 import com.battle.domain.QuestionAnswerItem;
@@ -29,6 +30,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRoomRecordService;
 import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
@@ -77,6 +79,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleRoomRecordService battleRoomRecordService;
 	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
@@ -241,6 +246,7 @@ public class QuestionApi {
 			
 			battleMemberPaperAnswer.setProcess(process);
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+			
 		}else{
 			result.put("right", false);
 			result.put("process", 0);
@@ -309,7 +315,7 @@ public class QuestionApi {
 		
 		battleMemberPaperAnswer.setAnswerCount(answerCount+1);
 		
-		if(battleMemberPaperAnswer.getAnswerCount()==battleMemberPaperAnswer.getQuestionCount()){
+		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
 			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
 			result.put("isLast", true);
 			
@@ -411,7 +417,7 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setIsPass(0);
 		battleMemberPaperAnswer.setPassRewardBean(passRewardBean);
 		battleMemberPaperAnswer.setThisRewardBean(0L);
-		
+		battleMemberPaperAnswer.setIsSyncData(0);
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
 		ResultVo resultVo = new ResultVo();
