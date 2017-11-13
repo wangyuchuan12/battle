@@ -69,6 +69,7 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
 			battlePeriodMember.setIsDel(0);
 			battlePeriodMember.setRoomId(roomId);
+			battlePeriodMember.setScore(0);
 			
 			battlePeriodMember.setUserId(userInfo.getId());
 			

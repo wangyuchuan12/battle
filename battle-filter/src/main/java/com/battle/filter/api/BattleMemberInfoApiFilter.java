@@ -51,6 +51,17 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("speedCoolBean", battleRoom.getSpeedCoolBean());
 		data.put("speedCoolSecond", battleRoom.getSpeedCoolSecond());
 		
+		data.put("score", battlePeriodMember.getScore());
+		
+		data.put("roomProcess", battleRoom.getRoomProcess());
+		data.put("roomScore", battleRoom.getRoomScore());
+		
+		data.put("num", battleRoom.getNum());
+		
+		data.put("maxinum", battleRoom.getMaxinum());
+		
+		data.put("mininum", battleRoom.getMininum());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);

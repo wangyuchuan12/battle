@@ -93,6 +93,19 @@ public class BattleRoom {
 	@Column(name="speed_cool_second")
 	private Integer speedCoolSecond;
 	
+	//红包数量
+	@ParamAnnotation
+	@Column(name="red_pack_num")
+	private Integer redPackNum;
+	
+	@ParamAnnotation
+	@Column(name="room_score")
+	private Integer roomScore;
+	
+	@ParamAnnotation
+	@Column(name="room_process")
+	private Integer roomProcess;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -246,6 +259,31 @@ public class BattleRoom {
 
 	public void setSmallImgUrl(String smallImgUrl) {
 		this.smallImgUrl = smallImgUrl;
+	}
+	
+	public Integer getRedPackNum() {
+		return redPackNum;
+	}
+
+	public void setRedPackNum(Integer redPackNum) {
+		this.redPackNum = redPackNum;
+	}
+	
+
+	public Integer getRoomScore() {
+		return roomScore;
+	}
+
+	public void setRoomScore(Integer roomScore) {
+		this.roomScore = roomScore;
+	}
+
+	public Integer getRoomProcess() {
+		return roomProcess;
+	}
+
+	public void setRoomProcess(Integer roomProcess) {
+		this.roomProcess = roomProcess;
 	}
 
 	public DateTime getCreateAt() {

@@ -22,6 +22,7 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
+import com.battle.domain.BattleRedpacket;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
@@ -36,6 +37,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRedpacketService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
@@ -74,6 +76,23 @@ public class BattleApi {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleRedpacketService battleRedpacketService;
+	
+	@RequestMapping(value="roomInfo")
+	@ResponseBody
+	public Object roomInfo(HttpServletRequest httpServletRequest){
+		String id = httpServletRequest.getParameter("id");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(id);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoom);
+		
+		return resultVo;
+	}
 
 	@RequestMapping(value="info")
 	@ResponseBody
@@ -558,6 +577,10 @@ public class BattleApi {
 		battleRoom.setSpeedCoolBean(10);
 		battleRoom.setSpeedCoolSecond(1800);
 		
+		battleRoom.setRedPackNum(0);
+		
+		battleRoom.setRoomScore(0);
+		
 		battleRoomService.add(battleRoom);
 		
 		
@@ -769,6 +792,20 @@ public class BattleApi {
 			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
 			return resultVo;
 		}
+	}
+	
+	@RequestMapping(value="redPacks")
+	@ResponseBody
+	@Transactional
+	public Object redPacks(HttpServletRequest httpServletRequest)throws Exception{
+		String roomId = httpServletRequest.getParameter("roomId");
+		List<BattleRedpacket> battleRedpackets = battleRedpacketService.findAllByIsRoomAndRoomIdOrderByHandTimeDesc(1, roomId);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRedpackets);
+		
+		return resultVo;
 	}
 	
 }

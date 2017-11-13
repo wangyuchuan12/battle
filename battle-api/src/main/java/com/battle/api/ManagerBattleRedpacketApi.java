@@ -19,10 +19,12 @@ import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRedPacketAmountDistribution;
 import com.battle.domain.BattleRedPacketType;
 import com.battle.domain.BattleRedpacket;
+import com.battle.domain.BattleRoom;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedPacketTypeService;
 import com.battle.service.BattleRedpacketService;
+import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
 
 import com.wyc.common.domain.vo.ResultVo;
@@ -33,7 +35,7 @@ import com.wyc.common.util.MySimpleDateFormat;
 
 @Controller
 @RequestMapping(value="/api/battleRedpacket/")
-public class BattleRedpacketApi {
+public class ManagerBattleRedpacketApi {
 
 	@Autowired
 	private BattleRedpacketService battleRedpacketService;
@@ -43,6 +45,9 @@ public class BattleRedpacketApi {
 	
 	@Autowired
 	private BattleRedPacketTypeService battleRedPacketTypeService;
+	
+	@Autowired
+	private BattleRoomService battleRoomService;
 	
 	@Autowired
 	private BattleRedPacketAmountDistributionService battleRedPacketAmountDistributionService;
@@ -292,6 +297,8 @@ public class BattleRedpacketApi {
 		battleRedpacket.setSenderImg(battlePeriodMember.getHeadImg());
 		battleRedpacket.setSenderName(battlePeriodMember.getNickname());
 		
+		battleRedpacket.setReceiveNum(0);
+		
 		BattleRedPacketType battleRedPacketType = battleRedPacketTypeService.findOne(typeId);
 		
 		if(battleRedPacketType==null){
@@ -382,6 +389,19 @@ public class BattleRedpacketApi {
 			
 		
 		}
+		
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		
+		Integer redPackNum = battleRoom.getRedPackNum();
+		if(redPackNum==null){
+			redPackNum = 0;
+		}
+		
+		redPackNum++;
+		
+		battleRoom.setRedPackNum(redPackNum);
+		
+		battleRoomService.update(battleRoom);
 		
 		
 		ResultVo resultVo = new ResultVo();
