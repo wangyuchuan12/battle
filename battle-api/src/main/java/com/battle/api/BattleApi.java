@@ -873,6 +873,9 @@ public class BattleApi {
 				}
 				
 				Integer roomScoreMeet = battleRedpacket.getRoomScoreMeet();
+				if(roomScoreMeet==null){
+					roomScoreMeet = 0;
+				}
 				if(roomScoreMeet>roomScore){
 					ResultVo resultVo = new ResultVo();
 					resultVo.setSuccess(false);
