@@ -239,12 +239,20 @@ public class QuestionApi {
 			
 			battlePeriodMember.setProcess(process);
 			
+			
+			Integer paperProcess = battleMemberPaperAnswer.getProcess();
+			if(paperProcess==null){
+				paperProcess = 0;
+			}
+			
+			paperProcess = paperProcess+unit;
+			
 			questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			
 			
-			battleMemberPaperAnswer.setProcess(process);
+			battleMemberPaperAnswer.setProcess(paperProcess);
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			
 		}else{
