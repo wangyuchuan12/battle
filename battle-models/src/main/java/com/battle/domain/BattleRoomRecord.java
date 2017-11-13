@@ -39,6 +39,7 @@ public class BattleRoomRecord {
 	
 	@Column(name="happen_time")
 	@ParamAnnotation
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime happenTime;
 	
 	@Column(name="member_id")
