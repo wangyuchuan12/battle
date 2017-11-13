@@ -843,7 +843,96 @@ public class BattleApi {
 			String roomId = battleRedpacket.getRoomId();
 			BattleRoom battleRoom = battleRoomService.findOne(roomId);
 			Integer roomNum = battleRoom.getNum();
+			if(roomNum==null){
+				roomNum = 0;
+			}
+			Integer isRoomMeet = battleRedpacket.getIsRoomMeet();
+			Integer isRoomProcessMeet = battleRedpacket.getIsRoomProcessMeet();
+			Integer isRoomScoreMeet = battleRedpacket.getIsRoomScoreMeet();
+			if(isRoomProcessMeet==1){
+				Integer roomProcess = battleRoom.getRoomProcess();
+				if(roomProcess==null){
+					roomProcess = 0;
+				}
+				Integer roomProcessMeet = battleRedpacket.getRoomProcessMeet();
+				if(roomProcessMeet==null){
+					roomProcessMeet = 0;
+				}
+				if(roomProcessMeet>roomProcess){
+					ResultVo resultVo = new ResultVo();
+					resultVo.setSuccess(false);
+					resultVo.setErrorCode(2);
+					return resultVo;
+				}
+			}
 			
+			if(isRoomScoreMeet==1){
+				Integer roomScore = battleRoom.getRoomScore();
+				if(roomScore==null){
+					roomScore = 0;
+				}
+				
+				Integer roomScoreMeet = battleRedpacket.getRoomScoreMeet();
+				if(roomScoreMeet>roomScore){
+					ResultVo resultVo = new ResultVo();
+					resultVo.setSuccess(false);
+					resultVo.setErrorCode(3);
+					return resultVo;
+				}
+			}
+			
+			if(isRoomMeet==1){
+				Integer roomMeetNum = battleRedpacket.getRoomMeetNum();
+				if(roomMeetNum==null){
+					roomMeetNum = 0;
+				}
+				
+				if(roomMeetNum>roomNum){
+					ResultVo resultVo = new ResultVo();
+					resultVo.setSuccess(false);
+					resultVo.setErrorCode(4);
+					return resultVo;
+				}
+			}
+		}
+		
+		Integer isPersonalProcessMeet = battleRedpacket.getIsPersonalProcessMeet();
+		if(isPersonalProcessMeet==1){
+			Integer personalProcessMeet = battleRedpacket.getPersonalProcessMeet();
+			Integer process = battlePeriodMember.getProcess();
+			if(process==null){
+				process = 0;
+			}
+			
+			if(personalProcessMeet==null){
+				personalProcessMeet = 0;
+			}
+			if(personalProcessMeet>process){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorCode(5);
+				return resultVo;
+			}
+		}
+		
+		Integer isPersonalScoreMeet = battleRedpacket.getPersonalScoreMeet();
+		if(isPersonalScoreMeet==1){
+			Integer personalScoreMeet = battleRedpacket.getPersonalScoreMeet();
+			Integer score = battlePeriodMember.getScore();
+			if(personalScoreMeet==null){
+				personalScoreMeet = 0;
+			}
+			
+			if(score==null){
+				score = 0;
+			}
+			
+			if(personalScoreMeet>score){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorCode(6);
+				return resultVo;
+			}
 		}
 		
 		if(battleRedPacketAmountDistribution!=null){
