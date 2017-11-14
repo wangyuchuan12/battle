@@ -961,7 +961,7 @@ public class BattleApi {
 			}
 		}
 		
-		Integer isPersonalScoreMeet = battleRedpacket.getPersonalScoreMeet();
+		Integer isPersonalScoreMeet = battleRedpacket.getIsPersonalScoreMeet();
 		
 		System.out.println("isPersonalScoreMeet:"+isPersonalScoreMeet);
 		
