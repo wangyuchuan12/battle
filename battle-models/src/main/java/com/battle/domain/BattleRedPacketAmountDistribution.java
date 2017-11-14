@@ -45,6 +45,14 @@ public class BattleRedPacketAmountDistribution {
 	private String memberId;
 	
 	@ParamAnnotation
+	@Column(name="img_url")
+	private String imgUrl;
+	
+	@ParamAnnotation
+	@Column
+	private String nickname;
+	
+	@ParamAnnotation
 	@Column(nullable=false)
 	private BigDecimal amount;
 	
@@ -146,6 +154,19 @@ public class BattleRedPacketAmountDistribution {
 	}
 	public void setMastonryNum(Long mastonryNum) {
 		this.mastonryNum = mastonryNum;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public DateTime getCreateAt() {
 		return createAt;

@@ -1081,6 +1081,27 @@ public class BattleApi {
 		}
 	}
 	
+	
+	@RequestMapping(value="redPackDistributions")
+	@ResponseBody
+	@Transactional
+	public ResultVo redPackDistributions(HttpServletRequest httpServletRequest)throws Exception{
+		String redPackId = httpServletRequest.getParameter("redPackId");
+		
+		Sort sort = new Sort(Direction.DESC,"receiveTime");
+		Pageable pageable = new PageRequest(0, 20, sort);
+		
+		List<BattleRedPacketAmountDistribution> battleRedPacketAmountDistributions = battleRedPacketAmountDistributionService.
+				findAllByRedPacketIdAndStatus(redPackId, BattleRedPacketAmountDistribution.STATUS_DISTRIBUTION, pageable);
+	
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setData(battleRedPacketAmountDistributions);
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
 	@RequestMapping(value="syncPapersData")
 	@ResponseBody
 	@Transactional
