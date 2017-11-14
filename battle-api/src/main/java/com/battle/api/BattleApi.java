@@ -1085,7 +1085,12 @@ public class BattleApi {
 	@RequestMapping(value="redPackDistributions")
 	@ResponseBody
 	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo redPackDistributions(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
 		String redPackId = httpServletRequest.getParameter("redPackId");
 		
 		Sort sort = new Sort(Direction.DESC,"receiveTime");
@@ -1093,10 +1098,37 @@ public class BattleApi {
 		
 		List<BattleRedPacketAmountDistribution> battleRedPacketAmountDistributions = battleRedPacketAmountDistributionService.
 				findAllByRedPacketIdAndStatus(redPackId, BattleRedPacketAmountDistribution.STATUS_DISTRIBUTION, pageable);
+		
+		List<Map<String, Object>> responseDistributions = new ArrayList<>();
+		
+		for(BattleRedPacketAmountDistribution battleRedPacketAmountDistribution:battleRedPacketAmountDistributions){
+			Map<String, Object> responseData = new HashMap<>();
+			responseData.put("id", battleRedPacketAmountDistribution.getId());
+			responseData.put("amount", battleRedPacketAmountDistribution.getAmount());
+			responseData.put("beanNum", battleRedPacketAmountDistribution.getBeanNum());
+			responseData.put("imgUrl", battleRedPacketAmountDistribution.getImgUrl());
+			responseData.put("mastonryNum", battleRedPacketAmountDistribution.getMastonryNum());
+			responseData.put("memberId", battleRedPacketAmountDistribution.getMemberId());
+			responseData.put("nickname", battleRedPacketAmountDistribution.getNickname());
+			responseData.put("receiveTime",mySimpleDateFormat.format(battleRedPacketAmountDistribution.getReceiveTime().toDate()));
+			responseData.put("redPacketId", battleRedPacketAmountDistribution.getRedPacketId());
+			responseData.put("seq", battleRedPacketAmountDistribution.getSeq());
+			responseData.put("status", battleRedPacketAmountDistribution.getStatus());
+			responseData.put("userId", battleRedPacketAmountDistribution.getUserId());
+			
+			if(battleRedPacketAmountDistribution.getMemberId().equals(battlePeriodMember.getId())){
+				responseData.put("isMy", 1);
+			}else{
+				responseData.put("isMy", 0);
+			}
+			
+			responseDistributions.add(responseData);
+		}
+		
 	
 		
 		ResultVo resultVo = new ResultVo();
-		resultVo.setData(battleRedPacketAmountDistributions);
+		resultVo.setData(responseDistributions);
 		resultVo.setSuccess(true);
 		
 		return resultVo;
