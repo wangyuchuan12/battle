@@ -1047,6 +1047,9 @@ public class BattleApi {
 			battleRedPacketAmountDistribution.setStatus(BattleRedPacketAmountDistribution.STATUS_DISTRIBUTION);
 			
 			battleRedPacketAmountDistribution.setMemberId(battlePeriodMember.getId());
+			battleRedPacketAmountDistribution.setReceiveTime(new DateTime());
+			battleRedPacketAmountDistribution.setImgUrl(battlePeriodMember.getHeadImg());
+			battleRedPacketAmountDistribution.setNickname(battlePeriodMember.getNickname());
 			
 			battleRedPacketAmountDistributionService.update(battleRedPacketAmountDistribution);
 			

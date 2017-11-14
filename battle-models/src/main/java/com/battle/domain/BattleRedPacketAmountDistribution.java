@@ -74,6 +74,7 @@ public class BattleRedPacketAmountDistribution {
 	
 	@ParamAnnotation
 	@Column(name="receive_time")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime receiveTime;
 	
 	@ParamAnnotation
