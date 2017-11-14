@@ -1128,10 +1128,22 @@ public class BattleApi {
 			responseDistributions.add(responseData);
 		}
 		
+		BattleRedpacket battleRedpacket = battleRedpacketService.findOne(redPackId);
+		
+		Map<String, Object> responseData = new HashMap<>();
+		
+		responseData.put("id", battleRedpacket.getId());
+		responseData.put("senderImg", battleRedpacket.getSenderImg());
+		responseData.put("senderName", battleRedpacket.getSenderName());
+		responseData.put("num", battleRedpacket.getNum());
+		responseData.put("receiveNum", battleRedpacket.getReceiveNum());
+		
+		responseData.put("distributions", responseDistributions);
+		
 	
 		
 		ResultVo resultVo = new ResultVo();
-		resultVo.setData(responseDistributions);
+		resultVo.setData(responseData);
 		resultVo.setSuccess(true);
 		
 		return resultVo;
