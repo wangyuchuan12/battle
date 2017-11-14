@@ -227,6 +227,13 @@ public class QuestionApi {
 		if(questionAnswerItem.getIsRight()==1){
 			
 			Integer process = battlePeriodMember.getProcess();
+			
+			Integer score = battlePeriodMember.getScore();
+			
+			if(score==null){
+				score = 0;
+			}
+			
 			if(process==null){
 				process = 0;
 			}
@@ -234,10 +241,14 @@ public class QuestionApi {
 			
 			process = process + unit;
 			
+			score = score+unit;
+			
 			result.put("right", true);
 			result.put("process", unit);
 			
 			battlePeriodMember.setProcess(process);
+			
+			battlePeriodMember.setScore(score);
 			
 			
 			Integer paperProcess = battleMemberPaperAnswer.getProcess();
