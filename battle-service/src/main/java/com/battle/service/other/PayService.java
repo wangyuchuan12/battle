@@ -98,13 +98,13 @@ public class PayService {
 		String nonceStr = "1add1a30ac87aa2db72f57a2375d8f22";
 		Calendar now = Calendar.getInstance();
         String outTradeNo = now.get(Calendar.YEAR)
-                +"-"+(now.get(Calendar.MONTH) + 1)
-                +"-"+now.get(Calendar.DAY_OF_MONTH)
-                +"-"+now.get(Calendar.HOUR_OF_DAY)
-                +"-"+now.get(Calendar.MINUTE)
-                +"-"+now.get(Calendar.SECOND)
-                +"-"+now.get(Calendar.MILLISECOND)
-                +"-"+new Random().nextInt(1000)+"";
+                +"0"+(now.get(Calendar.MONTH) + 1)
+                +"0"+now.get(Calendar.DAY_OF_MONTH)
+                +"0"+now.get(Calendar.HOUR_OF_DAY)
+                +"0"+now.get(Calendar.MINUTE)
+                +"0"+now.get(Calendar.SECOND)
+                +"0"+now.get(Calendar.MILLISECOND)
+                +"0"+new Random().nextInt(1000)+"";
         
         System.out.println("outTradeNo:"+outTradeNo);
        
