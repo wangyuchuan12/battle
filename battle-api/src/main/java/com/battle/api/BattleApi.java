@@ -1210,7 +1210,7 @@ public class BattleApi {
 				battleRoomService.update(battleRoom);
 				
 				StringBuffer sb = new StringBuffer();
-				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process*10)+"×2分");
+				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process)+"×2分");
 				sb.append("，贡献距离："+(process*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				

@@ -1,6 +1,8 @@
 package com.battle.api;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.filter.api.WxPayApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.other.GoodPayConfigService;
+import com.battle.service.other.PayService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Good;
 import com.wyc.common.domain.Order;
 import com.wyc.common.domain.PaySuccess;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.domain.vo.TransfersResultVo;
 import com.wyc.common.service.GoodService;
 import com.wyc.common.service.OrderService;
 import com.wyc.common.service.PaySuccessService;
@@ -41,6 +45,9 @@ public class WxPayApi{
 	
 	@Autowired
 	private PaySuccessService paySuccessService;
+	
+	@Autowired
+	private PayService payService;
 	@RequestMapping(value="wxPayConfig")
 	@ResponseBody
 	@Transactional
@@ -162,5 +169,16 @@ public class WxPayApi{
 		ResultVo resultVo = goodPayConfigService.settlementOrder(order);
 		
 		return resultVo;
+	}
+	
+	@RequestMapping(value="transfers")
+	@ResponseBody
+	@Transactional
+	public Object transfers(HttpServletRequest httpServletRequest)throws Exception{
+		String openid = "o6hwf0S9JT_Ff0LVBORFsBrhAtpM";
+		BigDecimal amount = new BigDecimal(1);
+		TransfersResultVo transfersResultVo = payService.transfers(openid, amount, "www.chengxihome.com", "测试付款");
+		
+		return transfersResultVo;
 	}
 }
