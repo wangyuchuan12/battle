@@ -105,6 +105,8 @@ public class PayService {
                 +"-"+now.get(Calendar.SECOND)
                 +"-"+now.get(Calendar.MILLISECOND)
                 +"-"+new Random().nextInt(1000)+"";
+        
+        outTradeNo = "102jingyingfanwei3332222d";
         String checkName = "NO_CHECK";
         String spbillCreateIp = remoteAddress;
         
