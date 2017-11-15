@@ -114,7 +114,7 @@ public class PayService {
         TreeMap<String, String> map = new TreeMap<String, String>();
         map.put("mch_appid", appid);
         map.put("mchid", mchid);
-        map.put("device_info", deviceInfo);
+     //   map.put("device_info", deviceInfo);
         map.put("nonce_str", nonceStr);
         map.put("partner_trade_no", outTradeNo);
         map.put("openid",openid);
@@ -130,7 +130,7 @@ public class PayService {
         sb2.append("<xml>");
         sb2.append("<mch_appid>"+appid+"</mch_appid>");
         sb2.append("<mchid>"+mchid+"</mchid>");
-        sb2.append("<device_info>"+deviceInfo+"</device_info>");
+     //   sb2.append("<device_info>"+deviceInfo+"</device_info>");
         sb2.append("<nonce_str>"+nonceStr+"</nonce_str>");
         sb2.append("<partner_trade_no>"+outTradeNo+"</partner_trade_no>");
         sb2.append("<openid>"+openid+"</openid>");
