@@ -19,15 +19,15 @@ public class TransfersResultVo {
 	@ParamAnnotation
 	private String returnMsg;
 	
-	@NameAnnotation(name="return_code")
+	@NameAnnotation(name="result_code")
 	@ParamAnnotation
 	private String resultCode;
 	
-	@NameAnnotation(name="error_code")
+	@NameAnnotation(name="err_code")
 	@ParamAnnotation
 	private String errCode;
 	
-	@NameAnnotation(name="error_code_desc")
+	@NameAnnotation(name="err_code_des")
 	@ParamAnnotation
 	private String errCodeDes;
 
