@@ -177,7 +177,7 @@ public class WxPayApi{
 	public Object transfers(HttpServletRequest httpServletRequest)throws Exception{
 		String openid = "o6hwf0S9JT_Ff0LVBORFsBrhAtpM";
 		BigDecimal amount = new BigDecimal(1);
-		TransfersResultVo transfersResultVo = payService.transfers(openid, amount, "www.chengxihome.com", "测试付款");
+		TransfersResultVo transfersResultVo = payService.transfers(openid, amount, "10.2.3.10", "测试付款");
 		
 		return transfersResultVo;
 	}
