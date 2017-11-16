@@ -1,8 +1,11 @@
 package com.battle.dao;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +26,8 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 	Page<BattleRoom> findAllByUserId(@Param("userId") String userId,Pageable pageable);
 
 	Page<BattleRoom> findAll(Pageable pageable);
-
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	BattleRoom findOne(String id);
+	
 }
