@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.wyc.common.domain.AccountAmountTakeoutRecord;
@@ -16,9 +17,9 @@ public class AccountAmountTakeoutRecordService {
 	@Autowired
 	private AccountAmountTakeoutRecordRepository accountAmountTakeoutRecordRepository;
 
-	public List<AccountAmountTakeoutRecord> findAllByAccountIdOrderByCreateAtDesc(String accountId) {
+	public List<AccountAmountTakeoutRecord> findAllByAccountIdOrderByCreateAtDesc(String accountId,Pageable pageable) {
 		
-		return accountAmountTakeoutRecordRepository.findAllByAccountIdOrderByCreateAtDesc(accountId);
+		return accountAmountTakeoutRecordRepository.findAllByAccountIdOrderByCreateAtDesc(accountId,pageable);
 	}
 
 	public void add(AccountAmountTakeoutRecord accountAmountTakeoutRecord) {

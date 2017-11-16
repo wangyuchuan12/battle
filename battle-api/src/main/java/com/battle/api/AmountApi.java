@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +58,9 @@ public class AmountApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
-		List<AccountAmountTakeoutRecord> records = accountAmountTakeoutRecordService.findAllByAccountIdOrderByCreateAtDesc(userInfo.getAccountId());
+		Pageable pageable = new PageRequest(0, 50);
+		
+		List<AccountAmountTakeoutRecord> records = accountAmountTakeoutRecordService.findAllByAccountIdOrderByCreateAtDesc(userInfo.getAccountId(),pageable);
 		
 		List<Map<String, Object>> responseDatas = new ArrayList<>();
 		
