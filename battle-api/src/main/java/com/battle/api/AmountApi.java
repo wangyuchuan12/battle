@@ -1,7 +1,10 @@
 package com.battle.api;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -15,12 +18,15 @@ import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.other.PayService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
+import com.wyc.common.domain.AccountAmountTakeoutRecord;
 import com.wyc.common.domain.TakeoutAmountEntry;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.domain.vo.TransfersResultVo;
+import com.wyc.common.service.AccountAmountTakeoutRecordService;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.service.TakeoutAmountEntryService;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -34,7 +40,38 @@ public class AmountApi {
 	private TakeoutAmountEntryService takeoutAmountEntryService;
 	
 	@Autowired
+	private AccountAmountTakeoutRecordService accountAmountTakeoutRecordService;
+	
+	@Autowired
 	private PayService payService;
+	
+	@Autowired
+	private MySimpleDateFormat mySimpleDateFormat;
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value="takeoutRecourds")
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo takeoutRecourds(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		List<AccountAmountTakeoutRecord> records = accountAmountTakeoutRecordService.findAllByAccountIdOrderByCreateAtDesc(userInfo.getAccountId());
+		
+		List<Map<String, Object>> responseDatas = new ArrayList<>();
+		
+		for(AccountAmountTakeoutRecord accountAmountTakeoutRecord:records){
+			Map<String, Object> responseData = new HashMap<>();
+			responseData.put("amount", accountAmountTakeoutRecord.getAmount());
+			responseData.put("createAt", mySimpleDateFormat.format(accountAmountTakeoutRecord.getCreateAt().toDate()));
+			responseDatas.add(responseData);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setData(responseDatas);
+		resultVo.setSuccess(true);
+		return resultVo;
+	}
 	
 	@Transactional
 	@ResponseBody
@@ -83,6 +120,13 @@ public class AmountApi {
 			amount = amount.subtract(takeoutAmountEntry.getAmount());
 			account.setAmountBalance(amount);
 			accountService.update(account);
+			
+			AccountAmountTakeoutRecord accountAmountTakeoutRecord = new AccountAmountTakeoutRecord();
+			accountAmountTakeoutRecord.setAccountId(userInfo.getAccountId());
+			accountAmountTakeoutRecord.setAmount(amount);
+			accountAmountTakeoutRecordService.add(accountAmountTakeoutRecord);
+			
+			
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			return resultVo;
