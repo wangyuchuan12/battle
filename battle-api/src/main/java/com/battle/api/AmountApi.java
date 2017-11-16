@@ -130,12 +130,14 @@ public class AmountApi {
 		if(transfersResultVo.getResultCode().equalsIgnoreCase("SUCCESS")){
 			amount = amount.subtract(takeoutAmountEntry.getAmount());
 			account.setAmountBalance(amount);
+			canTakeOutCount = canTakeOutCount-1;
+			account.setCanTakeOutCount(canTakeOutCount);
 			
 			accountService.update(account);
 			
 			AccountAmountTakeoutRecord accountAmountTakeoutRecord = new AccountAmountTakeoutRecord();
 			accountAmountTakeoutRecord.setAccountId(userInfo.getAccountId());
-			accountAmountTakeoutRecord.setAmount(amount);
+			accountAmountTakeoutRecord.setAmount(takeoutAmountEntry.getAmount());
 			accountAmountTakeoutRecordService.add(accountAmountTakeoutRecord);
 			
 			
