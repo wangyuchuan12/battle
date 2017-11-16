@@ -1221,9 +1221,13 @@ public class BattleApi {
 				roomScore = 0;
 			}
 			
+			roomScore = roomScore+score;
+			
 			roomProcess = roomProcess + process;
 			
 			battleRoom.setRoomProcess(roomProcess);
+			
+			battleRoom.setRoomScore(roomScore);
 			
 			if(isPass==1){
 				
