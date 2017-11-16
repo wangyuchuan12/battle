@@ -611,9 +611,15 @@ public class BattleApi {
 		
 		battleRoom.setWrongSubScore(1);
 		
+		battleRoom.setIsRedpack(0);
+		
+		battleRoom.setRedpackAmount(new BigDecimal(0));
+		
+		battleRoom.setRedpackBean(0);
+		
+		battleRoom.setRedpackMasonry(0);
+		
 		battleRoomService.add(battleRoom);
-		
-		
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(battleRoom);

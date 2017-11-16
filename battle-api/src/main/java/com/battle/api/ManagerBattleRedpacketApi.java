@@ -309,12 +309,21 @@ public class ManagerBattleRedpacketApi {
 		}
 		
 		BigDecimal amount = battleRedPacketType.getAmount();
+		if(amount==null){
+			amount = new BigDecimal(0);
+		}
 		Long beanNum = battleRedPacketType.getBeanNum();
+		if(beanNum==null){
+			beanNum = 0L;
+		}
 		BigDecimal costAmount = battleRedPacketType.getCostAmount();
 		Long costBean = battleRedPacketType.getCostBean();
 		Long costMasonry = battleRedPacketType.getCostMasonry();
 		Integer costType = battleRedPacketType.getCostType();
 		Long masonryNum = battleRedPacketType.getMasonryNum();
+		if(masonryNum==null){
+			masonryNum = 0L;
+		}
 		Integer num = battleRedPacketType.getNum();
 		
 		battleRedpacket.setAmount(amount);
@@ -400,6 +409,39 @@ public class ManagerBattleRedpacketApi {
 		redPackNum++;
 		
 		battleRoom.setRedPackNum(redPackNum);
+		
+		battleRoom.setIsRedpack(1);
+		
+		BigDecimal redpackAmount = battleRoom.getRedpackAmount();
+		
+		if(redpackAmount==null){
+			redpackAmount = new BigDecimal(0);
+		}
+		
+		Integer redpackBean = battleRoom.getRedpackBean();
+		
+		if(redpackBean==null){
+			redpackBean = 0;
+		}
+		
+		Integer redpackMasonry = battleRoom.getRedpackMasonry();
+		
+		if(redpackMasonry==null){
+			redpackMasonry = 0;
+		}
+		
+		
+		redpackAmount = redpackAmount.add(amount);
+		
+		redpackBean = redpackBean + beanNum.intValue();
+		
+		redpackMasonry = redpackMasonry+masonryNum.intValue();
+		
+		battleRoom.setRedpackAmount(redpackAmount);
+		
+		battleRoom.setRedpackBean(redpackBean);
+		
+		battleRoom.setRedpackMasonry(redpackMasonry);
 		
 		battleRoomService.update(battleRoom);
 		

@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -82,6 +84,22 @@ public class BattleRoom {
 	@ParamAnnotation
 	@Column
 	private Integer status;
+	
+	@ParamAnnotation
+	@Column(name="is_redpack")
+	private Integer isRedpack;
+	
+	@ParamAnnotation
+	@Column(name="redpack_amount")
+	private BigDecimal redpackAmount;
+	
+	@ParamAnnotation
+	@Column(name="redpack_masonry")
+	private Integer redpackMasonry;
+	
+	@ParamAnnotation
+	@Column(name="redpack_bean")
+	private Integer redpackBean;
 	
 	//加速冷却消耗豆子数量
 	@ParamAnnotation
@@ -332,6 +350,39 @@ public class BattleRoom {
 
 	public void setFullRightAddScore(Integer fullRightAddScore) {
 		this.fullRightAddScore = fullRightAddScore;
+	}
+
+
+	public Integer getIsRedpack() {
+		return isRedpack;
+	}
+
+	public void setIsRedpack(Integer isRedpack) {
+		this.isRedpack = isRedpack;
+	}
+
+	public BigDecimal getRedpackAmount() {
+		return redpackAmount;
+	}
+
+	public void setRedpackAmount(BigDecimal redpackAmount) {
+		this.redpackAmount = redpackAmount;
+	}
+
+	public Integer getRedpackMasonry() {
+		return redpackMasonry;
+	}
+
+	public void setRedpackMasonry(Integer redpackMasonry) {
+		this.redpackMasonry = redpackMasonry;
+	}
+
+	public Integer getRedpackBean() {
+		return redpackBean;
+	}
+
+	public void setRedpackBean(Integer redpackBean) {
+		this.redpackBean = redpackBean;
 	}
 
 	public DateTime getCreateAt() {
