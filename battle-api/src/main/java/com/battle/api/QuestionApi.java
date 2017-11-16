@@ -92,6 +92,17 @@ public class QuestionApi {
 		Integer rightAddProcess = battleRoom.getRightAddProcess();
 		Integer rightAddScore = battleRoom.getRightAddScore();
 		Integer wrongSubScore = battleRoom.getWrongSubScore();
+		if(wrongSubScore==null){
+			wrongSubScore = 0;
+		}
+		
+		if(rightAddProcess==null){
+			rightAddProcess = 0;
+		}
+		
+		if(rightAddScore==null){
+			rightAddScore = 0;
+		}
 	
 		
 		String id = httpServletRequest.getParameter("id");
@@ -283,6 +294,10 @@ public class QuestionApi {
 			result.put("process", 0);
 			
 			Integer score = battlePeriodMember.getScore();
+			
+			if(score==null){
+				score = 0;
+			}
 			
 			score = score-wrongSubScore;
 			
