@@ -50,7 +50,7 @@ public class AmountApi {
 	
 	@Transactional
 	@ResponseBody
-	@RequestMapping(value="takeoutRecourds")
+	@RequestMapping(value="takeoutRecords")
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo takeoutRecourds(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
