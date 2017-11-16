@@ -100,6 +100,17 @@ public class AmountApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		Integer canTakeOutCount = account.getCanTakeOutCount();
+		if(canTakeOutCount==null){
+			canTakeOutCount = 0;
+		}
+		
+		if(canTakeOutCount<1){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("提现次数已经用完");
+			return resultVo;
+		}
 		
 		BigDecimal amount = account.getAmountBalance();
 		if(amount==null){
@@ -119,6 +130,7 @@ public class AmountApi {
 		if(transfersResultVo.getResultCode().equalsIgnoreCase("SUCCESS")){
 			amount = amount.subtract(takeoutAmountEntry.getAmount());
 			account.setAmountBalance(amount);
+			
 			accountService.update(account);
 			
 			AccountAmountTakeoutRecord accountAmountTakeoutRecord = new AccountAmountTakeoutRecord();
