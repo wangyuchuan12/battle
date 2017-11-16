@@ -212,13 +212,13 @@ public class GoodPayConfigService {
 		
 		Calendar now = Calendar.getInstance();
 		String outTradeNo = now.get(Calendar.YEAR)
-                +"-"+(now.get(Calendar.MONTH) + 1)
-                +"-"+now.get(Calendar.DAY_OF_MONTH)
-                +"-"+now.get(Calendar.HOUR_OF_DAY)
-                +"-"+now.get(Calendar.MINUTE)
-                +"-"+now.get(Calendar.SECOND)
-                +"-"+now.get(Calendar.MILLISECOND)
-                +"-"+new Random().nextInt(10000)+"";
+                +"0"+(now.get(Calendar.MONTH) + 1)
+                +"0"+now.get(Calendar.DAY_OF_MONTH)
+                +"0"+now.get(Calendar.HOUR_OF_DAY)
+                +"0"+now.get(Calendar.MINUTE)
+                +"0"+now.get(Calendar.SECOND)
+                +"0"+now.get(Calendar.MILLISECOND)
+                +"0"+new Random().nextInt(10000)+"";
 		PayCostVo payCostVo = new PayCostVo();
 		payCostVo.setBody(good.getName());
 		payCostVo.setCost(good.getCostMoney());

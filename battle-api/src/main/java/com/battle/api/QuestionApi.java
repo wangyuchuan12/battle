@@ -82,6 +82,7 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattleRoomRecordService battleRoomRecordService;
+
 	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
@@ -91,10 +92,10 @@ public class QuestionApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		
-		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodMember.getPeriodId());
-		
-		Integer unit = battlePeriod.getUnit();
+		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, battlePeriodMember.getRoomId());
+		Integer rightAddProcess = battleRoom.getRightAddProcess();
+		Integer rightAddScore = battleRoom.getRightAddScore();
+		Integer wrongSubScore = battleRoom.getWrongSubScore();
 	
 		
 		String id = httpServletRequest.getParameter("id");
@@ -230,6 +231,11 @@ public class QuestionApi {
 			
 			Integer score = battlePeriodMember.getScore();
 			
+			Integer paperScore = battleMemberPaperAnswer.getScore();
+			if(paperScore==null){
+				paperScore = 0;
+			}
+			
 			if(score==null){
 				score = 0;
 			}
@@ -239,12 +245,14 @@ public class QuestionApi {
 			}
 			
 			
-			process = process + unit;
+			process = process + rightAddProcess;
 			
-			score = score+unit;
+			score = score+rightAddScore;
+			
+			paperScore = paperScore + rightAddScore;
 			
 			result.put("right", true);
-			result.put("process", unit);
+			result.put("process", rightAddProcess);
 			
 			battlePeriodMember.setProcess(process);
 			
@@ -256,25 +264,41 @@ public class QuestionApi {
 				paperProcess = 0;
 			}
 			
-			paperProcess = paperProcess+unit;
+			paperProcess = paperProcess+rightAddProcess;
 			
 			questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			
-			
+			battleMemberPaperAnswer.setScore(paperScore);
 			battleMemberPaperAnswer.setProcess(paperProcess);
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			
 		}else{
+			
+			Integer paperScore = battleMemberPaperAnswer.getScore();
+			if(paperScore==null){
+				paperScore = 0;
+			}
+			
+			paperScore = paperScore-wrongSubScore;
+			
 			result.put("right", false);
 			result.put("process", 0);
+			
+			Integer score = battlePeriodMember.getScore();
+			
+			score = score-wrongSubScore;
+			
+			battlePeriodMember.setScore(score);
 			
 			Integer loveResidule = battlePeriodMember.getLoveResidule();
 			loveResidule--;
 			battlePeriodMember.setLoveResidule(loveResidule);
 			
 			questionAnswer.setWrongSum(questionAnswer.getWrongSum()+1);
+			
+			battleMemberPaperAnswer.setScore(paperScore);
 			
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
 		}
@@ -364,6 +388,8 @@ public class QuestionApi {
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
+		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, battlePeriodMember.getRoomId());
+		
 		Integer stageIndex = battlePeriodMember.getStageIndex();
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
@@ -437,6 +463,12 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setPassRewardBean(passRewardBean);
 		battleMemberPaperAnswer.setThisRewardBean(0L);
 		battleMemberPaperAnswer.setIsSyncData(0);
+		
+		battleMemberPaperAnswer.setFullRightAddScore(battleRoom.getFullRightAddScore());
+		battleMemberPaperAnswer.setRightAddProcess(battleRoom.getRightAddProcess());
+		battleMemberPaperAnswer.setRightAddScore(battleRoom.getRightAddScore());
+		battleMemberPaperAnswer.setWrongSubScore(battleRoom.getWrongSubScore());
+		
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
 		ResultVo resultVo = new ResultVo();

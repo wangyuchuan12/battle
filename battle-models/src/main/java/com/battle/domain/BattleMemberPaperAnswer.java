@@ -107,6 +107,27 @@ public class BattleMemberPaperAnswer {
 	@Column(name="is_sync_data")
 	private Integer isSyncData;
 	
+	
+	@ParamAnnotation
+	@Column(name="right_add_score")
+	private Integer rightAddScore;
+	
+	@ParamAnnotation
+	@Column(name="wrong_sub_score")
+	private Integer wrongSubScore;
+	
+	@ParamAnnotation
+	@Column(name="right_add_process")
+	private Integer rightAddProcess;
+	
+	@ParamAnnotation
+	@Column(name="full_right_add_score")
+	private Integer fullRightAddScore;
+	
+	@ParamAnnotation
+	@Column
+	private Integer score;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -260,6 +281,46 @@ public class BattleMemberPaperAnswer {
 
 	public void setIsSyncData(Integer isSyncData) {
 		this.isSyncData = isSyncData;
+	}
+
+	public Integer getRightAddScore() {
+		return rightAddScore;
+	}
+
+	public void setRightAddScore(Integer rightAddScore) {
+		this.rightAddScore = rightAddScore;
+	}
+
+	public Integer getWrongSubScore() {
+		return wrongSubScore;
+	}
+
+	public void setWrongSubScore(Integer wrongSubScore) {
+		this.wrongSubScore = wrongSubScore;
+	}
+
+	public Integer getRightAddProcess() {
+		return rightAddProcess;
+	}
+
+	public void setRightAddProcess(Integer rightAddProcess) {
+		this.rightAddProcess = rightAddProcess;
+	}
+
+	public Integer getFullRightAddScore() {
+		return fullRightAddScore;
+	}
+
+	public void setFullRightAddScore(Integer fullRightAddScore) {
+		this.fullRightAddScore = fullRightAddScore;
+	}
+	
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	public DateTime getCreateAt() {

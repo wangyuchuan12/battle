@@ -603,6 +603,14 @@ public class BattleApi {
 		
 		battleRoom.setRoomScore(0);
 		
+		battleRoom.setFullRightAddScore(10);
+		
+		battleRoom.setRightAddProcess(1);
+		
+		battleRoom.setRightAddScore(1);
+		
+		battleRoom.setWrongSubScore(1);
+		
 		battleRoomService.add(battleRoom);
 		
 		
@@ -1201,45 +1209,38 @@ public class BattleApi {
 					roomScore = 0;
 				}
 				
-				roomProcess = roomProcess+process;
-				roomScore = roomScore+process*2;
+				roomScore = roomScore+battleRoom.getFullRightAddScore();
 				
-				battleRoom.setRoomProcess(roomProcess);
 				battleRoom.setRoomScore(roomScore);
 				
 				battleRoomService.update(battleRoom);
 				
 				StringBuffer sb = new StringBuffer();
-				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功，为房间贡献分数"+(process)+"×2分");
-				sb.append("，贡献距离："+(process*10)+"米");
+				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功");
+				sb.append(",答对"+battleMemberPaperAnswer.getRightSum()+"题");
+				sb.append(",答错"+battleMemberPaperAnswer.getWrongSum()+"题");
+				sb.append(",贡献分数"+battleMemberPaperAnswer.getScore()+"+"+battleMemberPaperAnswer.getFullRightAddScore()+"(通关加分)分");
+				sb.append("，贡献距离："+(battleMemberPaperAnswer.getProcess()*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				
 				battleRoomRecordService.add(battleRoomRecord);
 				
 			}else{
 				
-				Integer roomProcess = battleRoom.getRoomProcess();
+				Integer score = battleMemberPaperAnswer.getScore();
 				
-				Integer roomScore = battleRoom.getRoomScore();
-				
-				if(roomProcess==null){
-					roomProcess = 0;
+				if(score==null){
+					score = 0;
 				}
 				
-				if(roomScore==null){
-					roomScore = 0;
-				}
-				
-				roomProcess = roomProcess+process;
-				roomScore = roomScore-process;
-				
-				battleRoom.setRoomProcess(roomProcess);
-				battleRoom.setRoomScore(roomScore);
-				
-				battleRoomService.update(battleRoom);
 				
 				StringBuffer sb = new StringBuffer();
-				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败，房间分数+0分");
+				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败");
+				if(score>0){
+					sb.append(",房间分数+"+battleMemberPaperAnswer.getScore()+"分");
+				}else if(score<0){
+					sb.append(",房间分数-"+(-battleMemberPaperAnswer.getScore())+"分");
+				}
 				sb.append("，贡献距离："+(process*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				

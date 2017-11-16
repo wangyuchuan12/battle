@@ -107,6 +107,22 @@ public class BattleRoom {
 	private Integer roomProcess;
 	
 	@ParamAnnotation
+	@Column(name="right_add_score")
+	private Integer rightAddScore;
+	
+	@ParamAnnotation
+	@Column(name="wrong_sub_score")
+	private Integer wrongSubScore;
+	
+	@ParamAnnotation
+	@Column(name="right_add_process")
+	private Integer rightAddProcess;
+	
+	@ParamAnnotation
+	@Column(name="full_right_add_score")
+	private Integer fullRightAddScore;
+	
+	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime creationTime;
@@ -284,6 +300,38 @@ public class BattleRoom {
 
 	public void setRoomProcess(Integer roomProcess) {
 		this.roomProcess = roomProcess;
+	}
+
+	public Integer getRightAddScore() {
+		return rightAddScore;
+	}
+
+	public void setRightAddScore(Integer rightAddScore) {
+		this.rightAddScore = rightAddScore;
+	}
+
+	public Integer getWrongSubScore() {
+		return wrongSubScore;
+	}
+
+	public void setWrongSubScore(Integer wrongSubScore) {
+		this.wrongSubScore = wrongSubScore;
+	}
+
+	public Integer getRightAddProcess() {
+		return rightAddProcess;
+	}
+
+	public void setRightAddProcess(Integer rightAddProcess) {
+		this.rightAddProcess = rightAddProcess;
+	}
+
+	public Integer getFullRightAddScore() {
+		return fullRightAddScore;
+	}
+
+	public void setFullRightAddScore(Integer fullRightAddScore) {
+		this.fullRightAddScore = fullRightAddScore;
 	}
 
 	public DateTime getCreateAt() {
