@@ -1236,11 +1236,8 @@ public class BattleApi {
 				
 				StringBuffer sb = new StringBuffer();
 				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关失败");
-				if(score>0){
-					sb.append(",房间分数+"+battleMemberPaperAnswer.getScore()+"分");
-				}else if(score<0){
-					sb.append(",房间分数-"+(-battleMemberPaperAnswer.getScore())+"分");
-				}
+				sb.append(",答对"+battleMemberPaperAnswer.getRightSum()+"题");
+				sb.append(",答错"+battleMemberPaperAnswer.getWrongSum()+"题");
 				sb.append("，贡献距离："+(process*10)+"米");
 				battleRoomRecord.setLog(sb.toString());
 				
