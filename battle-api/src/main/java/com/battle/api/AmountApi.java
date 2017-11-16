@@ -78,6 +78,7 @@ public class AmountApi {
 		
 		TransfersResultVo transfersResultVo = payService.transfers(userInfo.getOpenid(), takeoutAmountEntry.getAmount(), "www.chengxihome.com", "提现");
 		
+		
 		if(transfersResultVo.getResultCode().equalsIgnoreCase("SUCCESS")){
 			amount = amount.subtract(takeoutAmountEntry.getAmount());
 			account.setAmountBalance(amount);
@@ -88,6 +89,7 @@ public class AmountApi {
 		}else{
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
+			resultVo.setData(transfersResultVo);
 			return resultVo;
 		}
 	}
