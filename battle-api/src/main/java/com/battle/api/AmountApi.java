@@ -76,7 +76,7 @@ public class AmountApi {
 			return resultVo;
 		}
 		
-		TransfersResultVo transfersResultVo = payService.transfers(userInfo.getOpenid(), takeoutAmountEntry.getAmount(), "www.chengxihome.com", "提现");
+		TransfersResultVo transfersResultVo = payService.transfers(userInfo.getOpenid(), takeoutAmountEntry.getAmount(), "10.2.3.10", "提现");
 		
 		
 		if(transfersResultVo.getResultCode().equalsIgnoreCase("SUCCESS")){
