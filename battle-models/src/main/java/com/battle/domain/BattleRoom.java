@@ -140,6 +140,16 @@ public class BattleRoom {
 	@Column(name="full_right_add_score")
 	private Integer fullRightAddScore;
 	
+	//花费智慧豆
+	@ParamAnnotation
+	@Column(name="cost_bean")
+	private Integer costBean;
+	
+	//花费砖石
+	@ParamAnnotation
+	@Column(name="cost_masonry")
+	private Integer costMasonry;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -383,6 +393,22 @@ public class BattleRoom {
 
 	public void setRedpackBean(Integer redpackBean) {
 		this.redpackBean = redpackBean;
+	}
+
+	public Integer getCostBean() {
+		return costBean;
+	}
+
+	public void setCostBean(Integer costBean) {
+		this.costBean = costBean;
+	}
+
+	public Integer getCostMasonry() {
+		return costMasonry;
+	}
+
+	public void setCostMasonry(Integer costMasonry) {
+		this.costMasonry = costMasonry;
 	}
 
 	public DateTime getCreateAt() {

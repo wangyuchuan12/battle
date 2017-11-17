@@ -70,6 +70,11 @@ public class ManagerBattleRedpacketApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo add(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattlePeriodMember battlePeriodMember =sessionManager.getObject(BattlePeriodMember.class);
+		
 
 		String takepartBean = httpServletRequest.getParameter("takepartBean");
 		String takepartMasonry = httpServletRequest.getParameter("takepartMasonry");
@@ -101,10 +106,6 @@ public class ManagerBattleRedpacketApi {
 		Integer personalScoreMeetInt = null;
 		Integer roomProcessMeetInt = null;
 		Integer roomScoreMeetInt = null;
-		
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		
-		BattlePeriodMember battlePeriodMember =sessionManager.getObject(BattlePeriodMember.class);
 		
 		if(CommonUtil.isEmpty(isPersonalProcessMeet)){
 			ResultVo resultVo = new ResultVo();

@@ -619,6 +619,10 @@ public class BattleApi {
 		
 		battleRoom.setRedpackMasonry(0);
 		
+		battleRoom.setCostBean(0);
+		
+		battleRoom.setCostMasonry(0);
+		
 		battleRoomService.add(battleRoom);
 		
 		ResultVo resultVo = new ResultVo();

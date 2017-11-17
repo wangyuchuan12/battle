@@ -18,10 +18,13 @@ import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.wyc.AttrEnum;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.wx.domain.UserInfo;
 
 public class BattleTakepartApiFilter extends Filter{
 	
@@ -36,6 +39,9 @@ public class BattleTakepartApiFilter extends Filter{
 	
 	@Autowired
 	private BattlePeriodService battlePeriodService;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -47,6 +53,16 @@ public class BattleTakepartApiFilter extends Filter{
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
 		
 		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
+		Integer costBean = battleRoom.getCostBean();
+		if(costBean==null){
+			costBean = 0;
+		}
+		
+		Integer costMasonry = battleRoom.getCostMasonry();
+		if(costMasonry==null){
+			costMasonry = 0;
+		}
 		
 		if(CommonUtil.isEmpty(roomId)){
 			ResultVo resultVo = new ResultVo();
@@ -71,6 +87,43 @@ public class BattleTakepartApiFilter extends Filter{
 		}
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE||battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_OUT){
+			
+			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+			
+			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			Long wisdomCount = account.getWisdomCount();
+			if(wisdomCount==null){
+				wisdomCount = 0L;
+			}
+			Integer masonry = account.getMasonry();
+			if(masonry==null){
+				masonry = 0;
+			}
+			
+			if(wisdomCount<costBean){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("智慧豆不足");
+				return resultVo;
+			}
+			
+			if(masonry<costMasonry){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("砖石不足");
+				return resultVo;
+			}
+			
+			
+			wisdomCount = wisdomCount-costBean;
+			masonry = masonry-costMasonry;
+			
+			account.setWisdomCount(wisdomCount);
+			account.setMasonry(masonry);
+			
+			accountService.update(account);
+			
+			
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
 			battlePeriodMember.setRoomId(roomId);
 			sessionManager.update(battlePeriodMember);
