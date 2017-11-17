@@ -97,6 +97,8 @@ public class ManagerBattleRedpacketApi {
 		
 		String roomMeetNum = httpServletRequest.getParameter("roomMeetNum");
 		
+		String stageIndex = httpServletRequest.getParameter("stageIndex");
+		
 		
 		Integer isPersonalProcessMeetInt = null;
 		Integer isPersonalScoreMeetInt = null;
@@ -212,11 +214,20 @@ public class ManagerBattleRedpacketApi {
 			resultVo.setErrorMsg("输入的isRoomMeet参数不能为空");
 			return resultVo;
 		}
+		
+		if(CommonUtil.isEmpty(stageIndex)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("输入的stageIndex参数不能为空");
+			return resultVo;
+		}
 
 		
 		Integer takepartTypeInt = Integer.parseInt(takepartType);
 		Integer isRoomInt = Integer.parseInt(isRoom);
 		Integer isRoomMeetInt = Integer.parseInt(isRoomMeet);
+		
+		Integer stageIndexInt = Integer.parseInt(stageIndex);
 		
 		Integer roomMeetInt = 0;
 		
@@ -294,6 +305,11 @@ public class ManagerBattleRedpacketApi {
 		battleRedpacket.setRoomId(roomId);
 		
 		battleRedpacket.setTypeId(typeId);
+		
+		
+		
+		
+		battleRedpacket.setStageIndex(stageIndexInt);
 		
 		battleRedpacket.setSenderImg(battlePeriodMember.getHeadImg());
 		battleRedpacket.setSenderName(battlePeriodMember.getNickname());

@@ -156,7 +156,7 @@ public class LoginApi{
 	private Account initAccount(){
 		Account account = new Account();
 		account.setAmountBalance(new BigDecimal(0));
-		account.setCanTakeOutCount(10);
+		account.setCanTakeOutCount(2);
 		account.setEmpiricalValue(new BigDecimal(0));
 		account.setIntegral(0);
 		account.setLoveLife(0);

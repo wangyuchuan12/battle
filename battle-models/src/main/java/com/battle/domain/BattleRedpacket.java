@@ -222,6 +222,10 @@ public class BattleRedpacket {
 	private String senderImg;
 	
 	@ParamAnnotation
+	@Column(name="stage_index")
+	private Integer stageIndex;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -495,6 +499,14 @@ public class BattleRedpacket {
 
 	public void setSenderImg(String senderImg) {
 		this.senderImg = senderImg;
+	}
+
+	public Integer getStageIndex() {
+		return stageIndex;
+	}
+
+	public void setStageIndex(Integer stageIndex) {
+		this.stageIndex = stageIndex;
 	}
 
 	public DateTime getCreateAt() {

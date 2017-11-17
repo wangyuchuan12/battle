@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -754,6 +756,7 @@ public class BattleApi {
 		
 		Integer sizeInt = Integer.parseInt(size);
 		
+		
 		Integer statusInt = Integer.parseInt(status);
 		
 		if(sizeInt>20){
@@ -769,7 +772,7 @@ public class BattleApi {
 		statues.add(BattleRoom.STATUS_FREE);
 		statues.add(BattleRoom.STATUS_IN);
 		statues.add(BattleRoom.STATUS_FULL);
-		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsDisplayAndStatusIn(1,statues,pageable);
+		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsDisplayAndStatusInAndIsDel(1,statues,0,pageable);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
@@ -848,11 +851,63 @@ public class BattleApi {
 	public Object redPacks(HttpServletRequest httpServletRequest)throws Exception{
 		String roomId = httpServletRequest.getParameter("roomId");
 		List<BattleRedpacket> battleRedpackets = battleRedpacketService.findAllByIsRoomAndRoomIdOrderByHandTimeDesc(1, roomId);
+
+		Map<Integer,List<Map<String, Object>>> redpackMap = new HashMap<>();
+		for(BattleRedpacket battleRedpacket:battleRedpackets){
+			List<Map<String, Object>> list = redpackMap.get(battleRedpacket.getStageIndex());
+			if(list==null){
+				list = new ArrayList<>();
+				redpackMap.put(battleRedpacket.getStageIndex(), list);
+			}
+			Map<String, Object> map = new HashMap<>();
+			map.put("amount", battleRedpacket.getAmount());
+			map.put("beanNum", battleRedpacket.getBeanNum());
+			map.put("costAmount", battleRedpacket.getCostAmount());
+			map.put("costBean", battleRedpacket.getCostBean());
+			map.put("costMasonry", battleRedpacket.getCostMasonry());
+			map.put("costType", battleRedpacket.getCostType());
+			map.put("id", battleRedpacket.getId());
+			map.put("isPersonalProcessMeet", battleRedpacket.getIsPersonalProcessMeet());
+			map.put("isPersonalScoreMeet", battleRedpacket.getIsPersonalScoreMeet());
+			map.put("isRoom", battleRedpacket.getIsRoom());
+			map.put("isRoomMeet", battleRedpacket.getIsRoomMeet());
+			map.put("isRoomProcessMeet", battleRedpacket.getIsRoomProcessMeet());
+			map.put("isRoomScoreMeet", battleRedpacket.getIsRoomScoreMeet());
+			map.put("masonryNum", battleRedpacket.getMasonryNum());
+			map.put("name", battleRedpacket.getName());
+			map.put("num", battleRedpacket.getNum());
+			map.put("personalProcessMeet", battleRedpacket.getPersonalProcessMeet());
+			map.put("personalScoreMeet", battleRedpacket.getPersonalScoreMeet());
+			map.put("receiveAmount", battleRedpacket.getReceiveAmount());
+			map.put("receiveNum", battleRedpacket.getReceiveNum());
+			map.put("roomId", battleRedpacket.getRoomId());
+			map.put("roomMeetNum", battleRedpacket.getRoomMeetNum());
+			map.put("roomProcessMeet", battleRedpacket.getRoomProcessMeet());
+			map.put("roomScoreMeet", battleRedpacket.getRoomScoreMeet());
+			map.put("senderImg", battleRedpacket.getSenderImg());
+			map.put("senderName", battleRedpacket.getSenderName());
+			map.put("stageIndex", battleRedpacket.getStageIndex());
+			map.put("status", battleRedpacket.getStatus());
+			map.put("takepartCostBean", battleRedpacket.getTakepartCostBean());
+			map.put("takepartCostMasonry", battleRedpacket.getTakepartCostMasonry());
+			map.put("timeLong", battleRedpacket.getTimeLong());
+			map.put("typeId", battleRedpacket.getTypeId());
+			list.add(map);
+		}
+		
+		List<Map<String, Object>> responseDatas = new ArrayList<>();
+		
+		for(Entry<Integer, List<Map<String, Object>>> entry:redpackMap.entrySet()){
+			Map<String, Object> responseData = new HashMap<>();
+			responseData.put("stageIndex", entry.getKey());
+			responseData.put("redpacks", entry.getValue());
+			responseDatas.add(responseData);
+		}
+		
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleRedpackets);
-		
+		resultVo.setData(responseDatas);
 		return resultVo;
 	}
 	
