@@ -625,6 +625,8 @@ public class BattleApi {
 		
 		battleRoom.setHot(0);
 		
+		battleRoom.setIsDel(0);
+		
 		battleRoomService.add(battleRoom);
 		
 		ResultVo resultVo = new ResultVo();

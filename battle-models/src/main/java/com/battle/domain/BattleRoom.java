@@ -155,6 +155,10 @@ public class BattleRoom {
 	private Integer hot;
 	
 	@ParamAnnotation
+	@Column(name="is_del")
+	private Integer isDel;
+	
+	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime creationTime;
@@ -421,6 +425,14 @@ public class BattleRoom {
 
 	public void setHot(Integer hot) {
 		this.hot = hot;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {
