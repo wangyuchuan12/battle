@@ -104,6 +104,7 @@ public class BattleTakepartApiFilter extends Filter{
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
 				resultVo.setErrorMsg("智慧豆不足");
+				resultVo.setErrorCode(4);
 				return resultVo;
 			}
 			
@@ -111,6 +112,7 @@ public class BattleTakepartApiFilter extends Filter{
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
 				resultVo.setErrorMsg("砖石不足");
+				resultVo.setErrorCode(5);
 				return resultVo;
 			}
 			
