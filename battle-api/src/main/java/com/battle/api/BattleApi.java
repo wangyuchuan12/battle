@@ -185,8 +185,7 @@ public class BattleApi {
 	public Object myRooms(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
-		Sort sort = new Sort(Direction.DESC,"creationTime");
-		Pageable pageable = new PageRequest(0, 20,sort);
+		Pageable pageable = new PageRequest(0, 20);
 		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByUserId(userInfo.getId(),pageable);
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
