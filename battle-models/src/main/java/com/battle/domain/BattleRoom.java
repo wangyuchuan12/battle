@@ -151,6 +151,10 @@ public class BattleRoom {
 	private Integer costMasonry;
 	
 	@ParamAnnotation
+	@Column
+	private Integer hot;
+	
+	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime creationTime;
@@ -409,6 +413,14 @@ public class BattleRoom {
 
 	public void setCostMasonry(Integer costMasonry) {
 		this.costMasonry = costMasonry;
+	}
+
+	public Integer getHot() {
+		return hot;
+	}
+
+	public void setHot(Integer hot) {
+		this.hot = hot;
 	}
 
 	public DateTime getCreateAt() {

@@ -623,6 +623,8 @@ public class BattleApi {
 		
 		battleRoom.setCostMasonry(0);
 		
+		battleRoom.setHot(0);
+		
 		battleRoomService.add(battleRoom);
 		
 		ResultVo resultVo = new ResultVo();
@@ -759,9 +761,13 @@ public class BattleApi {
 			return resultVo;
 		}
 		
-		
-		Pageable pageable = new PageRequest(pageInt,sizeInt);
-		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsDisplayAndStatusOrderByCreationTimeAsc(1,statusInt,pageable);
+		Sort sort = new Sort(Direction.DESC,"hot");
+		Pageable pageable = new PageRequest(pageInt,sizeInt,sort);
+		List<Integer> statues = new ArrayList<>();
+		statues.add(BattleRoom.STATUS_FREE);
+		statues.add(BattleRoom.STATUS_IN);
+		statues.add(BattleRoom.STATUS_FULL);
+		Page<BattleRoom> battleRooms = battleRoomService.findAllByIsDisplayAndStatusIn(1,statues,pageable);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
