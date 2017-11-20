@@ -39,12 +39,13 @@ public class ShareApi {
 		}
 		
 		if(shareTime==0){
-			Integer loveCount = battlePeriodMember.getLoveCount();
-			if(loveCount==null){
-				loveCount = 0;
+			Integer loveResidule = battlePeriodMember.getLoveResidule();
+			if(loveResidule==null){
+				loveResidule = 0;
 			}
-			battlePeriodMember.setLoveCount(loveCount++);
 			
+			loveResidule++;
+			battlePeriodMember.setLoveResidule(loveResidule);
 			
 		}
 		
