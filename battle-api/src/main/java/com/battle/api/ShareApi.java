@@ -45,13 +45,15 @@ public class ShareApi {
 			}
 			battlePeriodMember.setLoveCount(loveCount++);
 			
-			battlePeriodMemberService.update(battlePeriodMember);
+			
 		}
 		
 		
 		shareTime++;
 		
 		battlePeriodMember.setShareTime(shareTime);
+		
+		battlePeriodMemberService.update(battlePeriodMember);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
