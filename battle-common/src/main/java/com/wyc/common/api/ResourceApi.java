@@ -72,13 +72,13 @@ public class ResourceApi {
 		
 		overlapImgResource.setSystemUrl(systemPath);
 		
-		uploadToQNService.syncResource(myResource);
+		uploadToQNService.syncResource(overlapImgResource);
 		
 		ResultVo resultVo = new ResultVo();
 		
 		resultVo.setSuccess(true);
 		
-		resultVo.setData(myResource);
+		resultVo.setData(overlapImgResource);
 		
 		return resultVo;
 	}
