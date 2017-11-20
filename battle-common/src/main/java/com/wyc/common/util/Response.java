@@ -69,7 +69,6 @@ public class Response {
 
 		
 		try {
-			System.out.println(inputStream+",wxContext.getFilePath"+wxContext.getFilePath()+",uuid:"+UUID.randomUUID().toString());
             String path = saveToImgByInputStream(inputStream,wxContext.getFilePath(),UUID.randomUUID().toString());
             
             MyResource myResource = new MyResource();

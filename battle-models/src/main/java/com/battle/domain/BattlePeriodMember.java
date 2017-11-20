@@ -119,6 +119,11 @@ public class BattlePeriodMember implements Serializable{
 	@Column
 	private Integer score;
 	
+	//分享次数
+	@ParamAnnotation
+	@Column(name="share_time")
+	private Integer shareTime;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -270,6 +275,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public Integer getShareTime() {
+		return shareTime;
+	}
+
+	public void setShareTime(Integer shareTime) {
+		this.shareTime = shareTime;
 	}
 
 	public DateTime getCreateAt() {

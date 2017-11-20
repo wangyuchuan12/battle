@@ -31,9 +31,6 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		
 		String memberId = (String)sessionManager.getAttribute(AttrEnum.periodMemberId);
 		
-		
-		
-		
 		BattlePeriodMember battlePeriodMember = null;
 		if(!CommonUtil.isEmpty(memberId)){
 			battlePeriodMember = battlePeriodMemberService.findOne(memberId);
@@ -72,6 +69,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setScore(0);
 			
 			battlePeriodMember.setUserId(userInfo.getId());
+			
+			battlePeriodMember.setShareTime(0);
 			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
