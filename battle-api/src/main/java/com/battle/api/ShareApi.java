@@ -40,7 +40,7 @@ public class ShareApi {
 		
 		if(shareTime==0){
 			Integer loveResidule = battlePeriodMember.getLoveResidule();
-			if(loveResidule==null){
+			if(loveResidule==null||loveResidule<0){
 				loveResidule = 0;
 			}
 			
@@ -60,7 +60,7 @@ public class ShareApi {
 		resultVo.setSuccess(true);
 		Map<String, Object> data = new HashMap<>();
 		data.put("shareTime", shareTime);
-		data.put("loveCount", battlePeriodMember.getLoveCount());
+		data.put("loveCount", battlePeriodMember.getLoveResidule());
 		resultVo.setData(data);
 		return resultVo;
 	}
