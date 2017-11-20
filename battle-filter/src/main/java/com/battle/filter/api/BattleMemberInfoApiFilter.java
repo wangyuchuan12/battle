@@ -62,6 +62,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("mininum", battleRoom.getMininum());
 		
+		data.put("shareTime", battlePeriodMember.getShareTime());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);

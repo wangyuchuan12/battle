@@ -60,7 +60,7 @@ public class ShareApi {
 		resultVo.setSuccess(true);
 		Map<String, Object> data = new HashMap<>();
 		data.put("shareTime", shareTime);
-		data.put("loveCount", battlePeriodMember.getLoveResidule());
+		data.put("loveResidule", battlePeriodMember.getLoveResidule());
 		resultVo.setData(data);
 		return resultVo;
 	}
