@@ -1,5 +1,7 @@
 package com.wyc.common.api;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.AddResourceFilter;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.smart.service.UploadToQNService;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.service.QrcodeService;
 
 @Controller
@@ -48,6 +51,33 @@ public class ResourceApi {
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
+		resultVo.setData(myResource);
+		
+		return resultVo;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="shareImg")
+	public ResultVo shareImg(HttpServletRequest httpServletRequest)throws Exception{
+		String path = httpServletRequest.getParameter("path");
+		MyResource myResource = qrcodeService.createWxaqrcode(path);
+		
+		String systemPath = "/root/iconde"+UUID.randomUUID()+".jpg";
+		
+		CommonUtil.overlapHttpImage("http://7xlw44.com1.z0.glb.clouddn.com/bb.jpeg", myResource.getUrl(), systemPath);
+		
+		MyResource overlapImgResource = new MyResource();
+		
+		overlapImgResource.setId(UUID.randomUUID().toString());;
+		
+		overlapImgResource.setSystemUrl(systemPath);
+		
+		uploadToQNService.syncResource(myResource);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
 		resultVo.setData(myResource);
 		
 		return resultVo;

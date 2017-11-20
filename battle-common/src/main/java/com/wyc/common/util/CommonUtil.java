@@ -2,15 +2,22 @@ package com.wyc.common.util;
 
 
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 
 
@@ -409,4 +416,19 @@ public class CommonUtil {
 		 } while (bDone);
 		 return retStr;
 	}
+	
+	public static final void overlapHttpImage(String bigHttpPath, String smallHttpPath, String outFile) {  
+        try {
+        	URLConnection bigHttpURLConnection = new URL(bigHttpPath).openConnection();
+            BufferedImage big = ImageIO.read(bigHttpURLConnection.getInputStream());
+            URLConnection smallHttpURLConnection = new URL(smallHttpPath).openConnection();
+            BufferedImage small = ImageIO.read(smallHttpURLConnection.getInputStream());  
+            Graphics2D g = big.createGraphics();  
+            g.drawImage(small, 10, 10,100,100, null);  
+            g.dispose();  
+            ImageIO.write(big, outFile.split("\\.")[1], new File(outFile));
+        } catch (Exception e) {  
+            throw new RuntimeException(e);  
+        }  
+    }  
 }
