@@ -496,6 +496,8 @@ public class BattleApi {
 		ResultVo resultVo = addRoom(httpServletRequest);
 		
 		if(resultVo.isSuccess()){
+			
+			BattleRoom createBattleRoom = (BattleRoom)resultVo.getData();
 			Account account = accountService.fineOneSync(userInfo.getAccountId());
 			Long wisdomCount = account.getWisdomCount();
 			wisdomCount = wisdomCount+200;
@@ -506,7 +508,7 @@ public class BattleApi {
 			
 			battleRoomEntry.setKey(key);
 			
-			battleRoomEntry.setRoomId(battleRoom.getId());
+			battleRoomEntry.setRoomId(createBattleRoom.getId());
 			
 			battleRoomEntry.setBattleId(battleRoom.getBattleId());
 			
