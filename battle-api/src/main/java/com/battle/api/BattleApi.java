@@ -515,10 +515,13 @@ public class BattleApi {
 			
 			battleRoomEntryService.add(battleRoomEntry);
 			
+			/*
 			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), createBattleRoom.getBattleId());
 			
 			BattlePeriod battlePeriod = battlePeriodService.findOne(createBattleRoom.getPeriodId());
 			
+			
+		
 			BattlePeriodMember battlePeriodMember = new BattlePeriodMember();
 			battlePeriodMember = new BattlePeriodMember();
 			battlePeriodMember.setBattleId(createBattleRoom.getBattleId());
@@ -541,6 +544,7 @@ public class BattleApi {
 			battlePeriodMember.setShareTime(0);
 			
 			battlePeriodMemberService.add(battlePeriodMember);
+			*/
 			
 		}else{
 			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
