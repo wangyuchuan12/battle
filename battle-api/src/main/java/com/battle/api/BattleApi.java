@@ -52,6 +52,7 @@ import com.battle.service.BattleRoomRecordService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
+import com.wyc.AttrEnum;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -447,17 +448,63 @@ public class BattleApi {
 	}
 	
 	
+	@RequestMapping(value="addRoomWidthShare")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object addRoomWidthShare(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		String roomId = httpServletRequest.getParameter("roomId");
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		httpServletRequest.setAttribute("battleId", battleRoom.getBattleId());
+		httpServletRequest.setAttribute("periodId", battleRoom.getPeriodId());
+		httpServletRequest.setAttribute("maxinum", battleRoom.getMaxinum());
+		httpServletRequest.setAttribute("mininum", battleRoom.getMininum());
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		
+		ResultVo resultVo = addRoom(httpServletRequest);
+		
+		if(resultVo.isSuccess()){
+			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			Long wisdomCount = account.getWisdomCount();
+			wisdomCount = wisdomCount+200;
+			account.setWisdomCount(wisdomCount);
+			accountService.update(account);
+		}
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="addRoom")
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public Object addRoom(HttpServletRequest httpServletRequest)throws Exception{
+	public ResultVo addRoom(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String battleId = httpServletRequest.getParameter("battleId");
+		if(CommonUtil.isEmpty(battleId)){
+			battleId = sessionManager.getAttribute(AttrEnum.battleId).toString();
+		}
 		String periodId = httpServletRequest.getParameter("periodId");
+		if(CommonUtil.isEmpty(periodId)){
+			periodId = sessionManager.getAttribute(AttrEnum.periodId).toString();
+		}
 		String maxinum = httpServletRequest.getParameter("maxinum");
+		if(CommonUtil.isEmpty(maxinum)){
+			maxinum = sessionManager.getAttribute(AttrEnum.periodMaxMembers).toString();
+		}
 		String mininum = httpServletRequest.getParameter("mininum");
-		String isPublic = httpServletRequest.getParameter("isPublic");
+		
+		if(CommonUtil.isEmpty(mininum)){
+			mininum = sessionManager.getAttribute(AttrEnum.periodMinMembers).toString();
+		}
+		
+		String isPublic = "0";
+		
 		
 		
 		if(CommonUtil.isEmpty(isPublic)){
