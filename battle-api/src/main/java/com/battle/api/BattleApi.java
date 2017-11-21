@@ -511,8 +511,36 @@ public class BattleApi {
 			battleRoomEntry.setRoomId(createBattleRoom.getId());
 			
 			battleRoomEntry.setBattleId(battleRoom.getBattleId());
+		
 			
 			battleRoomEntryService.add(battleRoomEntry);
+			
+			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), createBattleRoom.getBattleId());
+			
+			BattlePeriod battlePeriod = battlePeriodService.findOne(createBattleRoom.getPeriodId());
+			
+			BattlePeriodMember battlePeriodMember = new BattlePeriodMember();
+			battlePeriodMember = new BattlePeriodMember();
+			battlePeriodMember.setBattleId(createBattleRoom.getBattleId());
+			battlePeriodMember.setBattleUserId(battleUser.getId());
+			battlePeriodMember.setPeriodId(createBattleRoom.getPeriodId());
+			battlePeriodMember.setProcess(0);
+			battlePeriodMember.setNickname(userInfo.getNickname());
+			battlePeriodMember.setHeadImg(userInfo.getHeadimgurl());
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
+			battlePeriodMember.setLoveCount(5);
+			battlePeriodMember.setLoveResidule(5);
+			battlePeriodMember.setStageIndex(1);
+			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
+			battlePeriodMember.setIsDel(0);
+			battlePeriodMember.setRoomId(roomId);
+			battlePeriodMember.setScore(0);
+			
+			battlePeriodMember.setUserId(userInfo.getId());
+			
+			battlePeriodMember.setShareTime(0);
+			
+			battlePeriodMemberService.add(battlePeriodMember);
 			
 		}else{
 			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
