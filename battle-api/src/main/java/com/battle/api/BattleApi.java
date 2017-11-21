@@ -31,6 +31,7 @@ import com.battle.domain.BattleQuestion;
 import com.battle.domain.BattleRedPacketAmountDistribution;
 import com.battle.domain.BattleRedpacket;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomEntry;
 import com.battle.domain.BattleRoomRecord;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
@@ -48,6 +49,7 @@ import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedpacketService;
+import com.battle.service.BattleRoomEntryService;
 import com.battle.service.BattleRoomRecordService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
@@ -104,6 +106,9 @@ public class BattleApi {
 	
 	@Autowired
 	private MySimpleDateFormat mySimpleDateFormat;
+	
+	@Autowired
+	private BattleRoomEntryService battleRoomEntryService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -448,6 +453,28 @@ public class BattleApi {
 	}
 	
 	
+	@RequestMapping(value="roomEntryInfoByKey")
+	@ResponseBody
+	@Transactional
+	public Object roomEntryInfoByKey(HttpServletRequest httpServletRequest)throws Exception{
+		String key = httpServletRequest.getParameter("key");
+		
+		BattleRoomEntry battleRoomEntry = battleRoomEntryService.findOneByKey(key);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("battleId", battleRoomEntry.getBattleId());
+		data.put("roomId", battleRoomEntry.getRoomId());
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(data);
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="addRoomWidthShare")
 	@ResponseBody
 	@Transactional
@@ -456,6 +483,7 @@ public class BattleApi {
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String roomId = httpServletRequest.getParameter("roomId");
+		String key = httpServletRequest.getParameter("key");
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		httpServletRequest.setAttribute("battleId", battleRoom.getBattleId());
 		httpServletRequest.setAttribute("periodId", battleRoom.getPeriodId());
@@ -473,6 +501,27 @@ public class BattleApi {
 			wisdomCount = wisdomCount+200;
 			account.setWisdomCount(wisdomCount);
 			accountService.update(account);
+			
+			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
+			
+			battleRoomEntry.setKey(key);
+			
+			battleRoomEntry.setRoomId(battleRoom.getId());
+			
+			battleRoomEntry.setBattleId(battleRoom.getBattleId());
+			
+			battleRoomEntryService.add(battleRoomEntry);
+			
+		}else{
+			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
+			
+			battleRoomEntry.setRoomId(battleRoom.getId());
+			
+			battleRoomEntry.setKey(key);
+			
+			battleRoomEntry.setBattleId(battleRoom.getBattleId());
+			
+			battleRoomEntryService.add(battleRoomEntry);
 		}
 		
 		return resultVo;
