@@ -487,20 +487,20 @@ public class BattleApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String battleId = httpServletRequest.getParameter("battleId");
 		if(CommonUtil.isEmpty(battleId)){
-			battleId = sessionManager.getAttribute(AttrEnum.battleId).toString();
+			battleId = httpServletRequest.getAttribute("battleId").toString();
 		}
 		String periodId = httpServletRequest.getParameter("periodId");
 		if(CommonUtil.isEmpty(periodId)){
-			periodId = sessionManager.getAttribute(AttrEnum.periodId).toString();
+			periodId = httpServletRequest.getAttribute("periodId").toString();
 		}
 		String maxinum = httpServletRequest.getParameter("maxinum");
 		if(CommonUtil.isEmpty(maxinum)){
-			maxinum = sessionManager.getAttribute(AttrEnum.periodMaxMembers).toString();
+			maxinum = httpServletRequest.getAttribute("maxinum").toString();
 		}
 		String mininum = httpServletRequest.getParameter("mininum");
 		
 		if(CommonUtil.isEmpty(mininum)){
-			mininum = sessionManager.getAttribute(AttrEnum.periodMinMembers).toString();
+			mininum = httpServletRequest.getAttribute("mininum").toString();
 		}
 		
 		String isPublic = "0";
