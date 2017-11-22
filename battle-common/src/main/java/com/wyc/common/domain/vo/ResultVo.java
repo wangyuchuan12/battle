@@ -24,6 +24,9 @@ public class ResultVo {
 	
 	@ParamAnnotation
 	private Integer errorCode;
+	
+	@ParamAnnotation
+	private Integer code;
 
 
 	public boolean isSuccess() {
@@ -73,6 +76,16 @@ public class ResultVo {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+
+	public Integer getCode() {
+		return code;
+	}
+
+
+	public void setCode(Integer code) {
+		this.code = code;
 	}
 
 

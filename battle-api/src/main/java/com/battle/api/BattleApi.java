@@ -494,12 +494,7 @@ public class BattleApi {
 		
 		
 		ResultVo resultVo = addRoom(httpServletRequest);
-		
-		
-		System.out.println("............resultVo.isSuccess:"+resultVo.isSuccess());
 		if(resultVo.isSuccess()){
-			
-			System.out.println("...............11");
 			BattleRoom createBattleRoom = (BattleRoom)resultVo.getData();
 			Account account = accountService.fineOneSync(userInfo.getAccountId());
 			Long wisdomCount = account.getWisdomCount();
@@ -552,16 +547,22 @@ public class BattleApi {
 		}else{
 			
 			
-			System.out.println("...............22");
-			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
+			if(resultVo.getErrorCode()==0){
+				BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
+				
+				battleRoomEntry.setRoomId(battleRoom.getId());
+				
+				battleRoomEntry.setKey(key);
+				
+				battleRoomEntry.setBattleId(battleRoom.getBattleId());
+				
+				battleRoomEntryService.add(battleRoomEntry);
+				
+				resultVo.setSuccess(true);
+				
+				resultVo.setCode(0);
+			}
 			
-			battleRoomEntry.setRoomId(battleRoom.getId());
-			
-			battleRoomEntry.setKey(key);
-			
-			battleRoomEntry.setBattleId(battleRoom.getBattleId());
-			
-			battleRoomEntryService.add(battleRoomEntry);
 		}
 		
 		return resultVo;
