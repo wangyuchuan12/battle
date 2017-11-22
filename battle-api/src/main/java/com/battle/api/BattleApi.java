@@ -545,9 +545,11 @@ public class BattleApi {
 			*/
 			
 		}else{
-			
+			System.out.println("。。。。。。。。。。。就看这里有没有进来。。。。。。。。。。。。。");
 			
 			if(resultVo.getErrorCode()==0){
+				
+				System.out.println("。。。。。。。。。。。就看这里有没有进来");
 				BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
 				
 				battleRoomEntry.setRoomId(battleRoom.getId());
