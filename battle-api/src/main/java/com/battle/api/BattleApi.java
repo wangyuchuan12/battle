@@ -1376,6 +1376,39 @@ public class BattleApi {
 		return resultVo;
 	}
 	
+	@RequestMapping(value="myPersonalRoom")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo myPersonalRoom(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		String battleId = httpServletRequest.getParameter("battleId");
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battleId);
+		
+		
+		Battle battle = battleService.findOne(battleId);
+		
+		List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndOwner(battleId,battle.getCurrentPeriodId(),battleUser.getId());
+	
+		if(battleRooms!=null&&battleRooms.size()>0){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battleRooms.get(0));
+			return resultVo;
+		}else{
+			httpServletRequest.setAttribute("battleId", battleId);
+			httpServletRequest.setAttribute("periodId",battle.getCurrentPeriodId());
+			httpServletRequest.setAttribute("maxinum", 40);
+			httpServletRequest.setAttribute("mininum", 2);
+			ResultVo resultVo = addRoom(httpServletRequest);
+			return resultVo;
+		}
+		
+	}
+	
 	@RequestMapping(value="syncPapersData")
 	@ResponseBody
 	@Transactional
