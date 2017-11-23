@@ -170,7 +170,7 @@ public class BattleApi {
 		
 		Pageable pageable = new PageRequest(0, 1);
 		
-		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByUserId(userInfo.getId(), pageable);
+		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndUserId(battleId,userInfo.getId(), pageable);
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
 		
@@ -916,7 +916,7 @@ public class BattleApi {
 		Integer sizeInt = Integer.parseInt(size);
 		
 		
-		Integer statusInt = Integer.parseInt(status);
+		Integer c = Integer.parseInt(status);
 		
 		if(sizeInt>20){
 			ResultVo resultVo = new ResultVo();
