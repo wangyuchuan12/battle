@@ -186,12 +186,14 @@ public class BattleApi {
 				resultVo.setData(battleRoom);
 				return resultVo;
 			}else{
-				battleRoom = battleRooms.get(1);
-				if(battleRoom!=null){
-					ResultVo resultVo = new ResultVo();
-					resultVo.setSuccess(true);
-					resultVo.setData(battleRoom);
-					return resultVo;
+				if(battleRooms.size()>=2){
+					battleRoom = battleRooms.get(1);
+					if(battleRoom!=null){
+						ResultVo resultVo = new ResultVo();
+						resultVo.setSuccess(true);
+						resultVo.setData(battleRoom);
+						return resultVo;
+					}
 				}
 			}
 		}
