@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -54,7 +53,6 @@ import com.battle.service.BattleRoomRecordService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
-import com.wyc.AttrEnum;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;

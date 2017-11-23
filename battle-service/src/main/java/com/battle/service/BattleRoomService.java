@@ -39,9 +39,18 @@ public class BattleRoomService {
 			Pageable pageable) {
 		return battleRoomDao.findAllByBattleIdAndStatusAndIsSearchAble(battleId,status,isSearchAble,pageable);
 	}
+	
+	
+	public Page<BattleRoom> findAllByBattleIdAndUserId(String battleId,String userId,Pageable pageable) {
+		return battleRoomDao.findAllByBattleIdAndUserId(battleId,userId,pageable);
+	}
+	
 	public Page<BattleRoom> findAllByUserId(String userId,Pageable pageable) {
 		return battleRoomDao.findAllByUserId(userId,pageable);
 	}
+	
+	
+	
 	public void update(BattleRoom battleRoom) {
 		
 		battleRoom.setUpdateAt(new DateTime());
