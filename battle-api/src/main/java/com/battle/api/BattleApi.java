@@ -168,7 +168,8 @@ public class BattleApi {
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
-		Pageable pageable = new PageRequest(0, 1);
+		Pageable pageable = new PageRequest(0, 2);
+		
 		
 		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndUserId(battleId,userInfo.getId(), pageable);
 		
@@ -177,12 +178,22 @@ public class BattleApi {
 		if(battleRooms!=null&&battleRooms.size()>0){
 			
 			BattleRoom battleRoom = battleRooms.get(0);
-			
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(true);
-			resultVo.setData(battleRoom);
-			
-			return resultVo;
+		
+			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battleId);
+			if(battleRoom!=null&&battleUser!=null&&!battleRoom.getOwner().equals(battleUser.getId())){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(true);
+				resultVo.setData(battleRoom);
+				return resultVo;
+			}else{
+				battleRoom = battleRooms.get(1);
+				if(battleRoom!=null){
+					ResultVo resultVo = new ResultVo();
+					resultVo.setSuccess(true);
+					resultVo.setData(battleRoom);
+					return resultVo;
+				}
+			}
 		}
 		
 		
