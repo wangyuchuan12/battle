@@ -162,13 +162,35 @@ public class BattleApi {
 	
 	@RequestMapping(value="randomRoom")
 	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object randomRoom(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
 		Pageable pageable = new PageRequest(0, 1);
 		
-		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByBattleIdAndStatusAndIsSearchAble(battleId, BattleRoom.STATUS_IN , 1, pageable);
+		Page<BattleRoom> battleRoomPage = battleRoomService.findAllByUserId(userInfo.getId(), pageable);
 		
 		List<BattleRoom> battleRooms = battleRoomPage.getContent();
+		
+		if(battleRooms!=null&&battleRooms.size()>0){
+			
+			BattleRoom battleRoom = battleRooms.get(0);
+			
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battleRoom);
+			
+			return resultVo;
+		}
+		
+		
+		battleRoomPage = battleRoomService.findAllByBattleIdAndStatusAndIsSearchAble(battleId, BattleRoom.STATUS_IN , 1, pageable);
+		
+		battleRooms = battleRoomPage.getContent();
 		
 		if(battleRooms!=null&&battleRooms.size()>0){
 			BattleRoom battleRoom = battleRooms.get(0);
