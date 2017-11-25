@@ -817,11 +817,17 @@ public class ManagerApi {
 		Question questionTarget = new Question();
 		questionTarget.setQuestion(question);
 		questionTarget.setImgUrl(imgUrl);
-		questionTarget.setIsImg(1);
+		if(!CommonUtil.isEmpty(imgUrl)){
+			questionTarget.setIsImg(1);
+		}else{
+			questionTarget.setIsImg(0);
+		}
+		
 		questionTarget.setIndex(Integer.parseInt(context.getValue()));
 		questionTarget.setAnswer(answer);
 		questionTarget.setFillWords(fillWords);
 		questionTarget.setIsDel(0);
+		questionTarget.setSource(Question.MANAGER_SOURCE);
 		
 		questionService.add(questionTarget);
 		

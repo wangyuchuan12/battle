@@ -32,6 +32,7 @@ import com.battle.domain.BattleRedpacket;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomEntry;
 import com.battle.domain.BattleRoomRecord;
+import com.battle.domain.BattleSubject;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleMemberInfoApiFilter;
 import com.battle.filter.api.BattleMembersApiFilter;
@@ -52,6 +53,7 @@ import com.battle.service.BattleRoomEntryService;
 import com.battle.service.BattleRoomRecordService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
+import com.battle.service.BattleSubjectService;
 import com.battle.service.BattleUserService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
@@ -107,6 +109,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRoomEntryService battleRoomEntryService;
+	
+	@Autowired
+	private BattleSubjectService battleSubjectService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -337,6 +342,21 @@ public class BattleApi {
 			ResultVo resultVo = (ResultVo)sessionManager.getObject(ResultVo.class);
 			return resultVo;
 		}
+	}
+	
+	@RequestMapping(value="battleSubjectByBattleId")
+	@ResponseBody
+	public Object battleSubjectsByBattleId(HttpServletRequest httpServletRequest)throws Exception{
+		String battleId = httpServletRequest.getParameter("battleId");
+		
+		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId, 0);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(battleSubjects);
+		
+		return resultVo;
 	}
 	
 	

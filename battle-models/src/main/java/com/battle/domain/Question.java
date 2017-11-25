@@ -23,6 +23,11 @@ public class Question {
 	public static final Integer INPUT_TYPE=1;
 	
 	public static final Integer FILL_TYPE=2;
+	
+	
+	public static final Integer MANAGER_SOURCE = 0;
+	
+	public static final Integer FACTORY_SOURCE = 1;
 	@Id
 	@IdAnnotation
 	private String id;
@@ -84,6 +89,14 @@ public class Question {
 	@ParamAnnotation
 	@Column
 	private String instruction;
+	
+	@ParamAnnotation
+	@Column
+	private Integer source;
+	
+	@ParamAnnotation
+	@Column(name="author_name")
+	private String authorName;
 	
 	@Column(name = "create_at")
 	@ParamAnnotation
@@ -209,5 +222,29 @@ public class Question {
 
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
+	}
+
+	public String getSubjectCode() {
+		return subjectCode;
+	}
+
+	public void setSubjectCode(String subjectCode) {
+		this.subjectCode = subjectCode;
+	}
+
+	public Integer getSource() {
+		return source;
+	}
+
+	public void setSource(Integer source) {
+		this.source = source;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 }
