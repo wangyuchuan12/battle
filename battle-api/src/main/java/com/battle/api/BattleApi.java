@@ -536,12 +536,26 @@ public class BattleApi {
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String roomId = httpServletRequest.getParameter("roomId");
+		
+		String maxinum = httpServletRequest.getParameter("maxinum");
+		String mininum = httpServletRequest.getParameter("mininum");
+		
+		Integer maxinumInt = 2;
+		if(!CommonUtil.isEmpty(mininum)){
+			maxinumInt = Integer.parseInt(maxinum);
+		}
+		
+		Integer mininumInt = 2;
+		
+		if(!CommonUtil.isEmpty(mininumInt)){
+			mininumInt = Integer.parseInt(mininum);
+		}
 		String key = httpServletRequest.getParameter("key");
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		httpServletRequest.setAttribute("battleId", battleRoom.getBattleId());
 		httpServletRequest.setAttribute("periodId", battleRoom.getPeriodId());
-		httpServletRequest.setAttribute("maxinum", battleRoom.getMaxinum());
-		httpServletRequest.setAttribute("mininum", battleRoom.getMininum());
+		httpServletRequest.setAttribute("maxinum", maxinumInt);
+		httpServletRequest.setAttribute("mininum", mininumInt);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
@@ -549,11 +563,11 @@ public class BattleApi {
 		ResultVo resultVo = addRoom(httpServletRequest);
 		if(resultVo.isSuccess()){
 			BattleRoom createBattleRoom = (BattleRoom)resultVo.getData();
-			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			/*Account account = accountService.fineOneSync(userInfo.getAccountId());
 			Long wisdomCount = account.getWisdomCount();
 			wisdomCount = wisdomCount+200;
 			account.setWisdomCount(wisdomCount);
-			accountService.update(account);
+			accountService.update(account);*/
 			
 			BattleRoomEntry battleRoomEntry = new BattleRoomEntry();
 			
