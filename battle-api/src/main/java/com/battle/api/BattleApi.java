@@ -791,7 +791,7 @@ public class BattleApi {
 		battleRoom.setIsDisplay(0);
 		
 		battleRoom.setSpeedCoolBean(10);
-		battleRoom.setSpeedCoolSecond(1800);
+		battleRoom.setSpeedCoolSecond(10);
 		
 		battleRoom.setRedPackNum(0);
 		

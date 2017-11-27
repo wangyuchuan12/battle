@@ -27,7 +27,7 @@ public class CurrentLoveCoolingFilter extends Filter{
 		if(battleMemberLoveCooling==null){
 			Long millisec = 1000L;
 			Integer unit = 1;
-			Long upperLimit = 10000L;
+			Long upperLimit = 100L;
 			battleMemberLoveCooling = new BattleMemberLoveCooling();
 			battleMemberLoveCooling.setBattleMemberId(battlePeriodMember.getId());
 			battleMemberLoveCooling.setUnit(unit);
