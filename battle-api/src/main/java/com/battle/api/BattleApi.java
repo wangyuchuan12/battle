@@ -550,6 +550,11 @@ public class BattleApi {
 		if(!CommonUtil.isEmpty(mininumInt)){
 			mininumInt = Integer.parseInt(mininum);
 		}
+		
+		if(maxinumInt==2){
+			httpServletRequest.setAttribute("isPk", 1);
+		}
+		
 		String key = httpServletRequest.getParameter("key");
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		httpServletRequest.setAttribute("battleId", battleRoom.getBattleId());
@@ -645,6 +650,18 @@ public class BattleApi {
 	public ResultVo addRoom(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String battleId = httpServletRequest.getParameter("battleId");
+		
+		String isPk = httpServletRequest.getParameter("isPk");
+		
+		if(CommonUtil.isEmpty(isPk)){
+			isPk = (String)httpServletRequest.getAttribute("isPk");
+		}
+		
+		Integer isPkInt = 0;
+		
+		if(!CommonUtil.isEmpty(isPk)){
+			isPkInt = Integer.parseInt(isPk);
+		}
 		if(CommonUtil.isEmpty(battleId)){
 			battleId = httpServletRequest.getAttribute("battleId").toString();
 		}
@@ -775,7 +792,7 @@ public class BattleApi {
 		
 		
 		List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
-		if(battleRooms!=null&&battleRooms.size()>0&&battleUser.getIsManager()!=1){
+		if(isPkInt!=1&&battleRooms!=null&&battleRooms.size()>0&&battleUser.getIsManager()!=1){
 			BattleRoom battleRoom = battleRooms.get(0);
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
@@ -785,6 +802,7 @@ public class BattleApi {
 			return resultVo;
 		}
 		BattleRoom battleRoom = new BattleRoom();
+		battleRoom.setIsPk(isPkInt);
 		battleRoom.setBattleId(battleId);
 		battleRoom.setPeriodId(periodId);
 		battleRoom.setCreationTime(new DateTime());
