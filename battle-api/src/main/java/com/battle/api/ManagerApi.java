@@ -610,12 +610,14 @@ public class ManagerApi {
 		battleService.update(battle);
 		
 		
-		for(Integer i=1;i<11;i++){
+		for(Integer i=1;i<31;i++){
 			BattlePeriodStage battlePeriodStage = new BattlePeriodStage();
 			battlePeriodStage.setBattleId(battleId);
 			battlePeriodStage.setIndex(i);
 			battlePeriodStage.setPeriodId(battlePeriod.getId());
 			battlePeriodStage.setQuestionCount(4);
+			battlePeriodStage.setPassRewardBean(10);
+			battlePeriodStage.setPassCount(4);
 			battlePeriodStageService.add(battlePeriodStage);
 		}
 		
