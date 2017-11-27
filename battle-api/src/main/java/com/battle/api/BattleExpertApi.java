@@ -126,12 +126,13 @@ public class BattleExpertApi {
 			battleExpert.setHandNum(0);
 			battleExpert.setIsHand(0);
 			battleExpert.setPhonenum(phonenum);
-			battleExpert.setStatus(BattleExpert.APPLY_STATUS);
 			battleExpert.setWechat(wechat);
 			battleExpert.setIntroduce(introduce);
 			battleExpert.setUserImg(userInfo.getHeadimgurl());
 			battleExpert.setNickname(userInfo.getNickname());
 			battleExpert.setOpenid(userInfo.getOpenid());
+			
+			battleExpert.setStatus(BattleExpert.AUDIT_STATUS);
 			battleExpertService.add(battleExpert);
 			
 			ResultVo resultVo = new ResultVo();
