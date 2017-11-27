@@ -11,6 +11,7 @@ import com.battle.service.BattleExpertService;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.wx.domain.UserInfo;
 
 public class BattleManagerFilter extends Filter{
 
@@ -20,12 +21,12 @@ public class BattleManagerFilter extends Filter{
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
 		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
 		BattleExpert battleExpert = battleExpertService.findOneByBattleIdAndBattleUserId(battleUser.getBattleId(), battleUser.getId());
 		
 		
-		System.out.println(battleExpert.getStatus());
-		
-		if(battleUser.getIsManager()==1){
+		if(battleUser.getIsManager()==1||userInfo.getIsGod()==1){
 			
 		}else{
 			if(battleExpert==null||battleExpert.getStatus()!=BattleExpert.AUDIT_STATUS){

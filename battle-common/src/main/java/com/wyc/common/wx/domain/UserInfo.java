@@ -98,6 +98,11 @@ public class UserInfo {
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private String accountId;
     
+    //一切的主宰
+    @Column(name="is_god")
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    private Integer isGod;
+    
     @Column(name = "create_at")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -248,4 +253,12 @@ public class UserInfo {
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
+	public Integer getIsGod() {
+		return isGod;
+	}
+	public void setIsGod(Integer isGod) {
+		this.isGod = isGod;
+	}
+	
+	
 }
