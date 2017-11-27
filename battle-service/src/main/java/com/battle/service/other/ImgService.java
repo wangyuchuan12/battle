@@ -14,6 +14,7 @@ import com.battle.domain.BattleRoom;
 import com.battle.service.BattleRoomService;
 import com.wyc.common.domain.MyResource;
 import com.wyc.common.smart.service.UploadToQNService;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.service.QrcodeService;
 
 @Service
@@ -31,6 +32,17 @@ public class ImgService {
 		BufferedImage bufferedImage = new BufferedImage(500, 800, BufferedImage.TYPE_INT_RGB);
     
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		if(!CommonUtil.isEmpty(battleRoom.getRoomShareImg())){
+			MyResource myResource = new MyResource();
+			
+			myResource.setUrl(battleRoom.getRoomShareImg());
+			
+			myResource.setId(UUID.randomUUID().toString());
+			
+			return myResource;
+		}
+		
+		
 		com.wyc.common.util.JavaImgUtil.Pic tt = new com.wyc.common.util.JavaImgUtil.Pic();  
     	bufferedImage.setRGB(0, 0, 40);
     	
@@ -78,6 +90,10 @@ public class ImgService {
             uploadToQNService.syncResource(roomImgResource);
             
             file.deleteOnExit();
+            
+            battleRoom.setRoomShareImg(roomImgResource.getUrl());
+            
+            battleRoomService.update(battleRoom);
             return roomImgResource;
         } catch (Exception e) {  
             System.out.println(e.getMessage());  

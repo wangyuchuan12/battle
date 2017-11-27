@@ -163,6 +163,10 @@ public class BattleRoom {
 	private String key;
 	
 	@ParamAnnotation
+	@Column(name="room_share_img")
+	private String roomShareImg;
+	
+	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime creationTime;
@@ -446,6 +450,15 @@ public class BattleRoom {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+
+	public String getRoomShareImg() {
+		return roomShareImg;
+	}
+
+	public void setRoomShareImg(String roomShareImg) {
+		this.roomShareImg = roomShareImg;
 	}
 
 	public DateTime getCreateAt() {
