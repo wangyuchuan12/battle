@@ -26,6 +26,7 @@ public class BattlePeriod {
 	
 	//进行中状态
 	public static Integer IN_STATUS = 1;
+	
 	@Id
 	@IdAnnotation
 	@AttrAnnotation(name=AttrEnum.periodId)

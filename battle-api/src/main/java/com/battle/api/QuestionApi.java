@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
@@ -29,6 +30,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
+import com.battle.service.BattleRoomService;
 import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
@@ -77,6 +79,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleRoomService battleRoomService;
 
 
 	
@@ -517,7 +522,15 @@ public class QuestionApi {
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 			
 			battlePeriodMemberService.update(battlePeriodMember);
+			
+			BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+			
+			battleRoom.setStatus(BattleRoom.STATUS_END);
+			
+			battleRoomService.update(battleRoom);
 		}
+		
+		
 		
 		/*Integer processAll = battlePeriodMember.getProcess();
 		

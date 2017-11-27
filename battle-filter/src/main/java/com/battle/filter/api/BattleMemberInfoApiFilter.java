@@ -64,6 +64,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("shareTime", battlePeriodMember.getShareTime());
 		
+		data.put("roomStatus", battleRoom.getStatus());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);
