@@ -23,6 +23,8 @@ public class BattleManagerFilter extends Filter{
 		BattleExpert battleExpert = battleExpertService.findOneByBattleIdAndBattleUserId(battleUser.getBattleId(), battleUser.getId());
 		
 		
+		System.out.println(battleExpert.getStatus());
+		
 		if(battleUser.getIsManager()==1){
 			
 		}else{
