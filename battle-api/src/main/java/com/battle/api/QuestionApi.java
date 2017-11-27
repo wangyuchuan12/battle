@@ -513,6 +513,11 @@ public class QuestionApi {
 		List<BattleMemberQuestionAnswer> battleMemberQuestionAnswers = battleMemberQuestionAnswerService.findAllByBattleMemberPaperAnswerId(battleMemberPaperAnswerId);
 		
 		
+		if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			battlePeriodMemberService.update(battlePeriodMember);
+		}
 		
 		/*Integer processAll = battlePeriodMember.getProcess();
 		

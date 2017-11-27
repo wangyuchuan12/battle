@@ -1236,9 +1236,6 @@ public class BattleApi {
 		
 		Integer isPersonalScoreMeet = battleRedpacket.getIsPersonalScoreMeet();
 		
-		System.out.println("isPersonalScoreMeet:"+isPersonalScoreMeet);
-		
-		
 		if(isPersonalScoreMeet==1){
 			Integer personalScoreMeet = battleRedpacket.getPersonalScoreMeet();
 			Integer score = battlePeriodMember.getScore();
@@ -1250,9 +1247,6 @@ public class BattleApi {
 				score = 0;
 			}
 			
-			System.out.println("personalScoreMeet:"+personalScoreMeet+",score:"+score);
-			
-			System.out.println("personalScoreMeet>score:"+(personalScoreMeet>score));
 			if(personalScoreMeet>score){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
