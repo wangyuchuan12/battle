@@ -1,5 +1,6 @@
 package com.battle.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.battle.service.ContextService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -49,6 +51,9 @@ public class BattleFactoryApi {
 		String fillWords = httpServletRequest.getParameter("fillWords");
 		
 		String battleId = httpServletRequest.getParameter("battleId");
+		
+		String subjectId = httpServletRequest.getParameter("subjectId");
+		
 		String type = httpServletRequest.getParameter("type");
 		
 		String options = httpServletRequest.getParameter("options");
@@ -77,7 +82,7 @@ public class BattleFactoryApi {
 		questionTarget.setStatus(BattleQuestionFactoryItem.STATUS_AUDIT);
 		questionTarget.setOptions(options);
 		questionTarget.setBattleId(battleId);
-		
+		questionTarget.setBattleSubjectId(subjectId);
 		questionTarget.setType(Integer.parseInt(type));
 		
 		questionTarget.setUserId(userInfo.getId());
@@ -97,10 +102,21 @@ public class BattleFactoryApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		String status = httpServletRequest.getParameter("status");
+		
+		Integer statusInt = 0;
+		
+		if(!CommonUtil.isEmpty(status)){
+			statusInt = Integer.parseInt(status);
+		}
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0, 100, sort);
 		
-		List<BattleQuestionFactoryItem> battleQuestionFactoryItems = battleQuestionFactoryItemService.findAllByUserIdAndIsDel(userInfo.getId(),0,pageable);
+		List<Integer> statuses = new ArrayList<>();
+		statuses.add(statusInt);
+		
+		List<BattleQuestionFactoryItem> battleQuestionFactoryItems = battleQuestionFactoryItemService.findAllByUserIdAndStatusInAndIsDel(userInfo.getId(),statuses,0,pageable);
 	
 		ResultVo resultVo = new ResultVo();
 		

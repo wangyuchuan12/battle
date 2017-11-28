@@ -27,8 +27,8 @@ public class BattleQuestionFactoryItemService {
 		
 	}
 
-	public List<BattleQuestionFactoryItem> findAllByUserIdAndIsDel(String userId, int isDel,Pageable pageable) {
+	public List<BattleQuestionFactoryItem> findAllByUserIdAndStatusInAndIsDel(String userId,List<Integer> statuses, int isDel,Pageable pageable) {
 		
-		return battleQuestionFactoryItemDao.findAllByUserIdAndIsDel(userId,isDel,pageable);
+		return battleQuestionFactoryItemDao.findAllByUserIdAndStatusInAndIsDel(userId,statuses,isDel,pageable);
 	}
 }
