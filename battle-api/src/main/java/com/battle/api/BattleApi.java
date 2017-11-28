@@ -654,7 +654,10 @@ public class BattleApi {
 		String isPk = httpServletRequest.getParameter("isPk");
 		
 		if(CommonUtil.isEmpty(isPk)){
-			isPk = (String)httpServletRequest.getAttribute("isPk");
+			Object isPkTarget = httpServletRequest.getAttribute("isPk");
+			if(!CommonUtil.isEmpty(isPkTarget)){
+				isPk = isPkTarget.toString();
+			}
 		}
 		
 		Integer isPkInt = 0;
