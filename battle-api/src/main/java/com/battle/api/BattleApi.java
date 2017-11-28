@@ -547,7 +547,7 @@ public class BattleApi {
 		
 		Integer mininumInt = 2;
 		
-		if(!CommonUtil.isEmpty(mininumInt)){
+		if(!CommonUtil.isEmpty(mininum)){
 			mininumInt = Integer.parseInt(mininum);
 		}
 		
