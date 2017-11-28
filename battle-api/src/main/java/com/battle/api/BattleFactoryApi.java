@@ -3,6 +3,7 @@ package com.battle.api;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,7 @@ public class BattleFactoryApi {
 
 	@RequestMapping(value="apply")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object apply(HttpServletRequest httpServletRequest)throws Exception{
 		
