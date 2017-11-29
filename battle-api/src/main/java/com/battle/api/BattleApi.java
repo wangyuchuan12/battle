@@ -794,7 +794,7 @@ public class BattleApi {
 		}
 		
 		
-		List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUser.getId());
+		List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(battleId,periodId,battleUser.getId(),0);
 		if(isPkInt!=1&&battleRooms!=null&&battleRooms.size()>0&&battleUser.getIsManager()!=1){
 			BattleRoom battleRoom = battleRooms.get(0);
 			ResultVo resultVo = new ResultVo();

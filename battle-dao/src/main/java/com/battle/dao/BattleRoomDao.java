@@ -14,6 +14,8 @@ import com.battle.domain.BattleRoom;
 
 public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
+	List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(String battleId, String periodId, String battleUserId,Integer isPk);
+	
 	List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId);
 
 	Page<BattleRoom> findAllByIsDisplayAndStatusInAndIsDel(Integer isPublic,List<Integer> statuses,Integer isDel ,Pageable pageable);

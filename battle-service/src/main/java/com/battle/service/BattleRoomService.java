@@ -27,6 +27,11 @@ public class BattleRoomService {
 		battleRoomDao.save(battleRoom);
 		
 	}
+	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(String battleId, String periodId, String battleUserId,Integer isPk) {
+		
+		return battleRoomDao.findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(battleId,periodId,battleUserId,isPk);
+	}
+	
 	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwner(String battleId, String periodId, String battleUserId) {
 		
 		return battleRoomDao.findAllByBattleIdAndPeriodIdAndOwner(battleId,periodId,battleUserId);
