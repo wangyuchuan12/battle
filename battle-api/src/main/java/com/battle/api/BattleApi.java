@@ -540,8 +540,10 @@ public class BattleApi {
 		String maxinum = httpServletRequest.getParameter("maxinum");
 		String mininum = httpServletRequest.getParameter("mininum");
 		
+		
+		System.out.println("mininu:"+mininum+",maxinum:"+maxinum);
 		Integer maxinumInt = 2;
-		if(!CommonUtil.isEmpty(mininum)){
+		if(!CommonUtil.isEmpty(maxinum)){
 			maxinumInt = Integer.parseInt(maxinum);
 		}
 		
