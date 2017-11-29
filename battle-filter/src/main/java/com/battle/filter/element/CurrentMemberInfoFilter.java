@@ -9,16 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattleRoom;
 import com.battle.service.BattlePeriodService;
-import com.battle.service.BattleRoomService;
 import com.wyc.AttrEnum;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
 
 public class CurrentMemberInfoFilter extends Filter{
 
-	@Autowired
-	private BattleRoomService battleRoomService;
-	
 	@Autowired
 	private BattlePeriodService battlePeriodService;
 	@Override
@@ -55,6 +51,7 @@ public class CurrentMemberInfoFilter extends Filter{
 		classes.add(LoginStatusFilter.class);
 		classes.add(CurrentBattleUserFilter.class);
 		classes.add(CurrentBattlePeriodMemberFilter.class);
+		classes.add(CurrentAccountResultFilter.class);
 		return classes;
 	}
 

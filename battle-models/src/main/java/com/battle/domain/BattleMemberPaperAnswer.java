@@ -129,6 +129,10 @@ public class BattleMemberPaperAnswer {
 	private Integer score;
 	
 	@ParamAnnotation
+	@Column
+	private Integer exp;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -321,6 +325,14 @@ public class BattleMemberPaperAnswer {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+	
+	public Integer getExp() {
+		return exp;
+	}
+
+	public void setExp(Integer exp) {
+		this.exp = exp;
 	}
 
 	public DateTime getCreateAt() {

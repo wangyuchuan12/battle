@@ -8,10 +8,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
 import com.battle.domain.BattlePeriod;
@@ -23,7 +26,9 @@ import com.battle.domain.Question;
 import com.battle.domain.QuestionAnswer;
 import com.battle.domain.QuestionAnswerItem;
 import com.battle.domain.QuestionOption;
+import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
+import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
 import com.battle.service.BattlePeriodMemberService;
@@ -35,6 +40,7 @@ import com.battle.service.QuestionAnswerItemService;
 import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
+import com.battle.service.other.AccountResultHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -82,6 +88,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private AccountResultHandleService accountResultHandleService;
 
 
 	
@@ -505,7 +514,10 @@ public class QuestionApi {
 	@RequestMapping(value="questionResults")
 	@ResponseBody
 	@Transactional
-	public Object questionResults(HttpServletRequest httpServletRequest){
+	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
+	public Object questionResults(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		String battleMemberPaperAnswerId = httpServletRequest.getParameter("battleMemberPaperAnswerId");
 		
@@ -529,6 +541,8 @@ public class QuestionApi {
 			
 			battleRoomService.update(battleRoom);
 		}
+		
+		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
 		
 		
 		
@@ -558,6 +572,16 @@ public class QuestionApi {
 		data.put("status", battleMemberPaperAnswer.getStatus());
 		
 		data.put("process", battleMemberPaperAnswer.getProcess());
+		
+		data.put("rewardBean", battleMemberPaperAnswer.getThisRewardBean());
+		
+		
+		
+		accountResultHandleService.answerResult(battleMemberPaperAnswer, battleAccountResult);
+		
+		data.put("addExp", battleMemberPaperAnswer.getExp());
+		
+		data.put("allExp", battleAccountResult.getExp());
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
