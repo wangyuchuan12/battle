@@ -855,7 +855,7 @@ public class BattleApi {
 		
 		battleRoom.setIsDel(0);
 		
-		battleRoom.setScrollGogal(0);
+		battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 		
 		battleRoomService.add(battleRoom);
 		
