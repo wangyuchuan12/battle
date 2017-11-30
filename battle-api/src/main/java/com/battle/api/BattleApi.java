@@ -1612,6 +1612,8 @@ public class BattleApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
+		resultVo.setData(data);
+		
 		resultVo.setErrorMsg("同步成功");
 		
 		return resultVo;
