@@ -66,6 +66,10 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("roomStatus", battleRoom.getStatus());
 		
+		data.put("endType", battleRoom.getEndType());
+		
+		data.put("scrollGogal", battleRoom.getScrollGogal());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);

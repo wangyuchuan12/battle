@@ -1597,6 +1597,18 @@ public class BattleApi {
 			battleRoomService.update(battleRoom);
 		}
 		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("status", battleRoom.getStatus());
+		data.put("endType", battleRoom.getEndType());
+		
+		data.put("roomProcess", battleRoom.getRoomProcess());
+		data.put("roomScore", battleRoom.getRoomScore());
+		
+		data.put("process", battlePeriodMember.getProcess());
+		
+		data.put("score", battlePeriodMember.getScore());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
