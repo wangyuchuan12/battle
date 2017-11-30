@@ -539,6 +539,8 @@ public class QuestionApi {
 			
 			battleRoom.setStatus(BattleRoom.STATUS_END);
 			
+			battleRoom.setEndType(BattleRoom.CLEARANCE_END_TYPE);
+			
 			battleRoomService.update(battleRoom);
 		}
 		

@@ -855,6 +855,8 @@ public class BattleApi {
 		
 		battleRoom.setIsDel(0);
 		
+		battleRoom.setScrollGogal(0);
+		
 		battleRoomService.add(battleRoom);
 		
 		ResultVo resultVo = new ResultVo();
@@ -1554,6 +1556,16 @@ public class BattleApi {
 				roomScore = roomScore+battleRoom.getFullRightAddScore();
 				
 				battleRoom.setRoomScore(roomScore);
+				
+				Integer scrollGogal = battleRoom.getScrollGogal();
+				
+				if(scrollGogal==null){
+					scrollGogal = 0;
+				}
+				if(roomScore>=scrollGogal){
+					battleRoom.setStatus(BattleRoom.STATUS_END);
+					battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+				}
 
 				StringBuffer sb = new StringBuffer();
 				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功");

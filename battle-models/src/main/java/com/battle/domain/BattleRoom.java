@@ -28,6 +28,12 @@ public class BattleRoom {
 	
 	public static final Integer STATUS_END = 3;
 	
+	public static final Integer CLEARANCE_END_TYPE = 0;
+	
+	public static final Integer TIMEOUT_END_TYPE = 1;
+	
+	public static final Integer SCROLL_GOGAL_END_TYPE = 2;
+	
 	@Id
 	@IdAnnotation
 	private String id;
@@ -169,6 +175,16 @@ public class BattleRoom {
 	@ParamAnnotation
 	@Column(name="is_pk")
 	private Integer isPk;
+	
+	//目标分数
+	@ParamAnnotation
+	@Column(name="scroll_gogal")
+	private Integer scrollGogal;
+	
+	//结束方式
+	@ParamAnnotation
+	@Column(name="end_type")
+	private Integer endType;
 	
 	@ParamAnnotation
 	@Column(name="creation_time")
@@ -471,6 +487,24 @@ public class BattleRoom {
 
 	public void setIsPk(Integer isPk) {
 		this.isPk = isPk;
+	}
+	
+	
+
+	public Integer getScrollGogal() {
+		return scrollGogal;
+	}
+
+	public void setScrollGogal(Integer scrollGogal) {
+		this.scrollGogal = scrollGogal;
+	}
+
+	public Integer getEndType() {
+		return endType;
+	}
+
+	public void setEndType(Integer endType) {
+		this.endType = endType;
 	}
 
 	public DateTime getCreateAt() {

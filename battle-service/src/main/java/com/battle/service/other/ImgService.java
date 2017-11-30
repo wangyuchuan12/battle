@@ -70,7 +70,7 @@ public class ImgService {
             
             Font font = new Font("Times New Roman",Font.ITALIC,20);
             g.setFont(font);
-            g.drawString("动漫大赛", 20, 290);
+            g.drawString(battleRoom.getName(), 20, 290);
             
            
             
