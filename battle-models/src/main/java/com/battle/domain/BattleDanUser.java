@@ -15,54 +15,60 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_account_result")
-public class BattleAccountResult {
+@Table(name="battle_dan_user")
+public class BattleDanUser {
+	
+	public static Integer STATUS_FREE = 0;
+	
+	public static Integer STATUS_IN = 1;
+	
+	public static Integer STATUS_SUCCESS = 2;
+	
+	public static Integer STATUS_FAIL = 3;
+	
 	@Id
 	@IdAnnotation
 	private String id;
 	
-	//账号id
 	@ParamAnnotation
-	@Column(name="account_id")
-	private String accountId;
+	@Column
+	private Integer status;
 	
-	//用户UserInfo表id值
 	@ParamAnnotation
 	@Column(name="user_id")
 	private String userId;
 	
-	//经验值
 	@ParamAnnotation
-	@Column
-	private Long exp;
-	
-	//级别
-	@ParamAnnotation
-	@Column
-	private Integer level;
-	
-	//赢的次数
-	@ParamAnnotation
-	@Column(name="win_time")
-	private Long winTime;
-	
-	//输的次数
-	@ParamAnnotation
-	@Column(name="fail_time")
-	private Long failTime;
-	
-	//战斗次数
-	@ParamAnnotation
-	@Column(name="fight_time")
-	private Long fightTime;
+	@Column(name="dan_name")
+	private String danName;
 	
 	@ParamAnnotation
 	@Column(name="dan_id")
 	private String danId;
 	
 	@ParamAnnotation
-	@Column(name="dan_name")
-	private String danName;
+	@Column
+	private Integer level;
+	
+	@ParamAnnotation
+	@Column(name="point_id")
+	private String pointId;
+	
+	@ParamAnnotation
+	@Column(name="img_url")
+	private String imgUrl;
+	
+	@ParamAnnotation
+	@Column(name="room_id")
+	private String roomId;
+	
+	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	@ParamAnnotation
+	@Column(name="period_id")
+	private String periodId;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -84,12 +90,12 @@ public class BattleAccountResult {
 		this.id = id;
 	}
 
-	public String getAccountId() {
-		return accountId;
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getUserId() {
@@ -100,12 +106,20 @@ public class BattleAccountResult {
 		this.userId = userId;
 	}
 
-	public Long getExp() {
-		return exp;
+	public String getDanName() {
+		return danName;
 	}
 
-	public void setExp(Long exp) {
-		this.exp = exp;
+	public void setDanName(String danName) {
+		this.danName = danName;
+	}
+	
+	public String getDanId() {
+		return danId;
+	}
+
+	public void setDanId(String danId) {
+		this.danId = danId;
 	}
 
 	public Integer getLevel() {
@@ -116,44 +130,44 @@ public class BattleAccountResult {
 		this.level = level;
 	}
 
-	public Long getWinTime() {
-		return winTime;
+	public String getPointId() {
+		return pointId;
 	}
 
-	public void setWinTime(Long winTime) {
-		this.winTime = winTime;
+	public void setPointId(String pointId) {
+		this.pointId = pointId;
 	}
 
-	public Long getFailTime() {
-		return failTime;
+	public String getImgUrl() {
+		return imgUrl;
 	}
 
-	public void setFailTime(Long failTime) {
-		this.failTime = failTime;
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 
-	public Long getFightTime() {
-		return fightTime;
+	public String getRoomId() {
+		return roomId;
 	}
 
-	public void setFightTime(Long fightTime) {
-		this.fightTime = fightTime;
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
 	}
 
-	public String getDanId() {
-		return danId;
+	public String getBattleId() {
+		return battleId;
 	}
 
-	public void setDanId(String danId) {
-		this.danId = danId;
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
 	}
 
-	public String getDanName() {
-		return danName;
+	public String getPeriodId() {
+		return periodId;
 	}
 
-	public void setDanName(String danName) {
-		this.danName = danName;
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
 	}
 
 	public DateTime getCreateAt() {

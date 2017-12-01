@@ -70,6 +70,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("scrollGogal", battleRoom.getScrollGogal());
 		
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);

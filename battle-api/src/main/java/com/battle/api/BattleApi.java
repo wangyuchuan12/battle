@@ -55,6 +55,7 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.BattleUserService;
+import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -112,6 +113,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleSubjectService battleSubjectService;
+	
+	@Autowired
+	private BattleRoomHandleService battleRoomHandleService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -803,59 +807,16 @@ public class BattleApi {
 			resultVo.setData(battleRoom);
 			return resultVo;
 		}
-		BattleRoom battleRoom = new BattleRoom();
+		
+		BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
+		
 		battleRoom.setIsPk(isPkInt);
-		battleRoom.setBattleId(battleId);
 		battleRoom.setPeriodId(periodId);
-		battleRoom.setCreationTime(new DateTime());
 		battleRoom.setMaxinum(maxinumInt);
 		battleRoom.setMininum(mininumInt);
-		battleRoom.setPeriodId(periodId);
 		battleRoom.setOwner(battleUser.getId());
-		battleRoom.setName(battle.getName());
-		battleRoom.setInstruction(battle.getInstruction());
-		battleRoom.setImgUrl(battle.getHeadImg());
-		battleRoom.setStatus(BattleRoom.STATUS_FREE);
-		battleRoom.setNum(0);
-		
 		battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
-		
 		battleRoom.setIsSearchAble(isPublicInt);
-		
-		battleRoom.setIsDisplay(0);
-		
-		battleRoom.setSpeedCoolBean(10);
-		battleRoom.setSpeedCoolSecond(10);
-		
-		battleRoom.setRedPackNum(0);
-		
-		battleRoom.setRoomScore(0);
-		
-		battleRoom.setFullRightAddScore(10);
-		
-		battleRoom.setRightAddProcess(1);
-		
-		battleRoom.setRightAddScore(1);
-		
-		battleRoom.setWrongSubScore(1);
-		
-		battleRoom.setIsRedpack(0);
-		
-		battleRoom.setRedpackAmount(new BigDecimal(0));
-		
-		battleRoom.setRedpackBean(0);
-		
-		battleRoom.setRedpackMasonry(0);
-		
-		battleRoom.setCostBean(0);
-		
-		battleRoom.setCostMasonry(0);
-		
-		battleRoom.setHot(0);
-		
-		battleRoom.setIsDel(0);
-		
-		battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 		
 		battleRoomService.add(battleRoom);
 		
