@@ -133,7 +133,6 @@ public class BattleDanApi {
 		String battleDanUserId = httpServletRequest.getParameter("battleDanUserId");
 		BattleDanUser battleDanUser = battleDanUserService.findOne(battleDanUserId);
 		
-		
 		Battle battle = battleService.findOne(battleDanUser.getBattleId());
 		
 		String roomId = battleDanUser.getRoomId();
@@ -150,6 +149,7 @@ public class BattleDanApi {
 			battleRoom.setMininum(0);
 			battleRoom.setPeriodId(battleDanUser.getPeriodId());
 			battleRoom.setIsSearchAble(0);
+			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 			battleRoomService.add(battleRoom);
 		}
 		

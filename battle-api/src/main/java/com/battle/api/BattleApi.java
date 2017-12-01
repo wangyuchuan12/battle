@@ -817,6 +817,7 @@ public class BattleApi {
 		battleRoom.setOwner(battleUser.getId());
 		battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 		battleRoom.setIsSearchAble(isPublicInt);
+		battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 		
 		battleRoomService.add(battleRoom);
 		

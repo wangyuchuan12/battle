@@ -55,7 +55,6 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setIsDel(0);
 		
-		battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 		
 		return battleRoom;
 	}
