@@ -82,6 +82,18 @@ public class BattleDanTaskUser {
 	private Integer rewardExp;
 	
 	@ParamAnnotation
+	@Column(name="button_name")
+	private String buttonName;
+	
+	@ParamAnnotation
+	@Column
+	private String name;
+	
+	@ParamAnnotation
+	@Column
+	private String instruction;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -195,6 +207,30 @@ public class BattleDanTaskUser {
 
 	public void setRewardExp(Integer rewardExp) {
 		this.rewardExp = rewardExp;
+	}
+	
+	public String getButtonName() {
+		return buttonName;
+	}
+
+	public void setButtonName(String buttonName) {
+		this.buttonName = buttonName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
 	}
 
 	public DateTime getCreateAt() {

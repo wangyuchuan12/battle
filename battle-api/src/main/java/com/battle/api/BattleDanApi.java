@@ -82,6 +82,9 @@ public class BattleDanApi {
 				battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_FREE);
 				battleDanTaskUser.setRewardBean(battleDanTask.getRewardBean());
 				battleDanTaskUser.setRewardExp(battleDanTask.getRewardExp());
+				battleDanTaskUser.setName(battleDanTask.getName());
+				battleDanTaskUser.setInstruction(battleDanTask.getInstruction());
+				battleDanTaskUser.setButtonName(battleDanTask.getButtonName());
 				battleDanTaskUsers.add(battleDanTaskUser);
 			}
 		}
