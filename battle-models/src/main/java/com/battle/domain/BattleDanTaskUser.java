@@ -73,6 +73,15 @@ public class BattleDanTaskUser {
 	private String userId;
 	
 	@ParamAnnotation
+	@Column(name="reward_bean")
+	private Integer rewardBean;
+	
+	//获取经验值
+	@ParamAnnotation
+	@Column(name="reward_exp")
+	private Integer rewardExp;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -170,6 +179,22 @@ public class BattleDanTaskUser {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public Integer getRewardBean() {
+		return rewardBean;
+	}
+
+	public void setRewardBean(Integer rewardBean) {
+		this.rewardBean = rewardBean;
+	}
+
+	public Integer getRewardExp() {
+		return rewardExp;
+	}
+
+	public void setRewardExp(Integer rewardExp) {
+		this.rewardExp = rewardExp;
 	}
 
 	public DateTime getCreateAt() {

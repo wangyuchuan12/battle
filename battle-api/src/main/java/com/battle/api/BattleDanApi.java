@@ -80,6 +80,8 @@ public class BattleDanApi {
 				battleDanTaskUser.setPeriodId(battleDanTask.getPeriodId());
 				battleDanTaskUser.setType(battleDanTask.getType());
 				battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_FREE);
+				battleDanTaskUser.setRewardBean(battleDanTask.getRewardBean());
+				battleDanTaskUser.setRewardExp(battleDanTask.getRewardExp());
 				battleDanTaskUsers.add(battleDanTaskUser);
 			}
 		}
