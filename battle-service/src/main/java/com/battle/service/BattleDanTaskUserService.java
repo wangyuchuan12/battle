@@ -14,8 +14,8 @@ public class BattleDanTaskUserService {
 	@Autowired
 	private BattleDanTaskUserDao battleDanTaskUserDao;
 
-	public List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndex(String danId,String userId) {
+	public List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndexAsc(String danId,String userId) {
 	
-		return battleDanTaskUserDao.findAllByDanIdAndUserIdOrderByIndex(danId,userId);
+		return battleDanTaskUserDao.findAllByDanIdAndUserIdOrderByIndexAsc(danId,userId);
 	}
 }

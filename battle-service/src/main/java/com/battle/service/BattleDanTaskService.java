@@ -15,8 +15,8 @@ public class BattleDanTaskService {
 	private BattleDanTaskDao battleDanTaskDao;
 
 
-	public List<BattleDanTask> findAllByDanIdOrderByIndex(String danId) {
+	public List<BattleDanTask> findAllByDanIdOrderByIndexAsc(String danId) {
 		
-		return battleDanTaskDao.findAllByDanIdOrderByIndex(danId);
+		return battleDanTaskDao.findAllByDanIdOrderByIndexAsc(danId);
 	}
 }

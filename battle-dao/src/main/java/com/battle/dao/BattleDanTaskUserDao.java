@@ -8,6 +8,6 @@ import com.battle.domain.BattleDanTaskUser;
 
 public interface BattleDanTaskUserDao extends CrudRepository<BattleDanTaskUser, String>{
 
-	List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndex(String danId, String userId);
+	List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndexAsc(String danId, String userId);
 
 }

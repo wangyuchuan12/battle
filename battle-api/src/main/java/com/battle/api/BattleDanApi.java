@@ -64,9 +64,9 @@ public class BattleDanApi {
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		String danId = httpServletRequest.getParameter("danId");
-		List<BattleDanTask> battleDanTasks = battleDanTaskService.findAllByDanIdOrderByIndex(danId);
+		List<BattleDanTask> battleDanTasks = battleDanTaskService.findAllByDanIdOrderByIndexAsc(danId);
 		
-		List<BattleDanTaskUser> battleDanTaskUsers = battleDanTaskUserService.findAllByDanIdAndUserIdOrderByIndex(danId,userInfo.getId());
+		List<BattleDanTaskUser> battleDanTaskUsers = battleDanTaskUserService.findAllByDanIdAndUserIdOrderByIndexAsc(danId,userInfo.getId());
 		
 		if(battleDanTaskUsers==null||battleDanTaskUsers.size()==0){
 			battleDanTaskUsers = new ArrayList<>();
