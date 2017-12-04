@@ -69,6 +69,10 @@ public class BattleDanTaskUser {
 	private Integer roomScore;
 	
 	@ParamAnnotation
+	@Column(name="user_id")
+	private String userId;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -158,6 +162,14 @@ public class BattleDanTaskUser {
 
 	public void setRoomScore(Integer roomScore) {
 		this.roomScore = roomScore;
+	}
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public DateTime getCreateAt() {
