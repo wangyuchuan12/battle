@@ -15,29 +15,31 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan")
-public class BattleDan {
+@Table(name="battle_dan_user_item")
+public class BattleDanUserPk {
 	@Id
 	@IdAnnotation
 	private String id;
 	
+	@ParamAnnotation
+	@Column(name="battle_dan_user_id")
+	private String battleDanUserId;
 	
 	@ParamAnnotation
-	@Column
-	private String name;
+	@Column(name="user_id")
+	private String userId;
 	
 	@ParamAnnotation
-	@Column
-	private Integer level;
+	@Column(name="battle_id")
+	private String battleId;
 	
 	@ParamAnnotation
-	@Column(name="point_id")
-	private String pointId;
+	@Column(name="period_id")
+	private String periodId;
 	
 	@ParamAnnotation
-	@Column(name="img_url")
-	private String imgUrl;
-	
+	@Column(name="room_id")
+	private String roomId;
 	
 	@ParamAnnotation
 	@Column
@@ -64,36 +66,44 @@ public class BattleDan {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getBattleDanUserId() {
+		return battleDanUserId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBattleDanUserId(String battleDanUserId) {
+		this.battleDanUserId = battleDanUserId;
 	}
 
-	public Integer getLevel() {
-		return level;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public String getPointId() {
-		return pointId;
+	public String getBattleId() {
+		return battleId;
 	}
 
-	public void setPointId(String pointId) {
-		this.pointId = pointId;
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
+	public String getPeriodId() {
+		return periodId;
 	}
 
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
+	}
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
 	}
 
 	public Integer getScore() {

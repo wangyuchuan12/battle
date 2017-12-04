@@ -15,34 +15,23 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan")
-public class BattleDan {
+@Table(name="battle_dan_user_pass_through")
+public class BattleDanUserPassThrough {
 	@Id
 	@IdAnnotation
 	private String id;
 	
+	@ParamAnnotation
+	@Column(name="battle_dan_user_id")
+	private String battleDanUserId;
 	
 	@ParamAnnotation
-	@Column
-	private String name;
-	
-	@ParamAnnotation
-	@Column
-	private Integer level;
-	
-	@ParamAnnotation
-	@Column(name="point_id")
-	private String pointId;
-	
-	@ParamAnnotation
-	@Column(name="img_url")
-	private String imgUrl;
-	
+	@Column(name="user_id")
+	private String userId;
 	
 	@ParamAnnotation
 	@Column
 	private Integer score;
-	
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -64,36 +53,20 @@ public class BattleDan {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getBattleDanUserId() {
+		return battleDanUserId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBattleDanUserId(String battleDanUserId) {
+		this.battleDanUserId = battleDanUserId;
 	}
 
-	public Integer getLevel() {
-		return level;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
-
-	public String getPointId() {
-		return pointId;
-	}
-
-	public void setPointId(String pointId) {
-		this.pointId = pointId;
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public Integer getScore() {

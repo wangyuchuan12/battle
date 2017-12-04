@@ -44,4 +44,8 @@ public class BattleDanUserService {
 		
 		return battleDanUserDao.findOne(id);
 	}
+
+	public BattleDanUser findOneByDanIdAndUserId(String danId, String userId) {
+		return battleDanUserDao.findOneByDanIdAndUserId(danId,userId);
+	}
 }

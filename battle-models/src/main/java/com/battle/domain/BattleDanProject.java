@@ -15,34 +15,36 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan")
-public class BattleDan {
+@Table(name="battle_dan_project")
+public class BattleDanProject {
 	@Id
 	@IdAnnotation
 	private String id;
 	
 	
 	@ParamAnnotation
-	@Column
-	private String name;
+	@Column(name="battle_id")
+	private String battleId;
 	
 	@ParamAnnotation
-	@Column
-	private Integer level;
+	@Column(name="period_id")
+	private String periodId;
 	
 	@ParamAnnotation
-	@Column(name="point_id")
-	private String pointId;
+	@Column(name="dan_id")
+	private String danId;
 	
 	@ParamAnnotation
-	@Column(name="img_url")
-	private String imgUrl;
-	
+	@Column(name="battle_name")
+	private String battleName;
 	
 	@ParamAnnotation
-	@Column
-	private Integer score;
+	@Column(name="battle_img")
+	private String battleImg;
 	
+	@ParamAnnotation
+	@Column(name="z_index")
+	private Integer index;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -64,44 +66,52 @@ public class BattleDan {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getBattleId() {
+		return battleId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
 	}
 
-	public Integer getLevel() {
-		return level;
+	public String getPeriodId() {
+		return periodId;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
+	}
+	
+	public String getDanId() {
+		return danId;
 	}
 
-	public String getPointId() {
-		return pointId;
+	public void setDanId(String danId) {
+		this.danId = danId;
+	}
+	
+	public String getBattleName() {
+		return battleName;
 	}
 
-	public void setPointId(String pointId) {
-		this.pointId = pointId;
+	public void setBattleName(String battleName) {
+		this.battleName = battleName;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
+	public String getBattleImg() {
+		return battleImg;
 	}
 
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+	public void setBattleImg(String battleImg) {
+		this.battleImg = battleImg;
 	}
 
-	public Integer getScore() {
-		return score;
+	public Integer getIndex() {
+		return index;
 	}
 
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setIndex(Integer index) {
+		this.index = index;
 	}
 
 	public DateTime getCreateAt() {

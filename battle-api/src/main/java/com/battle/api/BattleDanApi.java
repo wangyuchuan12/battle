@@ -1,7 +1,10 @@
 package com.battle.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -13,19 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
 import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
+import com.battle.domain.BattleDanProject;
 import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattleRoom;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleDanPointService;
+import com.battle.service.BattleDanProjectService;
 import com.battle.service.BattleDanService;
 import com.battle.service.BattleDanUserService;
-import com.battle.service.BattleRoomService;
-import com.battle.service.BattleService;
-import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
-import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -42,13 +43,46 @@ public class BattleDanApi {
 	private BattleDanUserService battleDanUserService;
 	
 	@Autowired
-	private BattleRoomHandleService battleRoomHandleService;
+	private BattleDanProjectService battleDanProjectService;
 	
-	@Autowired
-	private BattleRoomService battleRoomService;
 	
-	@Autowired
-	private BattleService battleService;
+	@RequestMapping(value="danInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object danInfo(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		String danId = httpServletRequest.getParameter("danId");
+		
+		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId,userInfo.getId());
+		
+		List<BattleDanProject> battleDanProjects = battleDanProjectService.findAllByDanIdOrderByIndexAsc(battleDanUser.getDanId());
+		
+		List<Map<String, Object>> responseProjects = new ArrayList<>();
+		
+		for(BattleDanProject battleDanProject:battleDanProjects){
+			Map<String, Object> responseProject = new HashMap<>();
+			responseProject.put("id", battleDanProject.getId());
+			responseProject.put("battleName", battleDanProject.getBattleName());
+			responseProject.put("battleImg", battleDanProject.getBattleImg());
+			
+			responseProjects.add(responseProject);
+		}
+		
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("battleDanUser", battleDanUser);
+		responseData.put("projects", responseProjects);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(responseData);
+		return resultVo;
+	}
+	
 	@RequestMapping(value="list")
 	@ResponseBody
 	@Transactional
@@ -124,39 +158,5 @@ public class BattleDanApi {
 		
 		return resultVo;
 		
-	}
-	
-	@RequestMapping(value="startDan")
-	@ResponseBody
-	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public Object startDan(HttpServletRequest httpServletRequest)throws Exception{
-		String battleDanUserId = httpServletRequest.getParameter("battleDanUserId");
-		BattleDanUser battleDanUser = battleDanUserService.findOne(battleDanUserId);
-		
-		Battle battle = battleService.findOne(battleDanUser.getBattleId());
-		
-		String roomId = battleDanUser.getRoomId();
-		
-		BattleRoom battleRoom = null;
-		
-		if(!CommonUtil.isEmpty(roomId)){
-			battleRoom = battleRoomService.findOne(roomId);
-		}
-		
-		if(battleRoom==null){
-			battleRoom = battleRoomHandleService.initRoom(battle);
-			battleRoom.setMaxinum(0);
-			battleRoom.setMininum(0);
-			battleRoom.setPeriodId(battleDanUser.getPeriodId());
-			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
-			battleRoomService.add(battleRoom);
-		}
-		
-		ResultVo resultVo = new ResultVo();
-		resultVo.setSuccess(true);
-		resultVo.setData(battleRoom);
-		return resultVo;
-	
 	}
 }

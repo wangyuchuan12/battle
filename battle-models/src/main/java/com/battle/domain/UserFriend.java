@@ -15,34 +15,25 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan")
-public class BattleDan {
+@Table(name="user_friend")
+public class UserFriend {
 	@Id
 	@IdAnnotation
 	private String id;
 	
+	@ParamAnnotation
+	@Column(name="user_id")
+	private String userId;
 	
 	@ParamAnnotation
-	@Column
-	private String name;
+	@Column(name="friend_user_id")
+	private String friendUserId;
 	
 	@ParamAnnotation
-	@Column
-	private Integer level;
-	
-	@ParamAnnotation
-	@Column(name="point_id")
-	private String pointId;
-	
-	@ParamAnnotation
-	@Column(name="img_url")
-	private String imgUrl;
-	
-	
-	@ParamAnnotation
-	@Column
-	private Integer score;
-	
+	@Column(name = "meet_time")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+	private DateTime meetTime;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -64,44 +55,28 @@ public class BattleDan {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public Integer getLevel() {
-		return level;
+	public String getFriendUserId() {
+		return friendUserId;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
+	public void setFriendUserId(String friendUserId) {
+		this.friendUserId = friendUserId;
 	}
 
-	public String getPointId() {
-		return pointId;
+	public DateTime getMeetTime() {
+		return meetTime;
 	}
 
-	public void setPointId(String pointId) {
-		this.pointId = pointId;
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setMeetTime(DateTime meetTime) {
+		this.meetTime = meetTime;
 	}
 
 	public DateTime getCreateAt() {
