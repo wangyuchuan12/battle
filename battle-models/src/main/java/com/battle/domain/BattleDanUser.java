@@ -59,6 +59,14 @@ public class BattleDanUser {
 	private String imgUrl;
 	
 	@ParamAnnotation
+	@Column(name="task_done_num")
+	private Integer taskDoneNum;
+	
+	@ParamAnnotation
+	@Column(name="task_num")
+	private Integer taskNum;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -133,7 +141,22 @@ public class BattleDanUser {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+	
+	public Integer getTaskDoneNum() {
+		return taskDoneNum;
+	}
 
+	public void setTaskDoneNum(Integer taskDoneNum) {
+		this.taskDoneNum = taskDoneNum;
+	}
+
+	public Integer getTaskNum() {
+		return taskNum;
+	}
+
+	public void setTaskNum(Integer taskNum) {
+		this.taskNum = taskNum;
+	}
 
 	public DateTime getCreateAt() {
 		return createAt;

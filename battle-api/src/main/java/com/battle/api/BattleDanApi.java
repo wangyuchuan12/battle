@@ -12,17 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.battle.domain.Battle;
 import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDanProject;
+import com.battle.domain.BattleDanTask;
+import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
-import com.battle.domain.BattleRoom;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleDanPointService;
 import com.battle.service.BattleDanProjectService;
 import com.battle.service.BattleDanService;
+import com.battle.service.BattleDanTaskService;
+import com.battle.service.BattleDanTaskUserService;
 import com.battle.service.BattleDanUserService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
@@ -45,6 +46,52 @@ public class BattleDanApi {
 	@Autowired
 	private BattleDanProjectService battleDanProjectService;
 	
+	@Autowired
+	private BattleDanTaskService battleDanTaskService;
+	
+	@Autowired
+	private BattleDanTaskUserService battleDanTaskUserService;
+
+	
+	
+	@RequestMapping(value="tasks")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object tasks(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		String danId = httpServletRequest.getParameter("danId");
+		List<BattleDanTask> battleDanTasks = battleDanTaskService.findAllByDanIdOrderByIndex(danId);
+		
+		List<BattleDanTaskUser> battleDanTaskUsers = battleDanTaskUserService.findAllByDanIdAndUserIdOrderByIndex(danId,userInfo.getId());
+		
+		if(battleDanTaskUsers==null||battleDanTaskUsers.size()==0){
+			battleDanTaskUsers = new ArrayList<>();
+			
+			for(BattleDanTask battleDanTask:battleDanTasks){
+				BattleDanTaskUser battleDanTaskUser = new BattleDanTaskUser();
+				battleDanTaskUser.setBattleId(battleDanTask.getBattleId());
+				battleDanTaskUser.setDanId(battleDanTask.getDanId());
+				battleDanTaskUser.setGoalScore(battleDanTask.getGoalScore());
+				battleDanTaskUser.setIndex(battleDanTask.getIndex());
+				battleDanTaskUser.setPeriodId(battleDanTask.getPeriodId());
+				battleDanTaskUser.setType(battleDanTask.getType());
+				battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_FREE);
+				battleDanTaskUsers.add(battleDanTaskUser);
+			}
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(battleDanTaskUsers);
+		
+		return resultVo;
+	}
+	
 	
 	@RequestMapping(value="danInfo")
 	@ResponseBody
@@ -57,8 +104,6 @@ public class BattleDanApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		String danId = httpServletRequest.getParameter("danId");
-		
-		System.out.println("danId:"+danId+",userId:"+userInfo.getId());
 		
 		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId,userInfo.getId());
 		
@@ -74,6 +119,8 @@ public class BattleDanApi {
 			
 			responseProjects.add(responseProject);
 		}
+		
+		
 		
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("battleDanUser", battleDanUser);
