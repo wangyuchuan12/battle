@@ -58,6 +58,8 @@ public class BattleDanApi {
 		
 		String danId = httpServletRequest.getParameter("danId");
 		
+		System.out.println("danId:"+danId+",userId:"+userInfo.getId());
+		
 		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId,userInfo.getId());
 		
 		List<BattleDanProject> battleDanProjects = battleDanProjectService.findAllByDanIdOrderByIndexAsc(battleDanUser.getDanId());
