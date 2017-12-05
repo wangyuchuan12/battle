@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.Battle;
+import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDanProject;
@@ -29,7 +30,9 @@ import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
+import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleDanPointService;
 import com.battle.service.BattleDanProjectService;
 import com.battle.service.BattleDanService;
@@ -42,8 +45,12 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleRoomHandleService;
+import com.sun.xml.internal.ws.client.WSServiceDelegate;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
+import com.wyc.common.domain.AccountRecord;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.wx.domain.UserInfo;
 
@@ -86,6 +93,12 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private BattleAccountResultService battleAccountResultService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -285,6 +298,78 @@ public class BattleDanApi {
 		resultVo.setSuccess(true);
 		resultVo.setData(battleDanUserPassThrough);
 		return resultVo;
+	}
+	
+	@RequestMapping(value="accountResultInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
+	public Object accountResultInfo(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(battleAccountResult);
+		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="receiveTaskReward")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object receiveTaskReward(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		String taskId = httpServletRequest.getParameter("taskId");
+		BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOne(taskId);
+		
+		Integer rewardBean = battleDanTaskUser.getRewardBean();
+		
+		Integer rewardExp = battleDanTaskUser.getRewardExp();
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		
+		BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
+		
+		
+		Long wisdomCount = account.getWisdomCount();
+		Long exp = battleAccountResult.getExp();
+		
+		if(wisdomCount==null){
+			wisdomCount = 0L;
+		}
+		if(exp==null){
+			exp = 0L;
+		}
+		
+		if(rewardExp==null){
+			rewardExp = 0;
+		}
+		
+		if(rewardBean==null){
+			rewardBean = 0;
+		}
+		
+		wisdomCount = wisdomCount+rewardBean;
+		exp = exp+rewardExp;
+		account.setWisdomCount(wisdomCount);
+		battleAccountResult.setExp(exp);
+		
+		accountService.update(account);
+		battleAccountResultService.update(battleAccountResult);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	
 	}
 	
 	

@@ -47,4 +47,9 @@ public class BattleDanTaskUserService {
 		
 		return battleDanTaskUserDao.findOneByDanIdAndProjectIdAndUserIdAndType(danId,projectId,userId,type);
 	}
+
+	public BattleDanTaskUser findOne(String id) {
+		
+		return battleDanTaskUserDao.findOne(id);
+	}
 }
