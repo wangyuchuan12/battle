@@ -67,5 +67,10 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findAll(pageable);
 	}
+	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(String battleId, String periodId,
+			Integer status, int isPassThrough, Pageable pageable) {
+		
+		return battleRoomDao.findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(battleId,periodId,status,isPassThrough,pageable);
+	}
 
 }

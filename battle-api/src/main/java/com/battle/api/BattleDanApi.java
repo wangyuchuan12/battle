@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -240,25 +244,29 @@ public class BattleDanApi {
 			
 			Battle battle = battleService.findOne(battleDanProject.getBattleId());
 			
-			BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
+			Sort sort = new Sort(Direction.DESC,"createAt");
+			Pageable pageable = new PageRequest(0,1,sort);
 			
+			List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(battle.getId(),battleDanProject.getPeriodId(),BattleRoom.STATUS_IN,1,pageable);
 			
-			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
-			
-			battleRoom.setIsPk(1);
-			battleRoom.setIsPassThrough(1);
-			battleRoom.setPeriodId(battleDanProject.getPeriodId());
-			battleRoom.setMaxinum(2);
-			battleRoom.setMininum(2);
-			battleRoom.setOwner(battleUser.getId());
-			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
-			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
-			
-			battleRoomService.add(battleRoom);
-			
-			battleDanUserPassThrough.setRoomId(battleRoom.getId());
-			battleDanUserPassThroughService.add(battleDanUserPassThrough);
+			if(battleRooms!=null&&battleRooms.size()>0){
+				return battleRooms.get(0);
+			}else{
+				BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
+				BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
+				battleRoom.setIsPk(1);
+				battleRoom.setIsPassThrough(1);
+				battleRoom.setPeriodId(battleDanProject.getPeriodId());
+				battleRoom.setMaxinum(2);
+				battleRoom.setMininum(2);
+				battleRoom.setOwner(battleUser.getId());
+				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+				battleRoom.setIsSearchAble(0);
+				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+				battleRoomService.add(battleRoom);
+				battleDanUserPassThrough.setRoomId(battleRoom.getId());
+				battleDanUserPassThroughService.add(battleDanUserPassThrough);
+			}
 		}
 		
 		ResultVo resultVo = new ResultVo();

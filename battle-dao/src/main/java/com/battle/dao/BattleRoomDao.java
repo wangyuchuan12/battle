@@ -34,5 +34,8 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleRoom findOne(String id);
+
+	List<BattleRoom> findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(String battleId, String periodId,
+			Integer status, int isPassThrough, Pageable pageable);
 	
 }
