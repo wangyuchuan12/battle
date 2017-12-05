@@ -21,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
+import com.battle.domain.BattleDanTaskUser;
+import com.battle.domain.BattleDanUserPassThrough;
 import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattlePeriod;
@@ -42,6 +44,8 @@ import com.battle.filter.api.CurrentLoveCoolingApiFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleDanTaskService;
+import com.battle.service.BattleDanTaskUserService;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
@@ -116,6 +120,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRoomHandleService battleRoomHandleService;
+	
+	@Autowired
+	private BattleDanTaskUserService battleDanTaskUserService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -1515,19 +1522,7 @@ public class BattleApi {
 			
 			if(isPass==1){
 				
-				roomScore = roomScore+battleRoom.getFullRightAddScore();
 				
-				battleRoom.setRoomScore(roomScore);
-				
-				Integer scrollGogal = battleRoom.getScrollGogal();
-				
-				if(scrollGogal==null){
-					scrollGogal = 0;
-				}
-				if(roomScore>=scrollGogal){
-					battleRoom.setStatus(BattleRoom.STATUS_END);
-					battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
-				}
 
 				StringBuffer sb = new StringBuffer();
 				sb.append("["+battlePeriodMember.getNickname()+"]"+"挑战第"+battleMemberPaperAnswer.getStageIndex()+"关成功");
@@ -1556,10 +1551,49 @@ public class BattleApi {
 				battleRoomRecordService.add(battleRoomRecord);
 			}
 			
+			roomScore = roomScore+battleRoom.getFullRightAddScore();
+			
+			battleRoom.setRoomScore(roomScore);
+			
+			Integer scrollGogal = battleRoom.getScrollGogal();
+			
+			if(scrollGogal==null){
+				scrollGogal = 0;
+			}
+			if(roomScore>=scrollGogal){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+				battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+			}
+			
 			battleRoomService.update(battleRoom);
 		}
 		
 		Map<String, Object> data = new HashMap<>();
+		
+		
+		Integer isPassThrough = battleRoom.getIsPassThrough();
+		if(CommonUtil.isEmpty(isPassThrough)){
+			isPassThrough = 0; 
+		}
+		
+		if(isPassThrough==1){
+			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.fineOneByRoomId(battleRoom.getId());
+			Integer roomScore = battleRoom.getRoomScore();
+			if(roomScore==null){
+				roomScore = 0;
+			}
+			Integer goalScore = battleDanTaskUser.getGoalScore();
+			if(goalScore==null){
+				goalScore = 0;
+			}
+			battleDanTaskUser.setRoomScore(roomScore);
+			
+			if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+				battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_COMPLETE);
+			}
+			
+			battleDanTaskUserService.update(battleDanTaskUser);
+		}
 		
 		data.put("status", battleRoom.getStatus());
 		data.put("endType", battleRoom.getEndType());

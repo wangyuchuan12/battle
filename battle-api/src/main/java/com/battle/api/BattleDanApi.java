@@ -254,11 +254,11 @@ public class BattleDanApi {
 			}
 			battleRoom = battleRoomHandleService.initRoom(battle);
 			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
-			battleRoom.setIsPk(1);
+			battleRoom.setIsPk(0);
 			battleRoom.setIsPassThrough(1);
 			battleRoom.setPeriodId(battleDanProject.getPeriodId());
-			battleRoom.setMaxinum(2);
-			battleRoom.setMininum(2);
+			battleRoom.setMaxinum(1);
+			battleRoom.setMininum(1);
 			battleRoom.setOwner(battleUser.getId());
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);

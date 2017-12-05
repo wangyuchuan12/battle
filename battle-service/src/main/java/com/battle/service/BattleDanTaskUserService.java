@@ -29,4 +29,17 @@ public class BattleDanTaskUserService {
 		battleDanTaskUserDao.save(battleDanTaskUser);
 		
 	}
+
+	public BattleDanTaskUser fineOneByRoomId(String roomId) {
+		
+		return battleDanTaskUserDao.fineOneByRoomId(roomId);
+	}
+
+	public void update(BattleDanTaskUser battleDanTaskUser) {
+		
+		battleDanTaskUser.setUpdateAt(new DateTime());
+		
+		battleDanTaskUserDao.save(battleDanTaskUser);
+		
+	}
 }
