@@ -308,10 +308,19 @@ public class BattleDanApi {
 		
 		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
 		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("nickname", userInfo.getNickname());
+		data.put("headimgurl", userInfo.getHeadimgurl());
+		data.put("exp", battleAccountResult.getExp());
+		data.put("level", battleAccountResult.getLevel());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
-		resultVo.setData(battleAccountResult);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}
