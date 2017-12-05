@@ -21,7 +21,6 @@ import com.battle.domain.BattleDanTask;
 import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattleDanUserPassThrough;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
@@ -137,6 +136,8 @@ public class BattleDanApi {
 	public Object passThroughTakepartRoom(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
 		String passThroughId = httpServletRequest.getParameter("passThroughId");
 		
 		BattleDanUserPassThrough battleDanUserPassThrough = battleDanUserPassThroughService.fineOne(passThroughId);
@@ -145,9 +146,56 @@ public class BattleDanApi {
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
+		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("battleId", battlePeriodMember.getBattleId());
+		data.put("battleUserId", battlePeriodMember.getBattleUserId());
+		data.put("headImg", battlePeriodMember.getHeadImg());
+		data.put("id", battlePeriodMember.getId());
+		data.put("loveCount", battlePeriodMember.getLoveCount());
+		data.put("loveResidule", battlePeriodMember.getLoveResidule());
+		data.put("nickname", battlePeriodMember.getNickname());
+		data.put("periodId", battlePeriodMember.getPeriodId());
+		data.put("process", battlePeriodMember.getProcess());
+		data.put("stageCount", battlePeriodMember.getStageCount());
+		data.put("stageIndex", battlePeriodMember.getStageIndex());
+		
+		data.put("status", battlePeriodMember.getStatus());
+		
+		data.put("isCreater", battleUser.getIsCreater());
+		data.put("isManager", battleUser.getIsManager());
+		data.put("openId", battleUser.getOpenId());
+		data.put("userId", battleUser.getUserId());
+		
+		data.put("roomId", battlePeriodMember.getRoomId());
+		
+		data.put("speedCoolBean", battleRoom.getSpeedCoolBean());
+		data.put("speedCoolSecond", battleRoom.getSpeedCoolSecond());
+		
+		data.put("score", battlePeriodMember.getScore());
+		
+		data.put("roomProcess", battleRoom.getRoomProcess());
+		data.put("roomScore", battleRoom.getRoomScore());
+		
+		data.put("num", battleRoom.getNum());
+		
+		data.put("maxinum", battleRoom.getMaxinum());
+		
+		data.put("mininum", battleRoom.getMininum());
+		
+		data.put("shareTime", battlePeriodMember.getShareTime());
+		
+		data.put("roomStatus", battleRoom.getStatus());
+		
+		data.put("endType", battleRoom.getEndType());
+		
+		data.put("scrollGogal", battleRoom.getScrollGogal());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battlePeriodMember);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}
