@@ -77,6 +77,10 @@ public class BattleDanTask {
 	@Column
 	private String instruction;
 	
+	@ParamAnnotation
+	@Column(name="project_id")
+	private String projectId;
+	
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -193,6 +197,14 @@ public class BattleDanTask {
 
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
+	}
+	
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 
 	public DateTime getCreateAt() {

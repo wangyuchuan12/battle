@@ -97,6 +97,10 @@ public class BattleDanTaskUser {
 	@Column
 	private String instruction;
 	
+	@ParamAnnotation
+	@Column(name="project_id")
+	private String projectId;
+	
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -244,6 +248,14 @@ public class BattleDanTaskUser {
 
 	public void setDanUserId(String danUserId) {
 		this.danUserId = danUserId;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 
 	public DateTime getCreateAt() {

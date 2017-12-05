@@ -109,6 +109,8 @@ public class BattleDanApi {
 				BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
 				battleDanTaskUser.setDanUserId(battleDanUser.getId());
 				battleDanTaskUser.setUserId(userInfo.getId());
+
+				battleDanTaskUser.setProjectId(battleDanTask.getProjectId());
 				battleDanTaskUserService.add(battleDanTaskUser);
 				battleDanTaskUsers.add(battleDanTaskUser);
 			}
