@@ -248,25 +248,24 @@ public class BattleDanApi {
 			Pageable pageable = new PageRequest(0,1,sort);
 			
 			List<BattleRoom> battleRooms = battleRoomService.findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(battle.getId(),battleDanProject.getPeriodId(),BattleRoom.STATUS_IN,1,pageable);
-			
+			BattleRoom battleRoom;
 			if(battleRooms!=null&&battleRooms.size()>0){
-				return battleRooms.get(0);
-			}else{
-				BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
-				BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
-				battleRoom.setIsPk(1);
-				battleRoom.setIsPassThrough(1);
-				battleRoom.setPeriodId(battleDanProject.getPeriodId());
-				battleRoom.setMaxinum(2);
-				battleRoom.setMininum(2);
-				battleRoom.setOwner(battleUser.getId());
-				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
-				battleRoom.setIsSearchAble(0);
-				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
-				battleRoomService.add(battleRoom);
-				battleDanUserPassThrough.setRoomId(battleRoom.getId());
-				battleDanUserPassThroughService.add(battleDanUserPassThrough);
+				battleRoom =  battleRooms.get(0);
 			}
+			battleRoom = battleRoomHandleService.initRoom(battle);
+			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
+			battleRoom.setIsPk(1);
+			battleRoom.setIsPassThrough(1);
+			battleRoom.setPeriodId(battleDanProject.getPeriodId());
+			battleRoom.setMaxinum(2);
+			battleRoom.setMininum(2);
+			battleRoom.setOwner(battleUser.getId());
+			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+			battleRoom.setIsSearchAble(0);
+			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			battleRoomService.add(battleRoom);
+			battleDanUserPassThrough.setRoomId(battleRoom.getId());
+			battleDanUserPassThroughService.add(battleDanUserPassThrough);
 		}
 		
 		ResultVo resultVo = new ResultVo();
