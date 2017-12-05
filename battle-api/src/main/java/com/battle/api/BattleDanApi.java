@@ -262,10 +262,23 @@ public class BattleDanApi {
 			battleRoom.setOwner(battleUser.getId());
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			battleRoom.setScrollGogal(battleDanProject.getPassThroughScore());
 			battleRoomService.add(battleRoom);
 			battleDanUserPassThrough.setRoomId(battleRoom.getId());
 			battleDanUserPassThroughService.add(battleDanUserPassThrough);
+			
+			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByDanIdAndProjectIdAndUserIdAndType(danId,projectId,userInfo.getId(),BattleDanTask.PASS_POINT_TYPE);
+			
+			if(battleDanTaskUser!=null){
+				
+				battleDanTaskUser.setRoomId(battleRoom.getId());
+				
+				battleDanTaskUser.setGoalScore(battleDanProject.getPassThroughScore());
+				
+				battleDanTaskUser.setRoomScore(0);
+				
+				battleDanTaskUserService.update(battleDanTaskUser);
+			}
 		}
 		
 		ResultVo resultVo = new ResultVo();

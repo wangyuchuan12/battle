@@ -12,4 +12,6 @@ public interface BattleDanTaskUserDao extends CrudRepository<BattleDanTaskUser, 
 
 	BattleDanTaskUser findOneByRoomId(String roomId);
 
+	BattleDanTaskUser findOneByDanIdAndProjectIdAndUserIdAndType(String danId, String projectId, String userId,Integer type);
+
 }

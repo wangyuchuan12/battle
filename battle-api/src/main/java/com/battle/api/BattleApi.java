@@ -1578,21 +1578,25 @@ public class BattleApi {
 		
 		if(isPassThrough==1){
 			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByRoomId(battleRoom.getId());
-			Integer roomScore = battleRoom.getRoomScore();
-			if(roomScore==null){
-				roomScore = 0;
-			}
-			Integer goalScore = battleDanTaskUser.getGoalScore();
-			if(goalScore==null){
-				goalScore = 0;
-			}
-			battleDanTaskUser.setRoomScore(roomScore);
 			
-			if(battleRoom.getStatus()==BattleRoom.STATUS_END){
-				battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_COMPLETE);
+			if(battleDanTaskUser!=null){
+				Integer roomScore = battleRoom.getRoomScore();
+				if(roomScore==null){
+					roomScore = 0;
+				}
+				Integer goalScore = battleDanTaskUser.getGoalScore();
+				if(goalScore==null){
+					goalScore = 0;
+				}
+				battleDanTaskUser.setRoomScore(roomScore);
+				
+				if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+					battleDanTaskUser.setStatus(BattleDanTaskUser.STATGUS_COMPLETE);
+				}
+				
+				battleDanTaskUserService.update(battleDanTaskUser);
 			}
 			
-			battleDanTaskUserService.update(battleDanTaskUser);
 		}
 		
 		data.put("status", battleRoom.getStatus());

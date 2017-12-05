@@ -26,6 +26,8 @@ public class BattleDanTaskUser {
 	
 	//执行完成
 	public static final Integer STATGUS_COMPLETE = 2;
+	
+	public static final Integer PASSTHROUG_TYPE = 0;
 	@Id
 	@IdAnnotation
 	private String id;

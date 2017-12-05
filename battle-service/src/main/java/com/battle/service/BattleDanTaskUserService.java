@@ -42,4 +42,9 @@ public class BattleDanTaskUserService {
 		battleDanTaskUserDao.save(battleDanTaskUser);
 		
 	}
+
+	public BattleDanTaskUser findOneByDanIdAndProjectIdAndUserIdAndType(String danId, String projectId, String userId,Integer type) {
+		
+		return battleDanTaskUserDao.findOneByDanIdAndProjectIdAndUserIdAndType(danId,projectId,userId,type);
+	}
 }
