@@ -30,9 +30,9 @@ public class BattleDanTaskUserService {
 		
 	}
 
-	public BattleDanTaskUser fineOneByRoomId(String roomId) {
+	public BattleDanTaskUser findOneByRoomId(String roomId) {
 		
-		return battleDanTaskUserDao.fineOneByRoomId(roomId);
+		return battleDanTaskUserDao.findOneByRoomId(roomId);
 	}
 
 	public void update(BattleDanTaskUser battleDanTaskUser) {

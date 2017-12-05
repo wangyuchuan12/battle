@@ -1577,7 +1577,7 @@ public class BattleApi {
 		}
 		
 		if(isPassThrough==1){
-			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.fineOneByRoomId(battleRoom.getId());
+			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByRoomId(battleRoom.getId());
 			Integer roomScore = battleRoom.getRoomScore();
 			if(roomScore==null){
 				roomScore = 0;
