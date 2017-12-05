@@ -53,9 +53,17 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
 		
-		System.out.println(".............battlePeriodMember:"+battlePeriodMember);
-		
 		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("已经结束");
+			resultVo.setErrorCode(3);
+			sessionManager.setReturnValue(resultVo);
+			sessionManager.setReturn(true);
+			return null;
+		}
 		
 		Integer costBean = battleRoom.getCostBean();
 		if(costBean==null){
@@ -183,16 +191,6 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);
 		
-		
-		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("已经结束");
-			resultVo.setErrorCode(3);
-			sessionManager.setReturnValue(resultVo);
-			sessionManager.setReturn(true);
-			return null;
-		}
 		
 		Integer num = battleRoom.getNum();
 		num++;
