@@ -32,6 +32,7 @@ import com.battle.service.BattleDanTaskService;
 import com.battle.service.BattleDanTaskUserService;
 import com.battle.service.BattleDanUserPassThroughService;
 import com.battle.service.BattleDanUserService;
+import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleRoomHandleService;
@@ -73,6 +74,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleUserService battleUserService;
+	
+	@Autowired
+	private BattleRoomService battleRoomService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -188,6 +192,8 @@ public class BattleDanApi {
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);
 			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			
+			battleRoomService.add(battleRoom);
 			
 			battleDanUserPassThrough.setRoomId(battleRoom.getId());
 			battleDanUserPassThroughService.add(battleDanUserPassThrough);
