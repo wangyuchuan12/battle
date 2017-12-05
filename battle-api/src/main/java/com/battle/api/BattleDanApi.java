@@ -33,6 +33,7 @@ import com.battle.service.BattleDanTaskService;
 import com.battle.service.BattleDanTaskUserService;
 import com.battle.service.BattleDanUserPassThroughService;
 import com.battle.service.BattleDanUserService;
+import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
@@ -78,6 +79,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -137,6 +141,8 @@ public class BattleDanApi {
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
+		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
 		BattleUser battleUser = sessionManager.getObject(BattleUser.class);
 		String passThroughId = httpServletRequest.getParameter("passThroughId");
 		
@@ -146,7 +152,9 @@ public class BattleDanApi {
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(battleRoom.getId(), battleUser.getId(), 0); 
+		}
 		
 		Map<String, Object> data = new HashMap<>();
 		
