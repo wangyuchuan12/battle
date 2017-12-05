@@ -46,6 +46,11 @@ public class BattleDanProject {
 	@Column(name="z_index")
 	private Integer index;
 	
+	
+	@ParamAnnotation
+	@Column(name="pass_through_score")
+	private Integer passThroughScore;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -112,6 +117,14 @@ public class BattleDanProject {
 
 	public void setIndex(Integer index) {
 		this.index = index;
+	}
+
+	public Integer getPassThroughScore() {
+		return passThroughScore;
+	}
+
+	public void setPassThroughScore(Integer passThroughScore) {
+		this.passThroughScore = passThroughScore;
 	}
 
 	public DateTime getCreateAt() {

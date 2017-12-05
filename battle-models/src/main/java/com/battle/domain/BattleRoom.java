@@ -186,6 +186,11 @@ public class BattleRoom {
 	@Column(name="end_type")
 	private Integer endType;
 	
+	//是否是闯关
+	@ParamAnnotation
+	@Column(name="is_pass_through")
+	private Integer isPassThrough;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -505,6 +510,14 @@ public class BattleRoom {
 
 	public void setEndType(Integer endType) {
 		this.endType = endType;
+	}
+	
+	public Integer getIsPassThrough() {
+		return isPassThrough;
+	}
+
+	public void setIsPassThrough(Integer isPassThrough) {
+		this.isPassThrough = isPassThrough;
 	}
 
 	public DateTime getCreateAt() {

@@ -73,6 +73,10 @@ public class BattleDanTaskUser {
 	private String userId;
 	
 	@ParamAnnotation
+	@Column(name="dan_user_id")
+	private String danUserId;
+	
+	@ParamAnnotation
 	@Column(name="reward_bean")
 	private Integer rewardBean;
 	
@@ -92,6 +96,7 @@ public class BattleDanTaskUser {
 	@ParamAnnotation
 	@Column
 	private String instruction;
+	
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -231,6 +236,14 @@ public class BattleDanTaskUser {
 
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
+	}
+
+	public String getDanUserId() {
+		return danUserId;
+	}
+
+	public void setDanUserId(String danUserId) {
+		this.danUserId = danUserId;
 	}
 
 	public DateTime getCreateAt() {

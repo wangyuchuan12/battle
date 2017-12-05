@@ -18,4 +18,9 @@ public class BattleDanProjectService {
 		
 		return battleDanProjectDao.findAllByDanIdOrderByIndexAsc(danId);
 	}
+
+	public BattleDanProject findOne(String id) {
+		
+		return battleDanProjectDao.findOne(id);
+	}
 }

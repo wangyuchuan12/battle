@@ -12,19 +12,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.battle.domain.Battle;
 import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDanProject;
 import com.battle.domain.BattleDanTask;
 import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
+import com.battle.domain.BattleDanUserPassThrough;
+import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleUser;
+import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleDanPointService;
 import com.battle.service.BattleDanProjectService;
 import com.battle.service.BattleDanService;
 import com.battle.service.BattleDanTaskService;
 import com.battle.service.BattleDanTaskUserService;
+import com.battle.service.BattleDanUserPassThroughService;
 import com.battle.service.BattleDanUserService;
+import com.battle.service.BattleService;
+import com.battle.service.BattleUserService;
+import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
@@ -51,7 +61,18 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleDanTaskUserService battleDanTaskUserService;
+	
+	@Autowired
+	private BattleDanUserPassThroughService battleDanUserPassThroughService;
 
+	@Autowired
+	private BattleRoomHandleService battleRoomHandleService;
+	
+	@Autowired
+	private BattleService battleService;
+	
+	@Autowired
+	private BattleUserService battleUserService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -85,6 +106,9 @@ public class BattleDanApi {
 				battleDanTaskUser.setName(battleDanTask.getName());
 				battleDanTaskUser.setInstruction(battleDanTask.getInstruction());
 				battleDanTaskUser.setButtonName(battleDanTask.getButtonName());
+				BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+				battleDanTaskUser.setDanUserId(battleDanUser.getId());
+				battleDanTaskUser.setUserId(userInfo.getId());
 				battleDanTaskUserService.add(battleDanTaskUser);
 				battleDanTaskUsers.add(battleDanTaskUser);
 			}
@@ -95,6 +119,81 @@ public class BattleDanApi {
 		
 		resultVo.setData(battleDanTaskUsers);
 		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="passThroughTakepartRoom")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=BattleTakepartApiFilter.class)
+	public Object passThroughTakepartRoom(HttpServletRequest httpServletRequest)throws Exception{
+		String passThroughId = httpServletRequest.getParameter("passThroughId");
+		
+		BattleDanUserPassThrough battleDanUserPassThrough = battleDanUserPassThroughService.fineOne(passThroughId);
+		
+		battleDanUserPassThrough.setIsRoomTakepart(1);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleDanUserPassThrough);
+		
+		return resultVo;
+	}
+	
+	@RequestMapping(value="startPassThrough")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object startPassThrough(HttpServletRequest httpServletRequest)throws Exception{
+		String projectId = httpServletRequest.getParameter("projectId");
+		String danId = httpServletRequest.getParameter("danId");
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+		
+		BattleDanProject battleDanProject = battleDanProjectService.findOne(projectId);
+	
+		
+		BattleDanUserPassThrough battleDanUserPassThrough = battleDanUserPassThroughService.
+				findOneByBattleDanUserIdAndProjectId(battleDanUser.getId(),battleDanProject.getId());
+		
+		if(battleDanUserPassThrough==null){
+			battleDanUserPassThrough = new BattleDanUserPassThrough();
+			battleDanUserPassThrough.setBattleDanUserId(battleDanUser.getId());
+			battleDanUserPassThrough.setGoalScore(battleDanProject.getPassThroughScore());
+			battleDanUserPassThrough.setScore(0);
+			battleDanUserPassThrough.setProjectId(battleDanProject.getId());
+			battleDanUserPassThrough.setUserId(userInfo.getId());
+			battleDanUserPassThrough.setStatus(BattleDanUserPassThrough.STAGTUS_IN);
+			battleDanUserPassThrough.setIsRoomTakepart(0);
+			battleDanUserPassThrough.setBattleId(battleDanProject.getBattleId());
+			
+			Battle battle = battleService.findOne(battleDanProject.getBattleId());
+			
+			BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
+			
+			
+			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userInfo.getId(), battle.getId());
+			
+			battleRoom.setIsPk(0);
+			battleRoom.setIsPassThrough(1);
+			battleRoom.setPeriodId(battleDanProject.getPeriodId());
+			battleRoom.setMaxinum(1);
+			battleRoom.setMininum(1);
+			battleRoom.setOwner(battleUser.getId());
+			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+			battleRoom.setIsSearchAble(0);
+			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			
+			battleDanUserPassThrough.setRoomId(battleRoom.getId());
+			battleDanUserPassThroughService.add(battleDanUserPassThrough);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleDanUserPassThrough);
 		return resultVo;
 	}
 	
