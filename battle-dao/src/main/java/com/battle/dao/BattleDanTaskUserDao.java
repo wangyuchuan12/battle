@@ -10,7 +10,7 @@ public interface BattleDanTaskUserDao extends CrudRepository<BattleDanTaskUser, 
 
 	List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndexAsc(String danId, String userId);
 
-	BattleDanTaskUser findOneByRoomId(String roomId);
+	BattleDanTaskUser findOneByRoomIdAndUserId(String roomId,String userId);
 
 	BattleDanTaskUser findOneByDanIdAndProjectIdAndUserIdAndType(String danId, String projectId, String userId,Integer type);
 

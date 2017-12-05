@@ -1522,6 +1522,9 @@ public class BattleApi {
 			
 			if(isPass==1){
 				
+				roomScore = roomScore+battleRoom.getFullRightAddScore();
+				
+				battleRoom.setRoomScore(roomScore);
 				
 
 				StringBuffer sb = new StringBuffer();
@@ -1551,9 +1554,7 @@ public class BattleApi {
 				battleRoomRecordService.add(battleRoomRecord);
 			}
 			
-			roomScore = roomScore+battleRoom.getFullRightAddScore();
 			
-			battleRoom.setRoomScore(roomScore);
 			
 			Integer scrollGogal = battleRoom.getScrollGogal();
 			
@@ -1577,7 +1578,8 @@ public class BattleApi {
 		}
 		
 		if(isPassThrough==1){
-			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByRoomId(battleRoom.getId());
+			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByRoomIdAndUserId(battleRoom.getId(),userInfo.getId());
 			
 			if(battleDanTaskUser!=null){
 				Integer roomScore = battleRoom.getRoomScore();
