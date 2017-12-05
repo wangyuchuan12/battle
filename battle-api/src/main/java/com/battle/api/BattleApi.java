@@ -1584,10 +1584,6 @@ public class BattleApi {
 			BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOneByRoomIdAndUserId(battleRoom.getId(),userInfo.getId());
 			
 			if(battleDanTaskUser!=null){
-				Integer roomScore = battleRoom.getRoomScore();
-				if(roomScore==null){
-					roomScore = 0;
-				}
 				Integer goalScore = battleDanTaskUser.getGoalScore();
 				if(goalScore==null){
 					goalScore = 0;
