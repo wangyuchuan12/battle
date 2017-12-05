@@ -21,6 +21,8 @@ import com.battle.domain.BattleDanTask;
 import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattleDanUserPassThrough;
+import com.battle.domain.BattlePeriod;
+import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
@@ -133,15 +135,19 @@ public class BattleDanApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleTakepartApiFilter.class)
 	public Object passThroughTakepartRoom(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String passThroughId = httpServletRequest.getParameter("passThroughId");
 		
 		BattleDanUserPassThrough battleDanUserPassThrough = battleDanUserPassThroughService.fineOne(passThroughId);
 		
 		battleDanUserPassThrough.setIsRoomTakepart(1);
 		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleDanUserPassThrough);
+		resultVo.setData(battlePeriodMember);
 		
 		return resultVo;
 	}
