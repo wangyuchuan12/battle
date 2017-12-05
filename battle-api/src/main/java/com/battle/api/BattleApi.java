@@ -1554,20 +1554,22 @@ public class BattleApi {
 				battleRoomRecordService.add(battleRoomRecord);
 			}
 			
-			
-			
-			Integer scrollGogal = battleRoom.getScrollGogal();
-			
-			if(scrollGogal==null){
-				scrollGogal = 0;
-			}
-			if(roomScore>=scrollGogal){
-				battleRoom.setStatus(BattleRoom.STATUS_END);
-				battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
-			}
-			
-			battleRoomService.update(battleRoom);
 		}
+		
+		Integer scrollGogal = battleRoom.getScrollGogal();
+		
+		if(scrollGogal==null){
+			scrollGogal = 0;
+		}
+		
+		Integer roomScore = battleRoom.getRoomScore();
+		
+		if(roomScore>=scrollGogal){
+			battleRoom.setStatus(BattleRoom.STATUS_END);
+			battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+		}
+		
+		battleRoomService.update(battleRoom);
 		
 		Map<String, Object> data = new HashMap<>();
 		
