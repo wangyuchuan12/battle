@@ -50,7 +50,10 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
 		
+		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
+		
+		System.out.println(".............battlePeriodMember:"+battlePeriodMember);
 		
 		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
 		
