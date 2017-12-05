@@ -85,6 +85,7 @@ public class BattleDanApi {
 				battleDanTaskUser.setName(battleDanTask.getName());
 				battleDanTaskUser.setInstruction(battleDanTask.getInstruction());
 				battleDanTaskUser.setButtonName(battleDanTask.getButtonName());
+				battleDanTaskUserService.add(battleDanTaskUser);
 				battleDanTaskUsers.add(battleDanTaskUser);
 			}
 		}

@@ -1,7 +1,9 @@
 package com.battle.service;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,14 @@ public class BattleDanTaskUserService {
 	public List<BattleDanTaskUser> findAllByDanIdAndUserIdOrderByIndexAsc(String danId,String userId) {
 	
 		return battleDanTaskUserDao.findAllByDanIdAndUserIdOrderByIndexAsc(danId,userId);
+	}
+
+	public void add(BattleDanTaskUser battleDanTaskUser) {
+		
+		battleDanTaskUser.setId(UUID.randomUUID().toString());
+		battleDanTaskUser.setUpdateAt(new DateTime());
+		battleDanTaskUser.setCreateAt(new DateTime());
+		battleDanTaskUserDao.save(battleDanTaskUser);
+		
 	}
 }
