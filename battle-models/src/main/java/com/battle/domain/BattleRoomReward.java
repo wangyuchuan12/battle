@@ -38,6 +38,10 @@ public class BattleRoomReward {
 	@ParamAnnotation
 	private String receiveMemberId;
 	
+	@Column(name="room_id")
+	@ParamAnnotation
+	private String roomId;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -88,6 +92,14 @@ public class BattleRoomReward {
 
 	public void setReceiveMemberId(String receiveMemberId) {
 		this.receiveMemberId = receiveMemberId;
+	}
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
 	}
 
 	public DateTime getCreateAt() {
