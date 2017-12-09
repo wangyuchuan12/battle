@@ -456,11 +456,12 @@ public class BattleDanApi {
 			statuses.add(BattleRoom.STATUS_IN);
 			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndStatusIn(1,statuses,pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
-				battleDanUser.setRoomId(battleRooms.get(0).getId());
+				battleRoom = battleRooms.get(0);
+				battleDanUser.setRoomId(battleRoom.getId());
 				
 				battleDanUserService.update(battleDanUser);
 				
-				battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRooms.get(0).getId());
+				battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
 			}else{
 				Battle battle = battleService.findOne(battleDanUser.getBattleId());
 				battleRoom = battleRoomHandleService.initRoom(battle);
