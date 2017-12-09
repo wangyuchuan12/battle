@@ -78,6 +78,11 @@ public class BattleDanUser {
 	@Column(name="period_id")
 	private String periodId;
 	
+	//名额数量
+	@ParamAnnotation
+	@Column
+	private Integer places;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -192,6 +197,14 @@ public class BattleDanUser {
 
 	public void setPeriodId(String periodId) {
 		this.periodId = periodId;
+	}
+
+	public Integer getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(Integer places) {
+		this.places = places;
 	}
 
 	public DateTime getCreateAt() {

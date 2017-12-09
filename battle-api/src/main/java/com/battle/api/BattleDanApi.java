@@ -28,6 +28,7 @@ import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattleDanUserPassThrough;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomReward;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.CurrentAccountResultFilter;
@@ -41,6 +42,7 @@ import com.battle.service.BattleDanTaskUserService;
 import com.battle.service.BattleDanUserPassThroughService;
 import com.battle.service.BattleDanUserService;
 import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
@@ -98,6 +100,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleAccountResultService battleAccountResultService;
+	
+	@Autowired
+	private BattleRoomRewardService battleRoomRewardService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -456,6 +461,7 @@ public class BattleDanApi {
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
 				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoomService.add(battleRoom);
 				
 				battleDanUser.setBattleId(battleRoom.getId());
@@ -463,9 +469,21 @@ public class BattleDanApi {
 			}
 		}
 		
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(
+				battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
+		
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("name", battleRoom.getName());
+		data.put("places",battleRoom.getPlaces());
+		data.put("rewards", battleRoomRewards);
+		data.put("members", battlePeriodMembers);
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleRoom);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}
@@ -514,6 +532,8 @@ public class BattleDanApi {
 				battleDanUser.setBattleId(battleDan.getBattleId());
 				
 				battleDanUser.setPeriodId(battleDan.getPeriodId());
+				
+				battleDanUser.setPlaces(battleDan.getPlaces());
 				if(flag){
 					battleDanUser.setStatus(BattleDanUser.STATUS_IN);
 				}else{

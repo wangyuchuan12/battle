@@ -51,6 +51,10 @@ public class BattleDan {
 	@Column(name="period_id")
 	private String periodId;
 	
+	//名额数量
+	@ParamAnnotation
+	@Column
+	private Integer places;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -126,6 +130,14 @@ public class BattleDan {
 
 	public void setPeriodId(String periodId) {
 		this.periodId = periodId;
+	}
+
+	public Integer getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(Integer places) {
+		this.places = places;
 	}
 
 	public DateTime getCreateAt() {

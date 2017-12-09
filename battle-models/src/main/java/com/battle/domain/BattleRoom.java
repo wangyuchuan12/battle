@@ -195,6 +195,11 @@ public class BattleRoom {
 	@Column(name="is_pass_through")
 	private Integer isPassThrough;
 	
+	//名额数量
+	@ParamAnnotation
+	@Column
+	private Integer places;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -532,6 +537,14 @@ public class BattleRoom {
 
 	public void setIsDanRoom(Integer isDanRoom) {
 		this.isDanRoom = isDanRoom;
+	}
+	
+	public Integer getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(Integer places) {
+		this.places = places;
 	}
 
 	public DateTime getCreateAt() {
