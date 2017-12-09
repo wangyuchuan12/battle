@@ -462,6 +462,8 @@ public class BattleDanApi {
 				battleDanUserService.update(battleDanUser);
 				
 				battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+				
+				System.out.println("...................battleRoomRewards:"+battleRoomRewards+",battleRoom.getId:"+battleRoom.getId());
 			}else{
 				Battle battle = battleService.findOne(battleDanUser.getBattleId());
 				battleRoom = battleRoomHandleService.initRoom(battle);
