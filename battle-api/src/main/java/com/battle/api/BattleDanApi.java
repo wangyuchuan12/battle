@@ -477,7 +477,7 @@ public class BattleDanApi {
 				battleRoomService.add(battleRoom);
 				
 				Sort rewardSort = new Sort(Direction.ASC,"rank");
-				Pageable rewardPageable = new PageRequest(0,1,rewardSort);
+				Pageable rewardPageable = new PageRequest(0,40,rewardSort);
 				List<BattleDanReward> battleDanRewards = battleDanRewardService.findAllByDanId(danId,rewardPageable);
 				
 				for(BattleDanReward battleDanReward:battleDanRewards){
