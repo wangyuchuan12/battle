@@ -22,6 +22,7 @@ import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDanProject;
+import com.battle.domain.BattleDanReward;
 import com.battle.domain.BattleDanTask;
 import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
@@ -36,6 +37,7 @@ import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleDanPointService;
 import com.battle.service.BattleDanProjectService;
+import com.battle.service.BattleDanRewardService;
 import com.battle.service.BattleDanService;
 import com.battle.service.BattleDanTaskService;
 import com.battle.service.BattleDanTaskUserService;
@@ -103,6 +105,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleRoomRewardService battleRoomRewardService;
+	
+	@Autowired
+	private BattleDanRewardService battleDanRewardService;
 	
 	
 	@RequestMapping(value="tasks")
@@ -442,7 +447,7 @@ public class BattleDanApi {
 		if(!CommonUtil.isEmpty(battleDanUser.getRoomId())){
 			battleRoom = battleRoomService.findOne(battleDanUser.getRoomId());
 		}
-		
+		List<BattleRoomReward> battleRoomRewards = new ArrayList<>();
 		if(battleRoom==null){
 			Sort sort = new Sort(Direction.DESC,"createAt");
 			Pageable pageable = new PageRequest(0,1,sort);
@@ -454,6 +459,8 @@ public class BattleDanApi {
 				battleDanUser.setRoomId(battleRooms.get(0).getId());
 				
 				battleDanUserService.update(battleDanUser);
+				
+				battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRooms.get(0).getId());
 			}else{
 				Battle battle = battleService.findOne(battleDanUser.getBattleId());
 				battleRoom = battleRoomHandleService.initRoom(battle);
@@ -466,14 +473,32 @@ public class BattleDanApi {
 				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoom.setIsDanRoom(1);
+				
 				battleRoomService.add(battleRoom);
+				
+				Sort rewardSort = new Sort(Direction.ASC,"rank");
+				Pageable rewardPageable = new PageRequest(0,1,rewardSort);
+				List<BattleDanReward> battleDanRewards = battleDanRewardService.findAllByDanId(danId,rewardPageable);
+				
+				for(BattleDanReward battleDanReward:battleDanRewards){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(battleDanReward.getRank());
+					battleRoomReward.setRewardBean(battleDanReward.getRewardBean());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					
+					battleRoomRewardService.add(battleRoomReward);
+					
+					battleRoomRewards.add(battleRoomReward);
+				}
 				
 				battleDanUser.setRoomId(battleRoom.getId());
 				battleDanUserService.update(battleDanUser);
 			}
 		}
 		
-		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+		
 		
 		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(
 				battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
