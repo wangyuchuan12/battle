@@ -478,6 +478,8 @@ public class BattleDanApi {
 		Map<String, Object> data = new HashMap<>();
 		data.put("name", battleRoom.getName());
 		data.put("places",battleRoom.getPlaces());
+		data.put("roomId", battleRoom.getId());
+		data.put("battleId", battleRoom.getBattleId());
 		data.put("rewards", battleRoomRewards);
 		data.put("members", battlePeriodMembers);
 		
