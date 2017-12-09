@@ -464,7 +464,7 @@ public class BattleDanApi {
 				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoomService.add(battleRoom);
 				
-				battleDanUser.setBattleId(battleRoom.getId());
+				battleDanUser.setRoomId(battleRoom.getId());
 				battleDanUserService.update(battleDanUser);
 			}
 		}
