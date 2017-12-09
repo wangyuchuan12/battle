@@ -499,6 +499,12 @@ public class BattleDanApi {
 				battleDanUser.setRoomId(battleRoom.getId());
 				battleDanUserService.update(battleDanUser);
 			}
+		}else{
+			battleDanUser.setRoomId(battleRoom.getId());
+			
+			battleDanUserService.update(battleDanUser);
+			
+			battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
 		}
 		
 		
