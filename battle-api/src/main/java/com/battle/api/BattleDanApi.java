@@ -510,6 +510,10 @@ public class BattleDanApi {
 				battleDanUser.setImgUrl(battleDan.getImgUrl());
 				battleDanUser.setLevel(battleDan.getLevel());
 				battleDanUser.setPointId(battleDan.getPointId());
+				
+				battleDanUser.setBattleId(battleDan.getBattleId());
+				
+				battleDanUser.setPeriodId(battleDan.getPeriodId());
 				if(flag){
 					battleDanUser.setStatus(BattleDanUser.STATUS_IN);
 				}else{
