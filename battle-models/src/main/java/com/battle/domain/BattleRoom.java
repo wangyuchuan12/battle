@@ -96,6 +96,10 @@ public class BattleRoom {
 	private Integer isRedpack;
 	
 	@ParamAnnotation
+	@Column(name="is_dan_room")
+	private Integer isDanRoom;
+	
+	@ParamAnnotation
 	@Column(name="redpack_amount")
 	private BigDecimal redpackAmount;
 	
@@ -518,6 +522,16 @@ public class BattleRoom {
 
 	public void setIsPassThrough(Integer isPassThrough) {
 		this.isPassThrough = isPassThrough;
+	}
+	
+	
+
+	public Integer getIsDanRoom() {
+		return isDanRoom;
+	}
+
+	public void setIsDanRoom(Integer isDanRoom) {
+		this.isDanRoom = isDanRoom;
 	}
 
 	public DateTime getCreateAt() {

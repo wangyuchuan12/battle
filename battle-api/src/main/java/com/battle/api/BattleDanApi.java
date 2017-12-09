@@ -50,6 +50,7 @@ import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -416,6 +417,56 @@ public class BattleDanApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(responseData);
+		return resultVo;
+	}
+	
+	@RequestMapping(value="danRoomInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object danRoomInfo(HttpServletRequest httpServletRequest)throws Exception{
+		String danId = httpServletRequest.getParameter("danId");
+	
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+		
+		BattleRoom battleRoom=null;
+		if(!CommonUtil.isEmpty(battleDanUser.getRoomId())){
+			battleRoom = battleRoomService.findOne(battleDanUser.getRoomId());
+		}
+		
+		if(battleRoom==null){
+			Sort sort = new Sort(Direction.DESC,"createAt");
+			Pageable pageable = new PageRequest(0,1,sort);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndStatus(1,BattleRoom.STATUS_IN,pageable);
+			if(battleRooms!=null&&battleRooms.size()>0){
+				battleDanUser.setRoomId(battleRooms.get(0).getId());
+				
+				battleDanUserService.update(battleDanUser);
+			}else{
+				Battle battle = battleService.findOne(battleDanUser.getBattleId());
+				battleRoom = battleRoomHandleService.initRoom(battle);
+				battleRoom.setIsPk(0);
+				battleRoom.setPeriodId(battleDanUser.getPeriodId());
+				battleRoom.setMaxinum(10);
+				battleRoom.setMininum(10);
+				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+				battleRoom.setIsSearchAble(0);
+				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+				battleRoomService.add(battleRoom);
+				
+				battleDanUser.setBattleId(battleRoom.getId());
+				battleDanUserService.update(battleDanUser);
+			}
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoom);
+		
 		return resultVo;
 	}
 	

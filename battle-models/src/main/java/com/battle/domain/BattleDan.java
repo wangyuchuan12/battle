@@ -43,6 +43,14 @@ public class BattleDan {
 	@Column
 	private Integer score;
 	
+	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	@ParamAnnotation
+	@Column(name="period_id")
+	private String periodId;
+	
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -102,6 +110,22 @@ public class BattleDan {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public String getBattleId() {
+		return battleId;
+	}
+
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
+	}
+
+	public String getPeriodId() {
+		return periodId;
+	}
+
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
 	}
 
 	public DateTime getCreateAt() {

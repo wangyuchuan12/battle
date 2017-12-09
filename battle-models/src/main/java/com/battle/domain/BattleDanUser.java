@@ -67,6 +67,18 @@ public class BattleDanUser {
 	private Integer taskNum;
 	
 	@ParamAnnotation
+	@Column(name="room_id")
+	private String roomId;
+	
+	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	@ParamAnnotation
+	@Column(name="period_id")
+	private String periodId;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -156,6 +168,30 @@ public class BattleDanUser {
 
 	public void setTaskNum(Integer taskNum) {
 		this.taskNum = taskNum;
+	}
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+	public String getBattleId() {
+		return battleId;
+	}
+
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
+	}
+
+	public String getPeriodId() {
+		return periodId;
+	}
+
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
 	}
 
 	public DateTime getCreateAt() {

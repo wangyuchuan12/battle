@@ -18,4 +18,9 @@ public class BattleDanService {
 		
 		return battleDanDao.findAllByPointIdOrderByLevelAsc(pointId);
 	}
+
+	public BattleDan findOne(String danId) {
+		
+		return battleDanDao.findOne(danId);
+	}
 }
