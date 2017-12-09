@@ -483,6 +483,10 @@ public class BattleDanApi {
 		data.put("rewards", battleRoomRewards);
 		data.put("members", battlePeriodMembers);
 		
+		data.put("maxinum", battleRoom.getMaxinum());
+		
+		data.put("mininum", battleRoom.getMininum());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
