@@ -29,6 +29,10 @@ public class BattleDanReward {
 	@ParamAnnotation
 	private Integer rank;
 	
+	@Column(name="dan_id")
+	@ParamAnnotation
+	private String danId;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -63,6 +67,14 @@ public class BattleDanReward {
 
 	public void setRank(Integer rank) {
 		this.rank = rank;
+	}
+
+	public String getDanId() {
+		return danId;
+	}
+
+	public void setDanId(String danId) {
+		this.danId = danId;
 	}
 
 	public DateTime getCreateAt() {
