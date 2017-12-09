@@ -446,7 +446,10 @@ public class BattleDanApi {
 		if(battleRoom==null){
 			Sort sort = new Sort(Direction.DESC,"createAt");
 			Pageable pageable = new PageRequest(0,1,sort);
-			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndStatus(1,BattleRoom.STATUS_IN,pageable);
+			List<Integer> statuses = new ArrayList<>();
+			statuses.add(BattleRoom.STATUS_FREE);
+			statuses.add(BattleRoom.STATUS_IN);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndStatusIn(1,statuses,pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
 				battleDanUser.setRoomId(battleRooms.get(0).getId());
 				
@@ -462,6 +465,7 @@ public class BattleDanApi {
 				battleRoom.setIsSearchAble(0);
 				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
 				battleRoom.setPlaces(battleDanUser.getPlaces());
+				battleRoom.setIsDanRoom(1);
 				battleRoomService.add(battleRoom);
 				
 				battleDanUser.setRoomId(battleRoom.getId());
