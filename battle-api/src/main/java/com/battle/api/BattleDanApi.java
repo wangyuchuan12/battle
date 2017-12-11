@@ -438,7 +438,6 @@ public class BattleDanApi {
 		String danId = httpServletRequest.getParameter("danId");
 	
 		
-		BattleDan battleDan = battleDanService.findOne(danId);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -455,8 +454,11 @@ public class BattleDanApi {
 			List<Integer> statuses = new ArrayList<>();
 			statuses.add(BattleRoom.STATUS_FREE);
 			statuses.add(BattleRoom.STATUS_IN);
-			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDan.getBattleId(),battleDan.getPeriodId(),statuses,pageable);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
+				
+				System.out.println("3..................battleDanUser.id:"+battleDanUser.getId());
+				
 				battleRoom = battleRooms.get(0);
 				battleDanUser.setRoomId(battleRoom.getId());
 				
@@ -497,10 +499,16 @@ public class BattleDanApi {
 					battleRoomRewards.add(battleRoomReward);
 				}
 				
+
+				
 				battleDanUser.setRoomId(battleRoom.getId());
 				battleDanUserService.update(battleDanUser);
+				
+				System.out.println("1..................battleDanUser.id:"+battleDanUser.getId());
 			}
 		}else{
+			
+			System.out.println("2..................battleDanUser.id:"+battleDanUser.getId());
 			battleDanUser.setRoomId(battleRoom.getId());
 			
 			battleDanUserService.update(battleDanUser);
