@@ -534,6 +534,8 @@ public class BattleDanApi {
 		
 		data.put("mininum", battleRoom.getMininum());
 		
+		data.put("status", battleRoom.getStatus());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
