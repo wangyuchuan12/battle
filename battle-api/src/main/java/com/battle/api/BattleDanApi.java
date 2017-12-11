@@ -521,7 +521,12 @@ public class BattleDanApi {
 		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(
 				battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
 		
-		
+		BattlePeriodMember myBattlePeriodMember = null;
+		for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+			if(battlePeriodMember.getUserId().equals(userInfo.getId())){
+				myBattlePeriodMember = battlePeriodMember;
+			}
+		}
 		Map<String, Object> data = new HashMap<>();
 		data.put("name", battleRoom.getName());
 		data.put("places",battleRoom.getPlaces());
@@ -534,7 +539,14 @@ public class BattleDanApi {
 		
 		data.put("mininum", battleRoom.getMininum());
 		
-		data.put("status", battleRoom.getStatus());
+		data.put("roomStatus", battleRoom.getStatus());
+		
+		if(!CommonUtil.isEmpty(myBattlePeriodMember)){
+			data.put("status", myBattlePeriodMember.getStatus());
+		}else{
+			data.put("status", BattlePeriodMember.STATUS_FREE);
+		}
+		
 		
 		data.put("num", battleRoom.getNum());
 		
