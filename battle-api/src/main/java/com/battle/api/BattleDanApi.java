@@ -536,6 +536,8 @@ public class BattleDanApi {
 		
 		data.put("status", battleRoom.getStatus());
 		
+		data.put("num", battleRoom.getNum());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
