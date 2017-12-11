@@ -76,9 +76,9 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findAllByIsDanRoomAndStatus(isDanRoom,status,pageable);
 	}
-	public List<BattleRoom> findAllByIsDanRoomAndStatusIn(int isDanRoom, List<Integer> statuses, Pageable pageable) {
+	public List<BattleRoom> findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(int isDanRoom,String battleId,String periodId, List<Integer> statuses, Pageable pageable) {
 		
-		return battleRoomDao.findAllByIsDanRoomAndStatusIn(isDanRoom,statuses,pageable);
+		return battleRoomDao.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(isDanRoom,battleId,periodId,statuses,pageable);
 	}
 
 }

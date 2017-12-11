@@ -438,6 +438,7 @@ public class BattleDanApi {
 		String danId = httpServletRequest.getParameter("danId");
 	
 		
+		BattleDan battleDan = battleDanService.findOne(danId);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -454,7 +455,7 @@ public class BattleDanApi {
 			List<Integer> statuses = new ArrayList<>();
 			statuses.add(BattleRoom.STATUS_FREE);
 			statuses.add(BattleRoom.STATUS_IN);
-			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndStatusIn(1,statuses,pageable);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDan.getBattleId(),battleDan.getPeriodId(),statuses,pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
 				battleRoom = battleRooms.get(0);
 				battleDanUser.setRoomId(battleRoom.getId());
