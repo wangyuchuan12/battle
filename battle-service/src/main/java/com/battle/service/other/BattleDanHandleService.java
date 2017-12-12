@@ -1,11 +1,59 @@
 package com.battle.service.other;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.battle.domain.BattleDan;
-import com.battle.domain.BattleDanUser;
+import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomReward;
+import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattleRoomRewardService;
 
 @Service
 public class BattleDanHandleService {
-
+	
+	@Autowired
+	private BattleRoomRewardService battleRoomRewardService;
+	
+	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
+		
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+		
+		Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
+		
+		for(BattleRoomReward battleRoomReward:battleRoomRewards){
+			
+			battleRoomRewardMap.put(battleRoomReward.getRank(), battleRoomReward);
+		}
+		
+		List<Integer> statuses = new ArrayList<>();
+		
+		statuses.add(BattleRoom.STATUS_IN);
+		statuses.add(BattleRoom.STATUS_END);
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.
+		findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0);
+		
+		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
+			for(Integer i=0;i<battlePeriodMembers.size();i++){
+				BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
+				BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i+1);
+				
+				if(battleRoomReward!=null){
+					battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
+					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
+					battlePeriodMemberService.update(battlePeriodMember);
+					battleRoomRewardService.update(battleRoomReward);
+				}
+			}
+		}
+		return battlePeriodMembers;
+	}
 }

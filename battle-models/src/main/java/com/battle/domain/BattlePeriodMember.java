@@ -125,6 +125,10 @@ public class BattlePeriodMember implements Serializable{
 	private Integer shareTime;
 	
 	@ParamAnnotation
+	@Column(name="reward_bean")
+	private Integer rewardBean;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -283,6 +287,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setShareTime(Integer shareTime) {
 		this.shareTime = shareTime;
+	}
+
+	public Integer getRewardBean() {
+		return rewardBean;
+	}
+
+	public void setRewardBean(Integer rewardBean) {
+		this.rewardBean = rewardBean;
 	}
 
 	public DateTime getCreateAt() {

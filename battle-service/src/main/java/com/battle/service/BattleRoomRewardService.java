@@ -27,4 +27,12 @@ public class BattleRoomRewardService {
 		battleRoomReward.setCreateAt(new DateTime());
 		battleRoomRewardDao.save(battleRoomReward);
 	}
+
+	public void update(BattleRoomReward battleRoomReward) {
+		
+		battleRoomReward.setUpdateAt(new DateTime());
+		
+		battleRoomRewardDao.save(battleRoomReward);
+		
+	}
 }

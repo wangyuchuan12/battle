@@ -17,6 +17,12 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle_room_reward")
 public class BattleRoomReward {
+	
+	public static final Integer REMIND_STATUS_FREE = 0;
+	
+	public static final Integer REMIND_STATUS_IN = 1;
+	
+	public static final Integer REMIND_STATUS_END = 2;
 
 	@Id
 	@IdAnnotation
@@ -33,6 +39,11 @@ public class BattleRoomReward {
 	@Column(name="is_receive")
 	@ParamAnnotation
 	private Integer isReceive;
+	
+	//提醒状态
+	@Column(name="remind_status")
+	@ParamAnnotation
+	private Integer remindStatus;
 	
 	@Column(name="receive_member_id")
 	@ParamAnnotation
@@ -60,6 +71,14 @@ public class BattleRoomReward {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public Integer getRemindStatus() {
+		return remindStatus;
+	}
+
+	public void setRemindStatus(Integer remindStatus) {
+		this.remindStatus = remindStatus;
 	}
 
 	public Integer getRewardBean() {

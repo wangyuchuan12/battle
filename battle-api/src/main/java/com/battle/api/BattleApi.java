@@ -55,10 +55,12 @@ import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedpacketService;
 import com.battle.service.BattleRoomEntryService;
 import com.battle.service.BattleRoomRecordService;
+import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.BattleUserService;
+import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
@@ -123,6 +125,12 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleDanTaskUserService battleDanTaskUserService;
+	
+	@Autowired
+	private BattleRoomRewardService battleRoomRewardService;
+	
+	@Autowired
+	private BattleDanHandleService battleDanHandleService;
 	
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
@@ -1599,6 +1607,15 @@ public class BattleApi {
 			
 		}
 		
+		List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
+		
+		for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
+			if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
+				battlePeriodMember = battlePeriodMember2;
+				break;
+			}
+		}
+		
 		data.put("status", battleRoom.getStatus());
 		data.put("endType", battleRoom.getEndType());
 		
@@ -1608,6 +1625,8 @@ public class BattleApi {
 		data.put("process", battlePeriodMember.getProcess());
 		
 		data.put("score", battlePeriodMember.getScore());
+		
+		data.put("rewardBean", battlePeriodMember.getRewardBean());
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
