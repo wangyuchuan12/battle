@@ -13,6 +13,10 @@ import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
+import com.wyc.common.domain.Account;
+import com.wyc.common.service.AccountService;
+import com.wyc.common.service.WxUserInfoService;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Service
 public class BattleDanHandleService {
@@ -22,6 +26,12 @@ public class BattleDanHandleService {
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private WxUserInfoService userInfoService;
 	
 	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
 		
@@ -51,6 +61,26 @@ public class BattleDanHandleService {
 					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
 					battlePeriodMemberService.update(battlePeriodMember);
 					battleRoomRewardService.update(battleRoomReward);
+					
+					UserInfo userInfo = userInfoService.findOne(battlePeriodMember.getUserId());
+					
+					Account account = accountService.fineOneSync(userInfo.getAccountId());
+					
+					Long wisdomCount = account.getWisdomCount();
+					if(wisdomCount==null){
+						wisdomCount = 0L;
+					}
+					
+					Integer rewardBean = battleRoomReward.getRewardBean();
+					if(rewardBean==null){
+						rewardBean = 0;
+					}
+					
+					wisdomCount = wisdomCount + rewardBean;
+					
+					account.setWisdomCount(wisdomCount);
+					
+					accountService.update(account);
 				}
 			}
 		}

@@ -38,4 +38,9 @@ public class WxUserInfoService {
 	public UserInfo findByOpenidAndSource(String openid, int source) {
 		return userInfoRepository.findByOpenidAndSource(openid,source);
 	}
+
+	public UserInfo findOne(String id) {
+		
+		return userInfoRepository.findOne(id);
+	}
 }
