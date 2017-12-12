@@ -40,7 +40,7 @@ public class BattlePeriodMemberService {
 		
 		
 		
-		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
+		/*List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers==null){
 			battlePeriodMembers = new ArrayList<>();
 		}
@@ -53,7 +53,11 @@ public class BattlePeriodMemberService {
 		
 		battlePeriodMembers.add(battlePeriodMember);
 		
-		saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);
+		saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);*/
+		
+		battlePeriodMember.setId(UUID.randomUUID().toString());
+		battlePeriodMember.setUpdateAt(new DateTime());
+		battlePeriodMember.setCreateAt(new DateTime());
 		
 	}
 
@@ -61,7 +65,7 @@ public class BattlePeriodMemberService {
 		
 		
 		
-		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
+		/*List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(),battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId());
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
 				
@@ -90,7 +94,10 @@ public class BattlePeriodMemberService {
 			battlePeriodMemberDao.save(battlePeriodMember);
 			
 			saveBattlePeriodMembersToCache(battlePeriodMember.getRoomId(),battlePeriodMembers);
-		}
+		}*/
+		battlePeriodMember.setUpdateAt(new DateTime());
+		
+		battlePeriodMemberDao.save(battlePeriodMember);
 	}
 	
 	public List<BattlePeriodMember> findBattlePeriodMembersByRoomIdFromCache(String roomId){
@@ -134,7 +141,7 @@ public class BattlePeriodMemberService {
 		}else{
 			battlePeriodMembers = battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdOrderByCreateAtAsc(battleId, periodId, roomId);
 			try{
-				saveBattlePeriodMembersToCache(roomId, battlePeriodMembers);
+				//saveBattlePeriodMembersToCache(roomId, battlePeriodMembers);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
