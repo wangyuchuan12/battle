@@ -10,4 +10,6 @@ public interface BattleRoomRewardDao extends CrudRepository<BattleRoomReward, St
 
 	List<BattleRoomReward> findAllByRoomIdOrderByRankAsc(String roomId);
 
+	List<BattleRoomReward> findAllByRoomIdAndIsReceiveOrderByRankAsc(String roomId, int isReceive);
+
 }

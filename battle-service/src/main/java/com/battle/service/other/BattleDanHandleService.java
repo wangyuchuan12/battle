@@ -35,7 +35,7 @@ public class BattleDanHandleService {
 	
 	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
 		
-		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdAndIsReceiveOrderByRankAsc(battleRoom.getId(),0);
 		
 		Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 		
@@ -57,6 +57,7 @@ public class BattleDanHandleService {
 				BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i+1);
 				
 				if(battleRoomReward!=null){
+					battleRoomReward.setIsReceive(1);
 					battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
 					battlePeriodMemberService.update(battlePeriodMember);

@@ -35,4 +35,9 @@ public class BattleRoomRewardService {
 		battleRoomRewardDao.save(battleRoomReward);
 		
 	}
+
+	public List<BattleRoomReward> findAllByRoomIdAndIsReceiveOrderByRankAsc(String roomId, int isReceive) {
+		
+		return battleRoomRewardDao.findAllByRoomIdAndIsReceiveOrderByRankAsc(roomId,isReceive);
+	}
 }
