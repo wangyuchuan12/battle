@@ -78,6 +78,11 @@ public class BattleDanUser {
 	@Column(name="period_id")
 	private String periodId;
 	
+	
+	@ParamAnnotation
+	@Column
+	private Integer rank;
+	
 	//名额数量
 	@ParamAnnotation
 	@Column
@@ -205,6 +210,14 @@ public class BattleDanUser {
 
 	public void setPlaces(Integer places) {
 		this.places = places;
+	}
+
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
 	}
 
 	public DateTime getCreateAt() {

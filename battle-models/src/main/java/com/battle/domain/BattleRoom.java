@@ -100,6 +100,10 @@ public class BattleRoom {
 	private Integer isDanRoom;
 	
 	@ParamAnnotation
+	@Column(name="dan_id")
+	private String danId;
+	
+	@ParamAnnotation
 	@Column(name="redpack_amount")
 	private BigDecimal redpackAmount;
 	
@@ -545,6 +549,14 @@ public class BattleRoom {
 
 	public void setPlaces(Integer places) {
 		this.places = places;
+	}
+	
+	public String getDanId() {
+		return danId;
+	}
+
+	public void setDanId(String danId) {
+		this.danId = danId;
 	}
 
 	public DateTime getCreateAt() {

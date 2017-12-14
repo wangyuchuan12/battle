@@ -2,6 +2,7 @@ package com.battle.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import com.battle.domain.BattlePeriodMember;
 
@@ -15,5 +16,8 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdOrderByCreateAtAsc(String battleId, String periodId, String roomId);
+
+	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
+			Pageable pageable);
 
 }

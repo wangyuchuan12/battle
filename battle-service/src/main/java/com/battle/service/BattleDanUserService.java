@@ -48,4 +48,14 @@ public class BattleDanUserService {
 	public BattleDanUser findOneByDanIdAndUserId(String danId, String userId) {
 		return battleDanUserDao.findOneByDanIdAndUserId(danId,userId);
 	}
+
+	public List<BattleDanUser> findAllByRoomId(String roomId) {
+		
+		return battleDanUserDao.findAllByRoomId(roomId);
+	}
+
+	public BattleDanUser findOneByUserIdAndPointIdAndLevel(String userId, String pointId, int level) {
+		
+		return battleDanUserDao.findOneByUserIdAndPointIdAndLevel(userId,pointId,level);
+	}
 }

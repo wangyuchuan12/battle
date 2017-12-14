@@ -1,16 +1,23 @@
 package com.battle.service.other;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.battle.domain.BattleDan;
+import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
+import com.battle.service.BattleDanService;
+import com.battle.service.BattleDanUserService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.wyc.common.domain.Account;
@@ -33,9 +40,70 @@ public class BattleDanHandleService {
 	@Autowired
 	private WxUserInfoService userInfoService;
 	
+	@Autowired
+	private BattleDanUserService battleDanUserService;
+	
+	@Autowired
+	private BattleDanService battleDanService;
+	
+	
 	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
 		
 		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdAndIsReceiveOrderByRankAsc(battleRoom.getId(),0);
+		
+		
+		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByRoomId(battleRoom.getId());
+		
+		Map<String, BattleDanUser> battleDanUserMap = new HashMap<>();
+		
+		for(BattleDanUser battleDanUser:battleDanUsers){
+			
+			battleDanUserMap.put(battleDanUser.getUserId(), battleDanUser);
+			
+		}
+		
+		BattleDan battleDan = battleDanService.findOne(battleRoom.getDanId());
+		
+		Integer places = battleDan.getPlaces();
+		
+
+		
+		Sort sort = new Sort(Direction.DESC,"process");
+		
+		Pageable pageable = new PageRequest(0, 100, sort);
+		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(),pageable);
+		
+		for(Integer index = 0;index<battlePeriodMembers.size();index++){
+			BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(index);
+			
+			BattleDanUser battleDanUser = battleDanUserMap.get(battlePeriodMember.getUserId());
+			
+			if(battleDanUser!=null){
+				battleDanUser.setRank(index+1);
+				
+				if(index<places){
+					battleDanUser.setStatus(BattleDanUser.STATUS_SUCCESS);
+					Integer level = battleDanUser.getLevel();
+					
+					BattleDanUser battleDanUserNext = battleDanUserService.findOneByUserIdAndPointIdAndLevel(battleDanUser.getUserId(), battleDanUser.getPointId(),level+1);
+				
+					if(battleDanUserNext!=null){
+						
+						battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
+						
+						battleDanUserService.update(battleDanUserNext);
+					}
+				}else{
+					battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
+				}
+				
+				battleDanUserService.update(battleDanUser);
+			}
+			
+		}
+		
+		
 		
 		Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 		
@@ -44,12 +112,6 @@ public class BattleDanHandleService {
 			battleRoomRewardMap.put(battleRoomReward.getRank(), battleRoomReward);
 		}
 		
-		List<Integer> statuses = new ArrayList<>();
-		
-		statuses.add(BattleRoom.STATUS_IN);
-		statuses.add(BattleRoom.STATUS_END);
-		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.
-		findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0);
 		
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 			for(Integer i=0;i<battlePeriodMembers.size();i++){
@@ -60,6 +122,7 @@ public class BattleDanHandleService {
 					battleRoomReward.setIsReceive(1);
 					battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
+					
 					battlePeriodMemberService.update(battlePeriodMember);
 					battleRoomRewardService.update(battleRoomReward);
 					

@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.battle.dao.BattlePeriodMemberDao;
@@ -183,5 +184,11 @@ public class BattlePeriodMemberService {
 	public BattlePeriodMember findOne(String id) {
 		
 		return battlePeriodMemberDao.findOne(id);
+	}
+
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
+			Pageable pageable) {
+		
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomId(battleId,periodId,roomId,pageable);
 	}
 }
