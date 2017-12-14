@@ -591,8 +591,15 @@ public class BattleDanApi {
 		if(battleDanUsers==null||battleDanUsers.size()==0){
 			List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
 			battleDanUsers = new ArrayList<>();
+			Integer index = 0;
 			for(BattleDan battleDan:battleDans){
 				BattleDanUser battleDanUser = new BattleDanUser();
+				if(index==0){
+					battleDanUser.setStatus(BattleDanUser.STATUS_IN);
+				}else{
+					battleDanUser.setStatus(BattleDanUser.STATUS_FREE);
+				}
+				index++;
 				battleDanUser.setDanId(battleDan.getId());
 				battleDanUser.setDanName(battleDan.getName());
 				battleDanUser.setImgUrl(battleDan.getImgUrl());
@@ -605,7 +612,7 @@ public class BattleDanApi {
 				
 				battleDanUser.setPlaces(battleDan.getPlaces());
 				
-				battleDanUser.setStatus(BattleDanUser.STATUS_FREE);
+				
 				
 				battleDanUser.setUserId(userInfo.getId());
 				
