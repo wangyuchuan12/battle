@@ -480,6 +480,8 @@ public class BattleDanApi {
 				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoom.setIsDanRoom(1);
 				
+				battleRoom.setDanId(danId);
+				
 				battleRoomService.add(battleRoom);
 				
 				Sort rewardSort = new Sort(Direction.ASC,"rank");
