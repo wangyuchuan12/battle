@@ -617,7 +617,7 @@ public class BattleDanApi {
 				battleDanUsers.add(battleDanUser);
 			}
 		}else{
-			for(Integer i = 0;i<battleDanUsers.size();i++){
+			/*for(Integer i = 0;i<battleDanUsers.size();i++){
 				BattleDanUser battleDanUser = battleDanUsers.get(i);
 				if(battleDanUser.getStatus()==BattleDanUser.STATUS_SUCCESS){
 					if(i<battleDanUsers.size()-1){
@@ -628,7 +628,7 @@ public class BattleDanApi {
 						}
 					}
 				}
-			}
+			}*/
 		}
 		
 		ResultVo resultVo = new ResultVo();
