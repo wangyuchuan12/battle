@@ -1575,6 +1575,15 @@ public class BattleApi {
 		if(roomScore>=scrollGogal){
 			battleRoom.setStatus(BattleRoom.STATUS_END);
 			battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+			
+			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
+			
+			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
+				if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
+					battlePeriodMember = battlePeriodMember2;
+					break;
+				}
+			}
 		}
 		
 		battleRoomService.update(battleRoom);
@@ -1607,14 +1616,7 @@ public class BattleApi {
 			
 		}
 		
-		List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
 		
-		for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
-			if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
-				battlePeriodMember = battlePeriodMember2;
-				break;
-			}
-		}
 		
 		data.put("status", battleRoom.getStatus());
 		data.put("endType", battleRoom.getEndType());
