@@ -470,10 +470,10 @@ public class BattleDanApi {
 			}else{
 				Battle battle = battleService.findOne(battleDanUser.getBattleId());
 				battleRoom = battleRoomHandleService.initRoom(battle);
-				battleRoom.setIsPk(0);
+				battleRoom.setIsPk(1);
 				battleRoom.setPeriodId(battleDanUser.getPeriodId());
-				battleRoom.setMaxinum(10);
-				battleRoom.setMininum(10);
+				battleRoom.setMaxinum(2);
+				battleRoom.setMininum(2);
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
 				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
