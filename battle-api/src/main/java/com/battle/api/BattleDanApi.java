@@ -328,6 +328,8 @@ public class BattleDanApi {
 		data.put("exp", battleAccountResult.getExp());
 		data.put("level", battleAccountResult.getLevel());
 		
+		data.put("danName", battleAccountResult.getDanName());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
@@ -457,8 +459,6 @@ public class BattleDanApi {
 			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
 				
-				System.out.println("3..................battleDanUser.id:"+battleDanUser.getId());
-				
 				battleRoom = battleRooms.get(0);
 				battleDanUser.setRoomId(battleRoom.getId());
 				
@@ -466,7 +466,6 @@ public class BattleDanApi {
 				
 				battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
 				
-				System.out.println("...................battleRoomRewards:"+battleRoomRewards+",battleRoom.getId:"+battleRoom.getId());
 			}else{
 				Battle battle = battleService.findOne(battleDanUser.getBattleId());
 				battleRoom = battleRoomHandleService.initRoom(battle);
@@ -505,12 +504,10 @@ public class BattleDanApi {
 				
 				battleDanUser.setRoomId(battleRoom.getId());
 				battleDanUserService.update(battleDanUser);
-				
-				System.out.println("1..................battleDanUser.id:"+battleDanUser.getId());
+
 			}
 		}else{
-			
-			System.out.println("2..................battleDanUser.id:"+battleDanUser.getId());
+
 			battleDanUser.setRoomId(battleRoom.getId());
 			
 			battleDanUserService.update(battleDanUser);

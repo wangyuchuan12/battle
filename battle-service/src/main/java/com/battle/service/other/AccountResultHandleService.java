@@ -36,9 +36,16 @@ public class AccountResultHandleService {
 			rightSum = 0;
 		}
 		
-		Integer addExp = rightSum + passCount*10;
+		Integer addExp = 0;
+		if(passCount<=rightSum){
+			addExp = rightSum + passCount;
+			
+		}else{
+			addExp = rightSum;
+		}
 		
 		exp = exp + addExp;
+		
 		
 		battleAccountResult.setExp(exp);
 		
