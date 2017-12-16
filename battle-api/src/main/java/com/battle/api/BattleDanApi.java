@@ -556,6 +556,66 @@ public class BattleDanApi {
 		return resultVo;
 	}
 	
+	@RequestMapping(value="battleDanSign")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object battleDanSign(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		String danId = httpServletRequest.getParameter("danId");
+		
+		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+		
+		Integer signCount = battleDanUser.getSignCount();
+		
+		Integer beanCost = 0;
+		if(signCount == 0){
+			beanCost = battleDanUser.getSign1BeanCost();
+		}else if(signCount == 1){
+			beanCost = battleDanUser.getSign2BeanCost();
+		}else if(signCount == 2){
+			beanCost = battleDanUser.getSign3BeanCost();
+		}else if(signCount>=3){
+			beanCost = battleDanUser.getSign4BeanCost();
+		}
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		
+		Long wisdomCount = account.getWisdomCount();
+		if(wisdomCount==null){
+			wisdomCount = 0L;
+		}
+		if(wisdomCount<beanCost){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("智慧豆不够");
+			
+			return resultVo;
+		}else{
+			wisdomCount = wisdomCount - beanCost;
+			if(wisdomCount<0){
+				wisdomCount = 0L;
+			}
+			account.setWisdomCount(wisdomCount);
+		}
+		
+		battleDanUser.setSignCount(battleDanUser.getSignCount()+1);
+		battleDanUser.setIsSign(1);
+		
+		battleDanUserService.update(battleDanUser);
+		
+		accountService.update(account);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
 	@RequestMapping(value="list")
 	@ResponseBody
 	@Transactional
@@ -609,9 +669,19 @@ public class BattleDanApi {
 				
 				battleDanUser.setPlaces(battleDan.getPlaces());
 				
-				
-				
 				battleDanUser.setUserId(userInfo.getId());
+				
+				battleDanUser.setSign1BeanCost(battleDan.getSign1BeanCost());
+				
+				battleDanUser.setSign2BeanCost(battleDan.getSign2BeanCost());
+				
+				battleDanUser.setSign3BeanCost(battleDan.getSign3BeanCost());
+				
+				battleDanUser.setSign4BeanCost(battleDan.getSign4BeanCost());
+				
+				battleDanUser.setIsSign(0);
+				
+				battleDanUser.setSignCount(0);
 				
 				battleDanUserService.add(battleDanUser);
 				

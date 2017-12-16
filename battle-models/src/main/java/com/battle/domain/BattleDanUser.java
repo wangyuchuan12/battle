@@ -88,6 +88,31 @@ public class BattleDanUser {
 	@Column
 	private Integer places;
 	
+	
+	@ParamAnnotation
+	@Column(name="is_sign")
+	private Integer isSign;
+	
+	@ParamAnnotation
+	@Column(name="sign_1_bean_cost")
+	private Integer sign1BeanCost;
+	
+	@ParamAnnotation
+	@Column(name="sign_2_bean_cost")
+	private Integer sign2BeanCost;
+	
+	@ParamAnnotation
+	@Column(name="sign_3_bean_cost")
+	private Integer sign3BeanCost;
+	
+	@ParamAnnotation
+	@Column(name="sign_4_bean_cost")
+	private Integer sign4BeanCost;
+	
+	@ParamAnnotation
+	@Column(name="sign_count")
+	private Integer signCount;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -218,6 +243,54 @@ public class BattleDanUser {
 
 	public void setRank(Integer rank) {
 		this.rank = rank;
+	}
+
+	public Integer getIsSign() {
+		return isSign;
+	}
+
+	public void setIsSign(Integer isSign) {
+		this.isSign = isSign;
+	}
+
+	public Integer getSign1BeanCost() {
+		return sign1BeanCost;
+	}
+
+	public void setSign1BeanCost(Integer sign1BeanCost) {
+		this.sign1BeanCost = sign1BeanCost;
+	}
+
+	public Integer getSign2BeanCost() {
+		return sign2BeanCost;
+	}
+
+	public void setSign2BeanCost(Integer sign2BeanCost) {
+		this.sign2BeanCost = sign2BeanCost;
+	}
+
+	public Integer getSign3BeanCost() {
+		return sign3BeanCost;
+	}
+
+	public void setSign3BeanCost(Integer sign3BeanCost) {
+		this.sign3BeanCost = sign3BeanCost;
+	}
+
+	public Integer getSign4BeanCost() {
+		return sign4BeanCost;
+	}
+
+	public void setSign4BeanCost(Integer sign4BeanCost) {
+		this.sign4BeanCost = sign4BeanCost;
+	}
+
+	public Integer getSignCount() {
+		return signCount;
+	}
+
+	public void setSignCount(Integer signCount) {
+		this.signCount = signCount;
 	}
 
 	public DateTime getCreateAt() {
