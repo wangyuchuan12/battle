@@ -593,6 +593,7 @@ public class BattleDanApi {
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("智慧豆不够");
+			resultVo.setErrorCode(0);
 			
 			return resultVo;
 		}else{
@@ -702,10 +703,48 @@ public class BattleDanApi {
 			}*/
 		}
 		
+		
+		List<Map<String, Object>> usersResponse = new ArrayList<>();
+		
+		for(BattleDanUser battleDanUser:battleDanUsers){
+			Map<String, Object> battleDanUserMap = new HashMap<>();
+			
+			battleDanUserMap.put("id", battleDanUser.getId());
+			battleDanUserMap.put("danId", battleDanUser.getDanId());
+			battleDanUserMap.put("danName", battleDanUser.getDanName());
+			battleDanUserMap.put("imgUrl", battleDanUser.getImgUrl());
+			battleDanUserMap.put("level", battleDanUser.getLevel());
+			
+			Integer signCount = battleDanUser.getSignCount();
+			Integer sign1BeanCount = battleDanUser.getSign1BeanCost();
+			Integer sign2BeanCount = battleDanUser.getSign2BeanCost();
+			Integer sign3BeanCount = battleDanUser.getSign3BeanCost();
+			Integer sign4BeanCount = battleDanUser.getSign4BeanCost();
+			Integer costBean = 0;
+			
+			if(signCount==0){
+				costBean = sign1BeanCount;
+			}else if(signCount==1){
+				costBean = sign2BeanCount;
+			}else if(signCount==2){
+				costBean = sign3BeanCount;
+			}else if(signCount==3){
+				costBean = sign3BeanCount;
+			}else{
+				costBean = sign4BeanCount;
+			}
+			
+			battleDanUserMap.put("costBean", costBean);
+			
+			battleDanUserMap.put("signCount", signCount);
+			
+			usersResponse.add(battleDanUserMap);
+		}
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
-		resultVo.setData(battleDanUsers);
+		resultVo.setData(usersResponse);
 		
 		return resultVo;
 		
