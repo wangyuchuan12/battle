@@ -604,6 +604,58 @@ public class BattleDanApi {
 			account.setWisdomCount(wisdomCount);
 		}
 		
+		List<Integer> statuses = new ArrayList<>();
+		statuses.add(BattleRoom.STATUS_FREE);
+		statuses.add(BattleRoom.STATUS_IN);
+		
+		Sort sort = new Sort(Direction.DESC,"createAt");
+		Pageable pageable = new PageRequest(0,1,sort);
+		BattleRoom battleRoom = null;
+		List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,pageable);
+		if(battleRooms!=null&&battleRooms.size()>0){
+			
+			battleRoom = battleRooms.get(0);
+			battleDanUser.setRoomId(battleRoom.getId());
+			
+			battleDanUserService.update(battleDanUser);
+			
+		}else{
+			Battle battle = battleService.findOne(battleDanUser.getBattleId());
+			battleRoom = battleRoomHandleService.initRoom(battle);
+			battleRoom.setIsPk(1);
+			battleRoom.setPeriodId(battleDanUser.getPeriodId());
+			battleRoom.setMaxinum(2);
+			battleRoom.setMininum(2);
+			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+			battleRoom.setIsSearchAble(0);
+			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			battleRoom.setPlaces(battleDanUser.getPlaces());
+			battleRoom.setIsDanRoom(1);
+			
+			battleRoom.setDanId(danId);
+			
+			battleRoomService.add(battleRoom);
+			
+			Sort rewardSort = new Sort(Direction.ASC,"rank");
+			Pageable rewardPageable = new PageRequest(0,40,rewardSort);
+			List<BattleDanReward> battleDanRewards = battleDanRewardService.findAllByDanId(danId,rewardPageable);
+			
+			for(BattleDanReward battleDanReward:battleDanRewards){
+				BattleRoomReward battleRoomReward = new BattleRoomReward();
+				
+				battleRoomReward.setIsReceive(0);
+				battleRoomReward.setRank(battleDanReward.getRank());
+				battleRoomReward.setRewardBean(battleDanReward.getRewardBean());
+				battleRoomReward.setRoomId(battleRoom.getId());
+				
+				battleRoomRewardService.add(battleRoomReward);
+			}
+			
+			battleDanUser.setRoomId(battleRoom.getId());
+			battleDanUserService.update(battleDanUser);
+
+		}
+		
 		battleDanUser.setSignCount(battleDanUser.getSignCount()+1);
 		battleDanUser.setIsSign(1);
 		
