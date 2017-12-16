@@ -738,6 +738,8 @@ public class BattleDanApi {
 			
 			battleDanUserMap.put("signCount", signCount);
 			
+			battleDanUserMap.put("status", battleDanUser.getStatus());
+			
 			usersResponse.add(battleDanUserMap);
 		}
 		
