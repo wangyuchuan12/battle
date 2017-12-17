@@ -116,6 +116,7 @@ public class BattleDanHandleService {
 						battleAccountResultService.update(battleAccountResult);
 					}else{
 						battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
+						battleDanUser.setIsSign(0);
 					}
 					
 					battleDanUserService.update(battleDanUser);

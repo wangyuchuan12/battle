@@ -26,7 +26,7 @@ public class BattleManagerFilter extends Filter{
 		BattleExpert battleExpert = battleExpertService.findOneByBattleIdAndBattleUserId(battleUser.getBattleId(), battleUser.getId());
 		
 		
-		if(battleUser.getIsManager()==1||userInfo.getIsGod()==1){
+		if((battleUser.getIsManager()!=null&&battleUser.getIsManager()==1)||(userInfo.getIsGod()!=null&&userInfo.getIsGod()==1)){
 			
 		}else{
 			if(battleExpert==null||battleExpert.getStatus()!=BattleExpert.AUDIT_STATUS){

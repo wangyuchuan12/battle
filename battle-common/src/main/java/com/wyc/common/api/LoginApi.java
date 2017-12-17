@@ -203,6 +203,7 @@ public class LoginApi{
 			userInfo.setSex(gender);
 			userInfo.setSource(1);
 			userInfo.setAccountId(account.getId());
+			userInfo.setIsGod(0);
 			wxUserInfoService.add(userInfo);
 			
 			ResultVo resultVo = new ResultVo();
