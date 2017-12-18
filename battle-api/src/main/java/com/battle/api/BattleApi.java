@@ -1587,6 +1587,10 @@ public class BattleApi {
 			scrollGogal = 0;
 		}
 		
+		battlePeriodMember.setScore(memberScore);
+		
+		battlePeriodMemberService.update(battlePeriodMember);
+		
 		Integer roomScore = battleRoom.getRoomScore();
 		
 		if(roomScore>=scrollGogal||memberScore>=memberScoreGogal){
