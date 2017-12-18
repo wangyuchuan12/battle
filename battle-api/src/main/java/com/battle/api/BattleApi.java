@@ -1483,7 +1483,20 @@ public class BattleApi {
 		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.
 				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
 		
+		Integer memberScore = battlePeriodMember.getScore();
+		
+		Integer memberScoreGogal = battlePeriodMember.getScrollGogal();
+		
+		if(memberScore==null){
+			memberScore = 0;
+		}
+		
+		if(memberScoreGogal==null){
+			memberScoreGogal = 0;
+		}
+		
 		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
+			
 			Integer isPass = battleMemberPaperAnswer.getIsPass();
 			BattleRoomRecord battleRoomRecord = new BattleRoomRecord();
 			battleRoomRecord.setHappenTime(new DateTime());
@@ -1520,7 +1533,11 @@ public class BattleApi {
 				roomScore = 0;
 			}
 			
+			
+			
 			roomScore = roomScore+score;
+			
+			memberScore = memberScore+score;
 			
 			roomProcess = roomProcess + process;
 			
@@ -1572,7 +1589,7 @@ public class BattleApi {
 		
 		Integer roomScore = battleRoom.getRoomScore();
 		
-		if(roomScore>=scrollGogal){
+		if(roomScore>=scrollGogal||memberScore>=memberScoreGogal){
 			battleRoom.setStatus(BattleRoom.STATUS_END);
 			battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
 			
@@ -1616,7 +1633,7 @@ public class BattleApi {
 			
 		}
 		
-		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), battlePeriodMember.getRoomId());
 		
 		data.put("status", battleRoom.getStatus());
 		data.put("endType", battleRoom.getEndType());
@@ -1629,6 +1646,8 @@ public class BattleApi {
 		data.put("score", battlePeriodMember.getScore());
 		
 		data.put("rewardBean", battlePeriodMember.getRewardBean());
+		
+		data.put("members", battlePeriodMembers);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

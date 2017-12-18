@@ -119,6 +119,11 @@ public class BattlePeriodMember implements Serializable{
 	@Column
 	private Integer score;
 	
+	
+	@ParamAnnotation
+	@Column(name="scroll_gogal")
+	private Integer scrollGogal;
+	
 	//分享次数
 	@ParamAnnotation
 	@Column(name="share_time")
@@ -295,6 +300,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setRewardBean(Integer rewardBean) {
 		this.rewardBean = rewardBean;
+	}
+	
+	public Integer getScrollGogal() {
+		return scrollGogal;
+	}
+
+	public void setScrollGogal(Integer scrollGogal) {
+		this.scrollGogal = scrollGogal;
 	}
 
 	public DateTime getCreateAt() {

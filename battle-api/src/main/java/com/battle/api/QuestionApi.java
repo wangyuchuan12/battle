@@ -250,16 +250,16 @@ public class QuestionApi {
 			
 			Integer process = battlePeriodMember.getProcess();
 			
-			Integer score = battlePeriodMember.getScore();
+		//	Integer score = battlePeriodMember.getScore();
 			
 			Integer paperScore = battleMemberPaperAnswer.getScore();
 			if(paperScore==null){
 				paperScore = 0;
 			}
 			
-			if(score==null){
+			/*if(score==null){
 				score = 0;
-			}
+			}*/
 			
 			if(process==null){
 				process = 0;
@@ -268,7 +268,7 @@ public class QuestionApi {
 			
 			process = process + rightAddProcess;
 			
-			score = score+rightAddScore;
+		//	score = score+rightAddScore;
 			
 			paperScore = paperScore + rightAddScore;
 			
@@ -277,7 +277,7 @@ public class QuestionApi {
 			
 			battlePeriodMember.setProcess(process);
 			
-			battlePeriodMember.setScore(score);
+		//	battlePeriodMember.setScore(score);
 			
 			
 			Integer paperProcess = battleMemberPaperAnswer.getProcess();
@@ -307,15 +307,15 @@ public class QuestionApi {
 			result.put("right", false);
 			result.put("process", 0);
 			
-			Integer score = battlePeriodMember.getScore();
+		//	Integer score = battlePeriodMember.getScore();
 			
-			if(score==null){
+			/*if(score==null){
 				score = 0;
 			}
 			
-			score = score-wrongSubScore;
+			score = score-wrongSubScore;*/
 			
-			battlePeriodMember.setScore(score);
+		//	battlePeriodMember.setScore(score);
 			
 			Integer loveResidule = battlePeriodMember.getLoveResidule();
 			loveResidule--;
