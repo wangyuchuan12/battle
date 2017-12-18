@@ -40,8 +40,8 @@ public class BattleDan {
 	
 	
 	@ParamAnnotation
-	@Column
-	private Integer score;
+	@Column(name="score_gogal")
+	private Integer scoreGogal;
 	
 	@ParamAnnotation
 	@Column(name="battle_id")
@@ -124,12 +124,12 @@ public class BattleDan {
 		this.imgUrl = imgUrl;
 	}
 
-	public Integer getScore() {
-		return score;
+	public Integer getScoreGogal() {
+		return scoreGogal;
 	}
 
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setScoreGogal(Integer scoreGogal) {
+		this.scoreGogal = scoreGogal;
 	}
 
 	public String getBattleId() {

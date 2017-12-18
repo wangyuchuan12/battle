@@ -88,6 +88,10 @@ public class BattleDanUser {
 	@Column
 	private Integer places;
 	
+	@ParamAnnotation
+	@Column(name="score_gogal")
+	private Integer scoreGogal;
+
 	
 	@ParamAnnotation
 	@Column(name="is_sign")
@@ -291,6 +295,14 @@ public class BattleDanUser {
 
 	public void setSignCount(Integer signCount) {
 		this.signCount = signCount;
+	}
+
+	public Integer getScoreGogal() {
+		return scoreGogal;
+	}
+
+	public void setScoreGogal(Integer scoreGogal) {
+		this.scoreGogal = scoreGogal;
 	}
 
 	public DateTime getCreateAt() {

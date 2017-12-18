@@ -69,6 +69,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("roomStatus", battleRoom.getStatus());
 		
 		data.put("endType", battleRoom.getEndType());
+
 		
 		data.put("rewardBean", battlePeriodMember.getRewardBean());
 		

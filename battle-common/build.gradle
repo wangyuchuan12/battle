@@ -70,6 +70,8 @@ dependencies {
 	compile group: 'biz.paluch.redis', name: 'lettuce', version: '3.0.3.Final'
 	
 	compile 'com.esotericsoftware:kryo:3.0.1'
+	
+	compile 'org.quickserver:quickserver:1.4.5'
     
    // testCompile("junit:junit")
 }

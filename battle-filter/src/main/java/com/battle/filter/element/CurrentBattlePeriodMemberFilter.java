@@ -68,6 +68,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setRoomId(roomId);
 			battlePeriodMember.setScore(0);
 			
+			battlePeriodMember.setScrollGogal(battleRoom.getScrollGogal());
+			
 			battlePeriodMember.setUserId(userInfo.getId());
 			
 			battlePeriodMember.setShareTime(0);

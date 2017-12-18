@@ -475,7 +475,7 @@ public class BattleDanApi {
 				battleRoom.setMininum(2);
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
-				battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+				battleRoom.setScrollGogal(battleDanUser.getScoreGogal());
 				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoom.setIsDanRoom(1);
 				
@@ -735,6 +735,8 @@ public class BattleDanApi {
 				battleDanUser.setIsSign(0);
 				
 				battleDanUser.setSignCount(0);
+				
+				battleDanUser.setScoreGogal(battleDan.getScoreGogal());
 				
 				battleDanUserService.add(battleDanUser);
 				

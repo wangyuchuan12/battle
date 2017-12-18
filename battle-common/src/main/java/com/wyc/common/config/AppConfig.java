@@ -14,6 +14,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
+import org.quickserver.net.server.QuickServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +160,17 @@ public class AppConfig {
 	        wxContext.setApplyExpertProjectCode(myProperties.getProperty("apply_expert_project_code"));
 //	        wxContext = wxContextService.getWxContextBean();
 	        return wxContext;
+	    }
+	    
+	    
+	    @Bean
+	    public QuickServer quickServer()throws Exception{
+	    	QuickServer quickServer = new QuickServer("com.battle.socket.EchoCommandHandler");
+			quickServer.setPort(4123);
+			quickServer.setName("first");
+			
+			quickServer.startServer();
+			return quickServer;
 	    }
 	    
 	    

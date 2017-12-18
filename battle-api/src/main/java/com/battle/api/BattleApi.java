@@ -1626,7 +1626,7 @@ public class BattleApi {
 		
 		Integer roomScore = battleRoom.getRoomScore();
 		
-		if(roomScore>=scrollGogal||memberScore>=memberScoreGogal){
+		if(memberScore>=memberScoreGogal){
 			battleRoom.setStatus(BattleRoom.STATUS_END);
 			battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
 			
