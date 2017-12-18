@@ -1480,6 +1480,35 @@ public class BattleApi {
 		
 		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
 		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			Map<String, Object> data = new HashMap<>();
+			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), battlePeriodMember.getRoomId());
+			
+			data.put("status", battleRoom.getStatus());
+			data.put("endType", battleRoom.getEndType());
+			
+			data.put("roomProcess", battleRoom.getRoomProcess());
+			data.put("roomScore", battleRoom.getRoomScore());
+			
+			data.put("process", battlePeriodMember.getProcess());
+			
+			data.put("score", battlePeriodMember.getScore());
+			
+			data.put("rewardBean", battlePeriodMember.getRewardBean());
+			
+			data.put("members", battlePeriodMembers);
+			
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			
+			resultVo.setData(data);
+			
+			resultVo.setErrorMsg("同步成功");
+			
+			return resultVo;
+			
+		}
+		
 		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.
 				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
 		
@@ -1548,6 +1577,8 @@ public class BattleApi {
 			if(isPass==1){
 				
 				roomScore = roomScore+battleRoom.getFullRightAddScore();
+				
+				memberScore = memberScore+battleRoom.getFullRightAddScore();
 				
 				battleRoom.setRoomScore(roomScore);
 				
