@@ -82,7 +82,7 @@ public class BattleDanHandleService {
 			
 
 			
-			Sort sort = new Sort(Direction.DESC,"process");
+			Sort sort = new Sort(Direction.DESC,"score");
 			
 			Pageable pageable = new PageRequest(0, 100, sort);
 			

@@ -1494,6 +1494,8 @@ public class BattleApi {
 			
 			data.put("score", battlePeriodMember.getScore());
 			
+			data.put("scoreGogal", battlePeriodMember.getScrollGogal());
+			
 			data.put("rewardBean", battlePeriodMember.getRewardBean());
 			
 			data.put("members", battlePeriodMembers);
@@ -1679,6 +1681,8 @@ public class BattleApi {
 		data.put("process", battlePeriodMember.getProcess());
 		
 		data.put("score", battlePeriodMember.getScore());
+		
+		data.put("scoreGogal", battlePeriodMember.getScrollGogal());
 		
 		data.put("rewardBean", battlePeriodMember.getRewardBean());
 		
