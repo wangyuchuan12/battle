@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.KeyStore;
 
 import javax.net.ssl.SSLContext;
@@ -11,10 +12,10 @@ import javax.transaction.Transactional;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.cookie.ClientCookie;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
-import org.quickserver.net.server.QuickServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ import com.wyc.common.util.MyLongDateFormat;
 import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.WxContext;
 
+import ch.qos.logback.core.net.server.Client;
+
 
 
 @Configuration
@@ -51,7 +54,7 @@ import com.wyc.common.wx.domain.WxContext;
 //@ImportResource("classpath:applicationContext.xml")
 @EnableScheduling
 
-public class AppConfig {
+public class AppConfig{
 	 
 	 	@Autowired
 	 	private HrefService hrefService;
@@ -161,19 +164,6 @@ public class AppConfig {
 //	        wxContext = wxContextService.getWxContextBean();
 	        return wxContext;
 	    }
-	    
-	    
-	    @Bean
-	    public QuickServer quickServer()throws Exception{
-	    	QuickServer quickServer = new QuickServer("com.battle.socket.EchoCommandHandler");
-			quickServer.setPort(4123);
-			quickServer.setName("first");
-			
-			quickServer.startServer();
-			return quickServer;
-	    }
-	    
-	    
 	    
 	    @Bean
 	    public MyLongDateFormat myLongDateFormat(){

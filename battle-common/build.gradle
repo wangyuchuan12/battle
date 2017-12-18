@@ -71,7 +71,10 @@ dependencies {
 	
 	compile 'com.esotericsoftware:kryo:3.0.1'
 	
-	compile 'org.quickserver:quickserver:1.4.5'
+	compile("javax.websocket:javax.websocket-api:1.1")
+	
+	compile("org.springframework:spring-messaging:4.2.0.RELEASE")
+    compile("org.springframework:spring-websocket:4.2.0.RELEASE")
     
    // testCompile("junit:junit")
 }
