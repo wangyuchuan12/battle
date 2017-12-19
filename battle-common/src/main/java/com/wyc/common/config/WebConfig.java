@@ -16,10 +16,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
+//import org.springframework.web.socket.config.annotation.EnableWebSocket;
+//import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+//import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+//import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
 @EnableWebMvc
@@ -31,11 +31,11 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
 })
 @EnableAspectJAutoProxy(proxyTargetClass=true)
-@EnableWebSocket
-public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
+//@EnableWebSocket
+public class WebConfig extends WebMvcConfigurerAdapter /*implements WebSocketConfigurer*/{
 	
 	
-	@Override
+	/*@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		
 		registry.addHandler(webSocketHandler(),"/api/websocket").addInterceptors(new SpringWebSocketHandlerInterceptor()).setAllowedOrigins("*");
@@ -46,7 +46,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	@Bean
     public TextWebSocketHandler webSocketHandler(){
         return new SpringWebSocketHandler();
-    }
+    }*/
 	
 	@Qualifier(value="drawViewResolver")
 	@Primary
