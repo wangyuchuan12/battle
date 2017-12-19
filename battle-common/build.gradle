@@ -76,5 +76,7 @@ dependencies {
 	compile("org.springframework:spring-messaging:4.2.0.RELEASE")
     compile("org.springframework:spring-websocket:4.2.0.RELEASE")
     
+    compile 'org.apache.tomcat.embed:tomcat-embed-websocket:7.0.52'
+    
    // testCompile("junit:junit")
 }
