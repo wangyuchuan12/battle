@@ -1482,8 +1482,10 @@ public class BattleApi {
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			Map<String, Object> data = new HashMap<>();
-			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), battlePeriodMember.getRoomId());
-			
+			List<Integer> statuses = new ArrayList<>();
+			statuses.add(BattlePeriodMember.STATUS_COMPLETE);
+			statuses.add(BattlePeriodMember.STATUS_IN);
+			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0);
 			data.put("status", battleRoom.getStatus());
 			data.put("endType", battleRoom.getEndType());
 			

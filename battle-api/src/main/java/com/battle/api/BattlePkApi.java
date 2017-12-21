@@ -156,6 +156,8 @@ public class BattlePkApi {
 		
 		data.put("periodId", battlePk.getPeriodId());
 		
+		data.put("role", 0);
+		
 		if(battlePk.getHomeUserId().equals(userInfo.getId())){
 			data.put("isObtain",1);
 		}else{
@@ -226,6 +228,8 @@ public class BattlePkApi {
 		data.put("battleId", battlePk.getBattleId());
 		data.put("periodId", battlePk.getPeriodId());
 		data.put("roomId", battlePk.getRoomId());
+		
+		data.put("role", 1);
 		
 		if(battlePk.getBeatUserId().equals(userInfo.getId())){
 			data.put("isObtain",1);
