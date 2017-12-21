@@ -45,47 +45,59 @@ public class LoginApi{
 	public Object loginByJsCode(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		String code =httpServletRequest.getParameter("code");
 		
-		OpenIdVo openIdVo = null;
-		
-		try{
-			openIdVo = userService.getOpenIdFromJsCode(code);
-		}catch(Exception e){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("重新登录");
-			resultVo.setErrorCode(0);
-			
-			logger.error("登录时获取openId错误");
-			
-			return resultVo;
+		String token = null;
+		UserInfo userInfo = null;
+		token = httpServletRequest.getParameter("token");
+		if(!CommonUtil.isEmpty(token)){
+			userInfo = wxUserInfoService.findByToken(token);
 		}
 		
-		if(openIdVo==null){
-			logger.error("登录时获取的openId对象为空");
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("重新登录");
-			resultVo.setErrorCode(1);
-			return resultVo;
+		
+			
+		if(userInfo==null){
+			String code =httpServletRequest.getParameter("code");
+			
+			OpenIdVo openIdVo = null;
+			
+			try{
+				openIdVo = userService.getOpenIdFromJsCode(code);
+			}catch(Exception e){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("重新登录");
+				resultVo.setErrorCode(0);
+				
+				logger.error("登录时获取openId错误");
+				
+				return resultVo;
+			}
+			
+			if(openIdVo==null){
+				logger.error("登录时获取的openId对象为空");
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("重新登录");
+				resultVo.setErrorCode(1);
+				return resultVo;
+			}
+			
+			String openId = openIdVo.getOpenid();
+			
+			
+			
+			userInfo = wxUserInfoService.findByOpenidAndSource(openId,1);
 		}
 		
-		String openId = openIdVo.getOpenid();
-		
-		
-		
-		UserInfo userInfo = wxUserInfoService.findByOpenidAndSource(openId,1);
 		
 		
 		
 		if(userInfo!=null){
 			
 			LoginVo loginVo = new LoginVo();
-			String token = UUID.randomUUID().toString();
-			loginVo.setToken(token);
+			token = UUID.randomUUID().toString();
+			loginVo.setToken(userInfo.getToken());
 			loginVo.setUserInfo(userInfo);
-			userInfo.setToken(token);
 			
 			String accountId = userInfo.getAccountId();
 			Account account;
@@ -204,6 +216,7 @@ public class LoginApi{
 			userInfo.setSource(1);
 			userInfo.setAccountId(account.getId());
 			userInfo.setIsGod(0);
+			userInfo.setToken(UUID.randomUUID().toString());
 			wxUserInfoService.add(userInfo);
 			
 			ResultVo resultVo = new ResultVo();

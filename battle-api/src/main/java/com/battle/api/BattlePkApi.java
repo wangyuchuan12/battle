@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.Battle;
 import com.battle.domain.BattleCreateDetail;
+import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePk;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleCreateDetailService;
@@ -23,6 +25,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePkService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
+import com.battle.service.BattleUserService;
 import com.battle.service.other.BattlePkImmediateService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
@@ -59,6 +62,9 @@ public class BattlePkApi {
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private BattleUserService battleUserService;
 	
 	//主场方进入
 	@RequestMapping(value="homeInto")
@@ -296,22 +302,26 @@ public class BattlePkApi {
 			return resultVo;
 		}
 		
-		System.out.println("role:"+roleInt+",userInfo.id:"+userInfo.getId()+",homeUserId:"+battlePk.getHomeUserId());
-		
 		if(roleInt==0&&userInfo.getId().equals(battlePk.getHomeUserId())){
 			if(battlePk.getHomeStatus()==BattlePk.STATUS_READY){
-				
-				System.out.println("................1");
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
+				BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+				battlePeriodMember.setIsDel(1);
+				BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+				Integer num = battleRoom.getNum();
+				num--;
+				battleRoom.setNum(num);
+				battleRoom.setStatus(BattleRoom.STATUS_IN);
+				battlePeriodMemberService.update(battlePeriodMember);
+				battleRoomService.update(battleRoom);
 			}else if(battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE){
 				battlePk.setHomeStatus(BattlePk.STATUS_READY);
-				System.out.println("................2");
+				
+				
 				if(battlePk.getBeatStatus()==BattlePk.STATUS_READY){
-					System.out.println("................3");
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_BATTLE);
 				}else{
-					System.out.println("................4");
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				}
 			}
@@ -327,6 +337,16 @@ public class BattlePkApi {
 				
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
+				
+				BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+				battlePeriodMember.setIsDel(1);
+				BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+				Integer num = battleRoom.getNum();
+				num--;
+				battleRoom.setNum(num);
+				battleRoom.setStatus(BattleRoom.STATUS_IN);
+				battlePeriodMemberService.update(battlePeriodMember);
+				battleRoomService.update(battleRoom);
 				
 			}
 		}else{
