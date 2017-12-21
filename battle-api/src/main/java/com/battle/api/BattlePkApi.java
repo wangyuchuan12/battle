@@ -187,6 +187,10 @@ public class BattlePkApi {
 		
 		BattlePk battlePk = battlePkService.findOne(id);
 		
+		if(battlePk.getHomeUserId().equals(userInfo.getId())){
+			return homeInto(httpServletRequest);
+		}
+		
 		if(battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_CALL||battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_FREE){
 			
 			Integer beatStatus = battlePk.getBeatStatus();
