@@ -15,6 +15,8 @@ public class BattlePkRedisService {
 	private static String sigleKey = "battle_pk";
 	
 	public void set(BattlePk battlePk)throws Exception{
+		
+		System.out.println("battlePk:"+battlePk);
 		redisService.setObject(sigleKey+"_"+battlePk.getId(), battlePk);
 	}
 	

@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,8 +18,13 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_pk")
-public class BattlePk {
+public class BattlePk implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//离开
 	public static final Integer STATUS_LEAVE = 0;
 	
@@ -101,6 +108,16 @@ public class BattlePk {
 	@ParamAnnotation
 	@Column(name="battle_count")
 	private Integer battleCount;
+	
+	@ParamAnnotation
+	@Column(name="home_active_time")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime homeActiveTime;
+	
+	@ParamAnnotation
+	@Column(name="beat_active_time")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime beatActiveTime;
 	
 	
 	@ParamAnnotation
@@ -251,6 +268,25 @@ public class BattlePk {
 
 	public void setPeriodId(String periodId) {
 		this.periodId = periodId;
+	}
+	
+	public DateTime getHomeActiveTime() {
+		return homeActiveTime;
+	}
+
+
+	public void setHomeActiveTime(DateTime homeActiveTime) {
+		this.homeActiveTime = homeActiveTime;
+	}
+
+
+	public DateTime getBeatActiveTime() {
+		return beatActiveTime;
+	}
+
+
+	public void setBeatActiveTime(DateTime beatActiveTime) {
+		this.beatActiveTime = beatActiveTime;
 	}
 
 

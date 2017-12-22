@@ -17,20 +17,11 @@ public class BattlePkImmediateService {
 	private BattlePkService battlePkService;
 	
 	public BattlePk immediateUntilStatusChange(String id)throws Exception{
-		BattlePk battlePk = null;
-		
-		try{
-			battlePk = battlePkRedisService.get(id);
-		}catch(Exception e){
-			
-		}
+
+		BattlePk battlePk = battlePkService.findOne(id);
 		
 		
-		if(battlePk==null){
-			battlePk = battlePkService.findOne(id);
-			
-			battlePkRedisService.set(battlePk);
-		}
+		System.out.println(".............id:"+id+",battlePk:"+battlePk);
 		
 		Integer beatStatus = battlePk.getBeatStatus();
 		
@@ -40,15 +31,15 @@ public class BattlePkImmediateService {
 		
 		
 		
-		for(Integer i = 0;i<30;i++){
-			battlePk = battlePkRedisService.get(id);
+		for(Integer i = 0;i<5;i++){
+			battlePk = battlePkService.findOne(id);
 			if(!battlePk.getBeatStatus().equals(beatStatus)||
 					!battlePk.getHomeStatus().equals(homeStatus)||
 					!battlePk.getRoomStatus().equals(roomStatus)){
 				return battlePk;
 			}else{
 				
-				Thread.sleep(1000);
+				Thread.sleep(5000);
 			}
 		}
 		

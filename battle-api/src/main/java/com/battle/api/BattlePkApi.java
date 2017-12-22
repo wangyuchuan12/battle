@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,6 +95,10 @@ public class BattlePkApi {
 			
 			battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
 			
+			battlePk.setHomeActiveTime(new DateTime());
+			
+			battlePk.setBeatActiveTime(new DateTime());
+			
 			battlePkService.add(battlePk);
 			
 		}
@@ -130,6 +135,8 @@ public class BattlePkApi {
 			battlePk.setBattleId(battle.getId());
 			
 			battlePk.setPeriodId(battleCreateDetail.getPeriodId());
+			
+			battlePk.setHomeActiveTime(new DateTime());
 			
 			battlePkService.update(battlePk);
 		}
@@ -197,7 +204,13 @@ public class BattlePkApi {
 			
 			Integer beatStatus = battlePk.getBeatStatus();
 			
-			if(beatStatus==BattlePk.STATUS_LEAVE){
+			DateTime beatActiveTime = battlePk.getBeatActiveTime();
+			
+			DateTime nowDatetime = new DateTime();
+			
+			Long differ = nowDatetime.getMillis()-beatActiveTime.getMillis();
+			
+			if(beatStatus==BattlePk.STATUS_LEAVE||(beatStatus==BattlePk.STATUS_INSIDE&&differ<2000)||(beatStatus==BattlePk.STATUS_READY&&differ<20000)){
 		
 				battlePk.setBeatUserId(userInfo.getId());
 				
@@ -206,6 +219,9 @@ public class BattlePkApi {
 				battlePk.setBeatUsername(userInfo.getNickname());
 				
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
+				
+				battlePk.setBeatActiveTime(new DateTime());
+				
 				
 				battlePkService.update(battlePk);
 			}
@@ -246,15 +262,99 @@ public class BattlePkApi {
 	}
 	
 	
+	@RequestMapping(value="restart")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo restart(HttpServletRequest httpServletRequest)throws Exception{
+
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		BattlePk battlePk = battlePkService.findOneByHomeUserId(userInfo.getId());
+		
+		
+		battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
+		
+		
+		battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+		
+		battlePk.setBeatUserImgurl("");
+		battlePk.setBeatUsername("");
+		
+		battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+		
+		List<BattleCreateDetail> battleCreateDetails = battleCreateDetailServie.findAllByIsDefault(1);
+		
+		if(battleCreateDetails==null||battleCreateDetails.size()==0){
+			ResultVo resultVo = new ResultVo();
+			
+			resultVo.setSuccess(false);
+			
+			resultVo.setErrorMsg("createDetail为空");
+			
+			return resultVo;
+		}
+		
+		BattleCreateDetail battleCreateDetail = battleCreateDetails.get(0);
+		Battle battle = battleService.findOne(battleCreateDetail.getBattleId());
+		
+		BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
+		battleRoom.setIsPk(1);
+		battleRoom.setPeriodId(battleCreateDetail.getPeriodId());
+		battleRoom.setMaxinum(2);
+		battleRoom.setMininum(2);
+		battleRoom.setIsSearchAble(0);
+		battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
+		battleRoom.setPlaces(1);
+		battleRoom.setIsDanRoom(0);
+		
+		battleRoomService.add(battleRoom);
+		
+		battlePk.setRoomId(battleRoom.getId());
+		battlePk.setBattleId(battle.getId());
+		
+		battlePk.setPeriodId(battleCreateDetail.getPeriodId());
+		
+		battlePkService.update(battlePk);
+
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="immediateData")
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo immediateData(HttpServletRequest httpServletRequest)throws Exception{
 		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		String id = httpServletRequest.getParameter("id");
 		
-		BattlePk battlePk = battlePkImmediateService.immediateUntilStatusChange(id);
+		BattlePk battlePk = battlePkService.findOne(id);
+		
+		String homeUserId = battlePk.getHomeUserId();
+		
+		String beatUserId = battlePk.getBeatUserId();
+		
+		if(!CommonUtil.isEmpty(homeUserId)){
+			if(homeUserId.equals(userInfo.getId())){
+				battlePk.setHomeActiveTime(new DateTime());
+			}
+		}else if(!CommonUtil.isEmpty(beatUserId)){
+			if(beatUserId.equals(userInfo.getId())){
+				battlePk.setBeatActiveTime(new DateTime());
+			}
+		}
+		
+		
+		battlePkService.update(battlePk);
 		
 		ResultVo resultVo = new ResultVo();
 		
@@ -274,6 +374,17 @@ public class BattlePkApi {
 	public ResultVo ready(HttpServletRequest httpServletRequest)throws Exception{
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		ResultVo resultVo2 = (ResultVo)sessionManager.getReturnValue();
+		
+		if(resultVo2==null){
+			resultVo2 = sessionManager.getObject(ResultVo.class);
+		}
+		
+		if(resultVo2!=null){
+			System.out.println("....................................success:"+resultVo2.isSuccess()+",errorMsg:"+resultVo2.getErrorMsg());
+		}
+		
 		String id = httpServletRequest.getParameter("id");
 		
 		String role = httpServletRequest.getParameter("role");
@@ -310,8 +421,16 @@ public class BattlePkApi {
 			return resultVo;
 		}
 		
+		
+		System.out.println("............roleInt:"+roleInt+",userInfo.getId:"+userInfo.getId()+",battlePk.getHomeUserId:"+battlePk.getHomeUserId());
+		
 		if(roleInt==0&&userInfo.getId().equals(battlePk.getHomeUserId())){
-			if(battlePk.getHomeStatus()==BattlePk.STATUS_READY){
+			
+			System.out.println("battlePk.getHomeStatus():"+battlePk.getHomeStatus());
+			System.out.println("battlePk.getHomeStatus()==BattlePk.STATUS_READY:"+(battlePk.getHomeStatus()==BattlePk.STATUS_READY));
+			System.out.println("battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE:"+(battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE));
+			if(battlePk.getHomeStatus().equals(BattlePk.STATUS_READY)){
+				System.out.println("...............................1");
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
@@ -323,7 +442,8 @@ public class BattlePkApi {
 				battleRoom.setStatus(BattleRoom.STATUS_IN);
 				battlePeriodMemberService.update(battlePeriodMember);
 				battleRoomService.update(battleRoom);
-			}else if(battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE){
+			}else if(battlePk.getHomeStatus().equals(BattlePk.STATUS_INSIDE)){
+				System.out.println(".............................2");
 				battlePk.setHomeStatus(BattlePk.STATUS_READY);
 				
 				
@@ -334,15 +454,17 @@ public class BattlePkApi {
 				}
 			}
 		}else if(roleInt==1&&!userInfo.getId().equals(battlePk.getHomeUserId())){
-			if(battlePk.getBeatStatus()==BattlePk.STATUS_INSIDE){
+			if(battlePk.getBeatStatus().equals(BattlePk.STATUS_INSIDE)){
+				System.out.println("..............................3");
 				battlePk.setBeatStatus(BattlePk.STATUS_READY);
 				if(battlePk.getHomeStatus()==BattlePk.STATUS_READY){
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_BATTLE);
 				}else{
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				}
-			}else if(battlePk.getBeatStatus()==BattlePk.STATUS_READY){
+			}else if(battlePk.getBeatStatus().equals(BattlePk.STATUS_READY)){
 				
+				System.out.println(".................................4");
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				
