@@ -1,6 +1,8 @@
 package com.battle.api;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,12 +53,15 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleRoomHandleService;
+import com.wyc.AttrEnum;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
+import com.wyc.common.util.MyLongDateFormat;
+import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -109,6 +116,8 @@ public class BattleDanApi {
 	@Autowired
 	private BattleDanRewardService battleDanRewardService;
 	
+	@Autowired
+	private MyLongDateFormat mySimpleDateFormat;
 	
 	@RequestMapping(value="tasks")
 	@ResponseBody
@@ -471,15 +480,26 @@ public class BattleDanApi {
 				battleRoom = battleRoomHandleService.initRoom(battle);
 				battleRoom.setIsPk(1);
 				battleRoom.setPeriodId(battleDanUser.getPeriodId());
-				battleRoom.setMaxinum(2);
-				battleRoom.setMininum(2);
+				battleRoom.setMaxinum(5);
+				battleRoom.setMininum(1);
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
 				battleRoom.setScrollGogal(battleDanUser.getScoreGogal());
 				battleRoom.setPlaces(battleDanUser.getPlaces());
 				battleRoom.setIsDanRoom(1);
 				
+				battleRoom.setIsIncrease(0);
+				
 				battleRoom.setDanId(danId);
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				
+				calendar.add(Calendar.HOUR, 1);
+
+				battleRoom.setStartTime(new DateTime(calendar.getTime()));
+				
+				System.out.println("...........battleRoom.startTime:"+battleRoom.getStartTime());
 				
 				battleRoomService.add(battleRoom);
 				
@@ -539,6 +559,12 @@ public class BattleDanApi {
 		data.put("mininum", battleRoom.getMininum());
 		
 		data.put("roomStatus", battleRoom.getStatus());
+		
+		
+		
+		Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
+		
+		data.put("timeDiffer",differ);
 		
 		if(!CommonUtil.isEmpty(myBattlePeriodMember)){
 			data.put("status", myBattlePeriodMember.getStatus());
@@ -624,8 +650,8 @@ public class BattleDanApi {
 			battleRoom = battleRoomHandleService.initRoom(battle);
 			battleRoom.setIsPk(1);
 			battleRoom.setPeriodId(battleDanUser.getPeriodId());
-			battleRoom.setMaxinum(2);
-			battleRoom.setMininum(2);
+			battleRoom.setMaxinum(5);
+			battleRoom.setMininum(1);
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);
 			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
@@ -633,6 +659,13 @@ public class BattleDanApi {
 			battleRoom.setIsDanRoom(1);
 			
 			battleRoom.setDanId(danId);
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			
+			calendar.add(Calendar.HOUR, 1);
+
+			battleRoom.setStartTime(new DateTime(calendar.getTime()));
 			
 			battleRoomService.add(battleRoom);
 			
@@ -656,6 +689,8 @@ public class BattleDanApi {
 
 		}
 		
+		
+		
 		battleDanUser.setSignCount(battleDanUser.getSignCount()+1);
 		battleDanUser.setIsSign(1);
 		
@@ -663,8 +698,19 @@ public class BattleDanApi {
 		
 		accountService.update(account);
 		
+		sessionManager.setAttribute(AttrEnum.roomId, battleRoom.getId());
+		sessionManager.setAttribute(AttrEnum.battleId, battleRoom.getBattleId());
+		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("roomId", battleRoom.getId());
+		data.put("battleId", battleRoom.getBattleId());
+		data.put("periodId", battleRoom.getPeriodId());
+		
+		resultVo.setData(data);
 		
 		return resultVo;
 	}
@@ -697,7 +743,6 @@ public class BattleDanApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByUserIdAndPointIdOrderByLevelAsc(userInfo.getId(),battleDanPoint.getId());
-		
 		if(battleDanUsers==null||battleDanUsers.size()==0){
 			List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
 			battleDanUsers = new ArrayList<>();

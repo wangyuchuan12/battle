@@ -73,6 +73,11 @@ public class BattleDan {
 	private Integer sign4BeanCost;
 	
 	@ParamAnnotation
+	@Column(name = "start_time")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime startTime;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -186,6 +191,14 @@ public class BattleDan {
 
 	public void setSign4BeanCost(Integer sign4BeanCost) {
 		this.sign4BeanCost = sign4BeanCost;
+	}
+
+	public DateTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(DateTime startTime) {
+		this.startTime = startTime;
 	}
 
 	public DateTime getCreateAt() {

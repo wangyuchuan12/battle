@@ -53,7 +53,11 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
 		
+		System.out.println(".................battlePeriodMember:"+battlePeriodMember.getId()+",battleRoom.id:"+battlePeriodMember.getRoomId());
+		
 		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
+		
+		battlePeriodMember.setIsIncrease(battleRoom.getIsIncrease());
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			ResultVo resultVo = new ResultVo();
@@ -87,7 +91,7 @@ public class BattleTakepartApiFilter extends Filter{
 			return resultVo;
 		}
 		
-		if(battleRoom.getStatus()==BattleRoom.STATUS_FULL&&battlePeriodMember.getStatus()!=BattlePeriodMember.STATUS_IN){
+		/*if(battleRoom.getStatus()==BattleRoom.STATUS_FULL&&battlePeriodMember.getStatus()!=BattlePeriodMember.STATUS_IN){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("房间已满");
@@ -95,7 +99,7 @@ public class BattleTakepartApiFilter extends Filter{
 			sessionManager.setReturnValue(resultVo);
 			sessionManager.setReturn(true);
 			return null;
-		}
+		}*/
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_FREE||battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_OUT){
 			
@@ -187,7 +191,9 @@ public class BattleTakepartApiFilter extends Filter{
 		String battleId = httpServletRequest.getParameter("battleId");
 		String roomId = httpServletRequest.getParameter("roomId");
 		
-		sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		if(!CommonUtil.isEmpty(roomId)){
+			sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		}
 		
 		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);
 		
@@ -201,7 +207,7 @@ public class BattleTakepartApiFilter extends Filter{
 		}else{
 			battleRoom.setStatus(BattleRoom.STATUS_IN);
 		}
-		battleRoomService.update(battleRoom);
+		sessionManager.update(battleRoom);
 		
 		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
 		

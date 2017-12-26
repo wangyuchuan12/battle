@@ -204,6 +204,23 @@ public class BattleRoom {
 	@Column
 	private Integer places;
 	
+	
+	//0是分数 1是米数
+	@ParamAnnotation
+	@Column(name="achievement_type")
+	private Integer achievementType;
+	
+	//是否增长
+	@ParamAnnotation
+	@Column(name="is_increase")
+	private Integer isIncrease;
+	
+	
+	@ParamAnnotation
+	@Column(name="start_time")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime startTime;
+	
 	@ParamAnnotation
 	@Column(name="creation_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -557,6 +574,32 @@ public class BattleRoom {
 
 	public void setDanId(String danId) {
 		this.danId = danId;
+	}
+	
+	
+
+	public Integer getAchievementType() {
+		return achievementType;
+	}
+
+	public void setAchievementType(Integer achievementType) {
+		this.achievementType = achievementType;
+	}
+	
+	public Integer getIsIncrease() {
+		return isIncrease;
+	}
+
+	public void setIsIncrease(Integer isIncrease) {
+		this.isIncrease = isIncrease;
+	}
+
+	public DateTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(DateTime startTime) {
+		this.startTime = startTime;
 	}
 
 	public DateTime getCreateAt() {

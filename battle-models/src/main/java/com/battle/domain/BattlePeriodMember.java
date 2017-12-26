@@ -134,6 +134,10 @@ public class BattlePeriodMember implements Serializable{
 	private Integer rewardBean;
 	
 	@ParamAnnotation
+	@Column(name="is_increase")
+	private Integer isIncrease;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -308,6 +312,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setScrollGogal(Integer scrollGogal) {
 		this.scrollGogal = scrollGogal;
+	}
+
+	public Integer getIsIncrease() {
+		return isIncrease;
+	}
+
+	public void setIsIncrease(Integer isIncrease) {
+		this.isIncrease = isIncrease;
 	}
 
 	public DateTime getCreateAt() {

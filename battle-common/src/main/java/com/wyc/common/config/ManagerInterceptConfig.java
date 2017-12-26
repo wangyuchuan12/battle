@@ -67,6 +67,7 @@ public class ManagerInterceptConfig {
 	
 	public Object aroundAction(ProceedingJoinPoint proceedingJoinPoint)throws Throwable{
 		 Method method = getControllerMethod(proceedingJoinPoint);
+		 System.out.println("...............method:"+method.getName());
 		 Object returnValue = null;
 		 HttpServletRequest httpServletRequest = (HttpServletRequest)proceedingJoinPoint.getArgs()[0];		 
 		 HandlerAnnotation handlerAnnotation2 = method.getAnnotation(HandlerAnnotation.class);

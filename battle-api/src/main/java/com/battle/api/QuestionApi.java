@@ -326,6 +326,15 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setScore(paperScore);
 			
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
+			
+			/*Integer isIncrease = battlePeriodMember.getIsIncrease();
+			if(isIncrease==null){
+				isIncrease = 0;
+			}
+			if(loveResidule<=0&&isIncrease==0){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+				battleRoomService.update(battleRoom);
+			}*/
 		}
 		
 

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import com.battle.service.BattleDanService;
 import com.battle.service.BattleDanUserService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
+import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.service.WxUserInfoService;

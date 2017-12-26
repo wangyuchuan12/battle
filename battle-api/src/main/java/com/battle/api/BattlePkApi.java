@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.Battle;
 import com.battle.domain.BattleCreateDetail;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePk;
 import com.battle.domain.BattleRoom;
@@ -129,6 +130,8 @@ public class BattlePkApi {
 			battleRoom.setPlaces(1);
 			battleRoom.setIsDanRoom(0);
 			
+			battleRoom.setIsIncrease(1);
+			
 			battleRoomService.add(battleRoom);
 			
 			battlePk.setRoomId(battleRoom.getId());
@@ -137,6 +140,8 @@ public class BattlePkApi {
 			battlePk.setPeriodId(battleCreateDetail.getPeriodId());
 			
 			battlePk.setHomeActiveTime(new DateTime());
+			
+			battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 			
 			battlePkService.update(battlePk);
 		}
@@ -375,6 +380,11 @@ public class BattlePkApi {
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
+		
+		BattlePeriodMember battlePeriodMember2 = sessionManager.getObject(BattlePeriodMember.class);
+		
+		System.out.println(".................battlePeriodMember2:"+battlePeriodMember2.getId()+",battleRoom.id:"+battlePeriodMember2.getRoomId());
+		
 		ResultVo resultVo2 = (ResultVo)sessionManager.getReturnValue();
 		
 		if(resultVo2==null){
@@ -440,13 +450,11 @@ public class BattlePkApi {
 				num--;
 				battleRoom.setNum(num);
 				battleRoom.setStatus(BattleRoom.STATUS_IN);
-				battlePeriodMemberService.update(battlePeriodMember);
-				battleRoomService.update(battleRoom);
+				sessionManager.update(battlePeriodMember);
+				sessionManager.update(battleRoom);
 			}else if(battlePk.getHomeStatus().equals(BattlePk.STATUS_INSIDE)){
 				System.out.println(".............................2");
 				battlePk.setHomeStatus(BattlePk.STATUS_READY);
-				
-				
 				if(battlePk.getBeatStatus()==BattlePk.STATUS_READY){
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_BATTLE);
 				}else{
@@ -475,8 +483,8 @@ public class BattlePkApi {
 				num--;
 				battleRoom.setNum(num);
 				battleRoom.setStatus(BattleRoom.STATUS_IN);
-				battlePeriodMemberService.update(battlePeriodMember);
-				battleRoomService.update(battleRoom);
+				sessionManager.update(battlePeriodMember);
+				sessionManager.update(battleRoom);
 				
 			}
 		}else{
