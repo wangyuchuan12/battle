@@ -788,19 +788,26 @@ public class BattleDanApi {
 				battleDanUsers.add(battleDanUser);
 			}
 		}else{
-			/*for(Integer i = 0;i<battleDanUsers.size();i++){
+			BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
+			for(Integer i = 0;i<battleDanUsers.size();i++){
 				BattleDanUser battleDanUser = battleDanUsers.get(i);
 				if(battleDanUser.getStatus()==BattleDanUser.STATUS_SUCCESS){
 					if(i<battleDanUsers.size()-1){
 						BattleDanUser battleDanUser2 = battleDanUsers.get(i+1);
-						if(battleDanUser2.getStatus()==BattleDanUser.STATUS_FREE){
+						/*if(battleDanUser2.getStatus()==BattleDanUser.STATUS_FREE){
 							battleDanUser2.setStatus(BattleDanUser.STATUS_IN);
 							battleDanUserService.update(battleDanUser2);
-						}
+						}*/
+						battleAccountResult.setLevel(battleDanUser2.getLevel());
+						battleAccountResult.setDanName(battleDanUser2.getDanName());
+						battleAccountResult.setDanId(battleDanUser2.getId());
 					}
 				}
-			}*/
+			}
+			
+			battleAccountResultService.update(battleAccountResult);
 		}
+		
 		
 		
 		List<Map<String, Object>> usersResponse = new ArrayList<>();
@@ -813,6 +820,7 @@ public class BattleDanApi {
 			battleDanUserMap.put("danName", battleDanUser.getDanName());
 			battleDanUserMap.put("imgUrl", battleDanUser.getImgUrl());
 			battleDanUserMap.put("level", battleDanUser.getLevel());
+		
 			
 			Integer signCount = battleDanUser.getSignCount();
 			Integer sign1BeanCount = battleDanUser.getSign1BeanCost();
