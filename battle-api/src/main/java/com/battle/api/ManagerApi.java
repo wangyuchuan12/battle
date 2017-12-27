@@ -38,6 +38,7 @@ import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
 import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
+import com.battle.vo.StageSubjectQuestionNum;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.annotation.HandlerAnnotation;
@@ -773,6 +774,42 @@ public class ManagerApi {
 		ResultVo resultVo = new ResultVo();
 		
 		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value="queryQuestionCount")
+	@ResponseBody
+	@Transactional
+	public ResultVo queryQuestionCount(HttpServletRequest httpServletRequest)throws Exception{
+		
+		String battleId = httpServletRequest.getParameter("battleId");
+		
+		String periodId = httpServletRequest.getParameter("periodId");
+		
+		List<String> stageIds = battlePeriodStageService.getIdsByBattleIdAndPeriodId(battleId,periodId);
+		
+		List<String> subjectIds = battleSubjectService.getIdsByBattleId(battleId);
+		
+		List<Object[]> stageSubjectQuestionNums = battleQuestionService.getQuestionNumByStageIdsAndSubjectIds(stageIds,subjectIds);
+		
+		
+		List<Map<String, Object>> data = new ArrayList<>();
+		
+		for(Object[] list:stageSubjectQuestionNums){
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("num", list[0]);
+			map.put("stageId", list[1]);
+			map.put("subjectId", list[2]);
+			
+			data.add(map);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}

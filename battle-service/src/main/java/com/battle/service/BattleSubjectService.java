@@ -46,4 +46,9 @@ public class BattleSubjectService {
 		battleSubjectDao.save(battleSubject);
 		
 	}
+
+	public List<String> getIdsByBattleId(String battleId) {
+		
+		return battleSubjectDao.getIdsByBattleId(battleId);
+	}
 }

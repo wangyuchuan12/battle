@@ -48,4 +48,8 @@ public class BattlePeriodStageService {
 		battlePeriodStageDao.save(battlePeriodStage);
 		
 	}
+
+	public List<String> getIdsByBattleIdAndPeriodId(String battleId, String periodId) {
+		return battlePeriodStageDao.findAll(battleId,periodId);
+	}
 }

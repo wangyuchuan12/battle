@@ -1,6 +1,7 @@
 package com.battle.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.battle.domain.BattleQuestion;
+import com.battle.vo.StageSubjectQuestionNum;
 
 public interface BattleQuestionDao extends CrudRepository<BattleQuestion, String>{
 
@@ -24,5 +26,11 @@ public interface BattleQuestionDao extends CrudRepository<BattleQuestion, String
 			String[] subjectIds);
 
 	List<BattleQuestion> findAllByBattleIdAndBattlePeriodIdAndIsDel(String battleId, String periodId, int isDel);
+
+	
+	@Query("select count(bq) as num,bq.periodStageId as stageId,bq.battleSubjectId as subjectId "
+			+ "from com.battle.domain.BattleQuestion bq where  "
+			+ "bq.periodStageId in(:stageIds) and bq.battleSubjectId in(:subjectIds) group by bq.periodStageId,bq.battleSubjectId")
+	List<Object[]> getQuestionNumByStageIdsAndSubjectIds(@Param("stageIds") List<String> stageIds, @Param("subjectIds") List<String> subjectIds);
 
 }

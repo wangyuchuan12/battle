@@ -1,6 +1,7 @@
 package com.battle.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.battle.dao.BattleQuestionDao;
 import com.battle.domain.BattleQuestion;
+import com.battle.vo.StageSubjectQuestionNum;
 
 @Service
 public class BattleQuestionService {
@@ -61,5 +63,11 @@ public class BattleQuestionService {
 
 	public List<BattleQuestion> findAllByBattleIdAndBattlePeriodIdAndIsDel(String battleId, String periodId, int isDel) {
 		return battleQuestionDao.findAllByBattleIdAndBattlePeriodIdAndIsDel(battleId,periodId,isDel);
+	}
+
+	public List<Object[]> getQuestionNumByStageIdsAndSubjectIds(List<String> stageIds,
+			List<String> subjectIds) {
+		
+		return battleQuestionDao.getQuestionNumByStageIdsAndSubjectIds(stageIds,subjectIds);
 	}
 }
