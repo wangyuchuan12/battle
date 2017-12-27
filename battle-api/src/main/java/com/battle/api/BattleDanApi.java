@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,8 +59,6 @@ import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
-import com.wyc.common.util.MyLongDateFormat;
-import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -115,9 +112,6 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleDanRewardService battleDanRewardService;
-	
-	@Autowired
-	private MyLongDateFormat mySimpleDateFormat;
 	
 	@RequestMapping(value="tasks")
 	@ResponseBody
@@ -480,7 +474,7 @@ public class BattleDanApi {
 				battleRoom = battleRoomHandleService.initRoom(battle);
 				battleRoom.setIsPk(1);
 				battleRoom.setPeriodId(battleDanUser.getPeriodId());
-				battleRoom.setMaxinum(5);
+				battleRoom.setMaxinum(battleDanUser.getMaxNum());
 				battleRoom.setMininum(1);
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
@@ -650,11 +644,11 @@ public class BattleDanApi {
 			battleRoom = battleRoomHandleService.initRoom(battle);
 			battleRoom.setIsPk(1);
 			battleRoom.setPeriodId(battleDanUser.getPeriodId());
-			battleRoom.setMaxinum(5);
+			battleRoom.setMaxinum(battleDanUser.getMaxNum());
 			battleRoom.setMininum(1);
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(50*battleRoom.getMaxinum());
+			battleRoom.setScrollGogal(battleDanUser.getScoreGogal());
 			battleRoom.setPlaces(battleDanUser.getPlaces());
 			battleRoom.setIsDanRoom(1);
 			
@@ -782,6 +776,8 @@ public class BattleDanApi {
 				battleDanUser.setSignCount(0);
 				
 				battleDanUser.setScoreGogal(battleDan.getScoreGogal());
+				
+				battleDanUser.setMaxNum(battleDan.getMaxNum());
 				
 				battleDanUserService.add(battleDanUser);
 				

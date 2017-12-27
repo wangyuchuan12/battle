@@ -73,9 +73,8 @@ public class BattleDan {
 	private Integer sign4BeanCost;
 	
 	@ParamAnnotation
-	@Column(name = "start_time")
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime startTime;
+	@Column(name="max_num")
+	private Integer maxNum;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -193,12 +192,12 @@ public class BattleDan {
 		this.sign4BeanCost = sign4BeanCost;
 	}
 
-	public DateTime getStartTime() {
-		return startTime;
+	public Integer getMaxNum() {
+		return maxNum;
 	}
 
-	public void setStartTime(DateTime startTime) {
-		this.startTime = startTime;
+	public void setMaxNum(Integer maxNum) {
+		this.maxNum = maxNum;
 	}
 
 	public DateTime getCreateAt() {

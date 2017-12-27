@@ -118,6 +118,10 @@ public class BattleDanUser {
 	private Integer signCount;
 	
 	@ParamAnnotation
+	@Column(name="max_num")
+	private Integer maxNum;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -303,6 +307,14 @@ public class BattleDanUser {
 
 	public void setScoreGogal(Integer scoreGogal) {
 		this.scoreGogal = scoreGogal;
+	}
+
+	public Integer getMaxNum() {
+		return maxNum;
+	}
+
+	public void setMaxNum(Integer maxNum) {
+		this.maxNum = maxNum;
 	}
 
 	public DateTime getCreateAt() {
