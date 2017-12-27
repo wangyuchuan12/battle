@@ -1672,7 +1672,11 @@ public class BattleApi {
 			
 		}
 		
-		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), battlePeriodMember.getRoomId());
+		List<Integer> statuses = new ArrayList<>();
+		statuses.add(BattlePeriodMember.STATUS_IN);
+		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
+		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId(),statuses,0);
 		
 		data.put("status", battleRoom.getStatus());
 		data.put("endType", battleRoom.getEndType());
