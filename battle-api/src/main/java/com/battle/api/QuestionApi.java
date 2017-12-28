@@ -277,6 +277,13 @@ public class QuestionApi {
 			
 			battlePeriodMember.setProcess(process);
 			
+			if(process>=120){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+				//battleRoom.setEndType(BattleRoom.CLEARANCE_END_TYPE);
+				
+				battleRoomService.update(battleRoom);
+			}
+			
 		//	battlePeriodMember.setScore(score);
 			
 			
@@ -440,13 +447,6 @@ public class QuestionApi {
 			return result;
 		}
 		
-		if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
-			
-			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
-			
-			battlePeriodMemberService.update(battlePeriodMember);
-			
-		}
 		
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.

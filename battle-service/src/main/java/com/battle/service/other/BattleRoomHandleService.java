@@ -35,9 +35,9 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setRightAddProcess(1);
 		
-		battleRoom.setRightAddScore(1);
+		battleRoom.setRightAddScore(5);
 		
-		battleRoom.setWrongSubScore(1);
+		battleRoom.setWrongSubScore(2);
 		
 		battleRoom.setIsRedpack(0);
 		

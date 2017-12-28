@@ -1640,6 +1640,21 @@ public class BattleApi {
 					break;
 				}
 			}
+			
+		}else if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
+			
+			
+			battleRoom.setStatus(BattleRoom.STATUS_END);
+			
+			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
+			
+			for(BattlePeriodMember battlePeriodMember2:battlePeriodMembers){
+				if(battlePeriodMember2.getId().equals(battlePeriodMember.getId())){
+					battlePeriodMember = battlePeriodMember2;
+					break;
+				}
+			}
+			
 		}
 		
 		battleRoomService.update(battleRoom);
