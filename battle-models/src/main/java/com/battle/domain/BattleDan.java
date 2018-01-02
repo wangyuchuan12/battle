@@ -77,6 +77,10 @@ public class BattleDan {
 	private Integer maxNum;
 	
 	@ParamAnnotation
+	@Column(name="time_long")
+	private Integer timeLong;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -198,6 +202,14 @@ public class BattleDan {
 
 	public void setMaxNum(Integer maxNum) {
 		this.maxNum = maxNum;
+	}
+	
+	public Integer getTimeLong() {
+		return timeLong;
+	}
+
+	public void setTimeLong(Integer timeLong) {
+		this.timeLong = timeLong;
 	}
 
 	public DateTime getCreateAt() {

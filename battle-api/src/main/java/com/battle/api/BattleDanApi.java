@@ -489,7 +489,7 @@ public class BattleDanApi {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(new Date());
 				
-				calendar.add(Calendar.HOUR, 1);
+				calendar.add(Calendar.SECOND, battleDanUser.getTimeLong());
 
 				battleRoom.setStartTime(new DateTime(calendar.getTime()));
 				
@@ -778,6 +778,8 @@ public class BattleDanApi {
 				battleDanUser.setScoreGogal(battleDan.getScoreGogal());
 				
 				battleDanUser.setMaxNum(battleDan.getMaxNum());
+				
+				battleDanUser.setTimeLong(battleDan.getTimeLong());
 				
 				battleDanUserService.add(battleDanUser);
 				
