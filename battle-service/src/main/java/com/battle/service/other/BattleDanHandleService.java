@@ -105,7 +105,7 @@ public class BattleDanHandleService {
 						
 						BattleDanUser battleDanUserNext = battleDanUserService.findOneByUserIdAndPointIdAndLevel(battleDanUser.getUserId(), battleDanUser.getPointId(),level+1);
 					
-						if(battleDanUserNext!=null){
+						if(battleDanUserNext!=null&&battleDanUserNext.getStatus()==BattleDanUser.STATUS_FREE){
 							
 							battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
 							

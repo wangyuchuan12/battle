@@ -73,6 +73,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("rewardBean", battlePeriodMember.getRewardBean());
 		
+		data.put("places",battleRoom.getPlaces());
+		
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);

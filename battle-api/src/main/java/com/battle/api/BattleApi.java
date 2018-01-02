@@ -171,6 +171,7 @@ public class BattleApi {
 		data.put("owner", battleRoom.getOwner());
 		data.put("speedCoolBean", battleRoom.getSpeedCoolBean());
 		data.put("speedCoolSecond", battleRoom.getSpeedCoolSecond());
+		data.put("places", battleRoom.getPlaces());
 		if(battleRoom.getOwner().equals(battleUser.getId())){
 			data.put("isOwner", 1);
 		}else{
