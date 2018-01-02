@@ -657,7 +657,7 @@ public class BattleDanApi {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			
-			calendar.add(Calendar.HOUR, 1);
+			calendar.add(Calendar.SECOND, battleDanUser.getTimeLong());
 
 			battleRoom.setStartTime(new DateTime(calendar.getTime()));
 			
