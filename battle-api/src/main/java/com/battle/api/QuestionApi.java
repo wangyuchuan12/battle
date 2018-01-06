@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.apache.shiro.session.Session;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleAccountResult;
+import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
 import com.battle.domain.BattlePeriod;
@@ -29,6 +31,7 @@ import com.battle.domain.QuestionOption;
 import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleAccountResultService;
+import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
 import com.battle.service.BattlePeriodMemberService;
@@ -91,6 +94,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private AccountResultHandleService accountResultHandleService;
+	
+	@Autowired
+	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 
 
 	
@@ -307,7 +313,7 @@ public class QuestionApi {
 			Integer paperScore = battleMemberPaperAnswer.getScore();
 			if(paperScore==null){
 				paperScore = 0;
-			}
+			}	
 			
 			paperScore = paperScore-wrongSubScore;
 			
@@ -325,6 +331,16 @@ public class QuestionApi {
 		//	battlePeriodMember.setScore(score);
 			
 			Integer loveResidule = battlePeriodMember.getLoveResidule();
+			
+			
+			
+			if(loveResidule==battlePeriodMember.getLoveCount()){
+				BattleMemberLoveCooling battleMemberLoveCooling = battleMemberLoveCoolingService.
+						findOneByBattleMemberId(battleMemberPaperAnswer.getBattlePeriodMemberId());
+				battleMemberLoveCooling.setStartDatetime(new DateTime());
+				battleMemberLoveCooling.setSchedule(0L);
+				battleMemberLoveCoolingService.update(battleMemberLoveCooling);
+			}
 			loveResidule--;
 			battlePeriodMember.setLoveResidule(loveResidule);
 			
