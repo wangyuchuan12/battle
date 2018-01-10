@@ -41,6 +41,6 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	List<BattleRoom> findAllByIsDanRoomAndStatus(int isDanRoom, Integer status,Pageable pageable);
 
-	List<BattleRoom> findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(int isDanRoom, String battleId,String periodId,List<Integer> statuses, DateTime now,Pageable pageable);
+	List<BattleRoom> findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeLessThan(int isDanRoom, String battleId,String periodId,List<Integer> statuses, DateTime now,Pageable pageable);
 	
 }

@@ -459,7 +459,7 @@ public class BattleDanApi {
 			List<Integer> statuses = new ArrayList<>();
 			statuses.add(BattleRoom.STATUS_FREE);
 			statuses.add(BattleRoom.STATUS_IN);
-			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeLessThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
 				
 				battleRoom = battleRooms.get(0);
@@ -631,7 +631,7 @@ public class BattleDanApi {
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0,1,sort);
 		BattleRoom battleRoom = null;
-		List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
+		List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeLessThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
 		if(battleRooms!=null&&battleRooms.size()>0){
 			
 			battleRoom = battleRooms.get(0);
