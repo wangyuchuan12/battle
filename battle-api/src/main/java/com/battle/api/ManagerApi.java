@@ -38,14 +38,12 @@ import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
 import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
-import com.battle.vo.StageSubjectQuestionNum;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
-import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
@@ -79,8 +77,6 @@ public class ManagerApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
-	
-	private MySimpleDateFormat mySimpleDateFormat;
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
@@ -385,7 +381,7 @@ public class ManagerApi {
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
 		
-		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodStage.getPeriodId());
+		//BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodStage.getPeriodId());
 		
 		String periodId = battlePeriodStage.getPeriodId();
 		
@@ -406,7 +402,6 @@ public class ManagerApi {
 		
 		battleQuestion.setBattleId(battleId);
 		battleQuestion.setBattlePeriodId(periodId);
-		battleQuestion.setBattlePeriodIndex(battlePeriod.getIndex());
 		battleQuestion.setBattleSubjectId(subjectId);
 		battleQuestion.setImgUrl(imgUrl);
 		battleQuestion.setName("");
@@ -832,8 +827,7 @@ public class ManagerApi {
 		String fillWords = httpServletRequest.getParameter("fillWords");
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOne(stageId);
-		
-		BattlePeriod battlePeriod = battlePeriodService.findOne(battlePeriodStage.getPeriodId());
+
 		
 		String periodId = battlePeriodStage.getPeriodId();
 		
@@ -873,7 +867,6 @@ public class ManagerApi {
 		BattleQuestion battleQuestion = new BattleQuestion();
 		battleQuestion.setBattleId(battleId);
 		battleQuestion.setBattlePeriodId(periodId);
-		battleQuestion.setBattlePeriodIndex(battlePeriod.getIndex());
 		battleQuestion.setBattleSubjectId(subjectId);
 		battleQuestion.setImgUrl(imgUrl);
 		battleQuestion.setName("");

@@ -1,9 +1,13 @@
 package com.battle.filter.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.battle.domain.BattleMemberLoveCooling;
+import com.battle.domain.BattlePeriod;
+import com.battle.domain.BattlePeriodMember;
 import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.wyc.common.domain.vo.ResultVo;
@@ -17,9 +21,26 @@ public class CurrentLoveCoolingApiFilter extends Filter{
 		
 		BattleMemberLoveCooling battleMemberLoveCooling = sessionManager.getObject(BattleMemberLoveCooling.class);
 		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("id", battleMemberLoveCooling.getId());
+		data.put("battleMemberId", battleMemberLoveCooling.getBattleMemberId());
+		data.put("coolLoveSeq", battleMemberLoveCooling.getCoolLoveSeq());
+		data.put("millisec", battleMemberLoveCooling.getMillisec());
+		data.put("schedule", battleMemberLoveCooling.getSchedule());
+		data.put("startDatetime", battleMemberLoveCooling.getStartDatetime());
+		data.put("status", battleMemberLoveCooling.getStatus());
+		data.put("unit", battleMemberLoveCooling.getUnit());
+		data.put("upperLimit", battleMemberLoveCooling.getUpperLimit());
+		data.put("loveCount", battlePeriodMember.getLoveCount());
+		data.put("loveResidule", battlePeriodMember.getLoveResidule());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleMemberLoveCooling);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}

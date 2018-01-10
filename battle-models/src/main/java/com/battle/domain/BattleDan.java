@@ -77,6 +77,10 @@ public class BattleDan {
 	private Integer maxNum;
 	
 	@ParamAnnotation
+	@Column(name="min_num")
+	private Integer minNum;
+	
+	@ParamAnnotation
 	@Column(name="time_long")
 	private Integer timeLong;
 	
@@ -210,6 +214,14 @@ public class BattleDan {
 
 	public void setTimeLong(Integer timeLong) {
 		this.timeLong = timeLong;
+	}
+
+	public Integer getMinNum() {
+		return minNum;
+	}
+
+	public void setMinNum(Integer minNum) {
+		this.minNum = minNum;
 	}
 
 	public DateTime getCreateAt() {

@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.persistence.LockModeType;
 
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Lock;
@@ -40,6 +41,6 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	List<BattleRoom> findAllByIsDanRoomAndStatus(int isDanRoom, Integer status,Pageable pageable);
 
-	List<BattleRoom> findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(int isDanRoom, String battleId,String periodId,List<Integer> statuses, Pageable pageable);
+	List<BattleRoom> findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(int isDanRoom, String battleId,String periodId,List<Integer> statuses, DateTime now,Pageable pageable);
 	
 }

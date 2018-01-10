@@ -459,7 +459,7 @@ public class BattleDanApi {
 			List<Integer> statuses = new ArrayList<>();
 			statuses.add(BattleRoom.STATUS_FREE);
 			statuses.add(BattleRoom.STATUS_IN);
-			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,pageable);
+			List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
 			if(battleRooms!=null&&battleRooms.size()>0){
 				
 				battleRoom = battleRooms.get(0);
@@ -475,7 +475,7 @@ public class BattleDanApi {
 				battleRoom.setIsPk(1);
 				battleRoom.setPeriodId(battleDanUser.getPeriodId());
 				battleRoom.setMaxinum(battleDanUser.getMaxNum());
-				battleRoom.setMininum(1);
+				battleRoom.setMininum(battleDanUser.getMinNum());
 				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 				battleRoom.setIsSearchAble(0);
 				battleRoom.setScrollGogal(battleDanUser.getScoreGogal());
@@ -631,7 +631,7 @@ public class BattleDanApi {
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0,1,sort);
 		BattleRoom battleRoom = null;
-		List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,pageable);
+		List<BattleRoom> battleRooms = battleRoomService.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusInAndStartTimeGreaterThan(1,battleDanUser.getBattleId(),battleDanUser.getPeriodId(),statuses,new DateTime(),pageable);
 		if(battleRooms!=null&&battleRooms.size()>0){
 			
 			battleRoom = battleRooms.get(0);
@@ -645,7 +645,7 @@ public class BattleDanApi {
 			battleRoom.setIsPk(1);
 			battleRoom.setPeriodId(battleDanUser.getPeriodId());
 			battleRoom.setMaxinum(battleDanUser.getMaxNum());
-			battleRoom.setMininum(1);
+			battleRoom.setMininum(battleDanUser.getMinNum());
 			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
 			battleRoom.setIsSearchAble(0);
 			battleRoom.setScrollGogal(battleDanUser.getScoreGogal());
@@ -780,6 +780,8 @@ public class BattleDanApi {
 				battleDanUser.setMaxNum(battleDan.getMaxNum());
 				
 				battleDanUser.setTimeLong(battleDan.getTimeLong());
+				
+				battleDanUser.setMinNum(battleDan.getMinNum());
 				
 				battleDanUserService.add(battleDanUser);
 				

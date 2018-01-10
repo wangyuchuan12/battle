@@ -58,11 +58,6 @@ public class BattleQuestion {
 	@Column(name="battle_period_id")
 	private String battlePeriodId;
 	
-	//期数序号
-	@ParamAnnotation
-	@Column(name="battle_period_index")
-	private Integer battlePeriodIndex;
-	
 	//阶段id
 	@ParamAnnotation
 	@Column(name="period_stage_id")
@@ -182,15 +177,6 @@ public class BattleQuestion {
 	public void setBattlePeriodId(String battlePeriodId) {
 		this.battlePeriodId = battlePeriodId;
 	}
-
-	public Integer getBattlePeriodIndex() {
-		return battlePeriodIndex;
-	}
-
-	public void setBattlePeriodIndex(Integer battlePeriodIndex) {
-		this.battlePeriodIndex = battlePeriodIndex;
-	}
-	
 
 	public Integer getType() {
 		return type;

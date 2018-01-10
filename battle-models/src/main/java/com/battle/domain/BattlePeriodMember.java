@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -19,7 +20,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_period_member")
+@Table(name="battle_period_member",indexes={@Index(columnList="battle_id,period_id,room_id",name="battlePeriodMemberIndex")})
 public class BattlePeriodMember implements Serializable{
 	
 	/**

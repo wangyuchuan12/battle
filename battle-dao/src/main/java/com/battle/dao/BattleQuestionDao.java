@@ -1,15 +1,12 @@
 package com.battle.dao;
 
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.battle.domain.BattleQuestion;
-import com.battle.vo.StageSubjectQuestionNum;
 
 public interface BattleQuestionDao extends CrudRepository<BattleQuestion, String>{
 
