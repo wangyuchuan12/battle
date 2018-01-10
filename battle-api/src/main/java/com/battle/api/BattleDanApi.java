@@ -649,11 +649,14 @@ public class BattleDanApi {
 		List<BattleRoom> battleRooms = new ArrayList<>();
 		
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
-			if(oldBattleRoom.getStartTime().isAfterNow()){
+			if(oldBattleRoom.getStartTime().getMillisOfSecond()>new DateTime().getMillisOfSecond()){
 				if(oldBattleRoom.getMininum()<oldBattleRoom.getNum()){
+					
+					System.out.println("mininum:"+oldBattleRoom.getMininum()+",num:"+oldBattleRoom.getNum());
 					battleRooms.add(oldBattleRoom);
 				}
 			}else{
+				System.out.println("时间还没到");
 				battleRooms.add(oldBattleRoom);
 			}
 		}
