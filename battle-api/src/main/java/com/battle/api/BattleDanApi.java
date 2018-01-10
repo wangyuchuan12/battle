@@ -464,7 +464,7 @@ public class BattleDanApi {
 			List<BattleRoom> battleRooms = new ArrayList<>();
 			
 			for(BattleRoom oldBattleRoom:oldBattleRooms){
-				if(oldBattleRoom.getStartTime().isAfterNow()){
+				if(oldBattleRoom.getStartTime().isBeforeNow()){
 					if(oldBattleRoom.getMininum()<oldBattleRoom.getNum()){
 						battleRooms.add(oldBattleRoom);
 					}
@@ -649,7 +649,7 @@ public class BattleDanApi {
 		List<BattleRoom> battleRooms = new ArrayList<>();
 		
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
-			if(oldBattleRoom.getStartTime().getMillisOfSecond()>new DateTime().getMillisOfSecond()){
+			if(oldBattleRoom.getStartTime().isBeforeNow()){
 				if(oldBattleRoom.getMininum()<oldBattleRoom.getNum()){
 					
 					System.out.println("mininum:"+oldBattleRoom.getMininum()+",num:"+oldBattleRoom.getNum());
