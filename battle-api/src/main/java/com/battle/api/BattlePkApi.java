@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,7 @@ import com.battle.service.other.BattlePkImmediateService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
@@ -67,6 +70,8 @@ public class BattlePkApi {
 	
 	@Autowired
 	private BattleUserService battleUserService;
+	
+	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
 	
 	//主场方进入
 	@RequestMapping(value="homeInto")
@@ -342,7 +347,23 @@ public class BattlePkApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		String id = httpServletRequest.getParameter("id");
 		
+		if(CommonUtil.isEmpty(id)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("调用参数id不能为空");
+			logger.error("调用immediateData方法的时候参数传入的参数id为空");
+			return resultVo;
+		}
+		
 		BattlePk battlePk = battlePkService.findOne(id);
+		
+		if(battlePk==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("返回battlePk对象为空");
+			logger.error("调用immediateData方法的时候返回battlePk对象为空");
+			return resultVo;
+		}
 		
 		String homeUserId = battlePk.getHomeUserId();
 		
