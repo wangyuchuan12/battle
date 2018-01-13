@@ -390,6 +390,8 @@ public class BattleApi {
 		
 		String subjectIdStr = httpServletRequest.getParameter("subjectIds");
 		
+		System.out.println("..............subjectIdStr:"+subjectIdStr);
+		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		Integer stageIndex = battlePeriodMember.getStageIndex();
@@ -1474,6 +1476,7 @@ public class BattleApi {
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
 		
+		String groupId = httpServletRequest.getParameter("groupId");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
@@ -1481,10 +1484,20 @@ public class BattleApi {
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			Map<String, Object> data = new HashMap<>();
+			
+			Sort sort = new Sort(Direction.DESC,"score");
+			Pageable pageable = new PageRequest(0, 100,sort);
 			List<Integer> statuses = new ArrayList<>();
 			statuses.add(BattlePeriodMember.STATUS_COMPLETE);
 			statuses.add(BattlePeriodMember.STATUS_IN);
-			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0);
+			List<BattlePeriodMember> battlePeriodMembers =  new ArrayList<>();
+			
+			if(CommonUtil.isEmpty(groupId)){
+					
+				battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0,pageable);
+			}else{
+				battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, groupId, 0, pageable);
+			}
 			data.put("status", battleRoom.getStatus());
 			data.put("endType", battleRoom.getEndType());
 			
@@ -1628,8 +1641,15 @@ public class BattleApi {
 		Integer roomScore = battleRoom.getRoomScore();
 		
 		if(memberScore>=memberScoreGogal){
-			battleRoom.setStatus(BattleRoom.STATUS_END);
-			battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+			
+			if(battleRoom.getEndEnable()==1){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+				battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
+			}
+			
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			sessionManager.update(battlePeriodMember);
 			
 			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
 			
@@ -1642,8 +1662,13 @@ public class BattleApi {
 			
 		}else if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
 			
+			if(battleRoom.getEndEnable()!=null&&battleRoom.getEndEnable()==1){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+			}
 			
-			battleRoom.setStatus(BattleRoom.STATUS_END);
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			sessionManager.update(battlePeriodMember);
 			
 			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
 			
@@ -1686,13 +1711,29 @@ public class BattleApi {
 			
 		}
 		
+		Sort sort = new Sort(Direction.DESC,"score");
+		Pageable pageable = new PageRequest(0, 100,sort);
+		
 		List<Integer> statuses = new ArrayList<>();
 		statuses.add(BattlePeriodMember.STATUS_IN);
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
 		
-		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(),battlePeriodMember.getRoomId(),statuses,0);
+		
+		
+		List<BattlePeriodMember> battlePeriodMembers = new ArrayList<>();
+		
+		if(CommonUtil.isEmpty(groupId)){
+			
+			battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0,pageable);
+		}else{
+			battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, groupId, 0, pageable);
+		}
 		
 		data.put("status", battleRoom.getStatus());
+		
+		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_COMPLETE){
+			data.put("status", BattleRoom.STATUS_END);
+		}
 		data.put("endType", battleRoom.getEndType());
 		
 		data.put("roomProcess", battleRoom.getRoomProcess());

@@ -16,24 +16,50 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+//import org.springframework.web.socket.config.annotation.EnableWebSocket;
+//import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+//import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+//import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
+@EnableWebMvc
 @Configuration
-public class GameWebConfig extends WebMvcConfigurerAdapter{
+@ComponentScan(basePackages="com",
+				excludeFilters={
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=AppConfig.class),
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=DatabaseConfig.class),
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
+})
+//@EnableAspectJAutoProxy(proxyTargetClass=true)
+//@EnableWebSocket
+public class WebConfig2 extends WebMvcConfigurerAdapter /*implements WebSocketConfigurer*/{
 	
 	
-	@Qualifier(value="gameViewResolver")
+	/*@Override
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		
+		registry.addHandler(webSocketHandler(),"/api/websocket").addInterceptors(new SpringWebSocketHandlerInterceptor()).setAllowedOrigins("*");
+        registry.addHandler(webSocketHandler(), "/api/sockjs").addInterceptors(new SpringWebSocketHandlerInterceptor()).withSockJS();
+		
+	}
+	
+	@Bean
+    public TextWebSocketHandler webSocketHandler(){
+        return new SpringWebSocketHandler();
+    }*/
+	
+	@Qualifier(value="drawViewResolver")
 	@Primary
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/games/");
+        viewResolver.setPrefix("/WEB-INF/views/draw/");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
 
 	
-	@Qualifier(value="gameTilesConfigurer")
+	@Qualifier(value="drawTilesConfigurer")
 	@Primary
     @Bean
     public TilesConfigurer tilesConfigurer() {
@@ -44,7 +70,7 @@ public class GameWebConfig extends WebMvcConfigurerAdapter{
     }
 
 	
-	@Qualifier(value="gameDispatcherServlet")
+	@Qualifier(value="drawDispatcherServlet")
 	@Primary
     @Bean
     public DispatcherServlet dispatcherServlet() {
@@ -52,7 +78,7 @@ public class GameWebConfig extends WebMvcConfigurerAdapter{
     }
     
 	
-	@Qualifier(value="gameMultipartResolver")
+	@Qualifier(value="drawMultipartResolver")
 	@Primary
     @Bean
     public MultipartResolver multipartResolver(){

@@ -6,26 +6,24 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.battle.domain.Battle;
-import com.battle.domain.BattlePeriod;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.service.BattlePeriodMemberService;
-import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 
 public class BattleMembersApiFilter extends Filter{
 
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
-	
-	@Autowired
-	private BattlePeriodService battlePeriodService;
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
@@ -36,12 +34,25 @@ public class BattleMembersApiFilter extends Filter{
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
 		
 		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
-	
+		
+		String groupId = (String)sessionManager.getAttribute(AttrEnum.groupId);
+		
+		Sort sort = new Sort(Direction.DESC,"score");
+		Pageable pageable = new PageRequest(0,100,sort);
+		
 		List<Integer> statuses = new ArrayList<>();
 		
 		statuses.add(BattlePeriodMember.STATUS_IN);
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
-		List<BattlePeriodMember> members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,0);
+		List<BattlePeriodMember> members = new ArrayList<>();
+		
+		if(!CommonUtil.isEmpty(groupId)){
+			members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(battleId, periodId, roomId, statuses, groupId, 0, pageable);
+		}else{
+			members = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,0,pageable);
+		}
+				
+				
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
@@ -57,6 +68,8 @@ public class BattleMembersApiFilter extends Filter{
 		
 		String roomId = httpServletRequest.getParameter("roomId");
 		
+		String groupId = httpServletRequest.getParameter("groupId");
+		
 		
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		
@@ -64,6 +77,7 @@ public class BattleMembersApiFilter extends Filter{
 		sessionManager.setAttribute(AttrEnum.battleId, battleId);
 		sessionManager.setAttribute(AttrEnum.roomId, roomId);
 		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
+		sessionManager.setAttribute(AttrEnum.groupId, groupId);
 		return null;
 	}
 

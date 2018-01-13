@@ -1,6 +1,7 @@
 package com.wyc.common.api;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -115,6 +116,7 @@ public class LoginApi{
 			}
 			
 			sessionManager.save(userInfo);
+			
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(loginVo);
@@ -218,20 +220,26 @@ public class LoginApi{
 			userInfo.setIsGod(0);
 			userInfo.setToken(UUID.randomUUID().toString());
 			wxUserInfoService.add(userInfo);
+
 			
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(true);
-			
-			return resultVo;
 		}else{
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			
-			resultVo.setErrorMsg("用户已存在，无需注册");
-			
-			resultVo.setErrorCode(403);
-			
-			return resultVo;
+//			ResultVo resultVo = new ResultVo();
+//			resultVo.setSuccess(false);
+//			
+//			resultVo.setErrorMsg("用户已存在，无需注册");
+//			
+//			resultVo.setErrorCode(403);
+//			
+//			return resultVo;
 		}
+		
+		
+		
+		
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
 	}
 }

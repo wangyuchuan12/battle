@@ -34,6 +34,8 @@ public class BattleRoom {
 	
 	public static final Integer SCROLL_GOGAL_END_TYPE = 2;
 	
+	public static final Integer SYSTEM_END_TYPE = 3;
+	
 	@Id
 	@IdAnnotation
 	private String id;
@@ -215,6 +217,13 @@ public class BattleRoom {
 	@Column(name="is_increase")
 	private Integer isIncrease;
 	
+	@ParamAnnotation
+	@Column(name="is_frend_group")
+	private Integer isFrendGroup;
+	
+	@ParamAnnotation
+	@Column(name="end_enable")
+	private Integer endEnable;
 	
 	@ParamAnnotation
 	@Column(name="start_time")
@@ -600,6 +609,23 @@ public class BattleRoom {
 
 	public void setStartTime(DateTime startTime) {
 		this.startTime = startTime;
+	}
+	
+
+	public Integer getIsFrendGroup() {
+		return isFrendGroup;
+	}
+
+	public void setIsFrendGroup(Integer isFrendGroup) {
+		this.isFrendGroup = isFrendGroup;
+	}
+
+	public Integer getEndEnable() {
+		return endEnable;
+	}
+
+	public void setEndEnable(Integer endEnable) {
+		this.endEnable = endEnable;
 	}
 
 	public DateTime getCreateAt() {

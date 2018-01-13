@@ -283,12 +283,12 @@ public class QuestionApi {
 			
 			battlePeriodMember.setProcess(process);
 			
-			if(process>=120){
+			/*if(process>=120){
 				battleRoom.setStatus(BattleRoom.STATUS_END);
 				//battleRoom.setEndType(BattleRoom.CLEARANCE_END_TYPE);
 				
 				battleRoomService.update(battleRoom);
-			}
+			}*/
 			
 		//	battlePeriodMember.setScore(score);
 			

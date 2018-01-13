@@ -46,7 +46,7 @@ import ch.qos.logback.core.net.server.Client;
 
 @Configuration
 @ComponentScan(basePackages = "com", excludeFilters = {
-        @Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebConfig.class),
+        @Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebConfig2.class),
         @Filter(type = FilterType.ASSIGNABLE_TYPE, value = DatabaseConfig.class),
     //    @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
@@ -71,6 +71,8 @@ public class AppConfig{
 	        {
 	              "127.0.0.1:8888"
 	        };
+	        
+	        System.out.println(".....5");
 	        SockIOPool sockIOPool = SockIOPool.getInstance();
 	        sockIOPool.setServers(servers);
 	        sockIOPool.setNagle(false);
@@ -78,6 +80,8 @@ public class AppConfig{
 	        sockIOPool.setSocketConnectTO(0);
 	        sockIOPool.initialize();
 	        return sockIOPool;
+	        
+	        
 	    }
 	   
 	    @Bean

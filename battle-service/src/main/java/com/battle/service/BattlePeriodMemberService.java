@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.battle.dao.BattlePeriodMemberDao;
@@ -36,6 +37,16 @@ public class BattlePeriodMemberService {
 	public BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel){
 		return battlePeriodMemberDao.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,isDel);
 	}
+	
+	public BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String userId,Integer isDel){
+		return battlePeriodMemberDao.findOneByRoomIdAndUserIdAndIsDel(roomId,userId,isDel);
+	}
+	
+	public Long rank(String roomId,Integer score){
+		return battlePeriodMemberDao.rank(roomId, score);
+	}
+	
+	
 
 	public void add(BattlePeriodMember battlePeriodMember) {
 		
@@ -153,9 +164,9 @@ public class BattlePeriodMemberService {
 		
 	}
 
-	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,int isDel) {
+	public List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,int isDel,Pageable pageable) {
 		
-		List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battleId, periodId, roomId);
+		/*List<BattlePeriodMember> battlePeriodMembers = findAllByBattleIdAndPeriodIdAndRoomId(battleId, periodId, roomId);
 		
 		List<BattlePeriodMember> thisBattlePeriodMembers = new ArrayList<>();
 		
@@ -175,10 +186,15 @@ public class BattlePeriodMemberService {
 				}
 			}
 			return thisBattlePeriodMembers;
-		}
+		}*/
 		
-		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDelOrderByCreateAtAsc(battleId,periodId,roomId,statuses,isDel);
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleId,periodId,roomId,statuses,isDel,pageable);
 		
+	}
+	
+	public List<BattlePeriodMember>findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,String groupId,int isDel,Pageable pageable){
+		
+		return battlePeriodMemberDao.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(battleId, periodId, roomId, statuses, groupId, isDel, pageable);
 	}
 
 	public BattlePeriodMember findOne(String id) {

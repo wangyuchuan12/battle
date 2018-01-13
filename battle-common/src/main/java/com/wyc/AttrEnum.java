@@ -139,5 +139,7 @@ public enum AttrEnum {
 	userInfoOpenId, 
 	roomId, defaultRoomId,
 	
-	goodId
+	goodId,
+	
+	groupId
 }

@@ -506,8 +506,6 @@ public class BattleDanApi {
 
 				battleRoom.setStartTime(new DateTime(calendar.getTime()));
 				
-				System.out.println("...........battleRoom.startTime:"+battleRoom.getStartTime());
-				
 				battleRoomService.add(battleRoom);
 				
 				Sort rewardSort = new Sort(Direction.ASC,"rank");

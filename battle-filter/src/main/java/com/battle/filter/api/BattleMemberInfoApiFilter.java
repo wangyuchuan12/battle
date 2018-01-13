@@ -75,6 +75,10 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("places",battleRoom.getPlaces());
 		
+		data.put("isDanRoom",battleRoom.getIsDanRoom());
+		
+		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
+		
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
