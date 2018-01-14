@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleGroupConfig;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoomGroup;
 import com.battle.domain.BattleRoomGroupMember;
@@ -291,7 +292,7 @@ public class RankBattleApi {
 		
 		
 		BattleRoomGroupMember battleRoomGroupMember = battleRoomGroupMemberService.findOneByGroupIdAndUserId(battleRoomGroup.getId(), userInfo.getId());
-				
+		
 		String roomId = battleGroupConfig.getRoomId();
 		
 		
@@ -302,9 +303,42 @@ public class RankBattleApi {
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
 		statuses.add(BattlePeriodMember.STATUS_IN);
 	
+		List<Map<String, Object>> responseMembers = new ArrayList<>();
+		
 		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.
 				findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndGroupIdAndIsDel(battleGroupConfig.getBattleId(), 
 						battleGroupConfig.getPeriodId(), roomId, statuses, battleRoomGroup.getId(), 0, pageable);
+		
+		
+		List<BattlePeriodMember> allPeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoomGroup.getBattleId(), battleRoomGroup.getPeriodId(), roomId, pageable);
+		
+		Map<String, BattlePeriodMember> battlePeriodMemberMap = new HashMap<>();
+		for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+			Map<String, Object> responseMember = new HashMap<>();
+			responseMember.put("nickname", battlePeriodMember.getNickname());
+			responseMember.put("headImg", battlePeriodMember.getHeadImg());
+			responseMember.put("score", battlePeriodMember.getScore());
+			responseMembers.add(responseMember);
+			battlePeriodMemberMap.put(battlePeriodMember.getUserId(),battlePeriodMember);
+		}
+		
+		
+		
+		List<BattleRoomGroupMember> battleRoomGroupMembers = battleRoomGroupMemberService.findAllByGroupId(battleRoomGroup.getId());
+		
+		for(BattleRoomGroupMember thisBattleRoomGroupMember:battleRoomGroupMembers){
+			BattlePeriodMember battlePeriodMember = battlePeriodMemberMap.get(thisBattleRoomGroupMember.getUserId());
+			if(battlePeriodMember==null){
+				Map<String, Object> responseMember = new HashMap<>();
+				responseMember.put("nickname", thisBattleRoomGroupMember.getNickname());
+				responseMember.put("headImg", thisBattleRoomGroupMember.getHeadImg());
+				responseMember.put("score",0);
+				responseMembers.add(responseMember);
+			}
+		}
+	
+		
+		
 		
 		BattlePeriodMember battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndUserIdAndIsDel(roomId, userInfo.getId(), 0);
 		
@@ -315,22 +349,35 @@ public class RankBattleApi {
 		
 		if(battlePeriodMember!=null){
 			
-			long rank = 0L;
+			long frendRank = 0L;
 			for(Integer i = 0;i<battlePeriodMembers.size();i++){
 				BattlePeriodMember battlePeriodMember2 = battlePeriodMembers.get(i);
 				if(battlePeriodMember.getId().equals(battlePeriodMember2.getId())){
-					rank = Long.parseLong((i+1)+""); 
+					frendRank = Long.parseLong((i+1)+""); 
 				}
 			}
-			
-			if(rank==0){
-				rank = battlePeriodMemberService.rank(roomId, battlePeriodMember.getScore());
-			}
 			data.put("memberInfo", battlePeriodMember);
-			data.put("rank", rank);
+			
+			if(frendRank==0L){
+				data.put("frendRank", battlePeriodMembers.size());
+			}else{
+				data.put("frendRank", frendRank);
+			}
+			
+			long allRank = battlePeriodMemberService.rank(roomId, battlePeriodMember.getScore());
+			data.put("allRank", allRank);
+			
+			
 		}else{
 			data.put("memberInfo", battleRoomGroupMember);
+			data.put("frendRank", battlePeriodMembers.size());
+			
+			long allRank = battlePeriodMemberService.rank(roomId,0);
+			data.put("allRank", allRank);
+			
 		}
+		
+		
 		
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 			BattlePeriodMember firstBattlePeriodMember = battlePeriodMembers.get(0);
@@ -343,7 +390,9 @@ public class RankBattleApi {
 			data.put("firstMemberInfo", firstBattleRoomGroupMember);
 		}
 		
-		data.put("members", battlePeriodMembers);
+		data.put("frendMembers", responseMembers);
+		
+		data.put("allMembers", allPeriodMembers);
 		
 		data.put("groupInfo", battleRoomGroup);
 		

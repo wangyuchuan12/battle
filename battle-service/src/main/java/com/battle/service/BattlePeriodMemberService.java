@@ -130,6 +130,7 @@ public class BattlePeriodMemberService {
 		
 	}
 	
+	
 	public void saveBattlePeriodMembersToCache(String roomId,List<BattlePeriodMember> battlePeriodMembers){
 		try{
 			readWriteLock.writeLock().lock();

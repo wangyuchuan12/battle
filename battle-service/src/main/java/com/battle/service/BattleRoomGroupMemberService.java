@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -28,5 +29,10 @@ public class BattleRoomGroupMemberService {
 		
 		battleRoomGroupMemberDao.save(battleRoomGroupMember);
 		
+	}
+
+	public List<BattleRoomGroupMember> findAllByGroupId(String groupId) {
+		
+		return battleRoomGroupMemberDao.findAllByGroupId(groupId);
 	}
 }
