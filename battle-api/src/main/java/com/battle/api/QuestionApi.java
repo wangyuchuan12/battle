@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 
 import org.apache.shiro.session.Session;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,7 @@ import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.battle.service.other.AccountResultHandleService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
@@ -98,7 +101,7 @@ public class QuestionApi {
 	@Autowired
 	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 
-
+	final static Logger logger = LoggerFactory.getLogger(QuestionApi.class);
 	
 	@RequestMapping(value="battleQuestionAnswer")
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
@@ -134,7 +137,18 @@ public class QuestionApi {
 		
 		List<QuestionAnswer> questionAnswers = questionAnswerService.findAllByTargetIdAndType(battlePeriodMember.getId()+"_"+stageIndex, QuestionAnswer.BATTLE_TYPE);
 		
-		QuestionAnswer questionAnswer = questionAnswers.get(0);
+		QuestionAnswer questionAnswer = null;
+		
+		if(questionAnswers!=null&&questionAnswers.size()>0){
+			questionAnswer = questionAnswers.get(0);
+		}else{
+			logger.error("答题无questionAnswer发现");
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(404);
+			resultVo.setErrorMsg("答题无questionAnswer发现");
+			return resultVo;
+		}
 		
 		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByQuestionAnswerId(questionAnswer.getId());
 		
