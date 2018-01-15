@@ -136,6 +136,27 @@ public class LoginApi{
 	
 	@Transactional
 	@ResponseBody
+	@RequestMapping(value="testSave")
+	public Object testSave(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = new UserInfo();
+		userInfo.setNickname("王煜川");
+		sessionManager.save(userInfo);
+		return userInfo;
+	}
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value="testGet")
+	public Object testGet(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		return userInfo;
+	}
+	
+	
+	@Transactional
+	@ResponseBody
 	@RequestMapping(value="accountInfo")
 	public ResultVo accountInfo(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
