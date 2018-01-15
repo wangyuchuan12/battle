@@ -15,6 +15,13 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @Configuration
+@ComponentScan(basePackages="com.wyc",
+				excludeFilters={
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=AppConfig.class),
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=DatabaseConfig.class),
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=WebConfig2.class),
+					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
+})
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 @EnableRedisHttpSession
 public class SessionConfig {
