@@ -131,16 +131,18 @@ public class BattleDanHandleService {
 			
 			Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 			
-			for(BattleRoomReward battleRoomReward:battleRoomRewards){
+			for(Integer i = 0;i<battleRoomRewards.size();i++){
 				
-				battleRoomRewardMap.put(battleRoomReward.getRank(), battleRoomReward);
+				BattleRoomReward battleRoomReward = battleRoomRewards.get(i);
+				battleRoomRewardMap.put(i, battleRoomReward);
 			}
+			
 			
 			
 			if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 				for(Integer i=0;i<battlePeriodMembers.size();i++){
 					BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
-					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i+1);
+					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
 					
 					if(battleRoomReward!=null){
 						battleRoomReward.setIsReceive(1);
