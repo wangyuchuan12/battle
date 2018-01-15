@@ -847,6 +847,61 @@ public class BattleApi {
 	}
 	
 	
+	@RequestMapping(value="supperLove")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
+	public Object supperLove(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		Integer loveResidule = battlePeriodMember.getLoveResidule();
+		Integer loveCount = battlePeriodMember.getLoveCount();
+		if(loveResidule>=loveCount){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(1);
+			resultVo.setErrorMsg("爱心已充满");
+			return resultVo;
+		}
+		loveResidule++;
+		
+		battlePeriodMember.setLoveResidule(loveResidule);
+		
+		battlePeriodMemberService.update(battlePeriodMember);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		
+		Integer loveLife = account.getLoveLife();
+		
+		if(loveLife==null||loveLife==0){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorCode(0);
+			resultVo.setErrorMsg("爱心不足");
+			return resultVo;
+		}
+		
+		loveLife--;
+		
+		account.setLoveLife(loveLife);
+		
+		accountService.update(account);
+		
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battlePeriodMember);
+		
+		resultVo.setMsg("补充成功");
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="speed_cool_bean")
 	@ResponseBody
 	@Transactional
