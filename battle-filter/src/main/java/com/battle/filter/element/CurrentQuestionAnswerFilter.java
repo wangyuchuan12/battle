@@ -19,7 +19,13 @@ public class CurrentQuestionAnswerFilter extends Filter{
 		String targetId = (String)sessionManager.getAttribute(AttrEnum.questionAnswerTargetId);
 		Integer type = (Integer)sessionManager.getAttribute(AttrEnum.questionAnswerType);
 		
-		QuestionAnswer questionAnswer = questionAnswerService.findOneByTargetIdAndType(targetId,type);
+		List<QuestionAnswer> questionAnswers = questionAnswerService.findAllByTargetIdAndType(targetId,type);
+	
+		QuestionAnswer questionAnswer = null;
+		
+		if(questionAnswers!=null&&questionAnswers.size()>0){
+			questionAnswer = questionAnswers.get(0);
+		}
 		
 		if(questionAnswer==null){
 			questionAnswer = new QuestionAnswer();

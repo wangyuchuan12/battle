@@ -132,7 +132,9 @@ public class QuestionApi {
 		
 		Question question = questionService.findOne(id);
 		
-		QuestionAnswer questionAnswer = questionAnswerService.findOneByTargetIdAndType(battlePeriodMember.getId()+"_"+stageIndex, QuestionAnswer.BATTLE_TYPE);
+		List<QuestionAnswer> questionAnswers = questionAnswerService.findAllByTargetIdAndType(battlePeriodMember.getId()+"_"+stageIndex, QuestionAnswer.BATTLE_TYPE);
+		
+		QuestionAnswer questionAnswer = questionAnswers.get(0);
 		
 		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByQuestionAnswerId(questionAnswer.getId());
 		

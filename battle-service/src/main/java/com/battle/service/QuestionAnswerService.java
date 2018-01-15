@@ -1,5 +1,6 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -15,9 +16,9 @@ public class QuestionAnswerService {
 	@Autowired
 	private QuestionAnswerDao questionAnswerDao;
 
-	public QuestionAnswer findOneByTargetIdAndType(String targetId, Integer type) {
+	public List<QuestionAnswer> findAllByTargetIdAndType(String targetId, Integer type) {
 		
-		return questionAnswerDao.findOneByTargetIdAndType(targetId,type);
+		return questionAnswerDao.findAllByTargetIdAndType(targetId,type);
 	}
 
 	public void add(QuestionAnswer questionAnswer) {
