@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -15,7 +16,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan_task_user")
+@Table(name="battle_dan_task_user",indexes={@Index(columnList="dan_id,room_id,user_id",name="battleDanTaskUserIndex")})
 public class BattleDanTaskUser {
 	
 	//未开始执行

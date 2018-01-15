@@ -232,7 +232,7 @@ public class QuestionApi {
 			questionAnswerItem.setRightAnswer(question.getAnswer());
 			battleMemberQuestionAnswer.setAnswer(answer);
 			battleMemberQuestionAnswer.setRightAnswer(question.getAnswer());
-			if(answer.equals(question.getAnswer())){
+			if(answer!=null&&answer.equals(question.getAnswer())){
 				
 				questionAnswerItem.setIsRight(1);
 				
@@ -251,7 +251,7 @@ public class QuestionApi {
 			questionAnswerItem.setRightAnswer(question.getAnswer());
 			battleMemberQuestionAnswer.setAnswer(answer);
 			battleMemberQuestionAnswer.setRightAnswer(question.getAnswer());
-			if(answer.equals(question.getAnswer())){
+			if(answer!=null&&answer.equals(question.getAnswer())){
 				
 				questionAnswerItem.setIsRight(1);
 				
@@ -677,7 +677,22 @@ public class QuestionApi {
 	public Object info(HttpServletRequest httpServletRequest){
 		String id = httpServletRequest.getParameter("id");
 		
+		if(CommonUtil.isEmpty(id)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("id不能为空");
+			
+			return resultVo;
+		}
+		
 		Question question = questionService.findOne(id);
+		
+		if(question==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("返回的question为空");
+			return resultVo;
+		}
 
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("id", question.getId());
