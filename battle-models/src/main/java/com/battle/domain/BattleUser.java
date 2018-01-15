@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -17,7 +18,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_user")
+@Table(name="battle_user",indexes={@Index(columnList="battle_id,open_id,user_id,current_room_id",name="battleUserIndex")})
 public class BattleUser {
 	@Id
 	@IdAnnotation

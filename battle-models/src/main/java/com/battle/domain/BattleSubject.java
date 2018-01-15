@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
@@ -16,7 +17,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_subject")
+@Table(name="battle_subject",indexes={@Index(columnList="battle_id",name="battleSubjectIndex")})
 public class BattleSubject {
 
 	//主题id

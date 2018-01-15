@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -15,7 +16,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_room_group")
+@Table(name="battle_room_group",indexes={@Index(columnList="battle_id,period_id,room_id,creater_user_id",name="battleRoomGroupIndex")})
 public class BattleRoomGroup {
 	
 	//朋友组
