@@ -36,7 +36,6 @@ public class BattleRoomService {
 				return battleRoom;
 			}
 		}catch(Exception e){
-			e.printStackTrace();
 			logger.error("BattleRoomService的findOne从redis获取BattleRoom对象失败，从数据库中获取");
 		}finally{
 			readWriteLock.readLock().unlock();
@@ -47,27 +46,24 @@ public class BattleRoomService {
 		try{
 			redisService.setObject(key, BattleRoom.class);
 		}catch(Exception e){
-			e.printStackTrace();
 			logger.error("BattleRoomService的findOne方法存储BattleRoom对象到redis失败");
 		}
 		
 		return battleRoom;
 	}
 	public void add(BattleRoom battleRoom) {
-		
-		String key = BATTLE_ROOM_KEY;
-		key = key+"_"+battleRoom.getId();
 		try{
 			readWriteLock.writeLock().lock();
 			
 			battleRoom.setId(UUID.randomUUID().toString());
+			String key = BATTLE_ROOM_KEY;
+			key = key+"_"+battleRoom.getId();
 			battleRoom.setCreateAt(new DateTime());
 			battleRoom.setUpdateAt(new DateTime());
 			battleRoomDao.save(battleRoom);
 			
 			redisService.setObject(key,battleRoom);
 		}catch(Exception e){
-			e.printStackTrace();
 			logger.error("BattleRoomService的add方法存储BattleRoom对象到redis失败");
 		}finally{
 			readWriteLock.writeLock().unlock();
