@@ -37,7 +37,7 @@ dependencies {
     compile 'org.springframework.data:spring-data-jpa:1.7.1.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:4.3.6.Final'
     //compile 'com.zaxxer:HikariCP:2.2.5'
-
+	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '4.3.6.Final'
     compile 'org.apache.tiles:tiles-servlet:3.0.5'
     compile 'org.apache.tiles:tiles-jsp:3.0.5'
 

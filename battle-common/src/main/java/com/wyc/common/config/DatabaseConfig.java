@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,7 +31,7 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() throws IOException {
         Properties properties = new Properties();
-        File databaseConfigFile = new File("/etc/luckDraw/database.properties");
+        File databaseConfigFile = new File("/etc/battle/database.properties");
         InputStream defaultConfig = this.getClass().getResourceAsStream("/database.properties");
 
         if (databaseConfigFile.exists()) {
@@ -83,10 +84,15 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         properties.setProperty("hibernate.jdbc.batch_size", "50");
         properties.setProperty("hibernate.jdbc.fetch_size", "50");
+        
+        properties.setProperty("hibernate.generate_statistics", "true");
+        properties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        properties.setProperty("javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE");
+        properties.setProperty("hibernate.cache.use_query_cache", "true");
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
-
         return factory.getObject();
+        
     }
 
     @Bean

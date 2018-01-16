@@ -4,15 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.security.KeyStore;
-
 import javax.net.ssl.SSLContext;
 import javax.transaction.Transactional;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.cookie.ClientCookie;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
@@ -27,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.danga.MemCached.MemCachedClient;
@@ -51,7 +48,7 @@ import ch.qos.logback.core.net.server.Client;
     //    @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
 })
-//@ImportResource("classpath:applicationContext.xml")
+@ImportResource("classpath:applicationContext.xml")
 @EnableScheduling
 
 public class AppConfig{

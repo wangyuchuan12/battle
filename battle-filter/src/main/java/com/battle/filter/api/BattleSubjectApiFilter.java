@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleSubjectService;
 import com.wyc.AttrEnum;
+import com.wyc.common.api.LoginApi;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
@@ -35,6 +39,7 @@ public class BattleSubjectApiFilter extends Filter{
 	@Autowired
 	private BattlePeriodStageService battlePeriodStageService;
 	
+	final static Logger logger = LoggerFactory.getLogger(BattleSubjectApiFilter.class);
 
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -46,6 +51,19 @@ public class BattleSubjectApiFilter extends Filter{
 		String periodId = (String)sessionManager.getAttribute(AttrEnum.periodId);
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battleId,periodId,periodStageIndex);
+		
+		if(battlePeriodStage==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("返回的battlePeriodStage为空");
+			
+			logger.error("返回的battlePeriodStage为空");
+			return resultVo;
+
+			
+		}
+		
+		
 		List<BattleSubject> battleSubjects = battleSubjectService.findAllByBattleIdAndIsDelOrderBySeqAsc(battleId,0);
 		
 		Pageable pageable = new PageRequest(0, 20);

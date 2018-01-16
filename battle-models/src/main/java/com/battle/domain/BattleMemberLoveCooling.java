@@ -3,6 +3,7 @@ package com.battle.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -17,7 +18,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 //爱心冷却
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_member_love_cooling")
+@Table(name="battle_member_love_cooling",indexes={@Index(columnList="battle_member_id",name="battleMemberLoveCoolingIndex")})
 public class BattleMemberLoveCooling {
 	
 	//游离状态
