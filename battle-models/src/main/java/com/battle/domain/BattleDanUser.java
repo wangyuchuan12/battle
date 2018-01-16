@@ -131,6 +131,10 @@ public class BattleDanUser {
 	private Integer timeLong;
 	
 	@ParamAnnotation
+	@Column(name="is_del")
+	private Integer isDel;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -341,6 +345,16 @@ public class BattleDanUser {
 
 	public void setMinNum(Integer minNum) {
 		this.minNum = minNum;
+	}
+	
+	
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {

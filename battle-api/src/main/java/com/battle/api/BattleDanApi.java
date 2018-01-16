@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -113,12 +115,15 @@ public class BattleDanApi {
 	@Autowired
 	private BattleDanRewardService battleDanRewardService;
 	
+	final static Logger logger = LoggerFactory.getLogger(BattleDanApi.class);
+	
 	@RequestMapping(value="tasks")
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object tasks(HttpServletRequest httpServletRequest)throws Exception{
 		
+		/*
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -144,7 +149,7 @@ public class BattleDanApi {
 				battleDanTaskUser.setName(battleDanTask.getName());
 				battleDanTaskUser.setInstruction(battleDanTask.getInstruction());
 				battleDanTaskUser.setButtonName(battleDanTask.getButtonName());
-				BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+				BattleDanUser battleDanUser = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
 				battleDanTaskUser.setDanUserId(battleDanUser.getId());
 				battleDanTaskUser.setUserId(userInfo.getId());
 
@@ -159,7 +164,8 @@ public class BattleDanApi {
 		
 		resultVo.setData(battleDanTaskUsers);
 		
-		return resultVo;
+		return resultVo;*/
+		return null;
 	}
 	
 	@RequestMapping(value="passThroughTakepartRoom")
@@ -242,6 +248,7 @@ public class BattleDanApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object startPassThrough(HttpServletRequest httpServletRequest)throws Exception{
+		/*
 		String projectId = httpServletRequest.getParameter("projectId");
 		String danId = httpServletRequest.getParameter("danId");
 		
@@ -309,7 +316,8 @@ public class BattleDanApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battleDanUserPassThrough);
-		return resultVo;
+		return resultVo;*/
+		return null;
 	}
 	
 	@RequestMapping(value="accountResultInfo")
@@ -408,7 +416,18 @@ public class BattleDanApi {
 		
 		String danId = httpServletRequest.getParameter("danId");
 		
-		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId,userInfo.getId());
+		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId,userInfo.getId());
+		
+		BattleDanUser battleDanUser = null;
+		if(battleDanUsers!=null&&battleDanUsers.size()>0){
+			battleDanUser = battleDanUsers.get(0);
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("没有battleDanUser对象");
+			logger.error("调用danInfo方法的时候，没有battleDanUser对象");
+			return resultVo;
+		}
 		
 		List<BattleDanProject> battleDanProjects = battleDanProjectService.findAllByDanIdOrderByIndexAsc(battleDanUser.getDanId());
 		
@@ -446,7 +465,19 @@ public class BattleDanApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
-		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
+		
+		BattleDanUser battleDanUser = null;
+		
+		if(battleDanUsers!=null&&battleDanUsers.size()>0){
+			battleDanUser = battleDanUsers.get(0);
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("没有battleDanUser对象");
+			logger.error("调用danRoomInfo方法的时候，没有battleDanUser对象");
+			return resultVo;
+		}
 		
 		BattleRoom battleRoom=null;
 		if(!CommonUtil.isEmpty(battleDanUser.getRoomId())){
@@ -599,7 +630,17 @@ public class BattleDanApi {
 		
 		String danId = httpServletRequest.getParameter("danId");
 		
-		BattleDanUser battleDanUser = battleDanUserService.findOneByDanIdAndUserId(danId, userInfo.getId());
+		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
+		
+		BattleDanUser battleDanUser = null;
+		if(battleDanUsers.size()>0){
+			battleDanUser = battleDanUsers.get(0);
+			if(battleDanUsers.size()>1){
+				BattleDanUser battleDanUser2 = battleDanUsers.get(1);
+				battleDanUser2.setIsDel(1);
+				battleDanUserService.update(battleDanUser2);
+			}
+		}
 		
 		Integer signCount = battleDanUser.getSignCount();
 		

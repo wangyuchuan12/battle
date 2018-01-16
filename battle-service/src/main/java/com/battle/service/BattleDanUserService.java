@@ -45,8 +45,8 @@ public class BattleDanUserService {
 		return battleDanUserDao.findOne(id);
 	}
 
-	public BattleDanUser findOneByDanIdAndUserId(String danId, String userId) {
-		return battleDanUserDao.findOneByDanIdAndUserId(danId,userId);
+	public List<BattleDanUser> findAllByDanIdAndUserId(String danId, String userId) {
+		return battleDanUserDao.findAllByDanIdAndUserId(danId,userId);
 	}
 
 	public List<BattleDanUser> findAllByRoomId(String roomId) {
