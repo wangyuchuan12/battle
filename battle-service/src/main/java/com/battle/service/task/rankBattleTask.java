@@ -51,7 +51,7 @@ public class rankBattleTask {
 	}
 	
 	//定时执行转行失败的任务，凌晨两点更新
-	@Scheduled(cron = "0 55 0 * * ?")
+	@Scheduled(cron = "0 0 2 * * ?")
 	public void battleRoomInit(){
 		
 		List<BattleGroupConfig> battleGroupConfigs = battleGroupConfigService.findAllByCode(BattleGroupConfig.CURRENT_FREND_ROOM_CODE);
