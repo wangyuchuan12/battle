@@ -84,11 +84,11 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         properties.setProperty("hibernate.jdbc.batch_size", "50");
         properties.setProperty("hibernate.jdbc.fetch_size", "50");
-        
+        /*
         properties.setProperty("hibernate.generate_statistics", "true");
         properties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
         properties.setProperty("javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE");
-        properties.setProperty("hibernate.cache.use_query_cache", "true");
+        properties.setProperty("hibernate.cache.use_query_cache", "true");*/
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
         return factory.getObject();
