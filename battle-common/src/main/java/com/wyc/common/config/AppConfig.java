@@ -48,7 +48,7 @@ import ch.qos.logback.core.net.server.Client;
     //    @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
 })
-//@ImportResource("classpath:applicationContext.xml")
+@ImportResource("classpath:applicationContext.xml")
 @EnableScheduling
 
 public class AppConfig{
