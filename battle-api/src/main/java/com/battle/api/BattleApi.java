@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,6 +63,7 @@ import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
@@ -130,6 +133,7 @@ public class BattleApi {
 	@Autowired
 	private BattleDanHandleService battleDanHandleService;
 	
+	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
 	public Object roomInfo(HttpServletRequest httpServletRequest){
@@ -1535,7 +1539,23 @@ public class BattleApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+		BattleRoom battleRoom = null;
+		
+		try{
+			battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+		}catch(Exception e){
+			logger.error("获取battleRoom错误第一次");
+			try{
+				battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+			}catch(Exception e2){
+				logger.error("获取battleRoom错误第二次,返回结果");
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("获取battleRoom错误");
+				return resultVo;
+			}
+			
+		}
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			Map<String, Object> data = new HashMap<>();

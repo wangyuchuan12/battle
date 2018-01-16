@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,6 +27,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.wyc.common.repositories","com.battle.dao"})
 @EnableTransactionManagement
+//@ImportResource("classpath:applicationContext.xml")
 public class DatabaseConfig {
 
     @Bean
