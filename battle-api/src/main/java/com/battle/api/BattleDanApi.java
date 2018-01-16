@@ -851,6 +851,8 @@ public class BattleDanApi {
 				
 				battleDanUser.setMinNum(battleDan.getMinNum());
 				
+				battleDanUser.setIsDel(0);
+				
 				battleDanUserService.add(battleDanUser);
 				
 				battleDanUsers.add(battleDanUser);

@@ -1,32 +1,97 @@
 package com.battle.service;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.battle.dao.BattleRoomDao;
 import com.battle.domain.BattleRoom;
+import com.wyc.common.service.RedisService;
 
 @Service
 public class BattleRoomService {
-
+	private final String  BATTLE_ROOM_KEY = "battle_room_key";
+	final static Logger logger = LoggerFactory.getLogger(BattleRoomService.class);
+	private static final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	@Autowired
 	private BattleRoomDao battleRoomDao;
+	@Autowired
+	private RedisService redisService;
 	public BattleRoom findOne(String id) {
 		
-		return battleRoomDao.findOne(id);
+		String key = BATTLE_ROOM_KEY;
+		key = key+"_"+id;
+		try{
+			readWriteLock.readLock().lock();
+			
+			BattleRoom battleRoom = redisService.getObject(key, BattleRoom.class);
+			if(battleRoom!=null){
+				return battleRoom;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("BattleRoomService的findOne从redis获取BattleRoom对象失败，从数据库中获取");
+		}finally{
+			readWriteLock.readLock().unlock();
+			
+		}
+		
+		BattleRoom battleRoom = battleRoomDao.findOne(id);
+		try{
+			redisService.setObject(key, BattleRoom.class);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("BattleRoomService的findOne方法存储BattleRoom对象到redis失败");
+		}
+		
+		return battleRoom;
 	}
 	public void add(BattleRoom battleRoom) {
 		
-		battleRoom.setId(UUID.randomUUID().toString());
-		battleRoom.setCreateAt(new DateTime());
-		battleRoom.setUpdateAt(new DateTime());
-		battleRoomDao.save(battleRoom);
+		String key = BATTLE_ROOM_KEY;
+		key = key+"_"+battleRoom.getId();
+		try{
+			readWriteLock.writeLock().lock();
+			
+			battleRoom.setId(UUID.randomUUID().toString());
+			battleRoom.setCreateAt(new DateTime());
+			battleRoom.setUpdateAt(new DateTime());
+			battleRoomDao.save(battleRoom);
+			
+			redisService.setObject(key,battleRoom);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("BattleRoomService的add方法存储BattleRoom对象到redis失败");
+		}finally{
+			readWriteLock.writeLock().unlock();
+			
+		}
 		
 	}
+	
+	public void update(BattleRoom battleRoom) {
+		String key = BATTLE_ROOM_KEY;
+		key = key+"_"+battleRoom.getId();
+		try{
+			readWriteLock.writeLock().lock();
+			battleRoom.setUpdateAt(new DateTime());
+			battleRoomDao.save(battleRoom);
+			redisService.setObject(key,battleRoom);
+		}catch(Exception e){
+			logger.error("BattleRoomService的update方法存储BattleRoom对象到redis失败");
+		}finally{
+			readWriteLock.writeLock().unlock();
+			
+		}
+	}
+	
 	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(String battleId, String periodId, String battleUserId,Integer isPk) {
 		
 		return battleRoomDao.findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(battleId,periodId,battleUserId,isPk);
@@ -53,16 +118,7 @@ public class BattleRoomService {
 	public Page<BattleRoom> findAllByUserId(String userId,Pageable pageable) {
 		return battleRoomDao.findAllByUserId(userId,pageable);
 	}
-	
-	
-	
-	public void update(BattleRoom battleRoom) {
-		
-		battleRoom.setUpdateAt(new DateTime());
-		
-		battleRoomDao.save(battleRoom);
-		
-	}
+
 	public Page<BattleRoom> findAll(Pageable pageable) {
 		
 		return battleRoomDao.findAll(pageable);

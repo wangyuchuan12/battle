@@ -1,6 +1,13 @@
 package com.wyc.common.config;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.cache.support.SimpleCacheManager;
@@ -49,11 +56,21 @@ public class SessionConfig {
 	}
 	
 	@Bean
-	public JedisConnectionFactory jedisConnectionFactory(){
+	public JedisConnectionFactory jedisConnectionFactory() throws FileNotFoundException, IOException{
+		
+		Properties properties = new Properties();
+        File redisConfigFile = new File("/etc/battle/redis.properties");
+        InputStream defaultConfig = this.getClass().getResourceAsStream("/redis.properties");
+
+        if (redisConfigFile.exists()) {
+            properties.load(new FileInputStream(redisConfigFile));
+        } else {
+            properties.load(defaultConfig);
+        }
 		JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-		jedisConnectionFactory.setHostName("www.chengxihome.com");
-		jedisConnectionFactory.setPort(6379);
-		jedisConnectionFactory.setPassword("wyc");
+		jedisConnectionFactory.setHostName(properties.getProperty("redis.ip"));
+		jedisConnectionFactory.setPort(Integer.parseInt(properties.getProperty("redis.port")));
+		jedisConnectionFactory.setPassword(properties.getProperty("redis.password"));
 		return jedisConnectionFactory;
 	}
 	

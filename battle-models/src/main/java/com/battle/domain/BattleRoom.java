@@ -1,5 +1,6 @@
 package com.battle.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -18,8 +19,13 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_room")
-public class BattleRoom {
+public class BattleRoom implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static final Integer STATUS_FREE = 0;
 	
 	public static final Integer STATUS_IN = 1;

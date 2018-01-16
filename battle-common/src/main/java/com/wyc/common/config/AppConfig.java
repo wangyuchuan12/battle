@@ -126,7 +126,10 @@ public class AppConfig{
 	        
 	        ApplicationProperties properties = new ApplicationProperties();
 	        File databaseConfigFile = new File(
-	                "/etc/luckDraw/application.properties");
+	                "/etc/battle/application.properties");
+	        
+	        File redisConfigFile = new File(
+	                "/etc/battle/redis.properties");
 	        
 	        
 	        try {
@@ -135,6 +138,18 @@ public class AppConfig{
 	            } else {
 	                InputStream defaultConfig = this.getClass()
 	                        .getResourceAsStream("/application.properties");
+	                properties.load(defaultConfig);
+	            }
+	        } catch (IOException e) {
+	            logger.error("Load application.properties error: {}", e);
+	        }
+	        
+	        try {
+	            if (redisConfigFile.exists()) {
+	                properties.load(new FileInputStream(redisConfigFile));
+	            } else {
+	                InputStream defaultConfig = this.getClass()
+	                        .getResourceAsStream("/redis.properties");
 	                properties.load(defaultConfig);
 	            }
 	        } catch (IOException e) {

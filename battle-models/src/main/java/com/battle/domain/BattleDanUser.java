@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -16,7 +17,11 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="battle_dan_user",indexes={@Index(columnList="battle_id,dan_id,room_id,user_id",name="battleDanUserIndex")})
+@Table(name="battle_dan_user",
+indexes={@Index(columnList="battle_id,dan_id,room_id,user_id",name="battleDanUserIndex")},
+uniqueConstraints={
+	@UniqueConstraint(columnNames={"dan_id","user_id"})	
+})
 public class BattleDanUser {
 	
 	public static Integer STATUS_FREE = 0;
