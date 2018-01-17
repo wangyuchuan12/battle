@@ -27,29 +27,29 @@ public class BattlePk implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	//离开
-	public static final Integer STATUS_LEAVE = 0;
+	public static final int STATUS_LEAVE = 0;
 	
 	//进入房间
-	public static final Integer STATUS_INSIDE = 1;
+	public static final int STATUS_INSIDE = 1;
 	
 	//准备
-	public static final Integer STATUS_READY = 2;
+	public static final int STATUS_READY = 2;
 	
 	//开始
-	public static final Integer STATUS_BATTLE = 3;
+	public static final int STATUS_BATTLE = 3;
 	
 	
 	//未创建房间
-	public static final Integer ROOM_STATUS_FREE = 0;
+	public static final int ROOM_STATUS_FREE = 0;
 	
 	//已经创建房间，人数未满
-	public static final Integer ROOM_STATUS_CALL = 1;
+	public static final int ROOM_STATUS_CALL = 1;
 	
 	//人数已满，战斗中
-	public static final Integer ROOM_STATUS_BATTLE = 2;
+	public static final int ROOM_STATUS_BATTLE = 2;
 	
 	//结束
-	public static final Integer ROOM_STATUS_END = 3;
+	public static final int ROOM_STATUS_END = 3;
 	
 	@Id
 	@IdAnnotation
