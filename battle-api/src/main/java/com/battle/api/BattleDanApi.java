@@ -814,7 +814,6 @@ public class BattleDanApi {
 		synchronized(userInfo.getId().intern()){
 			
 			List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByUserIdAndPointIdOrderByLevelAsc(userInfo.getId(),battleDanPoint.getId());
-			System.out.println("syncData:"+userInfo.getIsSyncDan()+",battleDanUsers:"+battleDanUsers);
 			
 			if(/*userInfo.getIsSyncDan()==0||*/battleDanUsers==null||battleDanUsers.size()==0){
 				userInfo.setIsSyncDan(1);

@@ -54,11 +54,13 @@ public class BattleDanUserService {
 			String key =  BATTLE_DAN_USERS_BY_USERID_POINTID_KEY;;
 			key = key+"_"+userId+"_"+pointId;
 			List<BattleDanUser> battleDanUsers = redisService.getList(key);
-			Collections.sort(battleDanUsers, new Comparator<BattleDanUser>() {
-				public int compare(BattleDanUser battleDanUser, BattleDanUser battleDanUser2) {  
-	                return battleDanUser.getLevel().compareTo(battleDanUser2.getLevel());
-	            }  
-			});
+			if(battleDanUsers!=null&&battleDanUsers.size()>0){
+				Collections.sort(battleDanUsers, new Comparator<BattleDanUser>() {
+					public int compare(BattleDanUser battleDanUser, BattleDanUser battleDanUser2) {  
+		                return battleDanUser.getLevel().compareTo(battleDanUser2.getLevel());
+		            }  
+				});
+			}
 			return battleDanUsers;
 		}catch(Exception e){
 			e.printStackTrace();
