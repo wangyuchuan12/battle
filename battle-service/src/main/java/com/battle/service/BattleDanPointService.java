@@ -27,7 +27,7 @@ public class BattleDanPointService {
 			
 			List<BattleDanPoint> battleDanPoints = redisService.getList(key);
 			
-			if(battleDanPoints!=null){
+			if(battleDanPoints!=null&&battleDanPoints.size()>0){
 				return battleDanPoints;
 			}
 			
