@@ -224,6 +224,8 @@ public class BattlePkApi {
 			
 			Long differ = nowDatetime.getMillis()-beatActiveTime.getMillis();
 			
+			System.out.println("beatStatus:"+beatStatus+",differ:"+differ);
+			
 			if(beatStatus==BattlePk.STATUS_LEAVE||(beatStatus==BattlePk.STATUS_INSIDE&&differ<2000)||(beatStatus==BattlePk.STATUS_READY&&differ<20000)){
 		
 				System.out.println(".......STATUS_LEAVE");
