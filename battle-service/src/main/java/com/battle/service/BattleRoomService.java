@@ -36,7 +36,7 @@ public class BattleRoomService {
 				return battleRoom;
 			}
 		}catch(Exception e){
-			logger.error("BattleRoomService的findOne从redis获取BattleRoom对象失败，从数据库中获取");
+			logger.error("BattleRoomService的findOne从redis获取BattleRoom对象失败，从数据库中获取,roomId为："+id);
 		}finally{
 			readWriteLock.readLock().unlock();
 			

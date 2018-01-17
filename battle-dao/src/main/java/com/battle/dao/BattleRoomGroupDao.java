@@ -1,5 +1,7 @@
 package com.battle.dao;
 
+import java.util.List;
+
 import javax.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.Lock;
@@ -9,7 +11,7 @@ import com.battle.domain.BattleRoomGroup;
 
 public interface BattleRoomGroupDao extends CrudRepository<BattleRoomGroup, String>{
 
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	BattleRoomGroup findOneByTypeAndCreaterUserId(Integer type, String userId);
+
+	List<BattleRoomGroup> findAllByTypeAndCreaterUserIdAndIsDel(Integer type, String userId,Integer isDel);
 
 }

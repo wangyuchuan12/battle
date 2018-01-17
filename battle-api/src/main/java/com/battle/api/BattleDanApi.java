@@ -173,6 +173,7 @@ public class BattleDanApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleTakepartApiFilter.class)
 	public Object passThroughTakepartRoom(HttpServletRequest httpServletRequest)throws Exception{
+		/*
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
@@ -240,7 +241,8 @@ public class BattleDanApi {
 		resultVo.setSuccess(true);
 		resultVo.setData(data);
 		
-		return resultVo;
+		return resultVo;*/
+		return null;
 	}
 	
 	@RequestMapping(value="startPassThrough")
@@ -320,41 +322,13 @@ public class BattleDanApi {
 		return null;
 	}
 	
-	@RequestMapping(value="accountResultInfo")
-	@ResponseBody
-	@Transactional
-	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
-	public Object accountResultInfo(HttpServletRequest httpServletRequest)throws Exception{
-		
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		
-		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
-		
-		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
-		
-		Map<String, Object> data = new HashMap<>();
-		
-		data.put("nickname", userInfo.getNickname());
-		data.put("headimgurl", userInfo.getHeadimgurl());
-		data.put("exp", battleAccountResult.getExp());
-		data.put("level", battleAccountResult.getLevel());
-		
-		data.put("danName", battleAccountResult.getDanName());
-		
-		ResultVo resultVo = new ResultVo();
-		resultVo.setSuccess(true);
-		
-		resultVo.setData(data);
-		
-		return resultVo;
-	}
-	
 	@RequestMapping(value="receiveTaskReward")
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object receiveTaskReward(HttpServletRequest httpServletRequest)throws Exception{
 		
+		/*
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String taskId = httpServletRequest.getParameter("taskId");
 		BattleDanTaskUser battleDanTaskUser = battleDanTaskUserService.findOne(taskId);
@@ -399,8 +373,38 @@ public class BattleDanApi {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
-		return resultVo;
+		return resultVo;*/
+		return null;
 	
+	}
+	
+	@RequestMapping(value="accountResultInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
+	public Object accountResultInfo(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("nickname", userInfo.getNickname());
+		data.put("headimgurl", userInfo.getHeadimgurl());
+		data.put("exp", battleAccountResult.getExp());
+		data.put("level", battleAccountResult.getLevel());
+		
+		data.put("danName", battleAccountResult.getDanName());
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(data);
+		
+		return resultVo;
 	}
 	
 	

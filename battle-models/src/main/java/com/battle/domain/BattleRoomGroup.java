@@ -66,6 +66,10 @@ public class BattleRoomGroup {
 	private Integer index;
 	
 	@ParamAnnotation
+	@Column(name="is_del")
+	private Integer isDel;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -147,6 +151,14 @@ public class BattleRoomGroup {
 
 	public void setPeriodId(String periodId) {
 		this.periodId = periodId;
+	}
+	
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {
