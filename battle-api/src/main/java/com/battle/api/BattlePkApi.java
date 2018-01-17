@@ -226,7 +226,7 @@ public class BattlePkApi {
 			
 			System.out.println("beatStatus:"+beatStatus+",differ:"+differ);
 			
-			if(beatStatus==BattlePk.STATUS_LEAVE||(beatStatus==BattlePk.STATUS_INSIDE&&differ<2000)||(beatStatus==BattlePk.STATUS_READY&&differ<20000)){
+			if(beatStatus==BattlePk.STATUS_LEAVE||(beatStatus==BattlePk.STATUS_INSIDE&&differ>50000)||(beatStatus==BattlePk.STATUS_READY&&differ>5000000)){
 		
 				System.out.println(".......STATUS_LEAVE");
 				battlePk.setBeatUserId(userInfo.getId());
