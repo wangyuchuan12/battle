@@ -1,5 +1,7 @@
 package com.battle.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +20,15 @@ public class BattleDanUserService {
 
 	public List<BattleDanUser> findAllByUserIdAndPointIdOrderByLevelAsc(String userId, String pointId) {
 		
-		return battleDanUserDao.findAllByUserIdAndPointIdOrderByLevelAsc(userId,pointId);
+		List<BattleDanUser> battleDanUsers = battleDanUserDao.findAllByUserIdAndPointId(userId,pointId);
+		
+		Collections.sort(battleDanUsers, new Comparator<BattleDanUser>() {
+			public int compare(BattleDanUser battleDanUser, BattleDanUser battleDanUser2) {  
+                return battleDanUser.getLevel().compareTo(battleDanUser2.getLevel());
+            }  
+		});
+		
+		return battleDanUsers;
 	}
 
 	public void add(BattleDanUser battleDanUser) {
