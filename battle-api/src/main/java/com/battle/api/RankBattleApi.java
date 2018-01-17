@@ -87,7 +87,7 @@ public class RankBattleApi {
 				myBattleRoomGroup.setType(BattleRoomGroup.FREND_TYPE);
 				myBattleRoomGroup.setBattleId(battleGroupConfig.getBattleId());
 				myBattleRoomGroup.setPeriodId(battleGroupConfig.getPeriodId());
-				
+				myBattleRoomGroup.setIsDel(0);
 				battleRoomGroupService.add(myBattleRoomGroup);
 				
 			}
@@ -152,6 +152,7 @@ public class RankBattleApi {
 				frendBattleRoomGroup.setType(BattleRoomGroup.FREND_TYPE);
 				frendBattleRoomGroup.setBattleId(battleGroupConfig.getBattleId());
 				frendBattleRoomGroup.setPeriodId(battleGroupConfig.getPeriodId());
+				frendBattleRoomGroup.setIsDel(0);
 				battleRoomGroupService.add(frendBattleRoomGroup);
 			}
 			
