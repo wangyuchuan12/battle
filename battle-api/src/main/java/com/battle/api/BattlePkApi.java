@@ -262,6 +262,8 @@ public class BattlePkApi {
 		
 		data.put("role", 1);
 		
+		System.out.println(".........battlePk.getBeatUsername():"+battlePk.getBeatUsername());
+		
 		if(battlePk.getBeatUserId().equals(userInfo.getId())){
 			data.put("isObtain",1);
 		}else{
