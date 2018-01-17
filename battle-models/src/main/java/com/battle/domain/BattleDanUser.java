@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,8 +24,13 @@ indexes={@Index(columnList="battle_id,dan_id,room_id,user_id",name="battleDanUse
 uniqueConstraints={
 	@UniqueConstraint(columnNames={"dan_id","user_id"})	
 })
-public class BattleDanUser {
+public class BattleDanUser implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static Integer STATUS_FREE = 0;
 	
 	public static Integer STATUS_IN = 1;
