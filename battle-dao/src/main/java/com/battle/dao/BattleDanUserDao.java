@@ -12,6 +12,6 @@ public interface BattleDanUserDao extends CrudRepository<BattleDanUser, String>{
 
 	List<BattleDanUser> findAllByRoomId(String roomId);
 
-	BattleDanUser findOneByUserIdAndPointIdAndLevel(String userId, String pointId, int level);
+	List<BattleDanUser> findAllByUserIdAndPointIdAndLevel(String userId, String pointId, int level);
 
 }

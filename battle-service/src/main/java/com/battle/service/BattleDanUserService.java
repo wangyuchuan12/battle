@@ -56,6 +56,20 @@ public class BattleDanUserService {
 
 	public BattleDanUser findOneByUserIdAndPointIdAndLevel(String userId, String pointId, int level) {
 		
-		return battleDanUserDao.findOneByUserIdAndPointIdAndLevel(userId,pointId,level);
+		List<BattleDanUser> battleDanUsers = battleDanUserDao.findAllByUserIdAndPointIdAndLevel(userId,pointId,level);
+		
+		BattleDanUser battleDanUser = null;
+		if(battleDanUsers!=null&&battleDanUsers.size()>0){
+			battleDanUser = battleDanUsers.get(0);
+		}
+		
+		if(battleDanUsers!=null&&battleDanUsers.size()>1){
+			for(int i =1;i<battleDanUsers.size();i++){
+				BattleDanUser battleDanUser2 = battleDanUsers.get(i);
+				battleDanUser2.setIsDel(1);
+				battleDanUserDao.save(battleDanUser2);
+			}
+		}
+		return battleDanUser;
 	}
 }
