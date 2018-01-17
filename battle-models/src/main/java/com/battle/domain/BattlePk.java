@@ -57,7 +57,7 @@ public class BattlePk implements Serializable{
 	
 	
 	@ParamAnnotation
-	@Column(name="home_user_id")
+	@Column(name="home_user_id",unique=true,updatable=false)
 	private String homeUserId;
 	
 	@ParamAnnotation

@@ -240,6 +240,8 @@ public class LoginApi{
 			userInfo.setAccountId(account.getId());
 			userInfo.setIsGod(0);
 			userInfo.setToken(UUID.randomUUID().toString());
+			userInfo.setIsCreateFrendGroup(0);
+			userInfo.setIsSyncDan(0);
 			wxUserInfoService.add(userInfo);
 
 			

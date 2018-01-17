@@ -23,26 +23,29 @@ public class BattleDanPointService {
 	public List<BattleDanPoint> findAllByIsRun(int isRun) {
 		
 		String key = BATTLE_DAN_POINT_KEY;
+		List<BattleDanPoint> battleDanPoints = null;
 		try{
 			
-			List<BattleDanPoint> battleDanPoints = redisService.getList(key);
+			battleDanPoints = redisService.getList(key);
 			
 			if(battleDanPoints!=null&&battleDanPoints.size()>0){
 				return battleDanPoints;
 			}
 			
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.error("BattleDanPointService从缓存获取数据出错，只能从数据库中获取");
 		}finally{
 			
 		}
 		try{
-			List<BattleDanPoint> battleDanPoints = battleDanPointDao.findAllByIsRun(isRun);
+			battleDanPoints = battleDanPointDao.findAllByIsRun(isRun);
 			redisService.setList(key, battleDanPoints, BattleDanPoint.class);
 			return battleDanPoints;
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.error("BattleDanPointService存入缓存出错");
 		}
-		return null;
+		return battleDanPoints;
 	}
 }

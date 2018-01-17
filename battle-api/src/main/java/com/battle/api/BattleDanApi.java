@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -59,6 +61,7 @@ import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
+import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -114,6 +117,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleDanRewardService battleDanRewardService;
+	
+	@Autowired
+	private WxUserInfoService wxUserInfoService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleDanApi.class);
 	
@@ -694,12 +700,9 @@ public class BattleDanApi {
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
 			if(oldBattleRoom.getStartTime().isBeforeNow()){
 				if(oldBattleRoom.getMininum()>oldBattleRoom.getNum()){
-					
-					System.out.println("mininum:"+oldBattleRoom.getMininum()+",num:"+oldBattleRoom.getNum());
 					battleRooms.add(oldBattleRoom);
 				}
 			}else{
-				System.out.println("时间还没到");
 				battleRooms.add(oldBattleRoom);
 			}
 		}
@@ -808,130 +811,139 @@ public class BattleDanApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
-		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByUserIdAndPointIdOrderByLevelAsc(userInfo.getId(),battleDanPoint.getId());
-		if(battleDanUsers==null||battleDanUsers.size()==0){
-			List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
-			battleDanUsers = new ArrayList<>();
-			Integer index = 0;
-			for(BattleDan battleDan:battleDans){
-				BattleDanUser battleDanUser = new BattleDanUser();
-				if(index==0){
-					battleDanUser.setStatus(BattleDanUser.STATUS_IN);
-				}else{
-					battleDanUser.setStatus(BattleDanUser.STATUS_FREE);
+		synchronized(userInfo.getId().intern()){
+			
+			List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByUserIdAndPointIdOrderByLevelAsc(userInfo.getId(),battleDanPoint.getId());
+			System.out.println("syncData:"+userInfo.getIsSyncDan()+",battleDanUsers:"+battleDanUsers);
+			
+			if(/*userInfo.getIsSyncDan()==0||*/battleDanUsers==null||battleDanUsers.size()==0){
+				userInfo.setIsSyncDan(1);
+				wxUserInfoService.update(userInfo);
+				List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
+				battleDanUsers = new ArrayList<>();
+				Integer index = 0;
+				for(BattleDan battleDan:battleDans){
+					BattleDanUser battleDanUser = new BattleDanUser();
+					if(index==0){
+						battleDanUser.setStatus(BattleDanUser.STATUS_IN);
+					}else{
+						battleDanUser.setStatus(BattleDanUser.STATUS_FREE);
+					}
+					index++;
+					battleDanUser.setDanId(battleDan.getId());
+					battleDanUser.setDanName(battleDan.getName());
+					battleDanUser.setImgUrl(battleDan.getImgUrl());
+					battleDanUser.setLevel(battleDan.getLevel());
+					battleDanUser.setPointId(battleDan.getPointId());
+					
+					battleDanUser.setBattleId(battleDan.getBattleId());
+					
+					battleDanUser.setPeriodId(battleDan.getPeriodId());
+					
+					battleDanUser.setPlaces(battleDan.getPlaces());
+					
+					battleDanUser.setUserId(userInfo.getId());
+					
+					battleDanUser.setSign1BeanCost(battleDan.getSign1BeanCost());
+					
+					battleDanUser.setSign2BeanCost(battleDan.getSign2BeanCost());
+					
+					battleDanUser.setSign3BeanCost(battleDan.getSign3BeanCost());
+					
+					battleDanUser.setSign4BeanCost(battleDan.getSign4BeanCost());
+					
+					battleDanUser.setIsSign(0);
+					
+					battleDanUser.setSignCount(0);
+					
+					battleDanUser.setScoreGogal(battleDan.getScoreGogal());
+					
+					battleDanUser.setMaxNum(battleDan.getMaxNum());
+					
+					battleDanUser.setTimeLong(battleDan.getTimeLong());
+					
+					battleDanUser.setMinNum(battleDan.getMinNum());
+					
+					battleDanUser.setIsDel(0);
+					
+					battleDanUserService.add(battleDanUser);
+					
+					battleDanUsers.add(battleDanUser);
 				}
-				index++;
-				battleDanUser.setDanId(battleDan.getId());
-				battleDanUser.setDanName(battleDan.getName());
-				battleDanUser.setImgUrl(battleDan.getImgUrl());
-				battleDanUser.setLevel(battleDan.getLevel());
-				battleDanUser.setPointId(battleDan.getPointId());
-				
-				battleDanUser.setBattleId(battleDan.getBattleId());
-				
-				battleDanUser.setPeriodId(battleDan.getPeriodId());
-				
-				battleDanUser.setPlaces(battleDan.getPlaces());
-				
-				battleDanUser.setUserId(userInfo.getId());
-				
-				battleDanUser.setSign1BeanCost(battleDan.getSign1BeanCost());
-				
-				battleDanUser.setSign2BeanCost(battleDan.getSign2BeanCost());
-				
-				battleDanUser.setSign3BeanCost(battleDan.getSign3BeanCost());
-				
-				battleDanUser.setSign4BeanCost(battleDan.getSign4BeanCost());
-				
-				battleDanUser.setIsSign(0);
-				
-				battleDanUser.setSignCount(0);
-				
-				battleDanUser.setScoreGogal(battleDan.getScoreGogal());
-				
-				battleDanUser.setMaxNum(battleDan.getMaxNum());
-				
-				battleDanUser.setTimeLong(battleDan.getTimeLong());
-				
-				battleDanUser.setMinNum(battleDan.getMinNum());
-				
-				battleDanUser.setIsDel(0);
-				
-				battleDanUserService.add(battleDanUser);
-				
-				battleDanUsers.add(battleDanUser);
-			}
-		}else{
-			BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
-			for(Integer i = 0;i<battleDanUsers.size();i++){
-				BattleDanUser battleDanUser = battleDanUsers.get(i);
-				if(battleDanUser.getStatus()==BattleDanUser.STATUS_SUCCESS){
-					if(i<battleDanUsers.size()-1){
-						BattleDanUser battleDanUser2 = battleDanUsers.get(i+1);
-						/*if(battleDanUser2.getStatus()==BattleDanUser.STATUS_FREE){
-							battleDanUser2.setStatus(BattleDanUser.STATUS_IN);
-							battleDanUserService.update(battleDanUser2);
-						}*/
-						battleAccountResult.setLevel(battleDanUser2.getLevel());
-						battleAccountResult.setDanName(battleDanUser2.getDanName());
-						battleAccountResult.setDanId(battleDanUser2.getId());
+			}else{
+				userInfo.setIsSyncDan(1);
+				wxUserInfoService.update(userInfo);
+				BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
+				for(Integer i = 0;i<battleDanUsers.size();i++){
+					BattleDanUser battleDanUser = battleDanUsers.get(i);
+					if(battleDanUser.getStatus()==BattleDanUser.STATUS_SUCCESS){
+						if(i<battleDanUsers.size()-1){
+							BattleDanUser battleDanUser2 = battleDanUsers.get(i+1);
+							/*if(battleDanUser2.getStatus()==BattleDanUser.STATUS_FREE){
+								battleDanUser2.setStatus(BattleDanUser.STATUS_IN);
+								battleDanUserService.update(battleDanUser2);
+							}*/
+							battleAccountResult.setLevel(battleDanUser2.getLevel());
+							battleAccountResult.setDanName(battleDanUser2.getDanName());
+							battleAccountResult.setDanId(battleDanUser2.getId());
+						}
 					}
 				}
+				
+				battleAccountResultService.update(battleAccountResult);
 			}
 			
-			battleAccountResultService.update(battleAccountResult);
-		}
-		
-		
-		
-		List<Map<String, Object>> usersResponse = new ArrayList<>();
-		
-		for(BattleDanUser battleDanUser:battleDanUsers){
-			Map<String, Object> battleDanUserMap = new HashMap<>();
 			
-			battleDanUserMap.put("id", battleDanUser.getId());
-			battleDanUserMap.put("danId", battleDanUser.getDanId());
-			battleDanUserMap.put("danName", battleDanUser.getDanName());
-			battleDanUserMap.put("imgUrl", battleDanUser.getImgUrl());
-			battleDanUserMap.put("level", battleDanUser.getLevel());
-		
 			
-			Integer signCount = battleDanUser.getSignCount();
-			Integer sign1BeanCount = battleDanUser.getSign1BeanCost();
-			Integer sign2BeanCount = battleDanUser.getSign2BeanCost();
-			Integer sign3BeanCount = battleDanUser.getSign3BeanCost();
-			Integer sign4BeanCount = battleDanUser.getSign4BeanCost();
-			Integer costBean = 0;
+			List<Map<String, Object>> usersResponse = new ArrayList<>();
 			
-			if(signCount==0){
-				costBean = sign1BeanCount;
-			}else if(signCount==1){
-				costBean = sign2BeanCount;
-			}else if(signCount==2){
-				costBean = sign3BeanCount;
-			}else if(signCount==3){
-				costBean = sign3BeanCount;
-			}else{
-				costBean = sign4BeanCount;
+			for(BattleDanUser battleDanUser:battleDanUsers){
+				Map<String, Object> battleDanUserMap = new HashMap<>();
+				
+				battleDanUserMap.put("id", battleDanUser.getId());
+				battleDanUserMap.put("danId", battleDanUser.getDanId());
+				battleDanUserMap.put("danName", battleDanUser.getDanName());
+				battleDanUserMap.put("imgUrl", battleDanUser.getImgUrl());
+				battleDanUserMap.put("level", battleDanUser.getLevel());
+			
+				
+				Integer signCount = battleDanUser.getSignCount();
+				Integer sign1BeanCount = battleDanUser.getSign1BeanCost();
+				Integer sign2BeanCount = battleDanUser.getSign2BeanCost();
+				Integer sign3BeanCount = battleDanUser.getSign3BeanCost();
+				Integer sign4BeanCount = battleDanUser.getSign4BeanCost();
+				Integer costBean = 0;
+				
+				if(signCount==0){
+					costBean = sign1BeanCount;
+				}else if(signCount==1){
+					costBean = sign2BeanCount;
+				}else if(signCount==2){
+					costBean = sign3BeanCount;
+				}else if(signCount==3){
+					costBean = sign3BeanCount;
+				}else{
+					costBean = sign4BeanCount;
+				}
+				
+				battleDanUserMap.put("costBean", costBean);
+				
+				battleDanUserMap.put("signCount", signCount);
+				
+				battleDanUserMap.put("status", battleDanUser.getStatus());
+				
+				battleDanUserMap.put("isSign", battleDanUser.getIsSign());
+				
+				usersResponse.add(battleDanUserMap);
 			}
 			
-			battleDanUserMap.put("costBean", costBean);
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
 			
-			battleDanUserMap.put("signCount", signCount);
+			resultVo.setData(usersResponse);
 			
-			battleDanUserMap.put("status", battleDanUser.getStatus());
-			
-			battleDanUserMap.put("isSign", battleDanUser.getIsSign());
-			
-			usersResponse.add(battleDanUserMap);
+			return resultVo;
 		}
-		
-		ResultVo resultVo = new ResultVo();
-		resultVo.setSuccess(true);
-		
-		resultVo.setData(usersResponse);
-		
-		return resultVo;
 		
 	}
 }

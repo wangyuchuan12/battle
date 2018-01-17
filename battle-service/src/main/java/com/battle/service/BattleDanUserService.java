@@ -61,6 +61,7 @@ public class BattleDanUserService {
 			});
 			return battleDanUsers;
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.error("从redis得到List<BattleDanUser>数据出错");
 		}finally{
 			readWriteLock.readLock().unlock();
@@ -74,7 +75,9 @@ public class BattleDanUserService {
 		
 		List<BattleDanUser> battleDanUsers = findBattleDanUsersByUserIdAndPointId(userId, pointId);
 		
-		if(battleDanUsers!=null){
+		System.out.println(".............battleDanUsers:"+battleDanUsers);
+		
+		if(battleDanUsers!=null&&battleDanUsers.size()>0){
 			return battleDanUsers;
 		}
 				
@@ -96,11 +99,8 @@ public class BattleDanUserService {
 		
 		battleDanUser.setId(UUID.randomUUID().toString());
 		battleDanUser.setCreateAt(new DateTime());
-		battleDanUser.setUpdateAt(new DateTime());
+		battleDanUser.setUpdateAt(new DateTime());		
 		battleDanUserDao.save(battleDanUser);
-		
-		battleDanUserDao.save(battleDanUser);
-		
 	}
 
 	public void update(BattleDanUser battleDanUser) {

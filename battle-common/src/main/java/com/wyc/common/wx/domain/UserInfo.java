@@ -102,6 +102,10 @@ public class UserInfo {
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private Integer isCreateFrendGroup;
     
+    @Column(name="is_sync_dan")
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    private Integer isSyncDan;
+    
     //一切的主宰
     @Column(name="is_god")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
@@ -268,5 +272,11 @@ public class UserInfo {
 	}
 	public void setIsCreateFrendGroup(Integer isCreateFrendGroup) {
 		this.isCreateFrendGroup = isCreateFrendGroup;
+	}
+	public Integer getIsSyncDan() {
+		return isSyncDan;
+	}
+	public void setIsSyncDan(Integer isSyncDan) {
+		this.isSyncDan = isSyncDan;
 	}
 }
