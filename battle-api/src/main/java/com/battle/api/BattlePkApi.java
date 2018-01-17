@@ -199,8 +199,6 @@ public class BattlePkApi {
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo beatInto(HttpServletRequest httpServletRequest)throws Exception{
 		
-		
-		System.out.println("...........beatInto");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -209,13 +207,11 @@ public class BattlePkApi {
 		BattlePk battlePk = battlePkService.findOne(id);
 		
 		if(battlePk.getHomeUserId().equals(userInfo.getId())){
-			System.out.println(".......homeIntoCall");
 			return homeInto(httpServletRequest);
 		}
 		
 		if(battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_CALL||battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_FREE){
 			
-			System.out.println(".......status");
 			Integer beatStatus = battlePk.getBeatStatus();
 			
 			DateTime beatActiveTime = battlePk.getBeatActiveTime();
@@ -224,11 +220,8 @@ public class BattlePkApi {
 			
 			Long differ = nowDatetime.getMillis()-beatActiveTime.getMillis();
 			
-			System.out.println("beatStatus:"+beatStatus+",differ:"+differ);
-			
 			if(beatStatus==BattlePk.STATUS_LEAVE||(beatStatus==BattlePk.STATUS_INSIDE&&differ>50000)||(beatStatus==BattlePk.STATUS_READY&&differ>5000000)){
 		
-				System.out.println(".......STATUS_LEAVE");
 				battlePk.setBeatUserId(userInfo.getId());
 				
 				battlePk.setBeatUserImgurl(userInfo.getHeadimgurl());
@@ -263,8 +256,6 @@ public class BattlePkApi {
 		data.put("roomId", battlePk.getRoomId());
 		
 		data.put("role", 1);
-		
-		System.out.println(".........battlePk.getBeatUsername():"+battlePk.getBeatUsername());
 		
 		if(battlePk.getBeatUserId().equals(userInfo.getId())){
 			data.put("isObtain",1);

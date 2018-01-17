@@ -111,8 +111,7 @@ public class RankBattleApi {
 		}
 				
 		String recommendUserId = httpServletRequest.getParameter("recommendUserId");
-		
-		System.out.println("........recommendUserId:"+recommendUserId);
+
 		if(!CommonUtil.isEmpty(recommendUserId)){
 			
 			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
