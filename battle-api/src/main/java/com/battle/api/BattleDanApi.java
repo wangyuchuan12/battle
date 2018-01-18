@@ -634,7 +634,26 @@ public class BattleDanApi {
 		
 		String danId = httpServletRequest.getParameter("danId");
 		
-		System.out.println("................danId:"+danId);
+		if(CommonUtil.isEmpty(danId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			
+			resultVo.setErrorMsg("缺少参数");
+			
+			return resultVo;
+		}
+		
+		BattleDan battleDan = battleDanService.findOne(danId);
+		
+		if(battleDan==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			
+			resultVo.setErrorMsg("输入的是无效参数");
+			
+			return resultVo;
+		}
+		
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
 		
@@ -648,9 +667,50 @@ public class BattleDanApi {
 			}
 		}
 		
-		System.out.println("......battleDanUsers:"+battleDanUsers);
-		System.out.println("......battleDanUser:"+battleDanUser);
-		System.out.println("......battleDanUser.getSignCount:"+battleDanUser.getSignCount());
+		
+		if(battleDanUser==null){
+			battleDanUser = new BattleDanUser();
+			battleDanUser.setStatus(BattleDanUser.STATUS_FREE);
+			battleDanUser.setDanId(battleDan.getId());
+			battleDanUser.setDanName(battleDan.getName());
+			battleDanUser.setImgUrl(battleDan.getImgUrl());
+			battleDanUser.setLevel(battleDan.getLevel());
+			battleDanUser.setPointId(battleDan.getPointId());
+			
+			battleDanUser.setBattleId(battleDan.getBattleId());
+			
+			battleDanUser.setPeriodId(battleDan.getPeriodId());
+			
+			battleDanUser.setPlaces(battleDan.getPlaces());
+			
+			battleDanUser.setUserId(userInfo.getId());
+			
+			battleDanUser.setSign1BeanCost(battleDan.getSign1BeanCost());
+			
+			battleDanUser.setSign2BeanCost(battleDan.getSign2BeanCost());
+			
+			battleDanUser.setSign3BeanCost(battleDan.getSign3BeanCost());
+			
+			battleDanUser.setSign4BeanCost(battleDan.getSign4BeanCost());
+			
+			battleDanUser.setIsSign(0);
+			
+			battleDanUser.setSignCount(0);
+			
+			battleDanUser.setScoreGogal(battleDan.getScoreGogal());
+			
+			battleDanUser.setMaxNum(battleDan.getMaxNum());
+			
+			battleDanUser.setTimeLong(battleDan.getTimeLong());
+			
+			battleDanUser.setMinNum(battleDan.getMinNum());
+			
+			battleDanUser.setIsDel(0);
+			
+			battleDanUserService.add(battleDanUser);
+			
+			battleDanUsers.add(battleDanUser);
+		}
 		
 		Integer signCount = battleDanUser.getSignCount();
 		
