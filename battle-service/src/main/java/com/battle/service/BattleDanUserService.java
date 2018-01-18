@@ -76,8 +76,7 @@ public class BattleDanUserService {
 	public List<BattleDanUser> findAllByUserIdAndPointIdOrderByLevelAsc(String userId, String pointId) {
 		
 		List<BattleDanUser> battleDanUsers = findBattleDanUsersByUserIdAndPointId(userId, pointId);
-		
-		System.out.println(".............battleDanUsers:"+battleDanUsers);
+	
 		
 		if(battleDanUsers!=null&&battleDanUsers.size()>0){
 			return battleDanUsers;

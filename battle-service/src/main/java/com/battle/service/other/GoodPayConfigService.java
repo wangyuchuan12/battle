@@ -196,8 +196,6 @@ public class GoodPayConfigService {
 		order.setIsPay(1);
 		order.setIsToAccount(1);
 		
-		
-		System.out.println("后面的accountLoveNum:"+account.getLoveLife());
 		orderService.update(order);
 		
 		accountService.update(account);

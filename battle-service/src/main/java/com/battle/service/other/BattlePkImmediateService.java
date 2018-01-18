@@ -20,9 +20,6 @@ public class BattlePkImmediateService {
 
 		BattlePk battlePk = battlePkService.findOne(id);
 		
-		
-		System.out.println(".............id:"+id+",battlePk:"+battlePk);
-		
 		Integer beatStatus = battlePk.getBeatStatus();
 		
 		Integer homeStatus = battlePk.getHomeStatus();

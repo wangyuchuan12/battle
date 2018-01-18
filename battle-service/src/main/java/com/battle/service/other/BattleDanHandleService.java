@@ -61,9 +61,7 @@ public class BattleDanHandleService {
 		
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByRoomId(battleRoom.getId());
-		
-		System.out.println("............battleDanUsers:"+battleDanUsers);
-		
+
 		Map<String, BattleDanUser> battleDanUserMap = new HashMap<>();
 		
 		for(BattleDanUser battleDanUser:battleDanUsers){
@@ -72,11 +70,8 @@ public class BattleDanHandleService {
 			
 		}
 		
-		System.out.println(".........rewardReceive");
-		
 		if(CommonUtil.isNotEmpty(battleRoom.getDanId())){
-			
-			System.out.println(".........rewardReceive2");
+
 			BattleDan battleDan = battleDanService.findOne(battleRoom.getDanId());
 			
 			if(battleDan==null){
@@ -98,13 +93,9 @@ public class BattleDanHandleService {
 				
 				BattleDanUser battleDanUser = battleDanUserMap.get(battlePeriodMember.getUserId());
 				
-				System.out.println("............battleDanUser:"+battleDanUser.getUserId());
-				
 				if(battleDanUser!=null){
 					battleDanUser.setRank(index+1);
 					
-					
-					System.out.println(".....index:"+index+",places:"+places);
 					if(index<places){
 						battleDanUser.setStatus(BattleDanUser.STATUS_SUCCESS);
 						Integer level = battleDanUser.getLevel();
@@ -118,14 +109,12 @@ public class BattleDanHandleService {
 							battleDanUserService.update(battleDanUserNext);
 						}
 						
-						System.out.println("......level:"+battleDanUser.getLevel());
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
 						battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 						battleAccountResult.setDanName(battleDanUser.getDanName());
 						
 						battleAccountResultService.update(battleAccountResult);
 					}else{
-						System.out.println(".........fail");
 						battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
 						battleDanUser.setIsSign(0);
 					}
@@ -151,10 +140,7 @@ public class BattleDanHandleService {
 				for(int i=0;i<battlePeriodMembers.size();i++){
 					BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
 					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
-					
-					System.out.println("........battleRoomReward:"+battleRoomReward+",i:"+i);
 					if(battleRoomReward!=null){
-						System.out.println("..........battleRoomReward.rewardBean:"+battleRoomReward.getRewardBean()+",i:"+i);
 						battleRoomReward.setIsReceive(1);
 						battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 						battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());

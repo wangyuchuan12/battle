@@ -11,11 +11,7 @@ import com.battle.domain.BattleAccountResult;
 
 @Service
 public class BattleAccountResultService {
-	
-	public BattleAccountResultService() {
-		System.out.println("...............BattleAccountResultService");
-	}
-	
+
 	@Autowired
 	private BattleAccountResultDao battleAccountResultDao;
 
