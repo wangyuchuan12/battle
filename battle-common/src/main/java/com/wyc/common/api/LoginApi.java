@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.wyc.common.domain.Account;
+import com.wyc.common.domain.AccountRecord;
 import com.wyc.common.domain.vo.LoginVo;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
@@ -202,6 +204,7 @@ public class LoginApi{
 		accountService.add(account);
 		return account;
 	}
+	
 	
 	@Transactional
 	@ResponseBody

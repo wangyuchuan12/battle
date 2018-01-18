@@ -791,7 +791,7 @@ public class BattleDanApi {
 	@RequestMapping(value="list")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
 	public Object list(HttpServletRequest httpServletRequest)throws Exception{
 		
 		List<BattleDanPoint> battleDanPoints = battleDanPointService.findAllByIsRun(1);
@@ -811,7 +811,48 @@ public class BattleDanApi {
 			return resultVo;
 		}
 		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
+		List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);
+		for(BattleDan battleDan:battleDans){
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", battleDan.getId());
+			map.put("battleId", battleDan.getBattleId());
+			map.put("imgUrl", battleDan.getImgUrl());
+			map.put("level", battleDan.getLevel());
+			map.put("maxNum", battleDan.getMaxNum());
+			map.put("minNum", battleDan.getMinNum());
+			map.put("name", battleDan.getName());
+			map.put("periodId", battleDan.getPeriodId());
+			map.put("places", battleDan.getPlaces());
+			map.put("pointId", battleDan.getPointId());
+			map.put("scoreGogal", battleDan.getScoreGogal());
+			map.put("sign1BeanCost", battleDan.getSign1BeanCost());
+			map.put("sign2BeanCost", battleDan.getSign2BeanCost());
+			map.put("sign3BeanCost", battleDan.getSign3BeanCost());
+			map.put("sign4BeanCost", battleDan.getSign4BeanCost());
+			map.put("timeLong", battleDan.getTimeLong());
+			if(battleDan.getLevel()<battleAccountResult.getLevel()){
+				map.put("status", BattleDan.STATUS_SUCCESS);
+			}else if(battleDan.getLevel()==battleAccountResult.getLevel()){
+				map.put("status", BattleDan.STATUS_IN);
+			}else{
+				map.put("status", BattleDan.STATUS_FREE);
+			}
+			list.add(map);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(list);
+		
+		return resultVo;
+		
+		/*
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
@@ -819,7 +860,7 @@ public class BattleDanApi {
 			
 			List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByUserIdAndPointIdOrderByLevelAsc(userInfo.getId(),battleDanPoint.getId());
 			
-			if(/*userInfo.getIsSyncDan()==0||*/battleDanUsers==null||battleDanUsers.size()==0){
+			if(battleDanUsers==null||battleDanUsers.size()==0){
 				userInfo.setIsSyncDan(1);
 				wxUserInfoService.update(userInfo);
 				List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
@@ -882,10 +923,6 @@ public class BattleDanApi {
 					if(battleDanUser.getStatus()==BattleDanUser.STATUS_SUCCESS){
 						if(i<battleDanUsers.size()-1){
 							BattleDanUser battleDanUser2 = battleDanUsers.get(i+1);
-							/*if(battleDanUser2.getStatus()==BattleDanUser.STATUS_FREE){
-								battleDanUser2.setStatus(BattleDanUser.STATUS_IN);
-								battleDanUserService.update(battleDanUser2);
-							}*/
 							battleAccountResult.setLevel(battleDanUser2.getLevel());
 							battleAccountResult.setDanName(battleDanUser2.getDanName());
 							battleAccountResult.setDanId(battleDanUser2.getId());
@@ -946,7 +983,7 @@ public class BattleDanApi {
 			resultVo.setData(usersResponse);
 			
 			return resultVo;
-		}
+		}*/
 		
 	}
 }

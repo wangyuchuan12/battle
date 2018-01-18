@@ -17,6 +17,14 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle_dan")
 public class BattleDan {
+	
+	public static Integer STATUS_FREE = 0;
+	
+	public static Integer STATUS_IN = 1;
+	
+	public static Integer STATUS_SUCCESS = 2;
+	
+	public static Integer STATUS_FAIL = 3;
 	@Id
 	@IdAnnotation
 	private String id;
