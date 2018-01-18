@@ -884,6 +884,7 @@ public class BattleDanApi {
 			map.put("maxNum", battleDan.getMaxNum());
 			map.put("minNum", battleDan.getMinNum());
 			map.put("name", battleDan.getName());
+			map.put("danName", battleDan.getName());
 			map.put("periodId", battleDan.getPeriodId());
 			map.put("places", battleDan.getPlaces());
 			map.put("pointId", battleDan.getPointId());
