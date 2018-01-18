@@ -843,6 +843,12 @@ public class BattleDanApi {
 			}else{
 				map.put("status", BattleDan.STATUS_FREE);
 			}
+			
+			map.put("costBean", battleDan.getSign1BeanCost());
+			
+			map.put("signCount", 1);
+			
+			map.put("isSign", 0);
 			list.add(map);
 		}
 		
