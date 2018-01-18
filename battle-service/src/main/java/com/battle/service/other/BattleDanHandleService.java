@@ -70,9 +70,11 @@ public class BattleDanHandleService {
 			
 		}
 		
+		System.out.println(".........rewardReceive");
 		
 		if(CommonUtil.isNotEmpty(battleRoom.getDanId())){
 			
+			System.out.println(".........rewardReceive2");
 			BattleDan battleDan = battleDanService.findOne(battleRoom.getDanId());
 			
 			if(battleDan==null){
@@ -97,6 +99,8 @@ public class BattleDanHandleService {
 				if(battleDanUser!=null){
 					battleDanUser.setRank(index+1);
 					
+					
+					System.out.println(".....index:"+index+",places:"+places);
 					if(index<places){
 						battleDanUser.setStatus(BattleDanUser.STATUS_SUCCESS);
 						Integer level = battleDanUser.getLevel();
@@ -110,12 +114,14 @@ public class BattleDanHandleService {
 							battleDanUserService.update(battleDanUserNext);
 						}
 						
+						System.out.println("......level:"+battleDanUser.getLevel());
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
 						battleAccountResult.setLevel(battleDanUser.getLevel());
 						battleAccountResult.setDanName(battleDanUser.getDanName());
 						
 						battleAccountResultService.update(battleAccountResult);
 					}else{
+						System.out.println(".........fail");
 						battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
 						battleDanUser.setIsSign(0);
 					}
