@@ -465,10 +465,12 @@ public class BattleDanApi {
 	public Object danRoomInfo(HttpServletRequest httpServletRequest)throws Exception{
 		String danId = httpServletRequest.getParameter("danId");
 	
-		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		System.out.println("danId:"+danId+",userId:"+userInfo.getId());
+		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
 		
 		BattleDanUser battleDanUser = null;
