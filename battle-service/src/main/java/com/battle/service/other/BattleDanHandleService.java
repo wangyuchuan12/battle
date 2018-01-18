@@ -120,7 +120,7 @@ public class BattleDanHandleService {
 						
 						System.out.println("......level:"+battleDanUser.getLevel());
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
-						battleAccountResult.setLevel(battleDanUser.getLevel());
+						battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 						battleAccountResult.setDanName(battleDanUser.getDanName());
 						
 						battleAccountResultService.update(battleAccountResult);
