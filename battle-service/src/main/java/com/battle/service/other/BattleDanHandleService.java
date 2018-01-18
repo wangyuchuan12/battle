@@ -62,6 +62,8 @@ public class BattleDanHandleService {
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByRoomId(battleRoom.getId());
 		
+		System.out.println("............battleDanUsers:"+battleDanUsers);
+		
 		Map<String, BattleDanUser> battleDanUserMap = new HashMap<>();
 		
 		for(BattleDanUser battleDanUser:battleDanUsers){
@@ -95,6 +97,8 @@ public class BattleDanHandleService {
 				BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(index);
 				
 				BattleDanUser battleDanUser = battleDanUserMap.get(battlePeriodMember.getUserId());
+				
+				System.out.println("............battleDanUser:"+battleDanUser.getUserId());
 				
 				if(battleDanUser!=null){
 					battleDanUser.setRank(index+1);
