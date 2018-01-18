@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -30,14 +28,10 @@ import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDanProject;
 import com.battle.domain.BattleDanReward;
-import com.battle.domain.BattleDanTask;
-import com.battle.domain.BattleDanTaskUser;
 import com.battle.domain.BattleDanUser;
-import com.battle.domain.BattleDanUserPassThrough;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
-import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.LoginStatusFilter;
@@ -639,6 +633,8 @@ public class BattleDanApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		String danId = httpServletRequest.getParameter("danId");
+		
+		System.out.println("................danId:"+danId);
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
 		
