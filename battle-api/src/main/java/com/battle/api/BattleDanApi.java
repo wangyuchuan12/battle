@@ -652,6 +652,10 @@ public class BattleDanApi {
 			}
 		}
 		
+		System.out.println("......battleDanUsers:"+battleDanUsers);
+		System.out.println("......battleDanUser:"+battleDanUser);
+		System.out.println("......battleDanUser.getSignCount:"+battleDanUser.getSignCount());
+		
 		Integer signCount = battleDanUser.getSignCount();
 		
 		Integer beanCost = 0;

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -131,7 +129,7 @@ public class BattleDanHandleService {
 			
 			Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 			
-			for(Integer i = 0;i<battleRoomRewards.size();i++){
+			for(int i = 0;i<battleRoomRewards.size();i++){
 				
 				BattleRoomReward battleRoomReward = battleRoomRewards.get(i);
 				battleRoomRewardMap.put(i, battleRoomReward);
@@ -140,11 +138,13 @@ public class BattleDanHandleService {
 			
 			
 			if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
-				for(Integer i=0;i<battlePeriodMembers.size();i++){
+				for(int i=0;i<battlePeriodMembers.size();i++){
 					BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
 					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
 					
+					System.out.println("........battleRoomReward:"+battleRoomReward+",i:"+i);
 					if(battleRoomReward!=null){
+						System.out.println("..........battleRoomReward.rewardBean:"+battleRoomReward.getRewardBean()+",i:"+i);
 						battleRoomReward.setIsReceive(1);
 						battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 						battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());

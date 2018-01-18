@@ -1722,9 +1722,7 @@ public class BattleApi {
 				battleRoom.setEndType(BattleRoom.SCROLL_GOGAL_END_TYPE);
 			}
 			
-			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 			
-			sessionManager.update(battlePeriodMember);
 			
 			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
 			
@@ -1734,6 +1732,9 @@ public class BattleApi {
 					break;
 				}
 			}
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			sessionManager.update(battlePeriodMember);
 			
 		}else if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
 			
@@ -1741,9 +1742,7 @@ public class BattleApi {
 				battleRoom.setStatus(BattleRoom.STATUS_END);
 			}
 			
-			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 			
-			sessionManager.update(battlePeriodMember);
 			
 			List<BattlePeriodMember> battlePeriodMembers = battleDanHandleService.rewardReceive(battleRoom);
 			
@@ -1753,8 +1752,15 @@ public class BattleApi {
 					break;
 				}
 			}
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			
+			sessionManager.update(battlePeriodMember);
 			
 		}
+		
+		
+		
+		
 		
 		battleRoomService.update(battleRoom);
 		
