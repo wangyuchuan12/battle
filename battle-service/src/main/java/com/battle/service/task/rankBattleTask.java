@@ -51,7 +51,7 @@ public class rankBattleTask {
 	}
 	
 	//定时执行转行失败的任务，凌晨两点更新
-	@Scheduled(cron = "0 14 3 * * ?")
+	@Scheduled(cron = "0 23 3 * * ?")
 	public void battleRoomInit(){
 		
 		List<BattleGroupConfig> battleGroupConfigs = battleGroupConfigService.findAllByCode(BattleGroupConfig.CURRENT_FREND_ROOM_CODE);
@@ -75,6 +75,9 @@ public class rankBattleTask {
 				battleRoomService.update(battleRoom);
 			}
 		}
+		
+		battleGroupConfig.setBattleId("9");
+		battleGroupConfig.setPeriodId("adc24368-647f-4d9f-9964-22ed359440ac");
 		
 		Battle battle = battleService.findOne(battleGroupConfig.getBattleId());
 		
