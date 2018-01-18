@@ -234,7 +234,6 @@ public class BattleTakepartApiFilter extends Filter{
 
 	@Override
 	public Object handlerAfter(SessionManager sessionManager) {
-		System.out.println("...............handlerAfter");
 		return null;
 	}
 

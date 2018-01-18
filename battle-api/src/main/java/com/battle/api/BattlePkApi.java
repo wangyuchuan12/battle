@@ -401,20 +401,12 @@ public class BattlePkApi {
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
-		
-		BattlePeriodMember battlePeriodMember2 = sessionManager.getObject(BattlePeriodMember.class);
-		
-		System.out.println(".................battlePeriodMember2:"+battlePeriodMember2.getId()+",battleRoom.id:"+battlePeriodMember2.getRoomId());
-		
 		ResultVo resultVo2 = (ResultVo)sessionManager.getReturnValue();
 		
 		if(resultVo2==null){
 			resultVo2 = sessionManager.getObject(ResultVo.class);
 		}
-		
-		if(resultVo2!=null){
-			System.out.println("....................................success:"+resultVo2.isSuccess()+",errorMsg:"+resultVo2.getErrorMsg());
-		}
+
 		
 		String id = httpServletRequest.getParameter("id");
 		
@@ -453,15 +445,10 @@ public class BattlePkApi {
 		}
 		
 		
-		System.out.println("............roleInt:"+roleInt+",userInfo.getId:"+userInfo.getId()+",battlePk.getHomeUserId:"+battlePk.getHomeUserId());
 		
 		if(roleInt==0&&userInfo.getId().equals(battlePk.getHomeUserId())){
 			
-			System.out.println("battlePk.getHomeStatus():"+battlePk.getHomeStatus());
-			System.out.println("battlePk.getHomeStatus()==BattlePk.STATUS_READY:"+(battlePk.getHomeStatus()==BattlePk.STATUS_READY));
-			System.out.println("battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE:"+(battlePk.getHomeStatus()==BattlePk.STATUS_INSIDE));
 			if(battlePk.getHomeStatus().equals(BattlePk.STATUS_READY)){
-				System.out.println("...............................1");
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
@@ -474,7 +461,6 @@ public class BattlePkApi {
 				sessionManager.update(battlePeriodMember);
 				sessionManager.update(battleRoom);
 			}else if(battlePk.getHomeStatus().equals(BattlePk.STATUS_INSIDE)){
-				System.out.println(".............................2");
 				battlePk.setHomeStatus(BattlePk.STATUS_READY);
 				if(battlePk.getBeatStatus()==BattlePk.STATUS_READY){
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_BATTLE);
@@ -484,7 +470,6 @@ public class BattlePkApi {
 			}
 		}else if(roleInt==1&&!userInfo.getId().equals(battlePk.getHomeUserId())){
 			if(battlePk.getBeatStatus().equals(BattlePk.STATUS_INSIDE)){
-				System.out.println("..............................3");
 				battlePk.setBeatStatus(BattlePk.STATUS_READY);
 				if(battlePk.getHomeStatus()==BattlePk.STATUS_READY){
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_BATTLE);
@@ -492,8 +477,6 @@ public class BattlePkApi {
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				}
 			}else if(battlePk.getBeatStatus().equals(BattlePk.STATUS_READY)){
-				
-				System.out.println(".................................4");
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 				

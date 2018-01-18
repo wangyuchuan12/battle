@@ -526,8 +526,6 @@ public class ManagerApi {
 				num = num + subjectQuestions.size();
 			}
 			
-			System.out.println("num:"+battlePeriodStage.getQuestionCount()+",num2:"+num);
-			
 			if(battlePeriodStage.getQuestionCount()>num){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);

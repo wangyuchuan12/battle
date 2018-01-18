@@ -261,8 +261,6 @@ public class BattleExpertApi {
 		
 		BattleExpert battleExpert = battleExpertService.findOneByBattleIdAndBattleUserId(battleId, battleUser.getId());
 		
-		System.out.println("battleId:"+battleId+",battleUser.getId:"+battleUser.getId()+",battleExpert:"+battleExpert);
-		
 		if(battleExpert!=null&&battleExpert.getStatus()==BattleExpert.AUDIT_STATUS){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);

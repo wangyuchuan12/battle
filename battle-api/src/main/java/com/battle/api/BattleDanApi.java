@@ -469,8 +469,6 @@ public class BattleDanApi {
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
-		System.out.println("danId:"+danId+",userId:"+userInfo.getId());
-		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(danId, userInfo.getId());
 		
 		BattleDanUser battleDanUser = null;
@@ -879,6 +877,7 @@ public class BattleDanApi {
 		for(BattleDan battleDan:battleDans){
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", battleDan.getId());
+			map.put("danId", battleDan.getId());
 			map.put("battleId", battleDan.getBattleId());
 			map.put("imgUrl", battleDan.getImgUrl());
 			map.put("level", battleDan.getLevel());
