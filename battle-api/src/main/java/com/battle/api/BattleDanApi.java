@@ -850,7 +850,10 @@ public class BattleDanApi {
 	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
 	public Object list(HttpServletRequest httpServletRequest)throws Exception{
 		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		List<BattleDanPoint> battleDanPoints = battleDanPointService.findAllByIsRun(1);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		BattleDanPoint battleDanPoint = null;
 		if(battleDanPoints!=null&&battleDanPoints.size()==1){
@@ -866,8 +869,7 @@ public class BattleDanApi {
 			resultVo.setErrorMsg("关卡没卡记录");
 			return resultVo;
 		}
-		
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+	
 		
 		List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
 		
@@ -902,11 +904,41 @@ public class BattleDanApi {
 				map.put("status", BattleDan.STATUS_FREE);
 			}
 			
-			map.put("costBean", battleDan.getSign1BeanCost());
+			List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByDanIdAndUserId(battleDan.getId(), userInfo.getId());
 			
-			map.put("signCount", 1);
+			BattleDanUser battleDanUser = null;
+			if(battleDanUsers.size()>0){
+				battleDanUser = battleDanUsers.get(0);
+				if(battleDanUsers.size()>1){
+					BattleDanUser battleDanUser2 = battleDanUsers.get(1);
+					battleDanUser2.setIsDel(1);
+					battleDanUserService.update(battleDanUser2);
+				}
+			}
 			
-			map.put("isSign", 0);
+			if(battleDanUser==null){
+				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("signCount", 0);
+				
+				map.put("isSign", 0);
+			}else if(battleDanUser.getSignCount()==0){
+				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("signCount", battleDanUser.getSignCount());
+				map.put("isSign", 0);
+			}else if(battleDanUser.getSignCount()==1){
+				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("signCount", battleDanUser.getSignCount());
+				map.put("isSign", 1);
+			}else if(battleDanUser.getSignCount()==2){
+				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("signCount", battleDanUser.getSignCount());
+				map.put("isSign", 1);
+			}else if(battleDanUser.getSignCount()>=3){
+				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("signCount", battleDanUser.getSignCount());
+				map.put("isSign", 1);
+			}
+			
 			list.add(map);
 		}
 		
