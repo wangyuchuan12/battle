@@ -926,15 +926,15 @@ public class BattleDanApi {
 				map.put("signCount", battleDanUser.getSignCount());
 				map.put("isSign", 0);
 			}else if(battleDanUser.getSignCount()==1){
-				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("costBean", battleDan.getSign2BeanCost());
 				map.put("signCount", battleDanUser.getSignCount());
 				map.put("isSign", 1);
 			}else if(battleDanUser.getSignCount()==2){
-				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("costBean", battleDan.getSign3BeanCost());
 				map.put("signCount", battleDanUser.getSignCount());
 				map.put("isSign", 1);
 			}else if(battleDanUser.getSignCount()>=3){
-				map.put("costBean", battleDan.getSign1BeanCost());
+				map.put("costBean", battleDan.getSign4BeanCost());
 				map.put("signCount", battleDanUser.getSignCount());
 				map.put("isSign", 1);
 			}

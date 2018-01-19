@@ -107,18 +107,24 @@ public class BattleDanHandleService {
 						
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
 						
+						if(battleDanUserNext!=null){
+							System.out.println(".........battleDanUserNext:"+battleDanUserNext+",status:"+battleDanUserNext.getStatus()+",level:"+battleDanUserNext.getLevel());
+						}
 						if(battleDanUserNext!=null&&battleDanUserNext.getStatus()==BattleDanUser.STATUS_FREE){
 							battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
 							battleDanUserService.update(battleDanUserNext);
 							battleAccountResult.setDanName(nextBattleDan.getName());
 							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 							battleAccountResultService.update(battleAccountResult);
+							
+							System.out.println("...........进到这里来了1");
 						}else if(battleDanUserNext==null){
 							battleAccountResult.setDanName(nextBattleDan.getName());
 							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 							battleAccountResultService.update(battleAccountResult);
+							System.out.println("...........进到这里来了2");
 						}else if(battleDanUserNext.getStatus()==BattleDanUser.STATUS_SUCCESS){
-							
+							System.out.println("...........进到这里来了3");
 						}
 
 						
