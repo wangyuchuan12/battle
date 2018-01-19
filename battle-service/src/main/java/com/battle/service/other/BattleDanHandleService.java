@@ -102,29 +102,37 @@ public class BattleDanHandleService {
 						
 						BattleDanUser battleDanUserNext = battleDanUserService.findOneByUserIdAndPointIdAndLevel(battleDanUser.getUserId(), battleDanUser.getPointId(),level+1);
 					
-						if(battleDanUserNext!=null&&battleDanUserNext.getStatus()==BattleDanUser.STATUS_FREE){
-							
-							battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
-							
-							battleDanUserService.update(battleDanUserNext);
-						}
+						
+						BattleDan nextBattleDan = battleDanService.findOneByPointIdAndLevel(battleDanUser.getPointId(),level+1);
 						
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
-						battleAccountResult.setLevel(battleDanUser.getLevel()+1);
-						battleAccountResult.setDanName(battleDanUser.getDanName());
 						
-						battleAccountResultService.update(battleAccountResult);
+						if(battleDanUserNext!=null&&battleDanUserNext.getStatus()==BattleDanUser.STATUS_FREE){
+							battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
+							battleDanUserService.update(battleDanUserNext);
+							battleAccountResult.setDanName(nextBattleDan.getName());
+							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
+							battleAccountResultService.update(battleAccountResult);
+						}else if(battleDanUserNext==null){
+							battleAccountResult.setDanName(nextBattleDan.getName());
+							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
+							battleAccountResultService.update(battleAccountResult);
+						}else if(battleDanUserNext.getStatus()==BattleDanUser.STATUS_SUCCESS){
+							
+						}
+
+						
 					}else{
-						battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
-						battleDanUser.setIsSign(0);
+						if(battleDanUser.getStatus()!=BattleDanUser.STATUS_SUCCESS){
+							battleDanUser.setStatus(BattleDanUser.STATUS_FAIL);
+							battleDanUser.setIsSign(0);
+						}
 					}
 					
 					battleDanUserService.update(battleDanUser);
 				}
 				
 			}
-			
-			
 			
 			Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 			

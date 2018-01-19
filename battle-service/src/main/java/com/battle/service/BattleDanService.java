@@ -23,4 +23,9 @@ public class BattleDanService {
 		
 		return battleDanDao.findOne(danId);
 	}
+
+	public BattleDan findOneByPointIdAndLevel(String pointId, int level) {
+		
+		return battleDanDao.findOneByPointIdAndLevel(pointId,level);
+	}
 }

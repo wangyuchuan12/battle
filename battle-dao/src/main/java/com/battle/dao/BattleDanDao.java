@@ -10,4 +10,6 @@ public interface BattleDanDao extends CrudRepository<BattleDan, String>{
 
 	List<BattleDan> findAllByPointIdOrderByLevelAsc(String pointId);
 
+	BattleDan findOneByPointIdAndLevel(String pointId, int level);
+
 }
