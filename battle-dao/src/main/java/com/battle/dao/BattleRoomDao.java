@@ -37,7 +37,6 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	Page<BattleRoom> findAll(Pageable pageable);
 	
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleRoom findOne(String id);
