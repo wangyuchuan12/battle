@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,7 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 	Page<BattleRoom> findAll(Pageable pageable);
 	
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleRoom findOne(String id);
 
