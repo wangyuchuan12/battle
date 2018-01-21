@@ -26,7 +26,7 @@ public class BattleRoomService {
 	private RedisService redisService;
 	public BattleRoom findOne(String id) {
 		
-		String key = BATTLE_ROOM_KEY;
+		/*String key = BATTLE_ROOM_KEY;
 		key = key+"_"+id;
 		try{
 			readWriteLock.readLock().lock();
@@ -42,17 +42,19 @@ public class BattleRoomService {
 			
 		}
 		
-		BattleRoom battleRoom = battleRoomDao.findOne(id);
+		
 		try{
 			redisService.setObject(key, BattleRoom.class);
 		}catch(Exception e){
 			logger.error("BattleRoomService的findOne方法存储BattleRoom对象到redis失败");
-		}
+		}*/
+		
+		BattleRoom battleRoom = battleRoomDao.findOne(id);
 		
 		return battleRoom;
 	}
 	public void add(BattleRoom battleRoom) {
-		try{
+		/*try{
 			readWriteLock.writeLock().lock();
 			
 			battleRoom.setId(UUID.randomUUID().toString());
@@ -68,12 +70,17 @@ public class BattleRoomService {
 		}finally{
 			readWriteLock.writeLock().unlock();
 			
-		}
+		}*/
+		
+		battleRoom.setId(UUID.randomUUID().toString());
+		battleRoom.setCreateAt(new DateTime());
+		battleRoom.setUpdateAt(new DateTime());
+		battleRoomDao.save(battleRoom);
 		
 	}
 	
 	public void update(BattleRoom battleRoom) {
-		String key = BATTLE_ROOM_KEY;
+		/*String key = BATTLE_ROOM_KEY;
 		key = key+"_"+battleRoom.getId();
 		try{
 			readWriteLock.writeLock().lock();
@@ -85,7 +92,10 @@ public class BattleRoomService {
 		}finally{
 			readWriteLock.writeLock().unlock();
 			
-		}
+		}*/
+		
+		battleRoom.setUpdateAt(new DateTime());
+		battleRoomDao.save(battleRoom);
 	}
 	
 	public List<BattleRoom> findAllByBattleIdAndPeriodIdAndOwnerAndIsPk(String battleId, String periodId, String battleUserId,Integer isPk) {
