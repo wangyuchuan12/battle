@@ -203,7 +203,7 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		if(battleRoom.getNum()>=battleRoom.getMaxinum()){
 			battleRoom.setStatus(BattleRoom.STATUS_FULL);
-		}else{
+		}else if(battleRoom.getStatus()==BattleRoom.STATUS_FREE){
 			battleRoom.setStatus(BattleRoom.STATUS_IN);
 		}
 		sessionManager.update(battleRoom);
