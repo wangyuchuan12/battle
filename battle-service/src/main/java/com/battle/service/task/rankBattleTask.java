@@ -83,7 +83,7 @@ public class rankBattleTask {
 		
 		BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
 		
-		battleRoom.setScrollGogal(500);
+		battleRoom.setScrollGogal(1000);
 		
 		battleRoom.setEndEnable(0);
 		

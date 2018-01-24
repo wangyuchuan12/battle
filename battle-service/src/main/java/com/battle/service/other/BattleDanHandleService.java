@@ -107,11 +107,13 @@ public class BattleDanHandleService {
 						
 						BattleAccountResult battleAccountResult = battleAccountResultService.findOneByUserId(battleDanUser.getUserId());
 						if(battleDanUserNext!=null&&battleDanUserNext.getStatus()==BattleDanUser.STATUS_FREE){
-							battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
-							battleDanUserService.update(battleDanUserNext);
-							battleAccountResult.setDanName(nextBattleDan.getName());
-							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
-							battleAccountResultService.update(battleAccountResult);
+							if(battleAccountResult.getLevel()<battleDanUser.getLevel()+1){
+								battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
+								battleDanUserService.update(battleDanUserNext);
+								battleAccountResult.setDanName(nextBattleDan.getName());
+								battleAccountResult.setLevel(battleDanUser.getLevel()+1);
+								battleAccountResultService.update(battleAccountResult);
+							}
 						}else if(battleDanUserNext==null){
 							battleAccountResult.setDanName(nextBattleDan.getName());
 							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
