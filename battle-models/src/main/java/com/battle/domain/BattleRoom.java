@@ -232,6 +232,14 @@ public class BattleRoom implements Serializable{
 	private Integer endEnable;
 	
 	@ParamAnnotation
+	@Column(name="is_dekorn")
+	private Integer isDekorn;
+	
+	@ParamAnnotation
+	@Column(name="dekorn_id")
+	private String dekornId;
+	
+	@ParamAnnotation
 	@Column(name="start_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime startTime;
@@ -632,6 +640,22 @@ public class BattleRoom implements Serializable{
 
 	public void setEndEnable(Integer endEnable) {
 		this.endEnable = endEnable;
+	}
+	
+	public Integer getIsDekorn() {
+		return isDekorn;
+	}
+
+	public void setIsDekorn(Integer isDekorn) {
+		this.isDekorn = isDekorn;
+	}
+
+	public String getDekornId() {
+		return dekornId;
+	}
+
+	public void setDekornId(String dekornId) {
+		this.dekornId = dekornId;
 	}
 
 	public DateTime getCreateAt() {

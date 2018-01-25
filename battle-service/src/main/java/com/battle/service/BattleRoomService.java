@@ -147,5 +147,9 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findAllByIsDanRoomAndBattleIdAndPeriodIdAndStatusIn(isDanRoom,battleId,periodId,statuses,pageable);
 	}
+	public List<BattleRoom> findAllByDekornIdAndStatusIn(String dekornId, List<Integer> statuses, Pageable pageable) {
+		
+		return battleRoomDao.findAllByDekornIdAndStatusIn(dekornId,statuses,pageable);
+	}
 
 }

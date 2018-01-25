@@ -59,6 +59,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setScrollGogal(100);
 		
+		battleRoom.setIsDekorn(0);
+		
 		return battleRoom;
 	}
 }
