@@ -576,13 +576,16 @@ public class QuestionApi {
 			
 			battlePeriodMemberService.update(battlePeriodMember);
 			
+			
 			BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
 			
-			battleRoom.setStatus(BattleRoom.STATUS_END);
-			
-			battleRoom.setEndType(BattleRoom.CLEARANCE_END_TYPE);
-			
-			battleRoomService.update(battleRoom);
+			if(battleRoom.getEndEnable()!=null&&battleRoom.getEndEnable()==1){
+				battleRoom.setStatus(BattleRoom.STATUS_END);
+				
+				battleRoom.setEndType(BattleRoom.CLEARANCE_END_TYPE);
+				
+				battleRoomService.update(battleRoom);
+			}
 		}
 		
 		BattleAccountResult battleAccountResult = sessionManager.getObject(BattleAccountResult.class);

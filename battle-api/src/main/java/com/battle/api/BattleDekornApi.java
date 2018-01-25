@@ -52,6 +52,7 @@ public class BattleDekornApi {
 	
 	@Autowired
 	private BattleRoomHandleService battleRoomHandleService;
+
 	
 	
 	@RequestMapping(value="battleDekornSign")
@@ -241,6 +242,47 @@ public class BattleDekornApi {
 	}
 	
 	
+	@RequestMapping(value="dekornRoomInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object dekornRoomInfo(HttpServletRequest httpServletRequest){
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		if(CommonUtil.isEmpty(roomId)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("roomId不能为空");
+			return resultVo;
+		}
+		
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		
+		if(battleRoom==null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("参数无效");
+			return resultVo;
+		}
+		
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(roomId); 
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("room", battleRoom);
+		data.put("rewards", battleRoomRewards);
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(data);
+		
+		return resultVo;
+	}
+	
+	
+	
+	
 	@RequestMapping(value="dekornList")
 	@ResponseBody
 	@Transactional
@@ -248,8 +290,6 @@ public class BattleDekornApi {
 	public Object dekornList(HttpServletRequest httpServletRequest){
 		
 		List<BattleDekorn> battleDekorns = battleDekornService.findAllByIsDel(0);
-		
-		System.out.println("...................battleDekorns:"+battleDekorns);
 		
 		List<Map<String, Object>> responseDekorns = new ArrayList<>();
 		
