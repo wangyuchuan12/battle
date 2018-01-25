@@ -119,113 +119,119 @@ public class BattleDekornApi {
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0,1,sort);
 		BattleRoom battleRoom = null;
-		List<BattleRoom> battleRooms = battleRoomService.findAllByDekornIdAndStatusIn(battleDekornUser.getDekornId(),statuses,pageable);
+		if(!CommonUtil.isEmpty(battleDekornUser.getRoomId())){
+			battleRoom = battleRoomService.findOne(battleDekornUser.getRoomId());
+		}
 		
-		if(battleRooms!=null&&battleRooms.size()>0){
-			battleRoom = battleRooms.get(0);
-		}else{
-			Battle battle = battleService.findOne(battleDekornUser.getBattleId());
-			battleRoom = battleRoomHandleService.initRoom(battle);
-			battleRoom.setIsPk(1);
-			battleRoom.setPeriodId(battleDekornUser.getPeriodId());
-			battleRoom.setMaxinum(battleDekornUser.getMaxNum());
-			battleRoom.setMininum(battleDekornUser.getMinNum());
-			battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
-			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(battleDekornUser.getScrollGogal());
-			battleRoom.setPlaces(battleDekornUser.getPlaces());
-			battleRoom.setIsDanRoom(0);
-			battleRoom.setIsDekorn(1);
+		if(battleRoom==null||battleRoom.getStatus()==BattleRoom.STATUS_END||battleRoom.getStatus()==BattleRoom.STATUS_FULL){
+			List<BattleRoom> battleRooms = battleRoomService.findAllByDekornIdAndStatusIn(battleDekornUser.getDekornId(),statuses,pageable);
 			
-			battleRoomService.add(battleRoom);
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo1())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(1);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo1());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo2())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(2);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo2());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo3())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(3);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo3());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo4())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(4);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo4());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo5())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(5);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo5());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo6())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(6);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo6());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo7())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(7);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo7());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo8())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(8);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo8());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo9())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(9);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo9());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
-			}
-			
-			if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo10())){
-				BattleRoomReward battleRoomReward = new BattleRoomReward();
-				battleRoomReward.setIsReceive(0);
-				battleRoomReward.setRank(10);
-				battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo10());
-				battleRoomReward.setRoomId(battleRoom.getId());
-				battleRoomRewardService.add(battleRoomReward);
+			if(battleRooms!=null&&battleRooms.size()>0){
+				battleRoom = battleRooms.get(0);
+			}else{
+				Battle battle = battleService.findOne(battleDekornUser.getBattleId());
+				battleRoom = battleRoomHandleService.initRoom(battle);
+				battleRoom.setIsPk(1);
+				battleRoom.setPeriodId(battleDekornUser.getPeriodId());
+				battleRoom.setMaxinum(battleDekornUser.getMaxNum());
+				battleRoom.setMininum(battleDekornUser.getMinNum());
+				battleRoom.setSmallImgUrl(userInfo.getHeadimgurl());
+				battleRoom.setIsSearchAble(0);
+				battleRoom.setScrollGogal(battleDekornUser.getScrollGogal());
+				battleRoom.setPlaces(battleDekornUser.getPlaces());
+				battleRoom.setIsDanRoom(0);
+				battleRoom.setIsDekorn(1);
+				
+				battleRoomService.add(battleRoom);
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo1())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(1);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo1());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo2())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(2);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo2());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo3())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(3);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo3());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo4())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(4);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo4());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo5())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(5);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo5());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo6())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(6);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo6());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo7())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(7);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo7());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo8())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(8);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo8());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo9())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(9);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo9());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
+				
+				if(!CommonUtil.isEmpty(battleDekorn.getRewardBeanNo10())){
+					BattleRoomReward battleRoomReward = new BattleRoomReward();
+					battleRoomReward.setIsReceive(0);
+					battleRoomReward.setRank(10);
+					battleRoomReward.setRewardBean(battleDekorn.getRewardBeanNo10());
+					battleRoomReward.setRoomId(battleRoom.getId());
+					battleRoomRewardService.add(battleRoomReward);
+				}
 			}
 		}
 		
@@ -237,6 +243,8 @@ public class BattleDekornApi {
 		data.put("battleId", battleRoom.getBattleId());
 		
 		resultVo.setData(data);
+		
+		resultVo.setSuccess(true);
 		
 		return resultVo;
 	}
