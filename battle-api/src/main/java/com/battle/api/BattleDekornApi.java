@@ -249,6 +249,8 @@ public class BattleDekornApi {
 		
 		List<BattleDekorn> battleDekorns = battleDekornService.findAllByIsDel(0);
 		
+		System.out.println("...................battleDekorns:"+battleDekorns);
+		
 		List<Map<String, Object>> responseDekorns = new ArrayList<>();
 		
 		for(BattleDekorn battleDekorn:battleDekorns){
