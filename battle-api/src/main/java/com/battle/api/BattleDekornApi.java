@@ -235,6 +235,10 @@ public class BattleDekornApi {
 			}
 		}
 		
+		battleDekornUser.setRoomId(battleRoom.getId());
+		
+		battleDekornUserService.update(battleDekornUser);
+		
 		ResultVo resultVo = new ResultVo();
 		
 		Map<String, Object> data = new HashMap<>();
