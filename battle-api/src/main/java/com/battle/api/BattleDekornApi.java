@@ -141,6 +141,7 @@ public class BattleDekornApi {
 				battleRoom.setPlaces(battleDekornUser.getPlaces());
 				battleRoom.setIsDanRoom(0);
 				battleRoom.setIsDekorn(1);
+				battleRoom.setDekornId(battleDekorn.getId());
 				
 				battleRoomService.add(battleRoom);
 				
