@@ -147,11 +147,12 @@ public class BattleDanHandleService {
 			}
 			
 			
-			
+			System.out.println(".......battlePeriodMembers:"+battlePeriodMembers);
 			if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 				for(int i=0;i<battlePeriodMembers.size();i++){
 					BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
 					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
+					System.out.println(".......battlePeriodMember:"+battlePeriodMember+",battleRoomReward:"+battleRoomReward);
 					if(battleRoomReward!=null){
 						battleRoomReward.setIsReceive(1);
 						battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
