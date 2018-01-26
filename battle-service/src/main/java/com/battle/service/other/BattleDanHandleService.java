@@ -57,8 +57,11 @@ public class BattleDanHandleService {
 	
 	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
 		
+		System.out.println("..........roomId:"+battleRoom.getId());
+		
 		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdAndIsReceiveOrderByRankAsc(battleRoom.getId(),0);
 		
+		System.out.println("..........battleRoomRewards:"+battleRoomRewards);
 		
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByRoomId(battleRoom.getId());
 
