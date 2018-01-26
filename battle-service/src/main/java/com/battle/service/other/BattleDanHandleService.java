@@ -157,6 +157,8 @@ public class BattleDanHandleService {
 						battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 						battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
 						
+						System.out.println(".........name:"+battlePeriodMember.getNickname()+",rewardBean:"+battlePeriodMember.getRewardBean()+",rank:"+battleRoomReward.getRank());
+						
 						battlePeriodMemberService.update(battlePeriodMember);
 						battleRoomRewardService.update(battleRoomReward);
 						
