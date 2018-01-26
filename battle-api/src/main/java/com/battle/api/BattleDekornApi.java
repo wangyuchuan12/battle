@@ -145,7 +145,9 @@ public class BattleDekornApi {
 				battleRoom.setIsDekorn(1);
 				battleRoom.setDekornId(battleDekorn.getId());
 				
-				battleRoom.setCostBean(battleDekorn.getCostBean());
+				if(CommonUtil.isNotEmpty(battleDekorn.getCostBean())){
+					battleRoom.setCostBean(battleDekorn.getCostBean());
+				}
 				
 				battleRoomService.add(battleRoom);
 				
