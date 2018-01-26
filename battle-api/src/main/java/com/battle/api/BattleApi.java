@@ -63,7 +63,6 @@ import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
-import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
