@@ -18,6 +18,8 @@ import com.battle.domain.BattleDekorn;
 import com.battle.domain.BattleDekornUser;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
+import com.battle.filter.api.BattleMemberInfoApiFilter;
+import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleDekornService;
 import com.battle.service.BattleDekornUserService;
@@ -258,33 +260,24 @@ public class BattleDekornApi {
 	@RequestMapping(value="dekornRoomInfo")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public Object dekornRoomInfo(HttpServletRequest httpServletRequest){
-		String roomId = httpServletRequest.getParameter("roomId");
+	@HandlerAnnotation(hanlerFilter=BattleMemberInfoApiFilter.class)
+	public Object dekornRoomInfo(HttpServletRequest httpServletRequest)throws Exception{
 		
-		if(CommonUtil.isEmpty(roomId)){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("roomId不能为空");
-			return resultVo;
-		}
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
-		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
 		
-		if(battleRoom==null){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			resultVo.setErrorMsg("参数无效");
-			return resultVo;
-		}
 		
-		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(roomId); 
 		
-		Map<String, Object> data = new HashMap<>();
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId()); 
+	
+		
+		ResultVo resultVo = sessionManager.getObject(ResultVo.class);
+		
+		Map<String, Object> data = (Map<String, Object>) resultVo.getData();
+		
 		data.put("room", battleRoom);
 		data.put("rewards", battleRoomRewards);
-		
-		ResultVo resultVo = new ResultVo();
 		
 		resultVo.setSuccess(true);
 		

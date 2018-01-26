@@ -79,9 +79,6 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
 		
-		
-		System.out.println(".......roomStatus:"+battleRoom.getStatus());
-		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);
