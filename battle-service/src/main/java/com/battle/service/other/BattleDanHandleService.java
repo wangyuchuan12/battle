@@ -73,6 +73,11 @@ public class BattleDanHandleService {
 			
 		}
 		
+		Sort sort = new Sort(Direction.DESC,"score");
+		
+		Pageable pageable = new PageRequest(0, 100, sort);
+		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(),pageable);
 		if(CommonUtil.isNotEmpty(battleRoom.getDanId())){
 
 			BattleDan battleDan = battleDanService.findOne(battleRoom.getDanId());
@@ -82,14 +87,6 @@ public class BattleDanHandleService {
 			}
 			
 			Integer places = battleDan.getPlaces();
-			
-
-			
-			Sort sort = new Sort(Direction.DESC,"score");
-			
-			Pageable pageable = new PageRequest(0, 100, sort);
-			
-			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(),pageable);
 			
 			for(Integer index = 0;index<battlePeriodMembers.size();index++){
 				BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(index);
@@ -137,58 +134,57 @@ public class BattleDanHandleService {
 				}
 				
 			}
-			
-			Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
-			
-			for(int i = 0;i<battleRoomRewards.size();i++){
-				
-				BattleRoomReward battleRoomReward = battleRoomRewards.get(i);
-				battleRoomRewardMap.put(i, battleRoomReward);
-			}
-			
-			
-			System.out.println(".......battlePeriodMembers:"+battlePeriodMembers);
-			if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
-				for(int i=0;i<battlePeriodMembers.size();i++){
-					BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
-					BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
-					System.out.println(".......battlePeriodMember:"+battlePeriodMember+",battleRoomReward:"+battleRoomReward);
-					if(battleRoomReward!=null){
-						battleRoomReward.setIsReceive(1);
-						battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
-						battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
-						
-						System.out.println(".........name:"+battlePeriodMember.getNickname()+",rewardBean:"+battlePeriodMember.getRewardBean()+",rank:"+battleRoomReward.getRank());
-						
-						battlePeriodMemberService.update(battlePeriodMember);
-						battleRoomRewardService.update(battleRoomReward);
-						
-						UserInfo userInfo = userInfoService.findOne(battlePeriodMember.getUserId());
-						
-						Account account = accountService.fineOneSync(userInfo.getAccountId());
-						
-						Long wisdomCount = account.getWisdomCount();
-						if(wisdomCount==null){
-							wisdomCount = 0L;
-						}
-						
-						Integer rewardBean = battleRoomReward.getRewardBean();
-						if(rewardBean==null){
-							rewardBean = 0;
-						}
-						
-						wisdomCount = wisdomCount + rewardBean;
-						
-						account.setWisdomCount(wisdomCount);
-						
-						accountService.update(account);
-					}
-				}
-			}
-			return battlePeriodMembers;
 		}
 		
-		return new ArrayList<>();
+		Map<Integer, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
+		
+		for(int i = 0;i<battleRoomRewards.size();i++){
+			
+			BattleRoomReward battleRoomReward = battleRoomRewards.get(i);
+			battleRoomRewardMap.put(i, battleRoomReward);
+		}
+		
+		
+		System.out.println(".......battlePeriodMembers:"+battlePeriodMembers);
+		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
+			for(int i=0;i<battlePeriodMembers.size();i++){
+				BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(i);
+				BattleRoomReward battleRoomReward = battleRoomRewardMap.get(i);
+				System.out.println(".......battlePeriodMember:"+battlePeriodMember+",battleRoomReward:"+battleRoomReward);
+				if(battleRoomReward!=null){
+					battleRoomReward.setIsReceive(1);
+					battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
+					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
+					
+					System.out.println(".........name:"+battlePeriodMember.getNickname()+",rewardBean:"+battlePeriodMember.getRewardBean()+",rank:"+battleRoomReward.getRank());
+					
+					battlePeriodMemberService.update(battlePeriodMember);
+					battleRoomRewardService.update(battleRoomReward);
+					
+					UserInfo userInfo = userInfoService.findOne(battlePeriodMember.getUserId());
+					
+					Account account = accountService.fineOneSync(userInfo.getAccountId());
+					
+					Long wisdomCount = account.getWisdomCount();
+					if(wisdomCount==null){
+						wisdomCount = 0L;
+					}
+					
+					Integer rewardBean = battleRoomReward.getRewardBean();
+					if(rewardBean==null){
+						rewardBean = 0;
+					}
+					
+					wisdomCount = wisdomCount + rewardBean;
+					
+					account.setWisdomCount(wisdomCount);
+					
+					accountService.update(account);
+				}
+			}
+		}
+		return battlePeriodMembers;
+		
 		
 		
 	}
