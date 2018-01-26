@@ -125,7 +125,7 @@ public class BattleDekornApi {
 			battleRoom = battleRoomService.findOne(battleDekornUser.getRoomId());
 		}
 		
-		if(battleRoom==null||battleRoom.getStatus()==BattleRoom.STATUS_END){
+		if(battleRoom==null){
 			List<BattleRoom> battleRooms = battleRoomService.findAllByDekornIdAndStatusIn(battleDekornUser.getDekornId(),statuses,pageable);
 			
 			if(battleRooms!=null&&battleRooms.size()>0){
@@ -144,6 +144,8 @@ public class BattleDekornApi {
 				battleRoom.setIsDanRoom(0);
 				battleRoom.setIsDekorn(1);
 				battleRoom.setDekornId(battleDekorn.getId());
+				
+				battleRoom.setCostBean(battleDekorn.getCostBean());
 				
 				battleRoomService.add(battleRoom);
 				

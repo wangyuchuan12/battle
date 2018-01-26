@@ -79,6 +79,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
 		
+		data.put("costBean",battleRoom.getCostBean());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
 		resultVo.setSuccess(true);

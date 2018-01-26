@@ -59,6 +59,10 @@ public class BattleDekorn {
 	private Integer places;
 	
 	@ParamAnnotation
+	@Column(name="cost_bean")
+	private Integer costBean;
+	
+	@ParamAnnotation
 	@Column(name="reward_bean_no1")
 	private Integer rewardBeanNo1;
 	
@@ -269,6 +273,14 @@ public class BattleDekorn {
 
 	public void setPlaces(Integer places) {
 		this.places = places;
+	}
+
+	public Integer getCostBean() {
+		return costBean;
+	}
+
+	public void setCostBean(Integer costBean) {
+		this.costBean = costBean;
 	}
 
 	public DateTime getCreateAt() {
