@@ -77,6 +77,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("isDanRoom",battleRoom.getIsDanRoom());
 		
+		data.put("isDekorn", battleRoom.getIsDekorn());
+		
 		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
 		
 		data.put("costBean",battleRoom.getCostBean());
