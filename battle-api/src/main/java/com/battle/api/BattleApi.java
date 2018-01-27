@@ -135,6 +135,7 @@ public class BattleApi {
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
 	@ResponseBody
+	@Transactional
 	public Object roomInfo(HttpServletRequest httpServletRequest){
 		String id = httpServletRequest.getParameter("id");
 		
@@ -149,6 +150,7 @@ public class BattleApi {
 
 	@RequestMapping(value="info")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public Object info(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
@@ -186,6 +188,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="randomRoom")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object randomRoom(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
@@ -248,6 +251,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="myRooms")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object myRooms(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
@@ -274,6 +278,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="memberInfo")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleMemberInfoApiFilter.class)
 	public Object memberInfo(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
@@ -288,6 +293,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="members")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleMembersApiFilter.class)
 	public Object members(HttpServletRequest httpServletRequest)throws Exception{
 		
@@ -303,6 +309,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="currentLoveCooling")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentLoveCoolingApiFilter.class)
 	public Object currentLoveCooling(HttpServletRequest httpServletRequest)throws Exception{
 		
@@ -318,6 +325,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="startCoolingLove")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentLoveCoolingApiFilter.class)
 	public Object startCoolingLove(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
@@ -353,6 +361,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="battleSubjects")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=BattleSubjectApiFilter.class)
 	public Object battleSubjects(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
@@ -367,6 +376,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="battleSubjectByBattleId")
 	@ResponseBody
+	@Transactional
 	public Object battleSubjectsByBattleId(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
 		
@@ -480,6 +490,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="periodsByBattleId")
 	@ResponseBody
+	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentBattleUserFilter.class)
 	public Object periodsByBattleId(HttpServletRequest httpServletRequest)throws Exception{
 		String battleId = httpServletRequest.getParameter("battleId");
@@ -511,6 +522,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="battles")
 	@ResponseBody
+	@Transactional
 	public Object battles(HttpServletRequest httpServletRequest){
 		List<Battle> battles = battleService.findAllByStatusOrderByIndexAsc(Battle.IN_STATUS);
 		ResultVo resultVo = new ResultVo();
@@ -1180,6 +1192,7 @@ public class BattleApi {
 	
 	@RequestMapping(value="roomRecords")
 	@ResponseBody
+	@Transactional
 	public Object roomRecords(HttpServletRequest httpServletRequest){
 		String roomId = httpServletRequest.getParameter("roomId");
 		
