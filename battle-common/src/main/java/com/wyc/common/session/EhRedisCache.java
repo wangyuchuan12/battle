@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCache;
+import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,10 +20,31 @@ public class EhRedisCache implements Cache{
 
 
     private RedisTemplate<String, Object> redisTemplate;
+    
+    
+    private EhCacheFactoryBean ehCacheFactoryBean;
 
-     private long liveTime = 1*60*60; //默认1h=1*60*60
+    private long liveTime = 1*60*60; //默认1h=1*60*60
      
-    @Override
+ 
+     
+    public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
+
+	public void setEhCacheFactoryBean(EhCacheFactoryBean ehCacheFactoryBean) {
+		this.ehCacheFactoryBean = ehCacheFactoryBean;
+	}
+
+	public void setLiveTime(long liveTime) {
+		this.liveTime = liveTime;
+	}
+
+	@Override
     public String getName() {
     	System.out.println("........getName");
         return this.name;
