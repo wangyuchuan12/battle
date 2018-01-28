@@ -67,16 +67,14 @@
     
     <!-- 自定义ehcache+redis-->
    <bean id="ehRedisCacheManager" class="org.springframework.cache.support.SimpleCacheManager">  
-        <property name="caches">  
-            <set>  
-               <bean  id="ehRedisCache" class="com.wyc.common.session.EhRedisCache">  
-                     <!--  <property name="redisTemplate" ref="redisTemplate" />  
-                     <property name="ehCache" ref="ehCache"/> 
-                     <property name="name" value="userCache"/> -->
-                <!-- <property name="liveTime" value="3600"/>  --> 
-                </bean>
-            </set>  
-        </property>  
+        <property name="caches">    
+            <set>    
+                <bean class="org.springframework.cache.demo.redis.RedisCache">    
+                    <property name="redisTemplate" ref="redisTemplate" />    
+                    <property name="name" value="userCache"/>    
+                </bean>    
+            </set>    
+        </property>    
     </bean>  
 
     <!-- 注解声明 -->
