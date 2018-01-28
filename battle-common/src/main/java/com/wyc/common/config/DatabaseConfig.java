@@ -27,7 +27,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.wyc.common.repositories","com.battle.dao"})
 @EnableTransactionManagement
-//@ImportResource("classpath:applicationContext.xml")
+@ImportResource("classpath:applicationContext.xml")
 public class DatabaseConfig {
 
     @Bean

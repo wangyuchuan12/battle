@@ -47,6 +47,7 @@
 	    <property name="maxIdle" value="10" />
 	</bean>
 
+<!--  
 	<bean id="jedisConnectionFactory"
 	      class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory" destroy-method="destroy">
 	    <property name="hostName" value="www.chengxihome.com" />
@@ -54,7 +55,7 @@
 	        <property name="password" value="wyc"></property>
 	    <property name="timeout" value="3000"/>
 	</bean>
-
+-->
     <!-- redis 操作对象 -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="redisConnFactory" />

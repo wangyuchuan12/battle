@@ -55,7 +55,7 @@ public class SessionConfig {
 		return redisHttpSessionConfiguration;
 	}
 	
-	@Bean
+	@Bean(name="redisConnFactory")
 	public JedisConnectionFactory jedisConnectionFactory() throws FileNotFoundException, IOException{
 		
 		Properties properties = new Properties();
