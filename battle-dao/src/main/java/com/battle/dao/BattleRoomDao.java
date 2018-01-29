@@ -38,8 +38,7 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	Page<BattleRoom> findAll(Pageable pageable);
 	
-	@Cacheable(value="userCache") 
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Cacheable(value="userCache")
 	BattleRoom findOne(String id);
 
 	List<BattleRoom> findAllByBattleIdAndPeriodIdAndStatusAndIsPassThrough(String battleId, String periodId,

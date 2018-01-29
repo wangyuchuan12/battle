@@ -111,7 +111,7 @@ public class QuestionApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, battlePeriodMember.getRoomId());
+		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
 		
 		System.out.println("...........battleQuestionAnswer.room.status:"+battleRoom.getStatus());
 		Integer rightAddProcess = battleRoom.getRightAddProcess();
