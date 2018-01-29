@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -19,6 +21,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_pk",indexes={@Index(columnList="room_id,home_user_id,beat_user_id",name="battlePkIndex")})
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 public class BattlePk implements Serializable{
 	
 	/**

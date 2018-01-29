@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -16,17 +17,17 @@ import com.battle.domain.BattlePeriodMember;
 
 public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember, String>{
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	@Cacheable("userCache")
 	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
 			String periodId,String roomId,Integer isDel);
 
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel,Pageable pageable);
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	@Cacheable("userCache")
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	@Cacheable("userCache")
 	BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
@@ -40,7 +41,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
 			Pageable pageable);
 	
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	@Cacheable("userCache")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattlePeriodMember findOne(String id);
 
