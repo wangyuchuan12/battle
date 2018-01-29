@@ -7,6 +7,7 @@ import javax.persistence.QueryHint;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.joda.time.DateTime;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Lock;
@@ -37,7 +38,7 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	Page<BattleRoom> findAll(Pageable pageable);
 	
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Cacheable(value="alfresco") 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleRoom findOne(String id);
 
