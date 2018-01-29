@@ -10,6 +10,7 @@ import com.battle.domain.BattlePk;
 
 public interface BattlePkDao extends CrudRepository<BattlePk, String>{
 
+	@Cacheable(value="userCache",key="#userId")
 	BattlePk findOneByHomeUserId(String userId);
 	
 	@Cacheable(value="userCache")
