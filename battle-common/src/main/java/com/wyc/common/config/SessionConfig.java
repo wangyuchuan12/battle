@@ -109,8 +109,11 @@ public class SessionConfig {
             	
             
                 StringBuilder sb = new StringBuilder();
-                sb.append(params[0].toString());
-                String key =  target.getClass().getSimpleName()+"_"+method.getName()+"_"+sb.toString();
+                for(Object param:params){
+                	sb.append("_"+param.toString());
+                }
+                
+                String key =  method.getName()+sb.toString();
                 return key;
             }
         };
