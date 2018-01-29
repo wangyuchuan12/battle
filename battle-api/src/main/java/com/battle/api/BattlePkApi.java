@@ -110,45 +110,53 @@ public class BattlePkApi {
 		}
 		
 		if(battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_FREE||battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_END){
-			List<BattleCreateDetail> battleCreateDetails = battleCreateDetailServie.findAllByIsDefault(1);
-			
-			if(battleCreateDetails==null||battleCreateDetails.size()==0){
-				ResultVo resultVo = new ResultVo();
-				
-				resultVo.setSuccess(false);
-				
-				resultVo.setErrorMsg("createDetail为空");
-				
-				return resultVo;
+			String roomId = battlePk.getRoomId();
+			BattleRoom battleRoom = null;
+			if(CommonUtil.isNotEmpty(roomId)){
+				battleRoom  = battleRoomService.findOne(roomId);
 			}
 			
-			BattleCreateDetail battleCreateDetail = battleCreateDetails.get(0);
-			Battle battle = battleService.findOne(battleCreateDetail.getBattleId());
-			
-			BattleRoom battleRoom = battleRoomHandleService.initRoom(battle);
-			battleRoom.setIsPk(1);
-			battleRoom.setPeriodId(battleCreateDetail.getPeriodId());
-			battleRoom.setMaxinum(2);
-			battleRoom.setMininum(2);
-			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
-			battleRoom.setPlaces(1);
-			battleRoom.setIsDanRoom(0);
-			
-			battleRoom.setIsIncrease(1);
-			
-			battleRoomService.add(battleRoom);
-			
-			battlePk.setRoomId(battleRoom.getId());
-			battlePk.setBattleId(battle.getId());
-			
-			battlePk.setPeriodId(battleCreateDetail.getPeriodId());
-			
-			battlePk.setHomeActiveTime(new DateTime());
-			
-			battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
-			
-			battlePkService.update(battlePk);
+			if(battleRoom==null||battleRoom.getStatus()!=BattleRoom.STATUS_FREE){
+				List<BattleCreateDetail> battleCreateDetails = battleCreateDetailServie.findAllByIsDefault(1);
+				
+				if(battleCreateDetails==null||battleCreateDetails.size()==0){
+					ResultVo resultVo = new ResultVo();
+					
+					resultVo.setSuccess(false);
+					
+					resultVo.setErrorMsg("createDetail为空");
+					
+					return resultVo;
+				}
+				
+				BattleCreateDetail battleCreateDetail = battleCreateDetails.get(0);
+				Battle battle = battleService.findOne(battleCreateDetail.getBattleId());
+				
+				battleRoom = battleRoomHandleService.initRoom(battle);
+				battleRoom.setIsPk(1);
+				battleRoom.setPeriodId(battleCreateDetail.getPeriodId());
+				battleRoom.setMaxinum(2);
+				battleRoom.setMininum(2);
+				battleRoom.setIsSearchAble(0);
+				battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
+				battleRoom.setPlaces(1);
+				battleRoom.setIsDanRoom(0);
+				
+				battleRoom.setIsIncrease(1);
+				
+				battleRoomService.add(battleRoom);
+				
+				battlePk.setRoomId(battleRoom.getId());
+				battlePk.setBattleId(battle.getId());
+				
+				battlePk.setPeriodId(battleCreateDetail.getPeriodId());
+				
+				battlePk.setHomeActiveTime(new DateTime());
+				
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
+				
+				battlePkService.update(battlePk);
+			}
 		}
 		
 		
