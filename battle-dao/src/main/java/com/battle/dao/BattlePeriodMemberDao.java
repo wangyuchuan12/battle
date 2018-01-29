@@ -17,17 +17,17 @@ import com.battle.domain.BattlePeriodMember;
 
 public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember, String>{
 
-	@Cacheable("userCache")
+	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
 			String periodId,String roomId,Integer isDel);
 
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel,Pageable pageable);
 
-	@Cacheable("userCache")
+	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	@Cacheable("userCache")
+	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
@@ -41,7 +41,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
 			Pageable pageable);
 	
-	@Cacheable("userCache")
+	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattlePeriodMember findOne(String id);
 

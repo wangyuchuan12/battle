@@ -110,10 +110,7 @@ public class SessionConfig {
             
                 StringBuilder sb = new StringBuilder();
                 sb.append(params[0].toString());
-                String key =  sb.toString();
-                
-                System.out.println("............key:"+key);
-                
+                String key =  target.getClass().getSimpleName()+"_"+method.getName()+"_"+sb.toString();
                 return key;
             }
         };

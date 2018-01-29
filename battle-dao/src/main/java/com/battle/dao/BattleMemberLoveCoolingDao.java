@@ -10,7 +10,7 @@ import com.battle.domain.BattleMemberLoveCooling;
 
 public interface BattleMemberLoveCoolingDao extends CrudRepository<BattleMemberLoveCooling, String>{
 
-	@Cacheable("userCache")
+	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleMemberLoveCooling findOneByBattleMemberId(String battleMemberId);
 
