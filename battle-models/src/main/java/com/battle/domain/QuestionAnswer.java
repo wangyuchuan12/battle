@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,8 +23,12 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="question_answer",indexes={@Index(columnList="target_id",name="questionAnswerIndex")})
 @ParamEntityAnnotation
-public class QuestionAnswer {
+public class QuestionAnswer  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//比赛模式
 	public static final Integer BATTLE_TYPE = 0;
 	@Id

@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,8 +24,12 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_member_love_cooling",indexes={@Index(columnList="battle_member_id",name="battleMemberLoveCoolingIndex")})
-public class BattleMemberLoveCooling {
+public class BattleMemberLoveCooling  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//游离状态
 	public static final Integer STATUS_FREE = 0;
 	//冷却中
