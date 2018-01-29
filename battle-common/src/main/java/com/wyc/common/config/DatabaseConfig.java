@@ -91,6 +91,9 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
         properties.setProperty("javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE");
         properties.setProperty("hibernate.cache.use_query_cache", "true");
+        properties.setProperty("ernate.cache.use_second_level_cache", "true");
+       
+        properties.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.EhCacheProvider");
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
         return factory.getObject();
