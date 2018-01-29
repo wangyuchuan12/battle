@@ -4,12 +4,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -96,6 +98,25 @@ public class SessionConfig {
         corsConfiguration.addAllowedMethod("*");
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+	
+	
+	@Bean(name = "sessionKeyGenerator")
+    public KeyGenerator firstParamKeyGenerator(){
+        return new KeyGenerator() {
+            @Override
+            public Object generate(Object target, Method method, Object... params) {
+            	
+            
+                StringBuilder sb = new StringBuilder();
+                sb.append(params[0].toString());
+                String key =  sb.toString();
+                
+                System.out.println("............key:"+key);
+                
+                return key;
+            }
+        };
     }
 	
 	/*
