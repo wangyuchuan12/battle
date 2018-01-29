@@ -51,6 +51,9 @@ public class BattleRoomService {
 		
 		BattleRoom battleRoom = battleRoomDao.findOne(id);
 		
+		
+		System.out.println("...................battleRoom:"+battleRoom.getStatus());
+		
 		return battleRoom;
 	}
 	public void add(BattleRoom battleRoom) {
