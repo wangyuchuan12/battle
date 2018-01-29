@@ -31,6 +31,8 @@ public class BattlePkService {
 
 	public BattlePk findOneByHomeUserId(String homeUserId) {
 		
+		
+		System.out.println("........................homeUserId:"+homeUserId);
 		return battlePkDao.findOneByHomeUserId(homeUserId);
 	}
 
