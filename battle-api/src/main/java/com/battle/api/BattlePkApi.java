@@ -85,6 +85,7 @@ public class BattlePkApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		BattlePk battlePk = battlePkService.findOneByHomeUserId(userInfo.getId());
 		
+		System.out.println("............battlePk:"+battlePk);
 		if(battlePk==null){
 			battlePk = new BattlePk();
 			battlePk.setHomeUserId(userInfo.getId());
@@ -365,6 +366,7 @@ public class BattlePkApi {
 		
 		BattlePk battlePk = battlePkService.findOne(id);
 		
+		System.out.println("............battlePk2:"+battlePk);
 		if(battlePk==null){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
