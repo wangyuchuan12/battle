@@ -2,7 +2,6 @@ package com.battle.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,7 +21,7 @@ import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
 
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY,region="mycache")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region="mycache")
 //@Cacheable(true)
 @ParamEntityAnnotation
 @Entity

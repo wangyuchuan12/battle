@@ -41,7 +41,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
 			Pageable pageable);
 	
-	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
+	@Cacheable(value="userCache")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattlePeriodMember findOne(String id);
 
