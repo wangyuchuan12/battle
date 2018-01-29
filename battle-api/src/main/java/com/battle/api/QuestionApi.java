@@ -112,6 +112,8 @@ public class QuestionApi {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, battlePeriodMember.getRoomId());
+		
+		System.out.println("...........battleQuestionAnswer.room.status:"+battleRoom.getStatus());
 		Integer rightAddProcess = battleRoom.getRightAddProcess();
 		Integer rightAddScore = battleRoom.getRightAddScore();
 		Integer wrongSubScore = battleRoom.getWrongSubScore();
