@@ -78,19 +78,21 @@ public class EhRedisCache implements Cache{
 	    	System.out.println("................put");
 	        ehCache.put(new Element(key, value));
 	        final String keyStr =  key.toString(); 
-	        final Object valueStr = value;  
-	        redisTemplate.execute(new RedisCallback<Long>() {  
-	            public Long doInRedis(RedisConnection connection)  
-	                    throws DataAccessException {  
-	                byte[] keyb = keyStr.getBytes();  
-	                byte[] valueb = toByteArray(valueStr);  
-	                connection.set(keyb, valueb);  
-	                if (liveTime > 0) {  
-	                    connection.expire(keyb, liveTime);  
-	                }  
-	                return 1L;  
-	            }  
-	        },true);  
+	        final Object valueStr = value;
+	        if(value!=null){
+		        redisTemplate.execute(new RedisCallback<Long>() {  
+		            public Long doInRedis(RedisConnection connection)  
+		                    throws DataAccessException {  
+		                byte[] keyb = keyStr.getBytes();  
+		                byte[] valueb = toByteArray(valueStr);  
+		                connection.set(keyb, valueb);  
+		                if (liveTime > 0) {  
+		                    connection.expire(keyb, liveTime);  
+		                }  
+		                return 1L;  
+		            }  
+		        },true); 
+	        }
 
 	    }
 
