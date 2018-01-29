@@ -47,7 +47,7 @@
 <!-- replicatePutsViaCopy=true | false – 当一个新增元素被拷贝到其他的cache中时是否进行复制指定为true时为复制，默认是true。 -->
 <!-- replicateUpdatesViaCopy=true | false – 当一个元素被拷贝到其他的cache中时是否进行复制（指定为true时为复制），默认是true。 -->
 
-     <cache name="webCache_LT"
+     <cache name="roomCache"
            maxElementsInMemory="10000"
            eternal="false"
            overflowToDisk="false"
