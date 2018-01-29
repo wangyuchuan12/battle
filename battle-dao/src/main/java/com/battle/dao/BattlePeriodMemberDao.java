@@ -17,14 +17,12 @@ import com.battle.domain.BattlePeriodMember;
 
 public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember, String>{
 
-	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByBattleIdAndBattleUserIdAndPeriodIdAndRoomIdAndIsDel(String battleId, String battleUserId,
 			String periodId,String roomId,Integer isDel);
 
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel,Pageable pageable);
 
-	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
 	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
