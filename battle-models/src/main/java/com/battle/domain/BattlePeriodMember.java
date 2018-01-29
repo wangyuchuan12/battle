@@ -21,8 +21,7 @@ import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
 
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region="mycache")
-//@Cacheable(true)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_period_member",indexes={@Index(columnList="battle_id,period_id,room_id",name="battlePeriodMemberIndex")})
