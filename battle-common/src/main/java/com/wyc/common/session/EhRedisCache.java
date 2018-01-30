@@ -56,8 +56,13 @@ public class EhRedisCache implements Cache{
 	         
 	         
 	         if (value!=null) {
-	             return (value != null ? new SimpleValueWrapper(value.getObjectValue()) : null);
-	             
+	        	 SimpleValueWrapper valueWrapper =  (value != null ? new SimpleValueWrapper(value.getObjectValue()) : null);
+	        	 
+	        	 if(valueWrapper!=null){
+	        		 put(key, value);
+	        	 }
+	        	 
+	             return valueWrapper;
 	         } 
 	         //TODO 这样会不会更好？访问10次EhCache 强制访问一次redis 使得数据不失效
 	         final String keyStr = key.toString();  
