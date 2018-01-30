@@ -25,7 +25,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
+	//@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
@@ -39,7 +39,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
 			Pageable pageable);
 	
-	@Cacheable(value="userCache")
+	//@Cacheable(value="userCache")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattlePeriodMember findOne(String id);
 
