@@ -44,12 +44,10 @@ public class EhRedisCache implements Cache{
 	    @Override
 	    public ValueWrapper get(Object key) {
 	    	ObjectMapper objectMapper  = new ObjectMapper();
-	    	System.out.println("................get");
 	         Element value = ehCache.get(key);
 	         LOG.info("Cache L1 (ehcache) :{}={}",key,value);
 	         try{
 	        	 String str = objectMapper.writeValueAsString(value);
-	        	 System.out.println("************************:str:"+str);
 	         }catch(Exception e){
 	        	 e.printStackTrace();
 	         }
@@ -79,14 +77,7 @@ public class EhRedisCache implements Cache{
 	                    connection.expire(key, liveTime);  
 	                }  
 	                Object obj  = toObject(value);  
-	                try{
-		                ObjectMapper objectMapper  = new ObjectMapper();
-		                String str = objectMapper.writeValueAsString(obj);
-			        	System.out.println("************************:obj:"+objectMapper.writeValueAsString(obj));
-	                }catch(Exception e){
-	                	e.printStackTrace();
-	                }
-	                
+	            
 	                return obj;
 	            }
 	        },true);  
@@ -98,7 +89,6 @@ public class EhRedisCache implements Cache{
 
 	    @Override
 	    public void put(Object key, Object value) {
-	    	System.out.println("************value:"+value);
 	    	if(value!=null){
 	    		
 		        ehCache.put(new Element(key, value));
@@ -122,7 +112,6 @@ public class EhRedisCache implements Cache{
 
 	    @Override
 	    public void evict(Object key) {
-	    	System.out.println("................evvict");
 	        ehCache.remove(key);
 	        final String keyStr =  key.toString();  
 	        redisTemplate.execute(new RedisCallback<Long>() {  
@@ -135,7 +124,6 @@ public class EhRedisCache implements Cache{
 
 	    @Override
 	    public void clear() {
-	    	System.out.println("................clear");
 	        ehCache.removeAll();
 	        redisTemplate.execute(new RedisCallback<String>() {  
 	            public String doInRedis(RedisConnection connection)  
@@ -147,37 +135,30 @@ public class EhRedisCache implements Cache{
 	    }
 
 	    public net.sf.ehcache.Cache getEhCache() {
-	    	System.out.println("................getEhCache");
 	        return ehCache;
 	    }
 
 	    public void setEhCache(net.sf.ehcache.Cache ehCache) {
-	    	System.out.println("................setEhCache");
 	        this.ehCache = ehCache;
 	    }
 
 	    public RedisTemplate<String, Object> getRedisTemplate() {
-	    	System.out.println("................getRedisTemplate");
 	        return redisTemplate;
 	    }
 
 	    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-	    	System.out.println("................setRedisTemplate");
 	        this.redisTemplate = redisTemplate;
 	    }
 
 	    public long getLiveTime() {
-	    	System.out.println("................getLiveTime");
 	        return liveTime;
 	    }
 
 	    public void setLiveTime(long liveTime) {
-	    	System.out.println("................setLiveTime");
 	        this.liveTime = liveTime;
 	    }
 
 	    public void setName(String name) {
-	    	System.out.println("................setName");
 	        this.name = name;
 	    }
 	    /** 
@@ -186,7 +167,6 @@ public class EhRedisCache implements Cache{
 	     * @return 
 	     */  
 	    private byte[] toByteArray(Object obj) {
-	    	System.out.println("................toByteArray");
 	        byte[] bytes = null;  
 	        ByteArrayOutputStream bos = new ByteArrayOutputStream();  
 	        try {  
@@ -208,7 +188,6 @@ public class EhRedisCache implements Cache{
 	     * @return 
 	     */  
 	    private Object toObject(byte[] bytes) {  
-	    	System.out.println("................toObject");
 	        Object obj = null;  
 	        try {  
 	            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);  
@@ -226,14 +205,12 @@ public class EhRedisCache implements Cache{
 
 		@Override
 		public <T> T get(Object key, Class<T> type) {
-			System.out.println("................get");
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public ValueWrapper putIfAbsent(Object key, Object value) {
-			System.out.println("................putIfAbsent");
 			// TODO Auto-generated method stub
 			return null;
 		}  
