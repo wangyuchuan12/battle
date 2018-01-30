@@ -12,10 +12,10 @@ import com.battle.domain.QuestionAnswer;
 
 public interface QuestionAnswerDao extends CrudRepository<QuestionAnswer, String>{
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<QuestionAnswer> findAllByTargetIdAndType(String targetId, Integer type);
 	
-	@Cacheable("userCache")
+	//@Cacheable("userCache")
 	public QuestionAnswer findOne(String id);
 
 }
