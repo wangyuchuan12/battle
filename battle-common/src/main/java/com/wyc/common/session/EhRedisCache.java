@@ -76,7 +76,7 @@ public class EhRedisCache implements Cache{
 	                try{
 		                ObjectMapper objectMapper  = new ObjectMapper();
 		                String str = objectMapper.writeValueAsString(obj);
-			        	System.out.println("************************:obj:"+obj);
+			        	System.out.println("************************:obj:"+objectMapper.writeValueAsString(obj));
 	                }catch(Exception e){
 	                	e.printStackTrace();
 	                }
