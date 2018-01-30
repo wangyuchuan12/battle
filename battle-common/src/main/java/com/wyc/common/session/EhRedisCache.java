@@ -16,6 +16,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.ehcache.Element;
 
@@ -42,10 +43,18 @@ public class EhRedisCache implements Cache{
 
 	    @Override
 	    public ValueWrapper get(Object key) {
-	    	
+	    	ObjectMapper objectMapper  = new ObjectMapper();
 	    	System.out.println("................get");
 	         Element value = ehCache.get(key);
 	         LOG.info("Cache L1 (ehcache) :{}={}",key,value);
+	         try{
+	        	 String str = objectMapper.writeValueAsString(value);
+	        	 System.out.println("************************:str:"+str);
+	         }catch(Exception e){
+	        	 e.printStackTrace();
+	         }
+	         
+	         
 	         if (value!=null) {
 	             return (value != null ? new SimpleValueWrapper(value.getObjectValue()) : null);
 	         } 
@@ -63,7 +72,16 @@ public class EhRedisCache implements Cache{
 	                if (liveTime > 0) {  
 	                    connection.expire(key, liveTime);  
 	                }  
-	                return toObject(value);  
+	                Object obj  = toObject(value);  
+	                try{
+		                ObjectMapper objectMapper  = new ObjectMapper();
+		                String str = objectMapper.writeValueAsString(value);
+			        	System.out.println("************************:obj:"+str);
+	                }catch(Exception e){
+	                	e.printStackTrace();
+	                }
+	                
+	                return obj;
 	            }
 	        },true);  
 	         ehCache.put(new Element(key, objectValue));//取出来之后缓存到本地
@@ -74,12 +92,12 @@ public class EhRedisCache implements Cache{
 
 	    @Override
 	    public void put(Object key, Object value) {
-	    	
-	    	System.out.println("................put");
-	        ehCache.put(new Element(key, value));
-	        final String keyStr =  key.toString(); 
-	        final Object valueStr = value;
-	        if(value!=null){
+	    	System.out.println("************value:"+value);
+	    	if(value!=null){
+	    		
+		        ehCache.put(new Element(key, value));
+		        final String keyStr =  key.toString(); 
+		        final Object valueStr = value;
 		        redisTemplate.execute(new RedisCallback<Long>() {  
 		            public Long doInRedis(RedisConnection connection)  
 		                    throws DataAccessException {  
