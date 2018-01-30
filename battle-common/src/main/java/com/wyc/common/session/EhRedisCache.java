@@ -59,7 +59,7 @@ public class EhRedisCache implements Cache{
 	        	 SimpleValueWrapper valueWrapper =  (value != null ? new SimpleValueWrapper(value.getObjectValue()) : null);
 	        	 
 	        	 if(valueWrapper!=null){
-	        		 put(key, value);
+	        		 put(key, value.getObjectValue());
 	        	 }
 	        	 
 	             return valueWrapper;
