@@ -85,6 +85,25 @@ public class BattlePkApi {
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo battleRoomPkInto(HttpServletRequest httpServletRequest)throws Exception{
 	
+		String maxinum = httpServletRequest.getParameter("maxinum");
+		String mininum = httpServletRequest.getParameter("mininum");
+		
+		
+		
+		if(CommonUtil.isEmpty(maxinum)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		if(CommonUtil.isEmpty(mininum)){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			return resultVo;
+		}
+		
+		Integer maxinumInt = Integer.parseInt(maxinum);
+		Integer mininumInt = Integer.parseInt(mininum);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
@@ -122,8 +141,8 @@ public class BattlePkApi {
 			
 			battleRoom.setIsPk(0);
 			battleRoom.setPeriodId(battleCreateDetail.getPeriodId());
-			battleRoom.setMaxinum(24);
-			battleRoom.setMininum(24);
+			battleRoom.setMaxinum(maxinumInt);
+			battleRoom.setMininum(mininumInt);
 			battleRoom.setIsSearchAble(0);
 			battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
 			battleRoom.setPlaces(10);
