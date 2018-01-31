@@ -21,12 +21,14 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePk;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomPk;
 import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleCreateDetailService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePkService;
+import com.battle.service.BattleRoomPkService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
@@ -71,7 +73,73 @@ public class BattlePkApi {
 	@Autowired
 	private BattleUserService battleUserService;
 	
+	@Autowired
+	private BattleRoomPkService battleRoomPkService;
+	
 	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
+	
+	
+	@RequestMapping(value="battleRoomPkInto")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo battleRoomPkInto(HttpServletRequest httpServletRequest)throws Exception{
+	
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattleRoomPk battleRoomPk = battleRoomPkService.findOneByUserId(userInfo.getId());
+		
+		if(battleRoomPk==null){
+			battleRoomPk = new BattleRoomPk();
+			battleRoomPk.setNickname(userInfo.getNickname());
+			battleRoomPk.setUserId(userInfo.getId());
+			battleRoomPkService.add(battleRoomPk);
+		}
+		
+		BattleRoom battleRoom = null;
+		
+		if(!CommonUtil.isEmpty(battleRoomPk.getRoomId())){
+			battleRoom = battleRoomService.findOne(battleRoomPk.getRoomId());
+		}
+		
+		if(battleRoom==null){
+			List<BattleCreateDetail> battleCreateDetails = battleCreateDetailServie.findAllByIsDefault(1);
+			
+			if(battleCreateDetails==null||battleCreateDetails.size()==0){
+				ResultVo resultVo = new ResultVo();
+				
+				resultVo.setSuccess(false);
+				
+				resultVo.setErrorMsg("createDetail为空");
+				
+				return resultVo;
+			}
+			
+			BattleCreateDetail battleCreateDetail = battleCreateDetails.get(0);
+			Battle battle = battleService.findOne(battleCreateDetail.getBattleId());
+			battleRoom = battleRoomHandleService.initRoom(battle);
+			
+			battleRoom.setIsPk(0);
+			battleRoom.setPeriodId(battleCreateDetail.getPeriodId());
+			battleRoom.setMaxinum(24);
+			battleRoom.setMininum(24);
+			battleRoom.setIsSearchAble(0);
+			battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
+			battleRoom.setPlaces(10);
+			battleRoom.setIsDanRoom(0);
+			battleRoom.setIsIncrease(1);
+			
+			battleRoomService.add(battleRoom);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoom);
+		
+		return resultVo;
+		
+	}
 	
 	//主场方进入
 	@RequestMapping(value="homeInto")
