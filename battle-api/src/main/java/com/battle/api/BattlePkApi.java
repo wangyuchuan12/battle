@@ -152,6 +152,10 @@ public class BattlePkApi {
 			battleRoomService.add(battleRoom);
 		}
 		
+		battleRoomPk.setRoomId(battleRoom.getId());
+		
+		battleRoomPkService.update(battleRoomPk);
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battleRoom);

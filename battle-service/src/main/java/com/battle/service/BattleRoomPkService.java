@@ -29,4 +29,12 @@ public class BattleRoomPkService {
 		battleRoomPkDao.save(battleRoomPk);
 		
 	}
+
+	public void update(BattleRoomPk battleRoomPk) {
+		
+		battleRoomPk.setUpdateAt(new DateTime());
+		
+		battleRoomPkDao.save(battleRoomPk);
+		
+	}
 }
