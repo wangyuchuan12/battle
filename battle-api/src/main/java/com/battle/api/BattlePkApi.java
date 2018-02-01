@@ -79,6 +79,32 @@ public class BattlePkApi {
 	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
 	
 	
+	@RequestMapping(value="pkMain")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo pkMain(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattlePk battlePk = battlePkService.findOneByHomeUserId(userInfo.getId());
+		
+		BattleRoomPk battleRoomPk = battleRoomPkService.findOneByUserId(userInfo.getId());
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("battlePk", battlePk);
+		data.put("battleRoomPk", battleRoomPk);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(data);
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="battleRoomPkInto")
 	@ResponseBody
 	@Transactional
