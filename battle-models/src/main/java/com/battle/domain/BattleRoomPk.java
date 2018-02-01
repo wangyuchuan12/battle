@@ -37,6 +37,10 @@ public class BattleRoomPk {
 	private String roomId;
 	
 	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -78,6 +82,14 @@ public class BattleRoomPk {
 
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
+	}
+
+	public String getBattleId() {
+		return battleId;
+	}
+
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
 	}
 
 	public DateTime getCreateAt() {

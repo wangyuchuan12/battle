@@ -180,6 +180,8 @@ public class BattlePkApi {
 		
 		battleRoomPk.setRoomId(battleRoom.getId());
 		
+		battleRoomPk.setBattleId(battleRoom.getBattleId());
+		
 		battleRoomPkService.update(battleRoomPk);
 		
 		ResultVo resultVo = new ResultVo();
