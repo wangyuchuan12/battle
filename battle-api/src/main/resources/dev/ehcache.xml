@@ -59,11 +59,13 @@
            timeToIdleSeconds="3600"
            timeToLiveSeconds="3600"
            memoryStoreEvictionPolicy="LRU">
+        <!--  
         <cacheEventListenerFactory
                 class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
                 properties="replicateRemovals=true"/>
          <bootstrapCacheLoaderFactory
                  class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/> 
+         -->
     </cache>
 
     <cache name="webCache_ST"
@@ -73,11 +75,13 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="300"
            memoryStoreEvictionPolicy="LRU">
+           <!--  
         <cacheEventListenerFactory
                 class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
                 properties="replicateRemovals=true"/>
         <bootstrapCacheLoaderFactory
                 class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+            -->
     </cache>
 
 </ehcache>
