@@ -2,4 +2,5 @@ eclipse.preferences.version=1
 encoding//src/main/resources/dev/redis.properties=UTF-8
 encoding//src/main/resources/local/redis.properties=UTF-8
 encoding//src/main/resources/prod/redis.properties=UTF-8
+encoding//src/main/resources/zijiandev/redis.properties=UTF-8
 encoding//src/main/resources/zijianprod/redis.properties=UTF-8
