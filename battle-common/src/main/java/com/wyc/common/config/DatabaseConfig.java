@@ -27,7 +27,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.wyc.common.repositories","com.battle.dao"})
 @EnableTransactionManagement
-@ImportResource("classpath:applicationContext.xml")
+//@ImportResource("classpath:applicationContext.xml")
 public class DatabaseConfig {
 
     @Bean
@@ -86,14 +86,14 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         properties.setProperty("hibernate.jdbc.batch_size", "50");
         properties.setProperty("hibernate.jdbc.fetch_size", "50");
-        
+        /*
         properties.setProperty("hibernate.generate_statistics", "true");
         properties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
         properties.setProperty("javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE");
         properties.setProperty("hibernate.cache.use_query_cache", "true");
         properties.setProperty("ernate.cache.use_second_level_cache", "true");
        
-        properties.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.EhCacheProvider");
+        properties.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.EhCacheProvider");*/
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
         return factory.getObject();
