@@ -1,7 +1,9 @@
 package com.battle.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -14,13 +16,19 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.battle.domain.Battle;
 import com.battle.domain.BattleQuestionFactoryItem;
+import com.battle.domain.BattleSubject;
 import com.battle.domain.Context;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleQuestionFactoryItemService;
+import com.battle.service.BattleService;
+import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -34,6 +42,15 @@ public class BattleFactoryApi {
 	
 	@Autowired
 	private BattleQuestionFactoryItemService battleQuestionFactoryItemService;
+	
+	@Autowired
+	private WxUserInfoService userInfoService;
+	
+	@Autowired
+	private BattleSubjectService battleSubjectService;
+	
+	@Autowired
+	private BattleService battleService;
 
 	@RequestMapping(value="apply")
 	@ResponseBody
@@ -102,17 +119,55 @@ public class BattleFactoryApi {
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		
-		System.out.print("...........battleId:"+battleId);
-		
 		if(CommonUtil.isEmpty(battleId)){
-			battleId = "1";
+			battleId = "2";
 		}
+		
 		int status = BattleQuestionFactoryItem.STATUS_AUDIT;
 		Pageable pageable = new PageRequest(0, 1);
 		List<BattleQuestionFactoryItem> battleQuestionFactoryItems = battleQuestionFactoryItemService.findAllByBattleIdAndStatusRandom(battleId,status,pageable);
 	
 		if(battleQuestionFactoryItems!=null&&battleQuestionFactoryItems.size()>0){
 			BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItems.get(0);
+			String answer = battleQuestionFactoryItem.getAnswer();
+			String auditUserId = battleQuestionFactoryItem.getAuditUserId();
+			String battleSubjectId = battleQuestionFactoryItem.getBattleSubjectId();
+			String fillWords = battleQuestionFactoryItem.getFillWords();
+			String id = battleQuestionFactoryItem.getId();
+			String imgUrl = battleQuestionFactoryItem.getImgUrl();
+			String options = battleQuestionFactoryItem.getOptions();
+			String periodId = battleQuestionFactoryItem.getPeriodId();
+			String question = battleQuestionFactoryItem.getQuestion();
+			int type = battleQuestionFactoryItem.getType();
+			
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("answer", answer);
+			data.put("fillWords", fillWords);
+			data.put("id", id);
+			data.put("imgUrl", imgUrl);
+			data.put("options", options);
+			data.put("periodId", periodId);
+			data.put("question", question);
+			data.put("type", type);
+			UserInfo userInfo = userInfoService.findOne(auditUserId);
+			BattleSubject battleSubject = battleSubjectService.findOne(battleSubjectId);
+			Battle battle = battleService.findOne(battleId);
+			
+			if(battle!=null){
+				data.put("battleName", battle.getName());
+			}
+			
+			if(userInfo!=null){
+				data.put("auditUsername", userInfo.getNickname());
+			}
+			
+			if(battleSubject!=null){
+				data.put("subjectName", battleSubject.getName());
+			}
+			
+			
+			
+			
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(battleQuestionFactoryItem);
