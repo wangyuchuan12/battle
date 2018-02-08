@@ -101,6 +101,12 @@ public class BattleFactoryApi {
 	public ResultVo randomAuditQuestion(HttpServletRequest httpServletRequest)throws Exception{
 		
 		String battleId = httpServletRequest.getParameter("battleId");
+		
+		System.out.print("...........battleId:"+battleId);
+		
+		if(CommonUtil.isEmpty(battleId)){
+			battleId = "1";
+		}
 		int status = BattleQuestionFactoryItem.STATUS_AUDIT;
 		Pageable pageable = new PageRequest(0, 1);
 		List<BattleQuestionFactoryItem> battleQuestionFactoryItems = battleQuestionFactoryItemService.findAllByBattleIdAndStatusRandom(battleId,status,pageable);
