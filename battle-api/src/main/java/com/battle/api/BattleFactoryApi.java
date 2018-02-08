@@ -130,7 +130,7 @@ public class BattleFactoryApi {
 		if(battleQuestionFactoryItems!=null&&battleQuestionFactoryItems.size()>0){
 			BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItems.get(0);
 			String answer = battleQuestionFactoryItem.getAnswer();
-			String auditUserId = battleQuestionFactoryItem.getAuditUserId();
+			String userId = battleQuestionFactoryItem.getUserId();
 			String battleSubjectId = battleQuestionFactoryItem.getBattleSubjectId();
 			String fillWords = battleQuestionFactoryItem.getFillWords();
 			String id = battleQuestionFactoryItem.getId();
@@ -149,7 +149,10 @@ public class BattleFactoryApi {
 			data.put("periodId", periodId);
 			data.put("question", question);
 			data.put("type", type);
-			UserInfo userInfo = userInfoService.findOne(auditUserId);
+			UserInfo userInfo = null;
+			if(CommonUtil.isNotEmpty(userId)){
+				userInfo = userInfoService.findOne(userId);
+			}
 			BattleSubject battleSubject = battleSubjectService.findOne(battleSubjectId);
 			Battle battle = battleService.findOne(battleId);
 			
