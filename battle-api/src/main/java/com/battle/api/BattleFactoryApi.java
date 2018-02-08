@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.Battle;
 import com.battle.domain.BattleQuestionFactoryItem;
+import com.battle.domain.BattleQuestionReview;
 import com.battle.domain.BattleSubject;
 import com.battle.domain.Context;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleQuestionFactoryItemService;
+import com.battle.service.BattleQuestionReviewService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
@@ -51,6 +53,9 @@ public class BattleFactoryApi {
 	
 	@Autowired
 	private BattleService battleService;
+	
+	@Autowired
+	private BattleQuestionReviewService battleQuestionReviewService;
 
 	@RequestMapping(value="apply")
 	@ResponseBody
@@ -129,6 +134,18 @@ public class BattleFactoryApi {
 	
 		if(battleQuestionFactoryItems!=null&&battleQuestionFactoryItems.size()>0){
 			BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItems.get(0);
+			
+			List<BattleQuestionReview> battleQuestionReviews = battleQuestionReviewService.findAllByBattleIdAndBattleSubjectId(battleId,battleQuestionFactoryItem.getBattleSubjectId());
+			if(battleQuestionReviews==null||battleQuestionReviews.size()==0){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorMsg("battleQuestionReviews不能为空");
+				return resultVo;
+			}
+			
+			BattleQuestionReview battleQuestionReview = battleQuestionReviews.get(0);
+			int rewardBean = battleQuestionReview.getRewardBean();
+			String stageIndexes = battleQuestionReview.getStageIndexes();
 			String answer = battleQuestionFactoryItem.getAnswer();
 			String userId = battleQuestionFactoryItem.getUserId();
 			String battleSubjectId = battleQuestionFactoryItem.getBattleSubjectId();
@@ -149,6 +166,9 @@ public class BattleFactoryApi {
 			data.put("periodId", periodId);
 			data.put("question", question);
 			data.put("type", type);
+			data.put("rewardBean", rewardBean);
+			data.put("stageIndexes", stageIndexes);
+			data.put("reviewId", battleQuestionReview.getId());
 			UserInfo userInfo = null;
 			if(CommonUtil.isNotEmpty(userId)){
 				userInfo = userInfoService.findOne(userId);
