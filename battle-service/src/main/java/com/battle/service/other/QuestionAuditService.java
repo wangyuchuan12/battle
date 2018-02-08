@@ -74,6 +74,8 @@ public class QuestionAuditService {
 		
 		String stageIndexes = battleQuestionReview.getStageIndexes();
 		
+		System.out.println(".............stageIndexes:"+stageIndexes);
+		
 		String[] stageIndexesStr = stageIndexes.split(",");
 		
 		List<BattlePeriodStage> battlePeriodStages = new ArrayList<>();

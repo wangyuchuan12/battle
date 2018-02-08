@@ -126,6 +126,7 @@ public class BattleFactoryApi {
 	public ResultVo agree(HttpServletRequest httpServletRequest)throws Exception{
 		String itemId = httpServletRequest.getParameter("itemId");
 		String reviewId = httpServletRequest.getParameter("reviewId");
+		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
