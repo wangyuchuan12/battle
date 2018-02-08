@@ -63,12 +63,12 @@ public class QuestionAuditService {
 		
 		UserInfo userInfo = userInfoService.findOne(battleQuestionFactoryItem.getUserId());
 		
-		Account account = accountService.findOne(userInfo.getAccountId());
+		/*Account account = accountService.findOne(userInfo.getAccountId());
 		
-		Long wisdomCount = account.getWisdomCount();
+		Long wisdomCount = account.getWisdomCount();*/
 		Integer rewardBean = battleQuestionReview.getRewardBean();
 		
-		wisdomCount = wisdomCount+rewardBean;
+		//wisdomCount = wisdomCount+rewardBean;
 		
 		battleQuestionFactoryItem.setRewardBean(rewardBean);
 		
@@ -106,7 +106,9 @@ public class QuestionAuditService {
 		questionObj.setImgUrl(imgUrl);
 		questionObj.setType(type);
 		questionObj.setQuestion(question);
-		questionObj.setAuthorName(userInfo.getNickname());
+		if(userInfo!=null){
+			questionObj.setAuthorName(userInfo.getNickname());
+		}
 		questionObj.setIndex(0);
 		questionObj.setIsDel(0);
 		if(CommonUtil.isEmpty(imgUrl)){

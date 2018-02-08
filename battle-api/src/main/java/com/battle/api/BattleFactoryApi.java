@@ -174,7 +174,6 @@ public class BattleFactoryApi {
 			
 			List<BattleQuestionReview> battleQuestionReviews = battleQuestionReviewService.findAllByBattleIdAndBattleSubjectId(battleId,battleQuestionFactoryItem.getBattleSubjectId());
 			
-			System.out.println("...........battleQuestionReviews:"+battleQuestionReviews+",battleId:"+battleId+",battleQuestionFactoryItem.getBattleSubjectId:"+battleQuestionFactoryItem.getBattleSubjectId());
 			if(battleQuestionReviews==null||battleQuestionReviews.size()==0){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
