@@ -170,7 +170,7 @@ public class BattleFactoryApi {
 			
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
-			resultVo.setData(battleQuestionFactoryItem);
+			resultVo.setData(data);
 			return resultVo;
 		}else{
 			ResultVo resultVo = new ResultVo();
