@@ -31,4 +31,16 @@ public class BattleQuestionFactoryItemService {
 		
 		return battleQuestionFactoryItemDao.findAllByUserIdAndStatusInAndIsDel(userId,statuses,isDel,pageable);
 	}
+
+	public void update(BattleQuestionFactoryItem battleQuestionFactoryItem) {
+		
+		battleQuestionFactoryItem.setUpdateAt(new DateTime());;
+		battleQuestionFactoryItemDao.save(battleQuestionFactoryItem);
+		
+	}
+
+	public List<BattleQuestionFactoryItem> findAllByBattleIdAndStatusRandom(String battleId,int status, Pageable pageable) {
+		
+		return battleQuestionFactoryItemDao.findAllByBattleIdAndStatusRandom(battleId,status,pageable);
+	}
 }

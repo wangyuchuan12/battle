@@ -82,6 +82,9 @@ def loadConfiguration() {
     		
     else if(environment.equals('zijiandev'))
     		sourceSets.main.resources.srcDirs 'src/main/resources/zijiandev'
+    		
+    else if(environment.equals('devtest'))
+    		sourceSets.main.resources.srcDirs 'src/main/resources/devtest'
     else
         sourceSets.main.resources.srcDirs 'src/main/resources/local'
 }

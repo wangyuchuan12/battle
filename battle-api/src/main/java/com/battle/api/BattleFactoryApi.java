@@ -95,6 +95,31 @@ public class BattleFactoryApi {
 	}
 	
 	
+	@RequestMapping(value="randomAuditQuestion")
+	@ResponseBody
+	//@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo randomAuditQuestion(HttpServletRequest httpServletRequest)throws Exception{
+		
+		String battleId = httpServletRequest.getParameter("battleId");
+		int status = BattleQuestionFactoryItem.STATUS_AUDIT;
+		Pageable pageable = new PageRequest(0, 1);
+		List<BattleQuestionFactoryItem> battleQuestionFactoryItems = battleQuestionFactoryItemService.findAllByBattleIdAndStatusRandom(battleId,status,pageable);
+	
+		if(battleQuestionFactoryItems!=null&&battleQuestionFactoryItems.size()>0){
+			BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItems.get(0);
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setData(battleQuestionFactoryItem);
+			return resultVo;
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("没有返回记录");
+			return resultVo;
+		}
+	}
+	
+	
 	@RequestMapping(value="myQuestions")
 	@ResponseBody
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)

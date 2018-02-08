@@ -22,14 +22,6 @@ public class BattleQuestionReview {
 	private String id;
 	
 	@ParamAnnotation
-	@Column(name="question_factory_item_id")
-	private String questionFactoryItemId;
-	
-	@ParamAnnotation
-	@Column(name="battle_question_id")
-	private String battleQuestionId;
-	
-	@ParamAnnotation
 	@Column(name="battle_subject_id")
 	private String battleSubjectId;
 	
@@ -44,6 +36,19 @@ public class BattleQuestionReview {
 	@ParamAnnotation
 	@Column
 	private Integer status;
+	
+	
+	@ParamAnnotation
+	@Column(name="battle_id")
+	private String battleId;
+	
+	@ParamAnnotation
+	@Column(name="period_id")
+	private String periodId;
+	
+	@ParamAnnotation
+	@Column(name="stage_indexes")
+	private String stageIndexes;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -64,23 +69,7 @@ public class BattleQuestionReview {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getQuestionFactoryItemId() {
-		return questionFactoryItemId;
-	}
-
-	public void setQuestionFactoryItemId(String questionFactoryItemId) {
-		this.questionFactoryItemId = questionFactoryItemId;
-	}
-
-	public String getBattleQuestionId() {
-		return battleQuestionId;
-	}
-
-	public void setBattleQuestionId(String battleQuestionId) {
-		this.battleQuestionId = battleQuestionId;
-	}
-
+	
 	public String getBattleSubjectId() {
 		return battleSubjectId;
 	}
@@ -103,6 +92,38 @@ public class BattleQuestionReview {
 
 	public void setRewardBean(Integer rewardBean) {
 		this.rewardBean = rewardBean;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getBattleId() {
+		return battleId;
+	}
+
+	public void setBattleId(String battleId) {
+		this.battleId = battleId;
+	}
+
+	public String getPeriodId() {
+		return periodId;
+	}
+
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
+	}
+
+	public String getStageIndexes() {
+		return stageIndexes;
+	}
+
+	public void setStageIndexes(String stageIndexes) {
+		this.stageIndexes = stageIndexes;
 	}
 
 	public DateTime getCreateAt() {

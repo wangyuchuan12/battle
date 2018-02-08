@@ -93,6 +93,22 @@ public class BattleQuestionFactoryItem {
 	private Integer type;
 	
 	@ParamAnnotation
+	@Column(name="period_id")
+	private String periodId;
+	
+	@ParamAnnotation
+	@Column(name="stage_id")
+	private String stageId;
+	
+	@ParamAnnotation
+	@Column(name="audit_user_id")
+	private String auditUserId;
+	
+	@ParamAnnotation
+	@Column(name="reward_bean")
+	private Integer rewardBean;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -224,6 +240,38 @@ public class BattleQuestionFactoryItem {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public String getPeriodId() {
+		return periodId;
+	}
+
+	public void setPeriodId(String periodId) {
+		this.periodId = periodId;
+	}
+
+	public String getStageId() {
+		return stageId;
+	}
+
+	public void setStageId(String stageId) {
+		this.stageId = stageId;
+	}
+
+	public String getAuditUserId() {
+		return auditUserId;
+	}
+
+	public void setAuditUserId(String auditUserId) {
+		this.auditUserId = auditUserId;
+	}
+
+	public Integer getRewardBean() {
+		return rewardBean;
+	}
+
+	public void setRewardBean(Integer rewardBean) {
+		this.rewardBean = rewardBean;
 	}
 
 	public DateTime getCreateAt() {
