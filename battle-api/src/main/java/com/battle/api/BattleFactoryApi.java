@@ -28,6 +28,7 @@ import com.battle.service.BattleQuestionReviewService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.ContextService;
+import com.battle.service.other.QuestionAuditService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.WxUserInfoService;
@@ -56,6 +57,9 @@ public class BattleFactoryApi {
 	
 	@Autowired
 	private BattleQuestionReviewService battleQuestionReviewService;
+	
+	@Autowired
+	private QuestionAuditService questionAuditService;
 
 	@RequestMapping(value="apply")
 	@ResponseBody
@@ -110,6 +114,38 @@ public class BattleFactoryApi {
 		questionTarget.setUserId(userInfo.getId());
 		
 		battleQuestionFactoryItemService.add(questionTarget);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		return resultVo;
+	}
+	
+	@RequestMapping(value="agree")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo agree(HttpServletRequest httpServletRequest)throws Exception{
+		String itemId = httpServletRequest.getParameter("itemId");
+		String reviewId = httpServletRequest.getParameter("reviewId");
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItemService.findOne(itemId);
+		
+		BattleQuestionReview battleQuestionReview = battleQuestionReviewService.findOne(reviewId);
+		questionAuditService.passAudit(battleQuestionFactoryItem, battleQuestionReview, userInfo.getId());
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		return resultVo;
+	}
+	
+	@RequestMapping(value="reject")
+	@ResponseBody
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo reject(HttpServletRequest httpServletRequest)throws Exception{
+		String itemId = httpServletRequest.getParameter("itemId");
+		BattleQuestionFactoryItem battleQuestionFactoryItem = battleQuestionFactoryItemService.findOne(itemId);
+		questionAuditService.rejectAudti(battleQuestionFactoryItem);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

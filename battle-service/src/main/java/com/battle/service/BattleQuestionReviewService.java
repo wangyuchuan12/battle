@@ -18,4 +18,9 @@ public class BattleQuestionReviewService {
 		
 		return battleQuestionReviewDao.findAllByBattleIdAndBattleSubjectId(battleId,battleSubjectId);
 	}
+
+	public BattleQuestionReview findOne(String id) {
+		
+		return battleQuestionReviewDao.findOne(id);
+	}
 }

@@ -43,4 +43,9 @@ public class BattleQuestionFactoryItemService {
 		
 		return battleQuestionFactoryItemDao.findAllByBattleIdAndStatusRandom(battleId,status,pageable);
 	}
+
+	public BattleQuestionFactoryItem findOne(String id) {
+		
+		return battleQuestionFactoryItemDao.findOne(id);
+	}
 }
