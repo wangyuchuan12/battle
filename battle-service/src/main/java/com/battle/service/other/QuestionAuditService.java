@@ -51,6 +51,13 @@ public class QuestionAuditService {
 	@Autowired
 	private QuestionOptionService questionOptionService;
 	
+	public static void main(String[]args){
+		for(int i=0;i<100;i++){
+			int index=(int)(Math.random()*5);
+			System.out.println("index:"+index);
+		}
+	}
+	
 	
 	public void rejectAudti(BattleQuestionFactoryItem battleQuestionFactoryItem){
 		
@@ -74,7 +81,6 @@ public class QuestionAuditService {
 		
 		String stageIndexes = battleQuestionReview.getStageIndexes();
 		
-		System.out.println(".............stageIndexes:"+stageIndexes);
 		
 		String[] stageIndexesStr = stageIndexes.split(",");
 		
