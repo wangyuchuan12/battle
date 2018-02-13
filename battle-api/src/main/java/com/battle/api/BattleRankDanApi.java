@@ -60,8 +60,7 @@ public class BattleRankDanApi {
 		
 		for(BattleAccountResult battleAccountResult:battleAccountResults){
 			
-			System.out.println("......battleAccountResult.getUserId:"+battleAccountResult.getUserId());
-			/*UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
+			UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
 			
 			Map<String, Object> result = new HashMap<>();
 			
@@ -71,7 +70,7 @@ public class BattleRankDanApi {
 			
 			result.put("level", battleAccountResult.getLevel());
 			
-			results.add(result);*/
+			results.add(result);
 		}
 		
 		ResultVo resultVo = new ResultVo();
