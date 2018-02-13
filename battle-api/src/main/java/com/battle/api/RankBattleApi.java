@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +22,13 @@ import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoomGroup;
 import com.battle.domain.BattleRoomGroupMember;
+import com.battle.domain.UserFriend;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleGroupConfigService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomGroupMemberService;
 import com.battle.service.BattleRoomGroupService;
+import com.battle.service.UserFrendService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.WxUserInfoService;
@@ -51,6 +54,9 @@ public class RankBattleApi {
 	
 	@Autowired
 	private BattleRoomGroupMemberService battleRoomGroupMemberService;
+	
+	@Autowired
+	private UserFrendService userFrendService;
 	
 	
 	@RequestMapping(value="registRankBattle")
@@ -91,6 +97,7 @@ public class RankBattleApi {
 				battleRoomGroupService.add(myBattleRoomGroup);
 				
 			}
+			
 		}
 		
 		if(myBattleRoomGroup==null){
@@ -113,6 +120,25 @@ public class RankBattleApi {
 		String recommendUserId = httpServletRequest.getParameter("recommendUserId");
 
 		if(!CommonUtil.isEmpty(recommendUserId)){
+			
+			UserFriend userFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(),recommendUserId);
+			
+			if(userFriend==null){
+				userFriend = new UserFriend();
+				userFriend.setFriendUserId(recommendUserId);
+				userFriend.setUserId(userInfo.getId());
+				userFriend.setMeetTime(new DateTime());
+				userFrendService.add(userFriend);
+			}
+			
+			UserFriend userFriend2 = userFrendService.findOneByUserIdAndFriendUserId(recommendUserId,userInfo.getId());
+			if(userFriend2==null){
+				userFriend2 = new UserFriend();
+				userFriend2.setFriendUserId(userInfo.getId());
+				userFriend2.setUserId(recommendUserId);
+				userFriend2.setMeetTime(new DateTime());
+				userFrendService.add(userFriend2);
+			}
 			
 			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
 			if(frendUserInfo==null){

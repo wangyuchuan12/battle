@@ -17,11 +17,14 @@ import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomGroup;
 import com.battle.domain.BattleRoomReward;
 import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleDanService;
 import com.battle.service.BattleDanUserService;
 import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattleRoomGroupMemberService;
+import com.battle.service.BattleRoomGroupService;
 import com.battle.service.BattleRoomRewardService;
 import com.wyc.common.domain.Account;
 import com.wyc.common.service.AccountService;
@@ -53,6 +56,12 @@ public class BattleDanHandleService {
 	@Autowired
 	private BattleAccountResultService battleAccountResultService;
 	
+	@Autowired
+	private BattleRoomGroupService battleRoomGroupService;
+	
+	@Autowired
+	private BattleRoomGroupMemberService battleRoomGroupMemberService;
+	
 	
 	public List<BattlePeriodMember> rewardReceive(BattleRoom battleRoom){
 		
@@ -68,6 +77,7 @@ public class BattleDanHandleService {
 			
 		}
 		
+		
 		Sort sort = new Sort(Direction.DESC,"score");
 		
 		Pageable pageable = new PageRequest(0, 100, sort);
@@ -81,6 +91,8 @@ public class BattleDanHandleService {
 			BattleRoomReward battleRoomReward = battleRoomRewards.get(i);
 			battleRoomRewardMap.put(i, battleRoomReward);
 		}
+		
+		
 		
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
 			for(int i=0;i<battlePeriodMembers.size();i++){

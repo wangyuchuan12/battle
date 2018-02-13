@@ -41,6 +41,15 @@ public class BattleRoomGroupMember {
 	@ParamAnnotation
 	@Column(name="nickname")
 	private String nickname;
+	
+	
+	@ParamAnnotation
+	@Column(name="level")
+	private Integer level;
+	
+	@ParamAnnotation
+	@Column(name="level_name")
+	private Integer levelName;
 
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -100,6 +109,22 @@ public class BattleRoomGroupMember {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public Integer getLevelName() {
+		return levelName;
+	}
+
+	public void setLevelName(Integer levelName) {
+		this.levelName = levelName;
 	}
 
 	public DateTime getCreateAt() {
