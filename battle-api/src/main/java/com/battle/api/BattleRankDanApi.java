@@ -47,6 +47,8 @@ public class BattleRankDanApi {
 		List<BattleAccountResult> battleAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
 		
 		
+		System.out.println(".....userFriends:"+userFriends+",battleAccountResults:"+battleAccountResults);
+		
 		Map<String, UserFriend> userFrendMap = new HashMap<>();
 		
 		for(UserFriend userFriend:userFriends){
