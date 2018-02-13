@@ -123,10 +123,13 @@ public class RankBattleApi {
 			
 			UserFriend userFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(),recommendUserId);
 			
+			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
 			if(userFriend==null){
 				userFriend = new UserFriend();
 				userFriend.setFriendUserId(recommendUserId);
 				userFriend.setUserId(userInfo.getId());
+				userFriend.setUserName(userInfo.getNickname());
+				userFriend.setUserImg(userInfo.getHeadimgurl());
 				userFriend.setMeetTime(new DateTime());
 				userFrendService.add(userFriend);
 			}
@@ -137,10 +140,12 @@ public class RankBattleApi {
 				userFriend2.setFriendUserId(userInfo.getId());
 				userFriend2.setUserId(recommendUserId);
 				userFriend2.setMeetTime(new DateTime());
+				userFriend2.setUserName(frendUserInfo.getNickname());
+				userFriend2.setUserImg(frendUserInfo.getHeadimgurl());
 				userFrendService.add(userFriend2);
 			}
 			
-			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
+			
 			if(frendUserInfo==null){
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);

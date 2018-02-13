@@ -30,6 +30,22 @@ public class UserFriend {
 	private String friendUserId;
 	
 	@ParamAnnotation
+	@Column(name="user_name")
+	private String userName;
+	
+	@ParamAnnotation
+	@Column(name="frend_user_name")
+	private String frendUserName;
+	
+	@ParamAnnotation
+	@Column(name="user_img")
+	private String userImg;
+	
+	@ParamAnnotation
+	@Column(name="frend_user_img")
+	private String frendUserImg;
+	
+	@ParamAnnotation
 	@Column(name = "meet_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -77,6 +93,38 @@ public class UserFriend {
 
 	public void setMeetTime(DateTime meetTime) {
 		this.meetTime = meetTime;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getFrendUserName() {
+		return frendUserName;
+	}
+
+	public void setFrendUserName(String frendUserName) {
+		this.frendUserName = frendUserName;
+	}
+
+	public String getUserImg() {
+		return userImg;
+	}
+
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
+
+	public String getFrendUserImg() {
+		return frendUserImg;
+	}
+
+	public void setFrendUserImg(String frendUserImg) {
+		this.frendUserImg = frendUserImg;
 	}
 
 	public DateTime getCreateAt() {
