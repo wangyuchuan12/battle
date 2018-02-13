@@ -1,6 +1,9 @@
 package com.battle.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -16,6 +19,7 @@ import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleAccountResultService;
 import com.battle.service.UserFrendService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.wx.domain.UserInfo;
 
@@ -43,7 +47,33 @@ public class BattleRankDanApi {
 		List<BattleAccountResult> battleAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
 		
 		
-		return null;
+		Map<String, UserFriend> userFrendMap = new HashMap<>();
+		
+		for(UserFriend userFriend:userFriends){
+			userFrendMap.put(userFriend.getFriendUserId(), userFriend);
+		}
+		
+		List<Map<String, Object>> results = new ArrayList<>();
+		
+		for(BattleAccountResult battleAccountResult:battleAccountResults){
+			UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
+			
+			Map<String, Object> result = new HashMap<>();
+			
+			result.put("userName", userFriend.getFrendUserName());
+			
+			result.put("userImg", userFriend.getFrendUserImg());
+			
+			result.put("level", battleAccountResult.getLevel());
+			
+			results.add(result);
+		}
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(results);
+		
+		return resultVo;
 		
 	}
 }
