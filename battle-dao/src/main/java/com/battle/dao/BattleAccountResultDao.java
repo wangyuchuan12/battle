@@ -10,9 +10,9 @@ import com.battle.domain.BattleAccountResult;
 
 public interface BattleAccountResultDao extends CrudRepository<BattleAccountResult, String>{
 
-	BattleAccountResult findOneByUserId(@Param("userId")String userId);
+	BattleAccountResult findOneByUserId(String userId);
 
 	@Query(value="from com.battle.domain.BattleAccountResult bar where exists(select id from com.battle.domain.UserFriend uf where uf.userId=:userId and uf.friendUserId=bar.userId) order by bar.level asc")
-	List<BattleAccountResult> findAllByUserFrendUserId(String userId);
+	List<BattleAccountResult> findAllByUserFrendUserId(@Param("userId")String userId);
 
 }
