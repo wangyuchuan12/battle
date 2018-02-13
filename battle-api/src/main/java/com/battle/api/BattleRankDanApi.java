@@ -52,13 +52,16 @@ public class BattleRankDanApi {
 		Map<String, UserFriend> userFrendMap = new HashMap<>();
 		
 		for(UserFriend userFriend:userFriends){
+			System.out.println("...getFriendUserId:"+userFriend.getFriendUserId());
 			userFrendMap.put(userFriend.getFriendUserId(), userFriend);
 		}
 		
 		List<Map<String, Object>> results = new ArrayList<>();
 		
 		for(BattleAccountResult battleAccountResult:battleAccountResults){
-			UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
+			
+			System.out.println("......battleAccountResult.getUserId:"+battleAccountResult.getUserId());
+			/*UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
 			
 			Map<String, Object> result = new HashMap<>();
 			
@@ -68,7 +71,7 @@ public class BattleRankDanApi {
 			
 			result.put("level", battleAccountResult.getLevel());
 			
-			results.add(result);
+			results.add(result);*/
 		}
 		
 		ResultVo resultVo = new ResultVo();
