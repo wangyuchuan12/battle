@@ -43,5 +43,7 @@ public class BattleRankDanApi {
 		List<BattleAccountResult> battleAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
 		
 		
+		return null;
+		
 	}
 }
