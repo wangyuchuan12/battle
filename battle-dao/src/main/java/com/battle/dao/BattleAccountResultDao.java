@@ -12,7 +12,7 @@ public interface BattleAccountResultDao extends CrudRepository<BattleAccountResu
 
 	BattleAccountResult findOneByUserId(String userId);
 
-	@Query(value="from com.battle.domain.BattleAccountResult bar where bar.userId=:userId and exists(select id from com.battle.domain.UserFriend uf where  uf.friendUserId=bar.userId)   order by bar.level asc")
+	@Query(value="from com.battle.domain.BattleAccountResult bar where bar.userId=:userId and exists(select id from com.battle.domain.UserFriend uf where  uf.userId=bar.userId)   order by bar.level asc")
 	List<BattleAccountResult> findAllByUserFrendUserId(@Param("userId")String userId);
 
 }
