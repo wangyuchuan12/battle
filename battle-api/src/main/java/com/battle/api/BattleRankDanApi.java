@@ -120,7 +120,19 @@ public class BattleRankDanApi {
 			allResults.add(allResultItem);
 		}
 		
+		
+		Map<String, Object> memberInfo = new HashMap<>();
+		memberInfo.put("nickname", myAccountResult.getNickname());
+		
+		memberInfo.put("headImg", myAccountResult.getImgUrl());
+		
+		memberInfo.put("level", myAccountResult.getLevel());
+		
+		
+		
 		Map<String, Object> data = new HashMap<>();
+		
+		data.put("memberInfo", memberInfo);
 		
 		data.put("allMembers", allResults);
 		
