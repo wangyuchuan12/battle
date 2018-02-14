@@ -2,6 +2,7 @@ package com.battle.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,9 @@ public interface BattleAccountResultDao extends CrudRepository<BattleAccountResu
 
 	BattleAccountResult findOneByUserId(String userId);
 
-	@Query(value="from com.battle.domain.BattleAccountResult bar where exists(select id from com.battle.domain.UserFriend uf where uf.friendUserId=bar.userId and uf.userId=:userId) order by bar.level asc")
+	@Query(value="from com.battle.domain.BattleAccountResult bar where exists(select id from com.battle.domain.UserFriend uf where uf.friendUserId=bar.userId and uf.userId=:userId) order by bar.level asc,bar.winTime desc")
 	List<BattleAccountResult> findAllByUserFrendUserId(@Param("userId")String userId);
+
+	List<BattleAccountResult> findAll(Pageable pageable);
 
 }

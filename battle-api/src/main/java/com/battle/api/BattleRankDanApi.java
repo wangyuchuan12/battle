@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,36 +48,86 @@ public class BattleRankDanApi {
 		
 		List<UserFriend> userFriends = userFrendService.findAllByUserId(userInfo.getId());
 		
-		List<BattleAccountResult> battleAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
+		List<BattleAccountResult> frendAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
 	
 		
 		Map<String, UserFriend> userFrendMap = new HashMap<>();
 		
 		for(UserFriend userFriend:userFriends){
-			System.out.println("...getFriendUserId:"+userFriend.getFriendUserId());
 			userFrendMap.put(userFriend.getFriendUserId(), userFriend);
 		}
 		
-		List<Map<String, Object>> results = new ArrayList<>();
+		BattleAccountResult myAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
 		
-		for(BattleAccountResult battleAccountResult:battleAccountResults){
+		List<Map<String, Object>> frendResults = new ArrayList<>();
+		
+		boolean flag = true;
+		
+		for(BattleAccountResult battleAccountResult:frendAccountResults){
+			
+			if(myAccountResult.getLevel()>battleAccountResult.getLevel()||
+					(myAccountResult.getLevel()==battleAccountResult.getLevel()&&myAccountResult.getWinTime()>=battleAccountResult.getLevel())){
+				Map<String, Object> result = new HashMap<>();
+				
+				result.put("nickname", myAccountResult.getNickname());
+				
+				result.put("headImg", myAccountResult.getImgUrl());
+				
+				result.put("level", myAccountResult.getLevel());
+				
+				frendResults.add(result);
+				flag = false;
+			}
 			
 			UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
 			
+			
 			Map<String, Object> result = new HashMap<>();
 			
-			result.put("userName", userFriend.getFrendUserName());
+			result.put("nickname", userFriend.getFrendUserName());
 			
-			result.put("userImg", userFriend.getFrendUserImg());
+			result.put("headImg", userFriend.getFrendUserImg());
 			
 			result.put("level", battleAccountResult.getLevel());
 			
-			results.add(result);
+			frendResults.add(result);
 		}
+		
+		if(flag){
+			Map<String, Object> result = new HashMap<>();
+			
+			result.put("nickname", myAccountResult.getNickname());
+			
+			result.put("headImg", myAccountResult.getImgUrl());
+			
+			result.put("level", myAccountResult.getLevel());
+			
+			frendResults.add(result);
+		}
+		
+		Sort sort = new Sort(Direction.DESC,"level");
+		Pageable pageable = new PageRequest(0,100,sort);
+		List<BattleAccountResult> allAccountResults = battleAccountResultService.findAll(pageable);
+		
+		List<Map<String, Object>> allResults = new ArrayList<>();
+		for(BattleAccountResult battleAccountResult:allAccountResults){
+			Map<String, Object> allResultItem = new HashMap<>();
+			allResultItem.put("nickname", battleAccountResult.getNickname());
+			allResultItem.put("headImg", battleAccountResult.getImgUrl());
+			allResultItem.put("level", battleAccountResult.getLevel());
+			
+			allResults.add(allResultItem);
+		}
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		data.put("allMembers", allResults);
+		
+		data.put("frendMembers", frendResults);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(results);
+		resultVo.setData(data);
 		
 		return resultVo;
 		

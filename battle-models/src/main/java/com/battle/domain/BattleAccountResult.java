@@ -31,6 +31,14 @@ public class BattleAccountResult {
 	@Column(name="user_id")
 	private String userId;
 	
+	@ParamAnnotation
+	@Column
+	private String nickname;
+	
+	@ParamAnnotation
+	@Column(name="img_url")
+	private String imgUrl;
+	
 	//经验值
 	@ParamAnnotation
 	@Column
@@ -154,6 +162,22 @@ public class BattleAccountResult {
 
 	public void setDanName(String danName) {
 		this.danName = danName;
+	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 
 	public DateTime getCreateAt() {

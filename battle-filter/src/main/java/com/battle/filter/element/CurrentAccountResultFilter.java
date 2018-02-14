@@ -29,6 +29,8 @@ public class CurrentAccountResultFilter extends Filter{
 			battleAccountResult.setFightTime(0L);
 			battleAccountResult.setLevel(1);
 			battleAccountResult.setUserId(userInfo.getId());
+			battleAccountResult.setImgUrl(userInfo.getHeadimgurl());
+			battleAccountResult.setNickname(userInfo.getNickname());
 			battleAccountResult.setWinTime(0l);
 			
 			battleAccountResultService.add(battleAccountResult);
