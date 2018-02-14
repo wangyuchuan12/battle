@@ -50,13 +50,6 @@ public class BattleRankDanApi {
 		List<UserFriend> userFriends = userFrendService.findAllByUserId(userInfo.getId());
 		
 		List<BattleAccountResult> frendAccountResults = battleAccountResultService.findAllByUserFrendUserId(userInfo.getId());
-	
-		
-		Map<String, UserFriend> userFrendMap = new HashMap<>();
-		
-		for(UserFriend userFriend:userFriends){
-			userFrendMap.put(userFriend.getFriendUserId(), userFriend);
-		}
 		
 		BattleAccountResult myAccountResult = battleAccountResultService.findOneByUserId(userInfo.getId());
 		
@@ -80,14 +73,12 @@ public class BattleRankDanApi {
 				flag = false;
 			}
 			
-			UserFriend userFriend = userFrendMap.get(battleAccountResult.getUserId());
-			
 			
 			Map<String, Object> result = new HashMap<>();
 			
-			result.put("nickname", userFriend.getFrendUserName());
+			result.put("nickname", battleAccountResult.getNickname());
 			
-			result.put("headImg", userFriend.getFrendUserImg());
+			result.put("headImg", battleAccountResult.getImgUrl());
 			
 			result.put("level", battleAccountResult.getLevel());
 			
@@ -95,15 +86,19 @@ public class BattleRankDanApi {
 		}
 		
 		if(flag){
-			Map<String, Object> result = new HashMap<>();
-			
-			result.put("nickname", myAccountResult.getNickname());
-			
-			result.put("headImg", myAccountResult.getImgUrl());
-			
-			result.put("level", myAccountResult.getLevel());
-			
-			frendResults.add(result);
+			if(myAccountResult!=null){
+				Map<String, Object> result = new HashMap<>();
+				
+				result.put("nickname", myAccountResult.getNickname());
+				
+				result.put("headImg", myAccountResult.getImgUrl());
+				
+				result.put("level", myAccountResult.getLevel());
+				
+				frendResults.add(result);
+			}else{
+				
+			}
 		}
 		
 		Sort sort = new Sort(Direction.DESC,"level");
@@ -122,11 +117,20 @@ public class BattleRankDanApi {
 		
 		
 		Map<String, Object> memberInfo = new HashMap<>();
-		memberInfo.put("nickname", myAccountResult.getNickname());
 		
-		memberInfo.put("headImg", myAccountResult.getImgUrl());
-		
-		memberInfo.put("level", myAccountResult.getLevel());
+		if(myAccountResult!=null){
+			memberInfo.put("nickname", myAccountResult.getNickname());
+			
+			memberInfo.put("headImg", myAccountResult.getImgUrl());
+			
+			memberInfo.put("level", myAccountResult.getLevel());
+		}else{
+			memberInfo.put("nickname", userInfo.getNickname());
+			
+			memberInfo.put("headImg", userInfo.getHeadimgurl());
+			
+			memberInfo.put("level", 0);
+		}
 		
 		
 		
