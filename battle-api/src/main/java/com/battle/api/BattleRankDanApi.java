@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -107,10 +108,10 @@ public class BattleRankDanApi {
 		
 		Sort sort = new Sort(Direction.DESC,"level");
 		Pageable pageable = new PageRequest(0,100,sort);
-		List<BattleAccountResult> allAccountResults = battleAccountResultService.findAll(pageable);
+		Page<BattleAccountResult> allAccountResults = battleAccountResultService.findAll(pageable);
 		
 		List<Map<String, Object>> allResults = new ArrayList<>();
-		for(BattleAccountResult battleAccountResult:allAccountResults){
+		for(BattleAccountResult battleAccountResult:allAccountResults.getContent()){
 			Map<String, Object> allResultItem = new HashMap<>();
 			allResultItem.put("nickname", battleAccountResult.getNickname());
 			allResultItem.put("headImg", battleAccountResult.getImgUrl());

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class BattleAccountResultService {
 		return battleAccountResultDao.findAllByUserFrendUserId(userId);
 	}
 
-	public List<BattleAccountResult> findAll(Pageable pageable) {
+	public Page<BattleAccountResult> findAll(Pageable pageable) {
 		return battleAccountResultDao.findAll(pageable);
 	}
 }
