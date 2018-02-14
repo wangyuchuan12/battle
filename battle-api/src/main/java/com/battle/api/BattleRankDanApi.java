@@ -69,6 +69,8 @@ public class BattleRankDanApi {
 				
 				result.put("level", myAccountResult.getLevel());
 				
+				result.put("levelName", myAccountResult.getDanName());
+				
 				frendResults.add(result);
 				flag = false;
 			}
@@ -81,6 +83,7 @@ public class BattleRankDanApi {
 			result.put("headImg", battleAccountResult.getImgUrl());
 			
 			result.put("level", battleAccountResult.getLevel());
+			result.put("levelName", battleAccountResult.getDanName());
 			
 			frendResults.add(result);
 		}
@@ -94,6 +97,8 @@ public class BattleRankDanApi {
 				result.put("headImg", myAccountResult.getImgUrl());
 				
 				result.put("level", myAccountResult.getLevel());
+				
+				result.put("levelName", myAccountResult.getDanName());
 				
 				frendResults.add(result);
 			}else{
@@ -111,6 +116,7 @@ public class BattleRankDanApi {
 			allResultItem.put("nickname", battleAccountResult.getNickname());
 			allResultItem.put("headImg", battleAccountResult.getImgUrl());
 			allResultItem.put("level", battleAccountResult.getLevel());
+			allResultItem.put("levelName", battleAccountResult.getDanName());
 			
 			allResults.add(allResultItem);
 		}
@@ -124,12 +130,15 @@ public class BattleRankDanApi {
 			memberInfo.put("headImg", myAccountResult.getImgUrl());
 			
 			memberInfo.put("level", myAccountResult.getLevel());
+			memberInfo.put("levelName", myAccountResult.getDanName());
 		}else{
 			memberInfo.put("nickname", userInfo.getNickname());
 			
 			memberInfo.put("headImg", userInfo.getHeadimgurl());
 			
 			memberInfo.put("level", 0);
+			
+			memberInfo.put("levelName", "原始人");
 		}
 		
 		
