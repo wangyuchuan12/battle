@@ -69,7 +69,12 @@ public class BattleRankDanApi {
 				
 				result.put("level", myAccountResult.getLevel());
 				
-				result.put("levelName", myAccountResult.getDanName());
+				
+				if(myAccountResult.getLevel()>1){
+					result.put("levelName", myAccountResult.getDanName());
+				}else{
+					result.put("levelName","原始人");
+				}
 				
 				frendResults.add(result);
 				flag = false;
@@ -83,7 +88,11 @@ public class BattleRankDanApi {
 			result.put("headImg", battleAccountResult.getImgUrl());
 			
 			result.put("level", battleAccountResult.getLevel());
-			result.put("levelName", battleAccountResult.getDanName());
+			if(myAccountResult.getLevel()>1){
+				result.put("levelName", myAccountResult.getDanName());
+			}else{
+				result.put("levelName","原始人");
+			}
 			
 			frendResults.add(result);
 		}
@@ -98,7 +107,11 @@ public class BattleRankDanApi {
 				
 				result.put("level", myAccountResult.getLevel());
 				
-				result.put("levelName", myAccountResult.getDanName());
+				if(myAccountResult.getLevel()>1){
+					result.put("levelName", myAccountResult.getDanName());
+				}else{
+					result.put("levelName","原始人");
+				}
 				
 				frendResults.add(result);
 			}else{
@@ -116,8 +129,11 @@ public class BattleRankDanApi {
 			allResultItem.put("nickname", battleAccountResult.getNickname());
 			allResultItem.put("headImg", battleAccountResult.getImgUrl());
 			allResultItem.put("level", battleAccountResult.getLevel());
-			allResultItem.put("levelName", battleAccountResult.getDanName());
-			
+			if(battleAccountResult.getLevel()>1){
+				allResultItem.put("levelName", battleAccountResult.getDanName());
+			}else{
+				allResultItem.put("levelName","原始人");
+			}
 			allResults.add(allResultItem);
 		}
 		
@@ -130,7 +146,12 @@ public class BattleRankDanApi {
 			memberInfo.put("headImg", myAccountResult.getImgUrl());
 			
 			memberInfo.put("level", myAccountResult.getLevel());
-			memberInfo.put("levelName", myAccountResult.getDanName());
+			
+			if(myAccountResult.getLevel()>1){
+				memberInfo.put("levelName", myAccountResult.getDanName());
+			}else{
+				memberInfo.put("levelName","原始人");
+			}
 		}else{
 			memberInfo.put("nickname", userInfo.getNickname());
 			
