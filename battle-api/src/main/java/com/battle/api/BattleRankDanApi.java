@@ -90,7 +90,7 @@ public class BattleRankDanApi {
 			
 			result.put("level", battleAccountResult.getLevel());
 			if(myAccountResult.getLevel()>1){
-				result.put("levelName", myAccountResult.getDanName());
+				result.put("levelName", battleAccountResult.getDanName());
 			}else{
 				result.put("levelName","原始人");
 			}
