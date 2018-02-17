@@ -144,6 +144,8 @@ public class BattleRankDanApi {
 		if(myAccountResult!=null){
 			memberInfo.put("nickname", myAccountResult.getNickname());
 			
+			memberInfo.put("userId", myAccountResult.getUserId());
+			
 			memberInfo.put("headImg", myAccountResult.getImgUrl());
 			
 			memberInfo.put("level", myAccountResult.getLevel());
@@ -155,6 +157,8 @@ public class BattleRankDanApi {
 			}
 		}else{
 			memberInfo.put("nickname", userInfo.getNickname());
+			
+			memberInfo.put("userId", myAccountResult.getUserId());
 			
 			memberInfo.put("headImg", userInfo.getHeadimgurl());
 			
