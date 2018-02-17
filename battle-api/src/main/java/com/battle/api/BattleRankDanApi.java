@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleAccountResult;
 import com.battle.domain.UserFriend;
+import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleAccountResultService;
 import com.battle.service.UserFrendService;
@@ -41,7 +42,7 @@ public class BattleRankDanApi {
 	@RequestMapping(value="ranks")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	@HandlerAnnotation(hanlerFilter=CurrentAccountResultFilter.class)
 	public Object ranks(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
