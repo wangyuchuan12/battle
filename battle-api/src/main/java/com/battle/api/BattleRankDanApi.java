@@ -60,6 +60,7 @@ public class BattleRankDanApi {
 		
 		for(BattleAccountResult battleAccountResult:frendAccountResults){
 			
+			System.out.println("..........nickname:"+battleAccountResult.getNickname());
 			if(myAccountResult.getLevel()>battleAccountResult.getLevel()||
 					(myAccountResult.getLevel()==battleAccountResult.getLevel()&&myAccountResult.getWinTime()>=battleAccountResult.getLevel())){
 				Map<String, Object> result = new HashMap<>();

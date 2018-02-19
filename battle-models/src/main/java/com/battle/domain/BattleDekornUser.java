@@ -17,6 +17,11 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity
 @Table(name="battle_dekorn_user")
 public class BattleDekornUser {
+	
+	public static final Integer FREE_STATUS=0;
+	public static final Integer IN_STATUS=1;
+	public static final Integer SUCCESS_STATUS=2;
+	public static final Integer FAIL_STATUS=3;
 	@Id
 	@IdAnnotation
 	private String id;
@@ -60,6 +65,10 @@ public class BattleDekornUser {
 	@ParamAnnotation
 	@Column
 	private Integer places;
+	
+	@ParamAnnotation
+	@Column
+	private Integer status;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -161,6 +170,16 @@ public class BattleDekornUser {
 
 	public void setPlaces(Integer places) {
 		this.places = places;
+	}
+	
+	
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public DateTime getCreateAt() {

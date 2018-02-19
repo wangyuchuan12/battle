@@ -297,13 +297,24 @@ public class BattleDekornApi {
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public Object dekornList(HttpServletRequest httpServletRequest){
+	public Object dekornList(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		List<BattleDekorn> battleDekorns = battleDekornService.findAllByIsDel(0);
+		
+		List<BattleDekornUser> battleDekornUsers = battleDekornUserService.findAllByUserIdAndIsDel(userInfo.getId(), 0);
+		Map<String, BattleDekornUser> battleDekornUserMap = new HashMap<>();
+		
+		for(BattleDekornUser battleDekornUser:battleDekornUsers){
+			battleDekornUserMap.put(battleDekornUser.getDekornId(), battleDekornUser);
+		}
 		
 		List<Map<String, Object>> responseDekorns = new ArrayList<>();
 		
 		for(BattleDekorn battleDekorn:battleDekorns){
+			
+			BattleDekornUser battleDekornUser  = battleDekornUserMap.get(battleDekorn.getId());
 			Map<String, Object> responseDekorn = new HashMap<>();
 			responseDekorn.put("id", battleDekorn.getId());
 			responseDekorn.put("battleId", battleDekorn.getBattleId());
@@ -320,6 +331,12 @@ public class BattleDekornApi {
 			responseDekorn.put("rewardBeanNo8", battleDekorn.getRewardBeanNo8());
 			responseDekorn.put("rewardBeanNo9", battleDekorn.getRewardBeanNo9());
 			responseDekorn.put("rewardBeanNo10", battleDekorn.getRewardBeanNo10());
+			
+			if(battleDekornUser==null){
+				responseDekorn.put("status", BattleDekornUser.FREE_STATUS);
+			}else{
+				responseDekorn.put("status", battleDekornUser.getStatus());
+			}
 			
 			responseDekorns.add(responseDekorn);
 		}

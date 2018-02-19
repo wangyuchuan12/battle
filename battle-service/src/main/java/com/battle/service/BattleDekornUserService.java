@@ -38,4 +38,12 @@ public class BattleDekornUserService {
 		battleDekornUserDao.save(battleDekornUser);
 		
 	}
+
+	public List<BattleDekornUser> findAllByUserIdAndIsDel(String userId, int isDel) {
+		return battleDekornUserDao.findAllByUserIdAndIsDel(userId,isDel);
+	}
+
+	public List<BattleDekornUser> findAllByDekornIdAndIsDel(String dekornId, int isDel) {
+		return battleDekornUserDao.findAllByDekornIdAndIsDel(dekornId,isDel);
+	}
 }

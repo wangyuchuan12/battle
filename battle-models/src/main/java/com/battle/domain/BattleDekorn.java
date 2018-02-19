@@ -102,7 +102,10 @@ public class BattleDekorn {
 	@Column(name="reward_bean_no10")
 	private Integer rewardBeanNo10;
 	
-	
+	@ParamAnnotation
+	@Column
+	private Integer status;
+
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")

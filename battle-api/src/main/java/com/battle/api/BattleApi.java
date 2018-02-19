@@ -60,6 +60,7 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
 import com.battle.service.BattleUserService;
+import com.battle.service.listener.BattleRoomEndListener;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.wyc.annotation.HandlerAnnotation;
@@ -131,6 +132,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleDanHandleService battleDanHandleService;
+	
+	@Autowired
+	private BattleRoomEndListener battleRoomEndListener;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
@@ -1692,6 +1696,8 @@ public class BattleApi {
 				
 				battleRoomRecordService.add(battleRoomRecord);
 				
+				battleRoomEndListener.answerPass(battleRoom,battleMemberPaperAnswer,battlePeriodMember);
+				
 			}else{
 				
 				StringBuffer sb = new StringBuffer();
@@ -1707,6 +1713,8 @@ public class BattleApi {
 				battleRoomRecord.setLog(sb.toString());
 				
 				battleRoomRecordService.add(battleRoomRecord);
+				
+				battleRoomEndListener.answerUnPass(battleRoom,battleMemberPaperAnswer,battlePeriodMember);
 			}
 			
 		}
@@ -1743,7 +1751,8 @@ public class BattleApi {
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 			
 			sessionManager.update(battlePeriodMember);
-			
+		
+			battleRoomEndListener.roomEnd(battleRoom, battlePeriodMembers);
 		}else if(battlePeriodMember.getStageIndex()>battlePeriodMember.getStageCount()){
 			
 			if(battleRoom.getEndEnable()!=null&&battleRoom.getEndEnable()==1){
@@ -1763,6 +1772,8 @@ public class BattleApi {
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
 			
 			sessionManager.update(battlePeriodMember);
+			
+			battleRoomEndListener.roomEnd(battleRoom, battlePeriodMembers);
 			
 		}
 		
@@ -1797,7 +1808,10 @@ public class BattleApi {
 				
 				battleDanTaskUserService.update(battleDanTaskUser);
 			}
+
 			
+		}else{
+
 		}
 		
 		Sort sort = new Sort(Direction.DESC,"score");
