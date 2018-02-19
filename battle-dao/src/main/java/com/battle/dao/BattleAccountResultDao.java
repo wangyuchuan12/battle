@@ -14,7 +14,7 @@ public interface BattleAccountResultDao extends CrudRepository<BattleAccountResu
 
 	BattleAccountResult findOneByUserId(String userId);
 
-	@Query(value="from com.battle.domain.BattleAccountResult bar where exists(select id from com.battle.domain.UserFriend uf where uf.friendUserId=bar.userId and uf.userId=:userId) order by bar.level asc,bar.winTime desc")
+	@Query(value="from com.battle.domain.BattleAccountResult bar where exists(select id from com.battle.domain.UserFriend uf where uf.friendUserId=bar.userId and uf.userId=:userId) order by bar.level desc,bar.winTime desc")
 	List<BattleAccountResult> findAllByUserFrendUserId(@Param("userId")String userId);
 
 	Page<BattleAccountResult> findAll(Pageable pageable);
