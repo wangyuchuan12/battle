@@ -124,6 +124,19 @@ public class RankBattleApi {
 			UserFriend userFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(),recommendUserId);
 			
 			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
+			
+			if(frendUserInfo==null){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				
+				resultVo.setErrorMsg("朋友信息为空");
+				
+				resultVo.setErrorCode(300);
+				
+				return resultVo;
+			}
+			
+			
 			if(userFriend==null){
 				userFriend = new UserFriend();
 				userFriend.setFriendUserId(recommendUserId);
@@ -146,16 +159,6 @@ public class RankBattleApi {
 			}
 			
 			
-			if(frendUserInfo==null){
-				ResultVo resultVo = new ResultVo();
-				resultVo.setSuccess(false);
-				
-				resultVo.setErrorMsg("朋友信息为空");
-				
-				resultVo.setErrorCode(300);
-				
-				return resultVo;
-			}
 			
 			
 			if(battleGroupConfig==null){
