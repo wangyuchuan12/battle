@@ -67,6 +67,21 @@ public class RankBattleApi {
 
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		
+		UserFriend mySelfFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(), userInfo.getId());
+		
+		if(mySelfFriend==null){
+			mySelfFriend = new UserFriend();
+			mySelfFriend.setFriendUserId(userInfo.getId());
+			mySelfFriend.setUserId(userInfo.getId());
+			mySelfFriend.setUserName(userInfo.getNickname());
+			mySelfFriend.setUserImg(userInfo.getHeadimgurl());
+			mySelfFriend.setMeetTime(new DateTime());
+			userFrendService.add(mySelfFriend);
+		}
+		
+		
 		BattleRoomGroup myBattleRoomGroup =null;
 		BattleGroupConfig battleGroupConfig = null;
 		if(userInfo.getIsCreateFrendGroup()==null||userInfo.getIsCreateFrendGroup()==0){
@@ -123,7 +138,7 @@ public class RankBattleApi {
 			
 			UserFriend userFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(),recommendUserId);
 			
-			UserFriend mySelfFriend = userFrendService.findOneByUserIdAndFriendUserId(userInfo.getId(), userInfo.getId());
+			
 			
 			UserInfo frendUserInfo = wxUserInfoService.findOne(recommendUserId);
 			
@@ -136,16 +151,6 @@ public class RankBattleApi {
 				resultVo.setErrorCode(300);
 				
 				return resultVo;
-			}
-			
-			if(mySelfFriend==null){
-				mySelfFriend = new UserFriend();
-				mySelfFriend.setFriendUserId(userInfo.getId());
-				mySelfFriend.setUserId(userInfo.getId());
-				mySelfFriend.setUserName(userInfo.getNickname());
-				mySelfFriend.setUserImg(userInfo.getHeadimgurl());
-				mySelfFriend.setMeetTime(new DateTime());
-				userFrendService.add(mySelfFriend);
 			}
 			
 			
