@@ -433,6 +433,14 @@ public class BattlePkApi {
 			return resultVo;
 		}
 		
+		BattleRoom oldBattleRoom = battleRoomService.findOne(battlePk.getRoomId());
+		
+		oldBattleRoom.setStatus(BattleRoom.STATUS_END);
+		
+		oldBattleRoom.setEndType(BattleRoom.FORCE_END_TYPE);
+		
+		battleRoomService.update(oldBattleRoom);
+		
 		BattleCreateDetail battleCreateDetail = battleCreateDetails.get(0);
 		Battle battle = battleService.findOne(battleCreateDetail.getBattleId());
 		

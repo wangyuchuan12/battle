@@ -46,6 +46,9 @@ public class BattleRoom implements Serializable{
 	
 	public static final Integer SYSTEM_END_TYPE = 3;
 	
+	//强制退出
+	public static final Integer FORCE_END_TYPE=4;
+	
 	@Id
 	@IdAnnotation
 	private String id;
@@ -661,6 +664,7 @@ public class BattleRoom implements Serializable{
 	public void setDekornId(String dekornId) {
 		this.dekornId = dekornId;
 	}
+	
 
 	public DateTime getCreateAt() {
 		return createAt;
