@@ -59,7 +59,7 @@ public class BattleRankDanApi {
 		boolean flag = true;
 		
 		for(BattleAccountResult battleAccountResult:frendAccountResults){
-			System.out.println("..........nickname:"+battleAccountResult.getNickname());
+			/*System.out.println("..........nickname:"+battleAccountResult.getNickname());
 			if(flag&&myAccountResult.getLevel()>battleAccountResult.getLevel()||
 					(myAccountResult.getLevel()==battleAccountResult.getLevel()&&myAccountResult.getWinTime()>=battleAccountResult.getLevel())){
 				Map<String, Object> result = new HashMap<>();
@@ -79,7 +79,7 @@ public class BattleRankDanApi {
 				
 				frendResults.add(result);
 				flag = false;
-			}
+			}*/
 			
 			
 			Map<String, Object> result = new HashMap<>();
@@ -98,7 +98,7 @@ public class BattleRankDanApi {
 			frendResults.add(result);
 		}
 		
-		if(flag){
+		/*if(flag){
 			if(myAccountResult!=null){
 				Map<String, Object> result = new HashMap<>();
 				
@@ -118,7 +118,7 @@ public class BattleRankDanApi {
 			}else{
 				
 			}
-		}
+		}*/
 		
 		Sort sort = new Sort(Direction.DESC,"level");
 		Pageable pageable = new PageRequest(0,100,sort);
