@@ -16,7 +16,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="user_friend",indexes={@Index(columnList="user_id,friendUserId",name="userFriendIndex")})
+@Table(name="user_friend",indexes={@Index(columnList="user_id,friend_user_id",name="userFriendIndex")})
 public class UserFriend {
 	@Id
 	@IdAnnotation
