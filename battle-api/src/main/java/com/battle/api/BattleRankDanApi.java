@@ -59,7 +59,6 @@ public class BattleRankDanApi {
 		boolean flag = true;
 		
 		for(BattleAccountResult battleAccountResult:frendAccountResults){
-			
 			System.out.println("..........nickname:"+battleAccountResult.getNickname());
 			if(flag&&myAccountResult.getLevel()>battleAccountResult.getLevel()||
 					(myAccountResult.getLevel()==battleAccountResult.getLevel()&&myAccountResult.getWinTime()>=battleAccountResult.getLevel())){
