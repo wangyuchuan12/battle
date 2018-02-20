@@ -319,6 +319,56 @@ public class BattlePkApi {
 	}
 	
 	
+	@RequestMapping(value="beatOut")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo beatOut(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		String id = httpServletRequest.getParameter("id");
+		
+		BattlePk battlePk = battlePkService.findOne(id);
+		
+		if(CommonUtil.isEmpty(battlePk.getBeatUserId())){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("没有客场选手");
+			return resultVo;
+		}
+		
+		if(!battlePk.getBeatUserId().equals(userInfo.getId())){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("客场选手不符合");
+			return resultVo;
+		}
+		
+		if(CommonUtil.isEmpty(battlePk.getRoomId())){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("roomId不能为空");
+			return resultVo;
+		}
+		
+		battlePk.setBeatUserImgurl("");
+		battlePk.setBeatUserId("");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+		battleRoom.setStatus(BattleRoom.STATUS_END);
+		battleRoom.setEndType(BattleRoom.FORCE_END_TYPE);
+		
+		battleRoomService.update(battleRoom);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
+	
+	
 	//客场方进入
 	@RequestMapping(value="beatInto")
 	@ResponseBody
