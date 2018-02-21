@@ -290,6 +290,10 @@ public class BattleDekornApi {
 		roomData.put("danId", battleRoom.getDanId());
 		roomData.put("dekornId", battleRoom.getDekornId());
 		roomData.put("endEnable", battleRoom.getEndEnable());
+		roomData.put("status", battleRoom.getStatus());
+		roomData.put("num", battleRoom.getNum());
+		roomData.put("maxinum", battleRoom.getMaxinum());
+		roomData.put("mininum", battleRoom.getMininum());
 		data.put("room", roomData);
 		data.put("rewards", battleRoomRewards);
 		
