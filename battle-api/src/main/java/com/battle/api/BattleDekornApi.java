@@ -280,7 +280,17 @@ public class BattleDekornApi {
 		
 		Map<String, Object> data = (Map<String, Object>) resultVo.getData();
 		
-		data.put("room", battleRoom);
+		
+		Map<String, Object> roomData = new HashMap<>();
+		roomData.put("id", battleRoom.getId());
+		roomData.put("achievementType", battleRoom.getAchievementType());
+		roomData.put("battleId", battleRoom.getBattleId());
+		roomData.put("costBean", battleRoom.getCostBean());
+		roomData.put("costMasonry", battleRoom.getCostMasonry());
+		roomData.put("danId", battleRoom.getDanId());
+		roomData.put("dekornId", battleRoom.getDekornId());
+		roomData.put("endEnable", battleRoom.getEndEnable());
+		data.put("room", roomData);
 		data.put("rewards", battleRoomRewards);
 		
 		resultVo.setSuccess(true);
