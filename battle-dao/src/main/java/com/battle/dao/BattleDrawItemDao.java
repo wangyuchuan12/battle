@@ -8,6 +8,6 @@ import com.battle.domain.BattleDrawItem;
 
 public interface BattleDrawItemDao extends CrudRepository<BattleDrawItem, String>{
 
-	List<BattleDrawItem> findAllOrderByLevel();
+	List<BattleDrawItem> findAllOrderByLevelAsc();
 
 }

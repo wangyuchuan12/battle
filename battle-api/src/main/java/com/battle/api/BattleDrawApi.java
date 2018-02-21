@@ -29,7 +29,7 @@ public class BattleDrawApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo list(HttpServletRequest httpServletRequest){
-		List<BattleDrawItem> battleDrawItems = battleDrawItemService.findAllOrderByLevel();
+		List<BattleDrawItem> battleDrawItems = battleDrawItemService.findAllOrderByLevelAsc();
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);

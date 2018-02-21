@@ -14,9 +14,9 @@ public class BattleDrawItemService {
 	@Autowired
 	private BattleDrawItemDao battleDrawItemDao;
 
-	public List<BattleDrawItem> findAllOrderByLevel() {
+	public List<BattleDrawItem> findAllOrderByLevelAsc() {
 		
-		return battleDrawItemDao.findAllOrderByLevel();
+		return battleDrawItemDao.findAllOrderByLevelAsc();
 		
 	}
 }
