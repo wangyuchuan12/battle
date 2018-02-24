@@ -50,6 +50,24 @@ public class BattleDrawApi {
 	}
 	
 	
+	@RequestMapping(value="roomInfo")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo roomInfo(HttpServletRequest httpServletRequest){
+		
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		BattleRoom battleRoom = battleRoomService.findOne(roomId);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(battleRoom);
+		
+		return resultVo;
+	}
+	
+	
 	@RequestMapping(value="randomLevel")
 	@ResponseBody
 	@Transactional
@@ -122,6 +140,8 @@ public class BattleDrawApi {
 				data.put("roomId", battleRoom.getId());
 				
 				data.put("level", battleDrawItem.getLevel());
+				
+				data.put("battleId", battleRoom.getBattleId());
 				
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(true);
