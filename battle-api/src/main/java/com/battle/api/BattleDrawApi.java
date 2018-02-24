@@ -1,7 +1,9 @@
 package com.battle.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,10 +116,17 @@ public class BattleDrawApi {
 				
 				BattleDrawItem battleDrawItem = battleDrawItems.get(randomInt);
 				
+				
+				Map<String, Object> data = new HashMap<String, Object>();
+				
+				data.put("roomId", battleRoom.getId());
+				
+				data.put("level", battleDrawItem.getLevel());
+				
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(true);
 				
-				resultVo.setData(battleDrawItem);
+				resultVo.setData(data);
 				
 				return resultVo;
 				
