@@ -50,8 +50,14 @@ public class BattleTakepartApiFilter extends Filter{
 		
 		String roomId = (String)sessionManager.getAttribute(AttrEnum.roomId);
 		
+		String danId = (String)sessionManager.getAttribute(AttrEnum.danId);
+		
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.findOne(BattlePeriodMember.class, periodMemberId);
+		
+		if(!CommonUtil.isEmpty(danId)){
+			battlePeriodMember.setDanId(danId);
+		}
 
 		
 		BattleRoom battleRoom = sessionManager.getObject(BattleRoom.class);
@@ -190,8 +196,14 @@ public class BattleTakepartApiFilter extends Filter{
 		String battleId = httpServletRequest.getParameter("battleId");
 		String roomId = httpServletRequest.getParameter("roomId");
 		
+		String danId = httpServletRequest.getParameter("danId");
+		
 		if(!CommonUtil.isEmpty(roomId)){
 			sessionManager.setAttribute(AttrEnum.roomId, roomId);
+		}
+		
+		if(!CommonUtil.isEmpty(danId)){
+			sessionManager.setAttribute(AttrEnum.danId, danId);
 		}
 		
 		BattleRoom battleRoom = sessionManager.findOne(BattleRoom.class, roomId);

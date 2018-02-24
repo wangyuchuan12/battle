@@ -141,5 +141,7 @@ public enum AttrEnum {
 	
 	goodId,
 	
-	groupId
+	groupId,
+	
+	danId
 }

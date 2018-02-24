@@ -19,4 +19,9 @@ public class BattleDrawItemService {
 		return battleDrawItemDao.findAllOrderByLevelAsc();
 		
 	}
+
+	public List<BattleDrawItem> findAllByBattleIdAndPeriodId(String battleId, String periodId) {
+		
+		return battleDrawItemDao.findAllByBattleIdAndPeriodId(battleId,periodId);
+	}
 }

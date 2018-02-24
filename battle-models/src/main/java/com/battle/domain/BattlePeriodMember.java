@@ -115,6 +115,10 @@ public class BattlePeriodMember implements Serializable{
 	private Integer isDel;
 	
 	@ParamAnnotation
+	@Column(name="dan_id")
+	private String danId;
+	
+	@ParamAnnotation
 	@Column(name = "takepart_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -325,6 +329,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setIsIncrease(Integer isIncrease) {
 		this.isIncrease = isIncrease;
+	}
+	
+	public String getDanId() {
+		return danId;
+	}
+
+	public void setDanId(String danId) {
+		this.danId = danId;
 	}
 
 	public DateTime getCreateAt() {

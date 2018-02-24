@@ -154,5 +154,9 @@ public class BattleRoomService {
 		
 		return battleRoomDao.findAllByDekornIdAndStatusIn(dekornId,statuses,pageable);
 	}
+	public List<BattleRoom> findAllByIsDanRoomAndStatusIn(int isDanRoom, List<Integer> statuses, Pageable pageable) {
+		
+		return battleRoomDao.findAllByIsDanRoomAndStatusIn(isDanRoom,statuses,pageable);
+	}
 
 }

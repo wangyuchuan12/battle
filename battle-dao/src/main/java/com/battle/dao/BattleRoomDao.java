@@ -47,4 +47,6 @@ public interface BattleRoomDao extends CrudRepository<BattleRoom, String>{
 
 	List<BattleRoom> findAllByDekornIdAndStatusIn(String dekornId, List<Integer> statuses, Pageable pageable);
 
+	List<BattleRoom> findAllByIsDanRoomAndStatusIn(int isDanRoom, List<Integer> statuses, Pageable pageable);
+
 }

@@ -12,4 +12,6 @@ public interface BattleDrawItemDao extends CrudRepository<BattleDrawItem, String
 	@Query("from com.battle.domain.BattleDrawItem bdt order by level asc")
 	List<BattleDrawItem> findAllOrderByLevelAsc();
 
+	List<BattleDrawItem> findAllByBattleIdAndPeriodId(String battleId, String periodId);
+
 }
