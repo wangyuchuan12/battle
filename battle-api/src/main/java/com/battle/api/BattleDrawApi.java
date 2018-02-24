@@ -54,32 +54,38 @@ public class BattleDrawApi {
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo randomLevel(HttpServletRequest httpServletRequest){
 		Sort sort = new Sort(Direction.DESC,"createAt");
-		Pageable pageable = new PageRequest(0,1,sort);
+		Pageable pageable = new PageRequest(0,5,sort);
 		
 		List<Integer> statuses = new ArrayList<>();
 		statuses.add(BattleRoom.STATUS_FREE);
 		statuses.add(BattleRoom.STATUS_IN);
 		List<BattleRoom> oldBattleRooms = battleRoomService.findAllByIsDanRoomAndStatusIn(1,statuses,pageable);
+	
 		
-		List<BattleRoom> battleRooms = new ArrayList<>();
-		
+		BattleRoom battleRoom = null;
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
 			if(oldBattleRoom.getStartTime().isBeforeNow()){
 				if(oldBattleRoom.getMininum()>oldBattleRoom.getNum()){
-					battleRooms.add(oldBattleRoom);
+					if(battleRoom==null){
+						battleRoom = oldBattleRoom;
+					}else{
+						if(oldBattleRoom.getNum()<battleRoom.getNum()){
+							battleRoom = oldBattleRoom;
+						}
+					}
+
 				}
 			}else{
-				battleRooms.add(oldBattleRoom);
+				if(battleRoom==null){
+					battleRoom = oldBattleRoom;
+				}else{
+					if(oldBattleRoom.getNum()<battleRoom.getNum()){
+						battleRoom = oldBattleRoom;
+					}
+				}
 			}
 		}
 		
-		BattleRoom battleRoom = null;
-		
-		if(battleRooms!=null&&battleRooms.size()>0){
-			
-			battleRoom = battleRooms.get(0);
-			
-		}
 		
 		if(battleRoom==null){
 			ResultVo resultVo = new ResultVo();
