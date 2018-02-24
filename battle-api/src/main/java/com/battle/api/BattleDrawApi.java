@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +19,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleDrawItem;
+import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleRoomReward;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleDrawItemService;
+import com.battle.service.BattlePeriodMemberService;
+import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/battle/battleDraw")
@@ -34,6 +42,12 @@ public class BattleDrawApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private BattleRoomRewardService battleRoomRewardService;
 	
 	@RequestMapping(value="list")
 	@ResponseBody
@@ -54,19 +68,62 @@ public class BattleDrawApi {
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public ResultVo roomInfo(HttpServletRequest httpServletRequest){
+	public ResultVo roomInfo(HttpServletRequest httpServletRequest)throws Exception{
 		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		String roomId = httpServletRequest.getParameter("roomId");
 		
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		
+		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
+		
+		
+		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(
+				battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
+		
+		BattlePeriodMember myBattlePeriodMember = null;
+		for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+			if(battlePeriodMember.getUserId().equals(userInfo.getId())){
+				myBattlePeriodMember = battlePeriodMember;
+			}
+		}
+		Map<String, Object> data = new HashMap<>();
+		data.put("name", battleRoom.getName());
+		data.put("places",battleRoom.getPlaces());
+		data.put("roomId", battleRoom.getId());
+		data.put("battleId", battleRoom.getBattleId());
+		data.put("rewards", battleRoomRewards);
+		data.put("members", battlePeriodMembers);
+		
+		data.put("maxinum", battleRoom.getMaxinum());
+		
+		data.put("mininum", battleRoom.getMininum());
+		
+		data.put("roomStatus", battleRoom.getStatus());
+		
+		
+		
+		Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
+		
+		data.put("timeDiffer",differ);
+		
+		if(!CommonUtil.isEmpty(myBattlePeriodMember)){
+			data.put("status", myBattlePeriodMember.getStatus());
+		}else{
+			data.put("status", BattlePeriodMember.STATUS_FREE);
+		}
+		
+		
+		data.put("num", battleRoom.getNum());
+		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(battleRoom);
+		resultVo.setData(data);
 		
 		return resultVo;
 	}
-	
 	
 	@RequestMapping(value="randomLevel")
 	@ResponseBody
