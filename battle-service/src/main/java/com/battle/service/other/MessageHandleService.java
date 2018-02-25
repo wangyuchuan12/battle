@@ -33,8 +33,11 @@ public class MessageHandleService {
 		
 		String token = accessTokenBean.getAccessToken();
 		
-		System.out.println(".........token:"+token);
-		Request request = requestFactory.getwxacodeRequest("1232423423");
+		
+		System.out.println("..............token:"+token);
+		
+		System.out.println("..............updateat:"+accessTokenBean.getUpdateAt());
+		Request request = requestFactory.templateSend(token);
 		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -50,10 +53,10 @@ public class MessageHandleService {
 		battleMessage.setFormId(formId);
 		
 		Map<String, Object> data = new HashMap<>();
-		//data.put("touser", toUser);
-		//data.put("template_id", templateId);
+		data.put("touser", toUser);
+		data.put("template_id", templateId);
 		
-		data.put("path", page);
+		data.put("page", page);
 		
 		
 		String message = objectMapper.writeValueAsString(data);
