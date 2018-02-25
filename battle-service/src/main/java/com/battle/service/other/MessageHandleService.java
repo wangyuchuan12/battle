@@ -34,7 +34,7 @@ public class MessageHandleService {
 		String token = accessTokenBean.getAccessToken();
 		
 		System.out.println(".........token:"+token);
-		Request request = requestFactory.getwxacodeRequest(token);
+		Request request = requestFactory.getwxacodeRequest("1232423423");
 		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
