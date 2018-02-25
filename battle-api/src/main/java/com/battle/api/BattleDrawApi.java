@@ -155,13 +155,13 @@ public class BattleDrawApi {
 
 				}
 			}else{
-				if(battleRoom==null){
+				/*if(battleRoom==null){
 					battleRoom = oldBattleRoom;
 				}else{
 					if(oldBattleRoom.getNum()<battleRoom.getNum()){
 						battleRoom = oldBattleRoom;
 					}
-				}
+				}*/
 			}
 		}
 		
