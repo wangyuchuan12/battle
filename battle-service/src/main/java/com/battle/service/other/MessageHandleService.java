@@ -30,7 +30,7 @@ public class MessageHandleService {
 	public String send(String toUser,String templateId,Integer page,String formId)throws Exception{
 		
 		AccessTokenBean accessTokenBean = accessTokenSmartService.get();
-		Request request = requestFactory.templateSend(accessTokenBean.getAccessToken());
+		Request request = requestFactory.submailMsgSendResultRequest();
 		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
