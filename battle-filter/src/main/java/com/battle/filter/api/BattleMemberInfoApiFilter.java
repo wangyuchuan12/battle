@@ -56,6 +56,8 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("scrollGogal", battlePeriodMember.getScrollGogal());
 		
 		data.put("roomProcess", battleRoom.getRoomProcess());
+		
+		data.put("isIncrease", battlePeriodMember.getIsIncrease());
 		data.put("roomScore", battleRoom.getRoomScore());
 		
 		data.put("num", battleRoom.getNum());

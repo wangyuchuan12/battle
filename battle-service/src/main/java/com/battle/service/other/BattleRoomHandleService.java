@@ -61,6 +61,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setIsDekorn(0);
 		
+		battleRoom.setIsIncrease(1);
+		
 		return battleRoom;
 	}
 }

@@ -74,6 +74,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			
 			battlePeriodMember.setShareTime(0);
 			
+			battlePeriodMember.setIsIncrease(battleRoom.getIsIncrease());
+			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
 	
