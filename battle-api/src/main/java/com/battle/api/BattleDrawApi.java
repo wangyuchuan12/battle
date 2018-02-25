@@ -141,7 +141,9 @@ public class BattleDrawApi {
 		
 		BattleRoom battleRoom = null;
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
-			if(oldBattleRoom.getStartTime().isBeforeNow()){
+			
+			Long differ =(oldBattleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
+			if(differ>0){
 				if(oldBattleRoom.getMininum()>oldBattleRoom.getNum()){
 					if(battleRoom==null){
 						battleRoom = oldBattleRoom;
