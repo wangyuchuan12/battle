@@ -19,7 +19,7 @@ public class CurrentLoveCoolingFilter extends Filter{
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		if(battlePeriodMember.getIsIncrease()!=1){
+		if(battlePeriodMember.getIsIncrease()!=null&&battlePeriodMember.getIsIncrease()!=1){
 			return null;
 		}
 		
