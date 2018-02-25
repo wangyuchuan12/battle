@@ -1,5 +1,8 @@
 package com.battle.service.other;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +45,14 @@ public class MessageHandleService {
 		
 		battleMessage.setFormId(formId);
 		
-		String message = objectMapper.writeValueAsString(battleMessage);
+		Map<String, Object> data = new HashMap<>();
+		data.put("touser", toUser);
+		data.put("template_id", templateId);
+		
+		data.put("page", page);
+		
+		
+		String message = objectMapper.writeValueAsString(data);
 		Response response = request.post(message);
 		
 		String msg = response.read();
