@@ -18,6 +18,14 @@ public class RequestFactory {
 	}
 	
 	
+	//小程序消息发送
+	public Request templateSend(String accessToken)throws Exception{
+		URL url = new URL(
+				"https://api.mysubmail.com/message/xsend.json?access_token="+accessToken);
+		return getRequestByConnection(url);
+	}
+	
+	
 	public Request submailMsgSendResultRequest()throws Exception{
 		URL url = new URL(
 				"https://api.mysubmail.com/message/xsend.json");
