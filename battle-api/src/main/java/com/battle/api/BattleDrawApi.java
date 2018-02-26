@@ -141,9 +141,7 @@ public class BattleDrawApi {
 		
 		BattleRoom battleRoom = null;
 		for(BattleRoom oldBattleRoom:oldBattleRooms){
-			
-			Long differ =(oldBattleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
-			if(differ>0){
+			if(oldBattleRoom.getStartTime().isBeforeNow()){
 				if(oldBattleRoom.getMininum()>oldBattleRoom.getNum()){
 					if(battleRoom==null){
 						battleRoom = oldBattleRoom;
@@ -155,13 +153,13 @@ public class BattleDrawApi {
 
 				}
 			}else{
-				/*if(battleRoom==null){
+				if(battleRoom==null){
 					battleRoom = oldBattleRoom;
 				}else{
 					if(oldBattleRoom.getNum()<battleRoom.getNum()){
 						battleRoom = oldBattleRoom;
 					}
-				}*/
+				}
 			}
 		}
 		
