@@ -20,6 +20,11 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Table(name="p_account")
 @ParamEntityAnnotation
 public class Account implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@IdAnnotation
     private String id;
@@ -69,6 +74,14 @@ public class Account implements Serializable{
 	@ParamAnnotation
 	@Column(name="masonry")
 	private Integer masonry;
+	
+	@ParamAnnotation
+	@Column(name="receive_gift_count")
+	private Integer receiveGiftCount;
+	
+	@ParamAnnotation
+	@Column(name="gift_count")
+	private Integer giftCount;
 
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -150,5 +163,18 @@ public class Account implements Serializable{
 	}
 	public void setMasonry(Integer masonry) {
 		this.masonry = masonry;
+	}
+	public Integer getReceiveGiftCount() {
+		return receiveGiftCount;
+	}
+	
+	public void setReceiveGiftCount(Integer receiveGiftCount) {
+		this.receiveGiftCount = receiveGiftCount;
+	}
+	public Integer getGiftCount() {
+		return giftCount;
+	}
+	public void setGiftCount(Integer giftCount) {
+		this.giftCount = giftCount;
 	}
 }

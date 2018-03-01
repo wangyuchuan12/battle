@@ -201,6 +201,8 @@ public class LoginApi{
 		account.setMasonry(0);
 		account.setWisdomCount(0L);
 		account.setWisdomLimit(1000000L);
+		account.setReceiveGiftCount(0);
+		account.setGiftCount(0);
 		accountService.add(account);
 		return account;
 	}
