@@ -112,9 +112,9 @@ public class BattleGiftApi {
 		Integer addLove = battleGift.getLoveNum();
 		Integer addBean = battleGift.getBeanNum();
 		
-		Integer loveNum = battleGift.getLoveNum();
+		Integer loveNum = account.getLoveLife();
 		
-		Integer beanNum = battleGift.getBeanNum();
+		Long beanNum = account.getWisdomCount();
 		
 		Integer recieBeanNumCondition = battleGift.getRecieBeanNumCondition();
 		
@@ -135,7 +135,7 @@ public class BattleGiftApi {
 		}
 		
 		if(beanNum==null){
-			beanNum = 0;
+			beanNum = 0l;
 		}
 		
 		if(recieBeanNumCondition==null){
