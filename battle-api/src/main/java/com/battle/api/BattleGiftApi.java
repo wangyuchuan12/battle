@@ -92,7 +92,7 @@ public class BattleGiftApi {
 			return resultVo;
 		}
 		
-		List<BattleGift> battleGifts = battleGiftService.findAllByAccountIdAndLevelAndIsReceive(account.getId(),receiveGiftCount+1,1);
+		List<BattleGift> battleGifts = battleGiftService.findAllByAccountIdAndLevelAndIsReceive(account.getId(),receiveGiftCount+1,0);
 		
 		if(battleGifts==null||battleGifts.size()==0){
 			ResultVo resultVo = new ResultVo();
