@@ -106,12 +106,19 @@ public class BattleGiftApi {
 		
 		BattleGift battleGift = battleGifts.get(0);
 		
+
 		Integer addLove = battleGift.getLoveNum();
 		Integer addBean = battleGift.getBeanNum();
 		
 		Integer loveNum = battleGift.getLoveNum();
 		
 		Integer beanNum = battleGift.getBeanNum();
+		
+		Integer recieBeanNumCondition = battleGift.getRecieBeanNumCondition();
+		
+		Integer recieLoveNumCondition = battleGift.getRecieLoveNumCondition();
+		
+		
 		
 		if(addLove==null){
 			addLove = 0;
@@ -127,6 +134,31 @@ public class BattleGiftApi {
 		
 		if(beanNum==null){
 			beanNum = 0;
+		}
+		
+		if(recieBeanNumCondition==null){
+			recieBeanNumCondition = 0;
+		}
+		
+		if(recieLoveNumCondition==null){
+			recieLoveNumCondition = 0;
+		}
+		
+		
+		if(recieLoveNumCondition<loveNum){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setCode(2);
+			resultVo.setMsg("不具备爱心的领取条件");
+			return resultVo;
+		}
+		
+		if(recieBeanNumCondition<beanNum){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setCode(2);
+			resultVo.setMsg("不具备智慧豆的领取条件");
+			return resultVo;
 		}
 		
 		loveNum = loveNum+addLove;
@@ -153,7 +185,7 @@ public class BattleGiftApi {
 		data.put("count", receiveGiftCount+1);
 		
 		resultVo.setData(data);
-		resultVo.setCode(2);
+		resultVo.setCode(3);
 		
 		return resultVo;
 		

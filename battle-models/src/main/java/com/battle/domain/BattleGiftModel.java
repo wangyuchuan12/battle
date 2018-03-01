@@ -35,6 +35,14 @@ public class BattleGiftModel {
 	private Integer level;
 	
 	@ParamAnnotation
+	@Column(name="recie_bean_num_condition")
+	private Integer recieBeanNumCondition;
+	
+	@ParamAnnotation
+	@Column(name="recie_love_num_condition")
+	private Integer recieLoveNumCondition;
+	
+	@ParamAnnotation
 	@Column(name = "receive_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime receiveTime;
@@ -101,6 +109,22 @@ public class BattleGiftModel {
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+	
+	public Integer getRecieBeanNumCondition() {
+		return recieBeanNumCondition;
+	}
+
+	public void setRecieBeanNumCondition(Integer recieBeanNumCondition) {
+		this.recieBeanNumCondition = recieBeanNumCondition;
+	}
+
+	public Integer getRecieLoveNumCondition() {
+		return recieLoveNumCondition;
+	}
+
+	public void setRecieLoveNumCondition(Integer recieLoveNumCondition) {
+		this.recieLoveNumCondition = recieLoveNumCondition;
 	}
 
 	public DateTime getCreateAt() {
