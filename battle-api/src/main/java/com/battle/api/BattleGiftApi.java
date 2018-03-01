@@ -73,6 +73,8 @@ public class BattleGiftApi {
 				battleGift.setLevel(battleGiftModel.getLevel());
 				battleGift.setLoveNum(battleGiftModel.getLoveNum());
 				battleGift.setBeanNum(battleGiftModel.getBeanNum());
+				battleGift.setRecieBeanNumCondition(battleGiftModel.getRecieBeanNumCondition());
+				battleGift.setRecieLoveNumCondition(battleGiftModel.getRecieLoveNumCondition());
 				battleGiftService.add(battleGift);
 			}
 			
