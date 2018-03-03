@@ -425,10 +425,39 @@ public class BattleApi {
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
 			
+			UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+			
 			String[] subjectIds = subjectIdStr.split(",");
 			
 			BattlePeriodStage battlePeriodStage = battlePeriodStageService.findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), battlePeriodMember.getPeriodId(), stageIndex);
 			
+			Account account = accountService.fineOneSync(userInfo.getAccountId());
+			
+			Long beanNum = account.getWisdomCount();
+			if(beanNum==null){
+				beanNum = 0l;
+			}
+			
+			Integer costBeanNum = battlePeriodStage.getCostBean();
+			if(costBeanNum==null){
+				costBeanNum = 0;
+			}
+			
+			if(beanNum<costBeanNum){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				resultVo.setErrorCode(0);
+				resultVo.setErrorMsg("智慧豆不足");
+				return resultVo;
+			}
+			
+			
+			if(beanNum>costBeanNum){
+				beanNum = beanNum - costBeanNum;
+				account.setWisdomCount(beanNum);
+				
+				accountService.update(account);
+			}
 			Integer questionCount = battlePeriodStage.getQuestionCount();
 			
 			
@@ -473,6 +502,8 @@ public class BattleApi {
 			data.put("isLast", isLast);
 			
 			data.put("questionIds", battleQuestionIdArray);
+			
+			data.put("costBean", costBeanNum);
 			
 			
 			

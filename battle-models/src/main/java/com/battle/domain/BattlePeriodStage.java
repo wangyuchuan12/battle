@@ -49,6 +49,11 @@ public class BattlePeriodStage {
 	@Column(name="pass_reward_bean")
 	private Integer passRewardBean;
 	
+	
+	@ParamAnnotation
+	@Column(name="cost_bean")
+	private Integer costBean;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -117,6 +122,16 @@ public class BattlePeriodStage {
 
 	public void setPassRewardBean(Integer passRewardBean) {
 		this.passRewardBean = passRewardBean;
+	}
+	
+	
+
+	public Integer getCostBean() {
+		return costBean;
+	}
+
+	public void setCostBean(Integer costBean) {
+		this.costBean = costBean;
 	}
 
 	public DateTime getCreateAt() {
