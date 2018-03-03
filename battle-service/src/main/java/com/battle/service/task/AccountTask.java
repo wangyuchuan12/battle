@@ -12,7 +12,7 @@ public class AccountTask {
 	@Autowired
 	private AccountService accountService;
 
-	@Scheduled(cron = "0 28 12 * * ?")
+	@Scheduled(cron = "0 34 12 * * ?")
 	public void giftInit(){
 		
 		System.out.println("..................giftInit");
