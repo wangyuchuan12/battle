@@ -27,8 +27,8 @@
         <param-name>contextConfigLocation</param-name>  
         <param-value>
             com.wyc.common.config.AppConfig,
-            com.wyc.common.config.WebConfig2,
-            com.wyc.common.config.DatabaseConfig
+            com.wyc.common.config.WebConfig,
+            com.wyc.common.config.DatabaseConfig，
             com.wyc.common.config.SessionConfig
         </param-value>
     </context-param>
@@ -62,7 +62,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>com.wyc.common.config.WebConfig2</param-value>
+            <param-value>com.wyc.common.config.WebConfig</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
