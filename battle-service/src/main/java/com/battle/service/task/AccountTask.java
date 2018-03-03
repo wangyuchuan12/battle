@@ -18,7 +18,7 @@ public class AccountTask {
 	@Autowired
 	private BattleGiftService battleGiftService;
 
-	@Scheduled(cron = "0 42 12 * * ?")
+	@Scheduled(cron = "0 44 12 * * ?")
 	@Transactional
 	public void giftInit(){
 		accountService.updateAllAboutGift(0, 3);

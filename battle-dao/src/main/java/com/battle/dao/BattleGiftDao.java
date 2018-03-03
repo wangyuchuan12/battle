@@ -16,7 +16,7 @@ public interface BattleGiftDao extends CrudRepository<BattleGift, String>{
 	List<BattleGift> findAllByAccountIdAndLevelAndIsReceive(String accountId, int level, int isReceive);
 
 	@Modifying
-	@Query(value="update com.wyc.common.domain.Account du set du.isReceive=:isReceive")
+	@Query(value="update com.wyc.common.domain.BattleGift bg set bg.isReceive=:isReceive")
 	void setIsReceive(@Param("isReceive")int isReceive);
 
 }
