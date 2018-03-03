@@ -38,6 +38,10 @@ public class AccountService {
 		
 	}
 	
+	public void updateAllAboutGift(Integer receiveGiftCount,Integer giftCount){
+		accountRepository.updateAllAboutGift(receiveGiftCount,giftCount);
+	}
+	
 	@Transactional
 	public void initDrawUserCanTakeOutCount(int count) {
 		accountRepository.initDrawUserCanTakeOutCount(count);
