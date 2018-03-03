@@ -36,7 +36,7 @@ import com.wyc.common.session.EhRedisCache;
 
 import net.sf.ehcache.CacheManager;
 import redis.clients.jedis.JedisPoolConfig;
-@EnableWebMvc
+//@EnableWebMvc
 @Configuration
 /*@ComponentScan(basePackages="com.wyc",
 				excludeFilters={
