@@ -104,7 +104,7 @@ public class BattleGiftApi {
 			return resultVo;
 		}
 		
-		account.setReceiveGiftCount(receiveGiftCount+1);
+		
 		
 		BattleGift battleGift = battleGifts.get(0);
 		
@@ -156,12 +156,19 @@ public class BattleGiftApi {
 		}
 		
 		if(recieBeanNumCondition<beanNum){
+			
+			System.out.println("................豆子领取不和条件");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setCode(2);
 			resultVo.setMsg("不具备智慧豆的领取条件");
 			return resultVo;
 		}
+		
+		
+		System.out.println("..............这里还是进来了");
+		
+		account.setReceiveGiftCount(receiveGiftCount+1);
 		
 		loveNum = loveNum+addLove;
 		
