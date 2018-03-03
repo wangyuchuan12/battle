@@ -28,7 +28,8 @@
         <param-value>
             com.wyc.common.config.AppConfig,
             com.wyc.common.config.DatabaseConfig，
-            com.wyc.common.config.SessionConfig
+            com.wyc.common.config.SessionConfig,
+            com.wyc.common.config.WebConfig2
         </param-value>
     </context-param>
     
