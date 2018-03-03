@@ -42,12 +42,12 @@ import ch.qos.logback.core.net.server.Client;
 
 
 @Configuration
-@ComponentScan(basePackages = "com", excludeFilters = {
+/*@ComponentScan(basePackages = "com", excludeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebConfig2.class),
         @Filter(type = FilterType.ASSIGNABLE_TYPE, value = DatabaseConfig.class),
     //    @Filter(type = FilterType.ASSIGNABLE_TYPE, value = SessionConfig.class),
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
-})
+})*/
 @EnableScheduling
 
 public class AppConfig{
