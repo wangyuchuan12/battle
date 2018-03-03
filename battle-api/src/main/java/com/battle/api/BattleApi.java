@@ -454,7 +454,7 @@ public class BattleApi {
 			}
 			
 			
-			if(beanNum>costBeanNum){
+			if(beanNum>=costBeanNum){
 				beanNum = beanNum - costBeanNum;
 				
 				System.out.println(".................消耗智慧豆："+beanNum);
