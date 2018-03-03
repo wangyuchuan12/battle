@@ -24,12 +24,12 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages="com",
+/*@ComponentScan(basePackages="com",
 				excludeFilters={
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=AppConfig.class),
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=DatabaseConfig.class),
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
-})
+})*/
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 //@EnableWebSocket
 public class WebConfig2 extends WebMvcConfigurerAdapter /*implements WebSocketConfigurer*/{

@@ -38,13 +38,13 @@ import net.sf.ehcache.CacheManager;
 import redis.clients.jedis.JedisPoolConfig;
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages="com.wyc",
+/*@ComponentScan(basePackages="com.wyc",
 				excludeFilters={
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=AppConfig.class),
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=DatabaseConfig.class),
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=WebConfig2.class),
 					@Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
-})
+})*/
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 @EnableRedisHttpSession
 public class SessionConfig {
