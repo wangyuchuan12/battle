@@ -43,4 +43,10 @@ public class BattleGiftService {
 		
 		return battleGiftDao.findAllByAccountIdAndLevelAndIsReceive(accountId,level,isReceive);
 	}
+
+	public void setIsReceive(int isReceive) {
+		
+		battleGiftDao.setIsReceive(isReceive);
+		
+	}
 }
