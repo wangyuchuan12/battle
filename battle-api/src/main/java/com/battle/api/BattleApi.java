@@ -402,9 +402,6 @@ public class BattleApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public Object stageTakepart(HttpServletRequest httpServletRequest)throws Exception{
-		
-		
-		System.out.println(".........这里进来了");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		String subjectIdStr = httpServletRequest.getParameter("subjectIds");
@@ -456,8 +453,6 @@ public class BattleApi {
 			
 			if(beanNum>=costBeanNum){
 				beanNum = beanNum - costBeanNum;
-				
-				System.out.println(".................消耗智慧豆："+beanNum);
 				account.setWisdomCount(beanNum);
 				
 				accountService.update(account);
