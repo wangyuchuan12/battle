@@ -38,8 +38,8 @@ public class AccountService {
 		
 	}
 	
-	public void updateAllAboutGift(Integer receiveGiftCount,Integer giftCount){
-		accountRepository.updateAllAboutGift(receiveGiftCount,giftCount);
+	public void updateAllAboutReceiveGiftCount(Integer receiveGiftCount){
+		accountRepository.updateAllAboutReceiveGiftCount(receiveGiftCount);
 	}
 	
 	@Transactional

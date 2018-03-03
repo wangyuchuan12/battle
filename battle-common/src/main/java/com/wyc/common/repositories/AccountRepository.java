@@ -21,7 +21,7 @@ public interface AccountRepository extends CrudRepository<Account, String>{
 
 	
 	@Modifying
-	@Query(value="update com.wyc.common.domain.Account du set du.receiveGiftCount=:receiveGiftCount,du.giftCount=:giftCount")
-	void updateAllAboutGift(@Param("receiveGiftCount")Integer receiveGiftCount, @Param("giftCount")Integer giftCount);
+	@Query(value="update com.wyc.common.domain.Account du set du.receiveGiftCount=:receiveGiftCount")
+	void updateAllAboutReceiveGiftCount(@Param("receiveGiftCount")Integer receiveGiftCount);
 
 }

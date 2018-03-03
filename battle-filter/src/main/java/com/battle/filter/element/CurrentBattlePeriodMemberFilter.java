@@ -60,8 +60,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setNickname(nickname);
 			battlePeriodMember.setHeadImg(imgUrl);
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
-			battlePeriodMember.setLoveCount(5);
-			battlePeriodMember.setLoveResidule(5);
+			battlePeriodMember.setLoveCount(10);
+			battlePeriodMember.setLoveResidule(10);
 			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
 			battlePeriodMember.setIsDel(0);
