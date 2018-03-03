@@ -403,6 +403,8 @@ public class BattleApi {
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public Object stageTakepart(HttpServletRequest httpServletRequest)throws Exception{
 		
+		
+		System.out.println(".........这里进来了");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		String subjectIdStr = httpServletRequest.getParameter("subjectIds");
