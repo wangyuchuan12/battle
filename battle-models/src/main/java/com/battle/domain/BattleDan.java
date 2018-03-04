@@ -92,6 +92,11 @@ public class BattleDan {
 	@Column(name="time_long")
 	private Integer timeLong;
 	
+	
+	@ParamAnnotation
+	@Column(name="love_count")
+	private Integer loveCount;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -230,6 +235,14 @@ public class BattleDan {
 
 	public void setMinNum(Integer minNum) {
 		this.minNum = minNum;
+	}
+	
+	public Integer getLoveCount() {
+		return loveCount;
+	}
+
+	public void setLoveCount(Integer loveCount) {
+		this.loveCount = loveCount;
 	}
 
 	public DateTime getCreateAt() {

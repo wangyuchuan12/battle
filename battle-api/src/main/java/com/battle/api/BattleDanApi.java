@@ -705,6 +705,8 @@ public class BattleDanApi {
 			
 			battleDanUser.setMinNum(battleDan.getMinNum());
 			
+			battleDanUser.setLoveCount(battleDan.getLoveCount());
+			
 			battleDanUser.setIsDel(0);
 			
 			battleDanUserService.add(battleDanUser);
@@ -795,6 +797,8 @@ public class BattleDanApi {
 			calendar.add(Calendar.SECOND, battleDanUser.getTimeLong());
 
 			battleRoom.setStartTime(new DateTime(calendar.getTime()));
+			
+			battleRoom.setLoveCount(battleDanUser.getLoveCount());
 			
 			battleRoomService.add(battleRoom);
 			

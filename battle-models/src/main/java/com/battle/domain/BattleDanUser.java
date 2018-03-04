@@ -147,6 +147,10 @@ public class BattleDanUser implements Serializable{
 	private Integer isDel;
 	
 	@ParamAnnotation
+	@Column(name="love_count")
+	private Integer loveCount;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -367,6 +371,16 @@ public class BattleDanUser implements Serializable{
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+	
+	
+
+	public Integer getLoveCount() {
+		return loveCount;
+	}
+
+	public void setLoveCount(Integer loveCount) {
+		this.loveCount = loveCount;
 	}
 
 	public DateTime getCreateAt() {

@@ -49,6 +49,10 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,0);
 		if(battlePeriodMember==null){
 			BattleRoom battleRoom = battleRoomService.findOne(roomId);
+			Integer loveCount = battleRoom.getLoveCount();
+			if(loveCount==null||loveCount.intValue()==0){
+				loveCount = 4;
+			}
 			String periodId = battleRoom.getPeriodId();
 			String battleId = battleRoom.getBattleId();
 			BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
@@ -60,8 +64,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			battlePeriodMember.setNickname(nickname);
 			battlePeriodMember.setHeadImg(imgUrl);
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_FREE);
-			battlePeriodMember.setLoveCount(10);
-			battlePeriodMember.setLoveResidule(10);
+			battlePeriodMember.setLoveCount(loveCount);
+			battlePeriodMember.setLoveResidule(loveCount);
 			battlePeriodMember.setStageIndex(1);
 			battlePeriodMember.setStageCount(battlePeriod.getStageCount());
 			battlePeriodMember.setIsDel(0);

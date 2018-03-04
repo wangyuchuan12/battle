@@ -247,6 +247,10 @@ public class BattleRoom implements Serializable{
 	private String dekornId;
 	
 	@ParamAnnotation
+	@Column(name="love_count")
+	private Integer loveCount;
+	
+	@ParamAnnotation
 	@Column(name="start_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime startTime;
@@ -665,6 +669,13 @@ public class BattleRoom implements Serializable{
 		this.dekornId = dekornId;
 	}
 	
+	public Integer getLoveCount() {
+		return loveCount;
+	}
+
+	public void setLoveCount(Integer loveCount) {
+		this.loveCount = loveCount;
+	}
 
 	public DateTime getCreateAt() {
 		return createAt;
