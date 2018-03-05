@@ -46,7 +46,7 @@ public class MessageHandleService {
 		data.put("msgtype",smgtype);
 		
 		if(smgtype.equals("text")){
-			data.put("content", content);
+			data.put("text", content);
 		}else if(smgtype.equals("image")){
 			data.put("image",content);
 		}else if(smgtype.equals("link")){
