@@ -23,13 +23,24 @@ public class MsgApi {
 	    String timestamp = httpServletRequest.getParameter("timestamp");
 	    String nonce = httpServletRequest.getParameter("nonce");
 	    String echostr= httpServletRequest.getParameter("echostr");
-	    String openid = httpServletRequest.getParameter("openid");
+	    final String openid = httpServletRequest.getParameter("openid");
 	    
-	    try{
-	    	customService.sendLinkMsg(openid,"答题闯关比赛", "点击关注", "http://www.baidu.com", "http://ovqk5bop3.bkt.clouddn.com/03bf965642aeb4a91f217597b4751207.png");
-	    }catch(Exception e){
-	    	
-	    }
+	    
+	    Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			 try{
+				 Thread.sleep(2000);
+				 customService.sendLinkMsg(openid,"答题闯关比赛", "点击关注", "http://mp.weixin.qq.com/s/sBuNYcQiTALnLt3Ri6GKMA", "http://ovqk5bop3.bkt.clouddn.com/03bf965642aeb4a91f217597b4751207.png");
+			    }catch(Exception e){
+			    	
+			    }
+			}
+		});
+	    
+	    thread.start();
+	   
 	    return echostr;
 	}
 }
