@@ -31,7 +31,7 @@ public class MsgApi {
 			@Override
 			public void run() {
 			 try{
-				 Thread.sleep(2000);
+				 Thread.sleep(1000);
 				 customService.sendLinkMsg(openid,"答题闯关比赛", "点击关注", "http://mp.weixin.qq.com/s/sBuNYcQiTALnLt3Ri6GKMA", "http://ovqk5bop3.bkt.clouddn.com/03bf965642aeb4a91f217597b4751207.png");
 			    }catch(Exception e){
 			    	

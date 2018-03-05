@@ -56,9 +56,9 @@ public class BattleQuestionService {
 		return battleQuestionDao.findOne(id);
 	}
 
-	public List<BattleQuestion> findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(String battleId, String stageId,
-			String[] subjectIds) {
-		return battleQuestionDao.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(battleId,stageId,subjectIds);
+	public List<BattleQuestion> findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdInAndIsDel(String battleId, String stageId,
+			String[] subjectIds,Integer isDel) {
+		return battleQuestionDao.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdInAndIsDel(battleId,stageId,subjectIds,isDel);
 	}
 
 	public List<BattleQuestion> findAllByBattleIdAndBattlePeriodIdAndIsDel(String battleId, String periodId, int isDel) {

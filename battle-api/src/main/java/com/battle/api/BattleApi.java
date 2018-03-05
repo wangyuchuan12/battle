@@ -461,7 +461,7 @@ public class BattleApi {
 			
 			
 			
-			List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdIn(battlePeriodStage.getBattleId(), battlePeriodStage.getId(),subjectIds);
+			List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdInAndIsDel(battlePeriodStage.getBattleId(), battlePeriodStage.getId(),subjectIds,0);
 			
 			
 			
