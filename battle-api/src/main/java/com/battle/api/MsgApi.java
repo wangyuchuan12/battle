@@ -16,6 +16,8 @@ public class MsgApi {
 	    String timestamp = httpServletRequest.getParameter("timestamp");
 	    String nonce = httpServletRequest.getParameter("nonce");
 	    String echostr= httpServletRequest.getParameter("echostr");
+	    
+	    System.out.println("..............signature:"+signature+",timestamp:"+timestamp+",nonce:"+nonce+",echostr:"+echostr);
 	    return echostr;
 	}
 }
