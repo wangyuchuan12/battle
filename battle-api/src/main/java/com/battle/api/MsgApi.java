@@ -1,5 +1,7 @@
 package com.battle.api;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,13 @@ public class MsgApi {
 	    String timestamp = httpServletRequest.getParameter("timestamp");
 	    String nonce = httpServletRequest.getParameter("nonce");
 	    String echostr= httpServletRequest.getParameter("echostr");
+	    
+	    Map<String, String[]> map = httpServletRequest.getParameterMap();
+	    for(String key:map.keySet()){
+	    	String value = httpServletRequest.getParameter(key);
+	    	
+	    	System.out.println("......key:"+key+",value:"+value);
+	    }
 	    
 	    System.out.println("..............signature:"+signature+",timestamp:"+timestamp+",nonce:"+nonce+",echostr:"+echostr);
 	    return echostr;
