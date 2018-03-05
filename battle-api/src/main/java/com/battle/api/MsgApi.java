@@ -4,13 +4,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.battle.service.other.CustomService;
+
 @Controller
 @RequestMapping(value="/api/battle/msg/")
 public class MsgApi {
+	@Autowired
+	private CustomService customService;
 	@RequestMapping(value="info")
 	@ResponseBody
 	public String send(HttpServletRequest httpServletRequest){
@@ -18,15 +23,13 @@ public class MsgApi {
 	    String timestamp = httpServletRequest.getParameter("timestamp");
 	    String nonce = httpServletRequest.getParameter("nonce");
 	    String echostr= httpServletRequest.getParameter("echostr");
+	    String openid = httpServletRequest.getParameter("openid");
 	    
-	    Map<String, String[]> map = httpServletRequest.getParameterMap();
-	    for(String key:map.keySet()){
-	    	String value = httpServletRequest.getParameter(key);
+	    try{
+	    	customService.sendLinkMsg(openid,"答题闯关比赛", "点击关注", "http://www.baidu.com", "http://ovqk5bop3.bkt.clouddn.com/03bf965642aeb4a91f217597b4751207.png");
+	    }catch(Exception e){
 	    	
-	    	System.out.println("......key:"+key+",value:"+value);
 	    }
-	    
-	    System.out.println("..............signature:"+signature+",timestamp:"+timestamp+",nonce:"+nonce+",echostr:"+echostr);
 	    return echostr;
 	}
 }

@@ -33,7 +33,7 @@ public class TestApi {
 		String url = httpServletRequest.getParameter("url");
 		String thumbUrl = httpServletRequest.getParameter("thumbUrl");
 		
-		customService.sendLinkMsg(toUser, smgtype, title, description, url, thumbUrl);
+		customService.sendLinkMsg(toUser, title, description, url, thumbUrl);
 		
 		return null;
 	}

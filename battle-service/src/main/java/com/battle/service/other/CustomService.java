@@ -11,7 +11,7 @@ public class CustomService {
 
 	@Autowired
 	private MessageHandleService messageHandleService;
-	public Object sendLinkMsg(String toUser,String type,String title,String description,String url,String thumbUrl)throws Exception{
+	public Object sendLinkMsg(String toUser,String title,String description,String url,String thumbUrl)throws Exception{
 	
 		Map<String, Object> content = new HashMap<>();
 		content.put("title", title);
