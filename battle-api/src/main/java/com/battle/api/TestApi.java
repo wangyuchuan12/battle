@@ -30,8 +30,11 @@ public class TestApi {
 		
 		if(smgtype.equals("text")){
 			String content = httpServletRequest.getParameter("content");
-			String msg = messageHandleService.send(toUser, smgtype, content);
-			return messageHandleService.send(toUser, smgtype, content);
+			
+			Map<String, Object> data = new HashMap<>();
+			
+			data.put("content", content);
+			return messageHandleService.send(toUser, smgtype, data);
 			
 		}else if(smgtype.equals("image")){
 			String mediaId = httpServletRequest.getParameter("mediaId");
