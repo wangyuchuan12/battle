@@ -164,12 +164,16 @@ public class BattleDanHandleService {
 							if(battleAccountResult.getLevel()<battleDanUser.getLevel()+1){
 								battleDanUserNext.setStatus(BattleDanUser.STATUS_IN);
 								battleDanUserService.update(battleDanUserNext);
-								battleAccountResult.setDanName(nextBattleDan.getName());
+								if(nextBattleDan!=null){
+									battleAccountResult.setDanName(nextBattleDan.getName());
+								}
 								battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 								battleAccountResultService.update(battleAccountResult);
 							}
 						}else if(battleDanUserNext==null){
-							battleAccountResult.setDanName(nextBattleDan.getName());
+							if(nextBattleDan!=null){
+								battleAccountResult.setDanName(nextBattleDan.getName());
+							}
 							battleAccountResult.setLevel(battleDanUser.getLevel()+1);
 							battleAccountResultService.update(battleAccountResult);
 						}else if(battleDanUserNext.getStatus()==BattleDanUser.STATUS_SUCCESS){
