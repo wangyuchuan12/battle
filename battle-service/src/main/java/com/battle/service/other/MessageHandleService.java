@@ -27,36 +27,32 @@ public class MessageHandleService {
 	@Autowired
 	private AccessTokenSmartService accessTokenSmartService;
 	
-	public String send(String toUser,String templateId,Integer page,String formId)throws Exception{
+	public String send(String toUser,String smgtype,Object content)throws Exception{
 		
 		AccessTokenBean accessTokenBean = accessTokenSmartService.get();
 		
 		String token = accessTokenBean.getAccessToken();
+
 		
-		
-		System.out.println("..............token:"+token);
-		
-		System.out.println("..............updateat:"+accessTokenBean.getUpdateAt());
 		Request request = requestFactory.templateSend(token);
 		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		BattleMessage battleMessage = new BattleMessage();
-		
-		battleMessage.setTouser(toUser);
-		
-		battleMessage.setTemplateId(templateId);
-		
-		battleMessage.setPage(page+"");
-		
-		battleMessage.setFormId(formId);
 		
 		Map<String, Object> data = new HashMap<>();
-		data.put("touser", toUser);
-		data.put("template_id", templateId);
 		
-		data.put("page", page);
+		data.put("touser", toUser);
+		data.put("msgtype",smgtype);
+		
+		if(smgtype.equals("text")){
+			data.put("content", content);
+		}else if(smgtype.equals("image")){
+			data.put("image",content);
+		}else if(smgtype.equals("link")){
+			data.put("link",content);
+		}
+		
 		
 		
 		String message = objectMapper.writeValueAsString(data);

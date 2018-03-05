@@ -1,5 +1,8 @@
 package com.battle.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.service.other.MessageHandleService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.common.domain.vo.ResultVo;
 
 @Controller
@@ -22,13 +26,31 @@ public class TestApi {
 		
 		String toUser = httpServletRequest.getParameter("toUser");
 		
-		String templateId = httpServletRequest.getParameter("templateId");
+		String smgtype = httpServletRequest.getParameter("smgtype");
 		
-		String page = httpServletRequest.getParameter("page");
+		if(smgtype.equals("text")){
+			String content = httpServletRequest.getParameter("content");
+			String msg = messageHandleService.send(toUser, smgtype, content);
+			return messageHandleService.send(toUser, smgtype, content);
+			
+		}else if(smgtype.equals("image")){
+			String mediaId = httpServletRequest.getParameter("mediaId");
+			Map<String, Object> content = new HashMap<>();
+			content.put("media_id", mediaId);
+			return messageHandleService.send(toUser, smgtype, content);
+		}else if(smgtype.equals("link")){
+			String title = httpServletRequest.getParameter("title");
+			String description = httpServletRequest.getParameter("description");
+			String url = httpServletRequest.getParameter("url");
+			String thumbUrl = httpServletRequest.getParameter("thumbUrl");
+			Map<String, Object> content = new HashMap<>();
+			content.put("title", title);
+			content.put("description", description);
+			content.put("url", url);
+			content.put("thumb_url", thumbUrl);
+			return messageHandleService.send(toUser, smgtype, content);
+		}
 		
-		String formId = httpServletRequest.getParameter("formId");
-		String msg = messageHandleService.send(toUser, templateId, Integer.parseInt(page), formId);
-		
-		return msg;
+		return null;
 	}
 }
