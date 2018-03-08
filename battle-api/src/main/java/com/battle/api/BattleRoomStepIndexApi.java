@@ -129,7 +129,7 @@ public class BattleRoomStepIndexApi {
 	@ResponseBody
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
-	public ResultVo list(HttpServletRequest httpServletRequest){
+	public ResultVo list(HttpServletRequest httpServletRequest)throws Exception{
 		String roomId = httpServletRequest.getParameter("roomId");
 		
 		if(CommonUtil.isEmpty(roomId)){
@@ -146,15 +146,19 @@ public class BattleRoomStepIndexApi {
 		
 		List<BattleRoomStepIndex> battleRoomStepIndexs = new ArrayList<>();
 		if(battleRoom.getIsInit()==1){
+			
+			System.out.println("..................进这里");
 			battleRoomStepIndexs = battleRoomStepIndexService.findAllByRoomIdOrderByStepIndexAsc(roomId);
 			
 			battleRoomService.update(battleRoom);
 		}else{
+			System.out.println("..................进这里2");
 			battleRoom.setIsInit(1);
 			battleRoomService.update(battleRoom);
 			String code = httpServletRequest.getParameter("code");
 			BattleStepModel battleStepModel = null;
 			if(CommonUtil.isEmpty(code)){
+				System.out.println("..................进这里3");
 				Pageable pageable = new PageRequest(0,1);
 				Page<BattleStepModel> battleStepModelPage =  battleStepModelService.findAll(pageable);
 				List<BattleStepModel> battleStepModels = battleStepModelPage.getContent();
@@ -162,11 +166,12 @@ public class BattleRoomStepIndexApi {
 					battleStepModel = battleStepModels.get(0);
 				}
 			}else{
+				System.out.println("..................进这里4");
 				battleStepModel = battleStepModelService.findOneByCode(code);
 			}
 			
 			
-			System.out.println("battleStepModel:"+battleStepModel);
+			System.out.println("...................battleStepModel:"+battleStepModel);
 			if(battleStepModel!=null){
 				
 				System.out.println("battleStepModel.id:"+battleStepModel.getId());
