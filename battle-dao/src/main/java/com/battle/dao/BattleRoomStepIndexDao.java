@@ -10,7 +10,7 @@ public interface BattleRoomStepIndexDao extends CrudRepository<BattleRoomStepInd
 
 	List<BattleRoomStepIndex> findAllByRoomIdOrderByStepIndexAsc(String roomId);
 
-	List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqual(
+	List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(
 			String roomId,Integer startIndex, Integer endIndex);
 
 }

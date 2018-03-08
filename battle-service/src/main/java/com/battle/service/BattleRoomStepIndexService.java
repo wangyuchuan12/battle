@@ -28,9 +28,9 @@ public class BattleRoomStepIndexService {
 		
 	}
 
-	public List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStageIndexAac(
+	public List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(
 			String roomId,Integer startIndex, Integer endIndex) {
 		
-		return battleRoomStepIndexDao.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqual(roomId,startIndex,endIndex);
+		return battleRoomStepIndexDao.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(roomId,startIndex,endIndex);
 	}
 }
