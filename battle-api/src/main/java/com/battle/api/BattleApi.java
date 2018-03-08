@@ -1672,14 +1672,22 @@ public class BattleApi {
 			
 			Integer score = battleMemberPaperAnswer.getScore();
 			
-			if(score==null){
-				score = 0;
+			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
+			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
+			
+			if(startIndex==null){
+				startIndex = 0;
 			}
 			
-			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+			
 			if(process==null){
 				process = 0;
 			}
+			
+			endIndex = startIndex+process;
+			battleMemberPaperAnswer.setEndIndex(endIndex);
+			
+			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			
 			Integer roomProcess = battleRoom.getRoomProcess();
 			

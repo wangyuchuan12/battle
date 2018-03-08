@@ -97,6 +97,14 @@ public class BattleMemberPaperAnswer  implements Serializable{
 	@Column
 	private Integer process;
 	
+	@ParamAnnotation
+	@Column(name="start_index")
+	private Integer startIndex;
+	
+	@ParamAnnotation
+	@Column(name="end_index")
+	private Integer endIndex;
+	
 	//该答题是否通过
 	@ParamAnnotation
 	@Column(name="is_pass")
@@ -344,6 +352,22 @@ public class BattleMemberPaperAnswer  implements Serializable{
 
 	public void setExp(Integer exp) {
 		this.exp = exp;
+	}
+	
+	public Integer getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(Integer startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public Integer getEndIndex() {
+		return endIndex;
+	}
+
+	public void setEndIndex(Integer endIndex) {
+		this.endIndex = endIndex;
 	}
 
 	public DateTime getCreateAt() {

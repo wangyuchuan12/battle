@@ -24,8 +24,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setIsDisplay(0);
 		
-		battleRoom.setSpeedCoolBean(10);
-		battleRoom.setSpeedCoolSecond(10);
+		battleRoom.setSpeedCoolBean(60);
+		battleRoom.setSpeedCoolSecond(60);
 		
 		battleRoom.setRedPackNum(0);
 		

@@ -537,6 +537,10 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setRightAddScore(battleRoom.getRightAddScore());
 		battleMemberPaperAnswer.setWrongSubScore(battleRoom.getWrongSubScore());
 		
+		battleMemberPaperAnswer.setStartIndex(battlePeriodMember.getProcess());
+		
+		battleMemberPaperAnswer.setEndIndex(battlePeriodMember.getProcess());
+		
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
 		ResultVo resultVo = new ResultVo();
