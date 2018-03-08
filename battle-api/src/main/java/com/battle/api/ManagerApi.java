@@ -85,7 +85,7 @@ public class ManagerApi {
 	@RequestMapping(value="cacheClear")
 	@ResponseBody
 	public Object cacheClear(HttpServletRequest httpServletRequest)throws Exception{
-		
+		EhRedisCache ehRedisCache = EhRedisCache.getInstance();
 		ehRedisCache.clear();
 		
 		return null;

@@ -19,9 +19,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.ehcache.Element;
+import sun.security.jca.GetInstance;
 
 public class EhRedisCache implements Cache{
+	
+	
 	 private static final Logger LOG = LoggerFactory.getLogger(EhRedisCache.class);
+	 
+	 private static EhRedisCache ehRedisCache;
 
 	    private String name;
 
@@ -29,7 +34,15 @@ public class EhRedisCache implements Cache{
 
 	    private RedisTemplate<String, Object> redisTemplate;
 
-	     private long liveTime = 1*60*60; //默认1h=1*60*60
+	    private long liveTime = 1*60*60; //默认1h=1*60*60
+	    
+	    public EhRedisCache() {
+	    	ehRedisCache = this;
+		}
+	     
+	    public static EhRedisCache getInstance(){
+	    	return ehRedisCache;
+	    }
 
 	    @Override
 	    public String getName() {
