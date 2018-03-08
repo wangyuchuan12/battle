@@ -165,10 +165,14 @@ public class BattleRoomStepIndexApi {
 				battleStepModel = battleStepModelService.findOneByCode(code);
 			}
 			
+			
+			System.out.println("battleStepModel:"+battleStepModel);
 			if(battleStepModel!=null){
 				
+				System.out.println("battleStepModel.id:"+battleStepModel.getId());
 				List<BattleStepIndexModel> battleStepIndexModels = battleStepIndexModelService.findAllByModelId(battleStepModel.getId());
 				
+				System.out.println("battleStepIndexModels:"+battleStepIndexModels);
 				for(BattleStepIndexModel battleStepIndexModel:battleStepIndexModels){
 					BattleRoomStepIndex battleRoomStepIndex = new BattleRoomStepIndex();
 					
