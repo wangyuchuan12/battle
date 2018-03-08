@@ -42,6 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.session.EhRedisCache;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -77,6 +78,18 @@ public class ManagerApi {
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private EhRedisCache ehRedisCache;
+	
+	@RequestMapping(value="cacheClear")
+	@ResponseBody
+	public Object cacheClear(HttpServletRequest httpServletRequest)throws Exception{
+		
+		ehRedisCache.clear();
+		
+		return null;
+	}
 	
 	@RequestMapping(value="subjects")
 	@ResponseBody
