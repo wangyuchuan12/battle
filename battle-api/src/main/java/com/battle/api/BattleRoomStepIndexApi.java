@@ -144,7 +144,7 @@ public class BattleRoomStepIndexApi {
 		}
 		
 		List<BattleRoomStepIndex> battleRoomStepIndexs = new ArrayList<>();
-		if(battleRoom.getIsInit()==0){
+		if(battleRoom.getIsInit()==1){
 			battleRoomStepIndexs = battleRoomStepIndexService.findAllByRoomIdOrderByStepIndexAsc(roomId);
 			
 			battleRoomService.update(battleRoom);
