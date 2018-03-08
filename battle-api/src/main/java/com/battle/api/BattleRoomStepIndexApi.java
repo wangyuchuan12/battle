@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -155,7 +156,8 @@ public class BattleRoomStepIndexApi {
 			BattleStepModel battleStepModel = null;
 			if(CommonUtil.isEmpty(code)){
 				Pageable pageable = new PageRequest(0,1);
-				List<BattleStepModel> battleStepModels =  battleStepModelService.findAll(pageable);
+				Page<BattleStepModel> battleStepModelPage =  battleStepModelService.findAll(pageable);
+				List<BattleStepModel> battleStepModels = battleStepModelPage.getContent();
 				if(battleStepModels!=null&&battleStepModels.size()>0){
 					battleStepModel = battleStepModels.get(0);
 				}
@@ -181,8 +183,10 @@ public class BattleRoomStepIndexApi {
 					
 					battleRoomStepIndexs.add(battleRoomStepIndex);
 				}
-				
-			
+			}else{
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				return resultVo;
 			}
 		}
 		

@@ -3,6 +3,7 @@ package com.battle.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class BattleStepModelService {
 	@Autowired
 	private BattleStepModelDao battleStepModelDao;
 
-	public List<BattleStepModel> findAll(Pageable pageable) {
+	public Page<BattleStepModel> findAll(Pageable pageable) {
 		
 		return battleStepModelDao.findAll(pageable);
 	}
