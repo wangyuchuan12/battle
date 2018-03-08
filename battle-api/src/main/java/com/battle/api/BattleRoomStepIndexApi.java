@@ -89,7 +89,7 @@ public class BattleRoomStepIndexApi {
 		Integer endIndex = battleMemberPaperAnswer.getEndIndex();
 		
 		
-		List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStageIndex(battlePeriodMember.getRoomId(),startIndex,endIndex);
+		List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStageIndexAac(battlePeriodMember.getRoomId(),startIndex,endIndex);
 		
 		Account account = accountService.fineOneSync(userInfo.getAccountId());
 		
