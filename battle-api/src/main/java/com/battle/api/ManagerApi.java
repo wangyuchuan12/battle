@@ -79,9 +79,6 @@ public class ManagerApi {
 	@Autowired
 	private BattleRoomService battleRoomService;
 	
-	@Autowired
-	private EhRedisCache ehRedisCache;
-	
 	@RequestMapping(value="cacheClear")
 	@ResponseBody
 	public Object cacheClear(HttpServletRequest httpServletRequest)throws Exception{
