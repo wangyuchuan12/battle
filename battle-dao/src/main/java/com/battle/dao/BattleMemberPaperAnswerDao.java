@@ -9,8 +9,6 @@ import com.battle.domain.BattleMemberPaperAnswer;
 
 public interface BattleMemberPaperAnswerDao extends CrudRepository<BattleMemberPaperAnswer, String>{
 
-	//@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
-	BattleMemberPaperAnswer findOneByBattlePeriodMemberId(String memberId);
 
 	//@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator")
 	BattleMemberPaperAnswer findOneByQuestionAnswerId(String id);
@@ -20,5 +18,7 @@ public interface BattleMemberPaperAnswerDao extends CrudRepository<BattleMemberP
 	
 	//@Cacheable(value="userCache",keyGenerator="sessionKeyGenerator") 
 	public BattleMemberPaperAnswer findOne(String id);
+
+	BattleMemberPaperAnswer findOneByBattlePeriodMemberIdAndStageIndex(String memberId, Integer stageIndex);
 
 }

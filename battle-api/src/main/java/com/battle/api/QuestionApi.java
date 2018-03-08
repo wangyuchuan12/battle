@@ -541,6 +541,8 @@ public class QuestionApi {
 		
 		battleMemberPaperAnswer.setEndIndex(battlePeriodMember.getProcess());
 		
+		battleMemberPaperAnswer.setIsReceive(0);
+		
 		battleMemberPaperAnswerService.add(battleMemberPaperAnswer);
 		
 		ResultVo resultVo = new ResultVo();

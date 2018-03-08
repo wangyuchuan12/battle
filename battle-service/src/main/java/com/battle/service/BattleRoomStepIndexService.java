@@ -27,4 +27,10 @@ public class BattleRoomStepIndexService {
 		battleRoomStepIndexDao.save(battleRoomStepIndex);
 		
 	}
+
+	public List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStageIndex(
+			Integer startIndex, Integer endIndex) {
+		
+		return battleRoomStepIndexDao.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStageIndex(startIndex,endIndex);
+	}
 }

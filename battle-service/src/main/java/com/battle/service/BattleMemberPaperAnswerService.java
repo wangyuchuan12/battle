@@ -16,11 +16,6 @@ public class BattleMemberPaperAnswerService {
 	@Autowired
 	private BattleMemberPaperAnswerDao battleMemberPaperAnswerDao;
 
-	public BattleMemberPaperAnswer findOneByBattlePeriodMemberId(String memberId) {
-		
-		return battleMemberPaperAnswerDao.findOneByBattlePeriodMemberId(memberId);
-	}
-
 	public void add(BattleMemberPaperAnswer battleMemberPaperAnswer) {
 		
 		battleMemberPaperAnswer.setId(UUID.randomUUID().toString());
@@ -52,5 +47,10 @@ public class BattleMemberPaperAnswerService {
 	public List<BattleMemberPaperAnswer> findAllByBattlePeriodMemberIdAndIsSyncData(String memberId, int isSyncData) {
 		
 		return battleMemberPaperAnswerDao.findAllByBattlePeriodMemberIdAndIsSyncData(memberId,isSyncData);
+	}
+
+	public BattleMemberPaperAnswer findOneByBattlePeriodMemberIdAndStageIndex(String memberId, Integer stageIndex) {
+		
+		return battleMemberPaperAnswerDao.findOneByBattlePeriodMemberIdAndStageIndex(memberId,stageIndex);
 	}
 }
