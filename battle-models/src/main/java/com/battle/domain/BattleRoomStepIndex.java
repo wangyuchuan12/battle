@@ -1,5 +1,7 @@
 package com.battle.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,8 +22,12 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_room_step_index")
-public class BattleRoomStepIndex {
+public class BattleRoomStepIndex implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final static Integer BEAN_REWARD_TYPE = 0;
 	public final static Integer LOVE_REWARD_TYPE = 1;
 	
