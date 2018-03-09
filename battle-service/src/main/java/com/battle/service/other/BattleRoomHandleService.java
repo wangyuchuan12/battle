@@ -63,6 +63,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setIsIncrease(1);
 		
+		battleRoom.setIsInit(0);
+		
 		return battleRoom;
 	}
 }
