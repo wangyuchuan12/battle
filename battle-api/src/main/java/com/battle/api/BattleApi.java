@@ -1703,7 +1703,13 @@ public class BattleApi {
 				roomScore = 0;
 			}
 			
+			if(score==null){
+				score = 0;
+			}
 			
+			if(memberScore==null){
+				memberScore = 0;
+			}
 			
 			roomScore = roomScore+score;
 			
