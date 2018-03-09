@@ -122,8 +122,10 @@ public class BattleRoomStepIndexApi {
 	@RequestMapping(value="list")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo list(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		String roomId = httpServletRequest.getParameter("roomId");
 		
 		if(CommonUtil.isEmpty(roomId)){
@@ -197,19 +199,24 @@ public class BattleRoomStepIndexApi {
 			}
 		}
 		
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
 		List<Map<String, Object>> responseIndexes = new ArrayList<>();
 		
 		if(battleRoomStepIndexs!=null&&battleRoomStepIndexs.size()>0){
 			
 			for(BattleRoomStepIndex battleRoomStepIndex:battleRoomStepIndexs){
-				Map<String, Object> responseIndex = new HashMap<>();
-				responseIndex.put("id", battleRoomStepIndex.getId());
-				responseIndex.put("beanNum", battleRoomStepIndex.getBeanNum());
-				responseIndex.put("loveNum", battleRoomStepIndex.getLoveNum());
-				responseIndex.put("roomId", battleRoomStepIndex.getRoomId());
-				responseIndex.put("rewardType", battleRoomStepIndex.getRewardType());
-				responseIndex.put("stepIndex", battleRoomStepIndex.getStepIndex());
-				responseIndexes.add(responseIndex);
+				if(battleRoomStepIndex.getStepIndex()>battlePeriodMember.getProcess()){
+					Map<String, Object> responseIndex = new HashMap<>();
+					responseIndex.put("id", battleRoomStepIndex.getId());
+					responseIndex.put("beanNum", battleRoomStepIndex.getBeanNum());
+					responseIndex.put("loveNum", battleRoomStepIndex.getLoveNum());
+					responseIndex.put("roomId", battleRoomStepIndex.getRoomId());
+					responseIndex.put("rewardType", battleRoomStepIndex.getRewardType());
+					responseIndex.put("stepIndex", battleRoomStepIndex.getStepIndex());
+					responseIndexes.add(responseIndex);
+				}
 			}
 		}
 		
