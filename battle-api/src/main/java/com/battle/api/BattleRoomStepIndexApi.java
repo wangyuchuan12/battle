@@ -75,11 +75,6 @@ public class BattleRoomStepIndexApi {
 		
 		Account account = accountService.fineOneSync(userInfo.getAccountId());
 		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
-			if(battleMemberPaperAnswer.getIsReceive()!=null&&battleMemberPaperAnswer.getIsReceive().intValue()==1){
-				ResultVo resultVo = new ResultVo();
-				resultVo.setSuccess(false);
-				return resultVo;
-			}
 			
 			battleMemberPaperAnswer.setIsReceive(1);
 			
