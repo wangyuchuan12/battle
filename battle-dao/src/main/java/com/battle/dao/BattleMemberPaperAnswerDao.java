@@ -21,4 +21,6 @@ public interface BattleMemberPaperAnswerDao extends CrudRepository<BattleMemberP
 
 	BattleMemberPaperAnswer findOneByBattlePeriodMemberIdAndStageIndex(String memberId, Integer stageIndex);
 
+	List<BattleMemberPaperAnswer> findAllByBattlePeriodMemberIdAndIsReceive(String memberId, int isReceive);
+
 }

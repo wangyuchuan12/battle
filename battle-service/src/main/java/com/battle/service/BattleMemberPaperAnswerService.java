@@ -53,4 +53,10 @@ public class BattleMemberPaperAnswerService {
 		
 		return battleMemberPaperAnswerDao.findOneByBattlePeriodMemberIdAndStageIndex(memberId,stageIndex);
 	}
+
+	public List<BattleMemberPaperAnswer> findAllByBattlePeriodMemberIdAndIsReceive(String memberId, int isReceive) {
+		
+		return battleMemberPaperAnswerDao.findAllByBattlePeriodMemberIdAndIsReceive(memberId,isReceive);
+	}
+
 }

@@ -71,48 +71,43 @@ public class BattleRoomStepIndexApi {
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
-		Integer stageIndex = battlePeriodMember.getStageIndex();
-		
-		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByBattlePeriodMemberIdAndStageIndex(battlePeriodMember.getId(),stageIndex);
-		
-		if(battleMemberPaperAnswer.getIsReceive()!=null&&battleMemberPaperAnswer.getIsReceive().intValue()==1){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(false);
-			return resultVo;
-		}
-		
-		battleMemberPaperAnswer.setIsReceive(1);
-		
-		battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
-		
-		Integer startIndex = battleMemberPaperAnswer.getStartIndex();
-		
-		Integer endIndex = battleMemberPaperAnswer.getEndIndex();
-		
-		
-		List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(battlePeriodMember.getRoomId(),startIndex,endIndex);
+		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.findAllByBattlePeriodMemberIdAndIsReceive(battlePeriodMember.getId(),0);
 		
 		Account account = accountService.fineOneSync(userInfo.getAccountId());
-		
-		Long wisdomCount = account.getWisdomCount();
-		if(wisdomCount==null){
-			wisdomCount = 0L;
-		}
-		
-		List<Map<String, Object>> responseIndexes = new ArrayList<>();
-		for(BattleRoomStepIndex battleRoomStepIndex:battleRoomStepIndexs){
-			Integer beanNum = battleRoomStepIndex.getBeanNum();
-			if(beanNum==null){
-				beanNum  = 0;
+		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
+			if(battleMemberPaperAnswer.getIsReceive()!=null&&battleMemberPaperAnswer.getIsReceive().intValue()==1){
+				ResultVo resultVo = new ResultVo();
+				resultVo.setSuccess(false);
+				return resultVo;
 			}
-			wisdomCount = wisdomCount + beanNum;
-			account.setWisdomCount(wisdomCount);
 			
-			Map<String, Object> responseIndex = new HashMap<>();
-			responseIndex.put("", battleRoomStepIndex.getBeanNum());
-			responseIndex.put("", battleRoomStepIndex.getStepIndex());
+			battleMemberPaperAnswer.setIsReceive(1);
 			
-			responseIndexes.add(responseIndex);
+			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+			
+			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
+			
+			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
+			
+			
+			List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(battlePeriodMember.getRoomId(),startIndex,endIndex);
+			
+			
+			
+			Long wisdomCount = account.getWisdomCount();
+			if(wisdomCount==null){
+				wisdomCount = 0L;
+			}
+			
+			for(BattleRoomStepIndex battleRoomStepIndex:battleRoomStepIndexs){
+				Integer beanNum = battleRoomStepIndex.getBeanNum();
+				if(beanNum==null){
+					beanNum  = 0;
+				}
+				wisdomCount = wisdomCount + beanNum;
+				account.setWisdomCount(wisdomCount);
+				
+			}
 		}
 		
 		accountService.update(account);
@@ -120,7 +115,6 @@ public class BattleRoomStepIndexApi {
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
-		resultVo.setData(responseIndexes);
 		
 		return resultVo;
 	}
