@@ -22,7 +22,7 @@ import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomStepIndex;
 import com.battle.domain.BattleStepIndexModel;
 import com.battle.domain.BattleStepModel;
-import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
+import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleRoomService;
@@ -62,7 +62,7 @@ public class BattleRoomStepIndexApi {
 	@RequestMapping(value="receive")
 	@ResponseBody
 	@Transactional
-	@HandlerAnnotation(hanlerFilter=CurrentBattlePeriodMemberFilter.class)
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo receive(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
