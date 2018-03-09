@@ -144,6 +144,10 @@ public class BattleRoomStepIndexApi {
 			System.out.println("..................进这里");
 			battleRoomStepIndexs = battleRoomStepIndexService.findAllByRoomIdOrderByStepIndexAsc(roomId);
 			
+			System.out.println(".............roomId:"+roomId);
+			
+			System.out.println(".............battleRoomStepIndexs:"+battleRoomStepIndexs);
+			
 			battleRoomService.update(battleRoom);
 		}else{
 			System.out.println("..................进这里2");
