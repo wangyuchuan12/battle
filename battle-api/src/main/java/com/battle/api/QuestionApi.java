@@ -391,34 +391,36 @@ public class QuestionApi {
 		
 		Integer process = battlePeriodMember.getProcess();
 		
+		Integer paperProcess = 0;
+		
 		if(process==null){
 			process = 0;
 		}
 		
 		
 		if(battleMemberPaperAnswer.getRightSum()==null||battleMemberPaperAnswer.getRightSum()==0){
-			process = 0;
+			paperProcess = 0;
 		}else if(battleMemberPaperAnswer.getRightSum()==1){
-			process = battleRoom.getRight1AddProcess();
+			paperProcess = battleRoom.getRight1AddProcess();
 		}else if(battleMemberPaperAnswer.getRightSum()==2){
-			process = battleRoom.getRight2AddProcess();
+			paperProcess = battleRoom.getRight2AddProcess();
 		}else if(battleMemberPaperAnswer.getRightSum()==3){
-			process = battleRoom.getRight3AddProcess();
+			paperProcess = battleRoom.getRight3AddProcess();
 		}else if(battleMemberPaperAnswer.getRightSum()==4){
-			process = battleRoom.getRight4AddProcess();
+			paperProcess = battleRoom.getRight4AddProcess();
 		}else if(battleMemberPaperAnswer.getRightSum()==5){
-			process = battleRoom.getRight5AddProcess();
+			paperProcess = battleRoom.getRight5AddProcess();
 		}else if(battleMemberPaperAnswer.getRightSum()==6){
-			process = battleRoom.getRight6AddProcess();
+			paperProcess = battleRoom.getRight6AddProcess();
 		}
 		
-		System.out.println("................rightSum:"+battleMemberPaperAnswer.getRightSum()+",process:"+process);
+		result.put("process", paperProcess);
 		
-		result.put("process", process);
-		
-		battlePeriodMember.setProcess(process);
+		//battlePeriodMember.setProcess(process);
 		
 		battleMemberPaperAnswer.setProcess(process);
+		
+		battlePeriodMember.setProcess(process+paperProcess);
 
 		battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 

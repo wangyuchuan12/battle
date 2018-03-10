@@ -1646,6 +1646,7 @@ public class BattleApi {
 				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
 		
 		Integer memberScore = battlePeriodMember.getScore();
+	
 		
 		Integer memberScoreGogal = battlePeriodMember.getScrollGogal();
 		
