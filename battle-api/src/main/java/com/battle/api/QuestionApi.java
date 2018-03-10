@@ -418,7 +418,7 @@ public class QuestionApi {
 		
 		//battlePeriodMember.setProcess(process);
 		
-		battleMemberPaperAnswer.setProcess(process);
+		battleMemberPaperAnswer.setProcess(paperProcess);
 		
 		battlePeriodMember.setProcess(process+paperProcess);
 
