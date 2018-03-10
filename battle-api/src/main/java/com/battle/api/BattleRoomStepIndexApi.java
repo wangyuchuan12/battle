@@ -85,6 +85,9 @@ public class BattleRoomStepIndexApi {
 			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
 			
 			
+			
+			System.out.println(".....................startIndex:"+startIndex+",endIndex:"+endIndex);
+			
 			List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(battlePeriodMember.getRoomId(),startIndex,endIndex);
 			
 			

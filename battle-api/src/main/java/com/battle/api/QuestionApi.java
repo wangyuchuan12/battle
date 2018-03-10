@@ -419,6 +419,7 @@ public class QuestionApi {
 		battlePeriodMember.setProcess(process);
 		
 		battleMemberPaperAnswer.setProcess(process);
+
 		battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 
 		Integer passCount = battleMemberPaperAnswer.getPassCount();
