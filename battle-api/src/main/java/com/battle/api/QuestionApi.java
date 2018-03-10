@@ -412,6 +412,8 @@ public class QuestionApi {
 			process = battleRoom.getRight6AddProcess();
 		}
 		
+		System.out.println("................rightSum:"+battleMemberPaperAnswer.getRightSum()+",process:"+process);
+		
 		result.put("process", process);
 		
 		battlePeriodMember.setProcess(process);
