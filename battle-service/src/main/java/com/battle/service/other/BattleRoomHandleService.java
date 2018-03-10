@@ -33,7 +33,17 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setFullRightAddScore(10);
 		
-		battleRoom.setRightAddProcess(1);
+		battleRoom.setRight1AddProcess(1);
+		
+		battleRoom.setRight2AddProcess(2);
+		
+		battleRoom.setRight3AddProcess(5);
+		
+		battleRoom.setRight4AddProcess(10);
+		
+		battleRoom.setRight5AddProcess(15);
+		
+		battleRoom.setRight6AddProcess(20);
 		
 		battleRoom.setRightAddScore(5);
 		

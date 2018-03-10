@@ -136,10 +136,6 @@ public class BattleMemberPaperAnswer  implements Serializable{
 	private Integer wrongSubScore;
 	
 	@ParamAnnotation
-	@Column(name="right_add_process")
-	private Integer rightAddProcess;
-	
-	@ParamAnnotation
 	@Column(name="full_right_add_score")
 	private Integer fullRightAddScore;
 	
@@ -324,14 +320,6 @@ public class BattleMemberPaperAnswer  implements Serializable{
 
 	public void setWrongSubScore(Integer wrongSubScore) {
 		this.wrongSubScore = wrongSubScore;
-	}
-
-	public Integer getRightAddProcess() {
-		return rightAddProcess;
-	}
-
-	public void setRightAddProcess(Integer rightAddProcess) {
-		this.rightAddProcess = rightAddProcess;
 	}
 
 	public Integer getFullRightAddScore() {

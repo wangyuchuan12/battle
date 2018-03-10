@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-
-import org.apache.shiro.session.Session;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
@@ -32,12 +29,11 @@ import com.battle.domain.QuestionAnswerItem;
 import com.battle.domain.QuestionOption;
 import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.CurrentMemberInfoFilter;
-import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
 import com.battle.service.BattlePeriodMemberService;
-import com.battle.service.BattlePeriodService;
+//import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
 import com.battle.service.BattleQuestionService;
 import com.battle.service.BattleRoomService;
@@ -47,7 +43,6 @@ import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.battle.service.other.AccountResultHandleService;
 import com.wyc.annotation.HandlerAnnotation;
-import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
@@ -83,8 +78,8 @@ public class QuestionApi {
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
 	
-	@Autowired
-	private BattlePeriodService battlePeriodService;
+	/*@Autowired
+	private BattlePeriodService battlePeriodService;*/
 	
 	@Autowired
 	private BattlePeriodStageService battlePeriodStageService;
@@ -114,15 +109,40 @@ public class QuestionApi {
 		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
 		
 		System.out.println("...........battleQuestionAnswer.room.status:"+battleRoom.getStatus());
-		Integer rightAddProcess = battleRoom.getRightAddProcess();
+		Integer right1AddProcess = battleRoom.getRight1AddProcess();
+		Integer right2AddProcess = battleRoom.getRight2AddProcess();
+		Integer right3AddProcess = battleRoom.getRight3AddProcess();
+		Integer right4AddProcess = battleRoom.getRight4AddProcess();
+		Integer right5AddProcess = battleRoom.getRight5AddProcess();
+		Integer right6AddProcess = battleRoom.getRight6AddProcess();
 		Integer rightAddScore = battleRoom.getRightAddScore();
 		Integer wrongSubScore = battleRoom.getWrongSubScore();
 		if(wrongSubScore==null){
 			wrongSubScore = 0;
 		}
 		
-		if(rightAddProcess==null){
-			rightAddProcess = 0;
+		if(right1AddProcess==null){
+			right1AddProcess = 0;
+		}
+		
+		if(right2AddProcess==null){
+			right2AddProcess = 0;
+		}
+		
+		if(right3AddProcess==null){
+			right3AddProcess = 0;
+		}
+		
+		if(right4AddProcess==null){
+			right4AddProcess = 0;
+		}
+		
+		if(right5AddProcess==null){
+			right5AddProcess = 0;
+		}
+		
+		if(right6AddProcess==null){
+			right6AddProcess = 0;
 		}
 		
 		if(rightAddScore==null){
@@ -272,7 +292,7 @@ public class QuestionApi {
 		
 		if(questionAnswerItem.getIsRight()==1){
 			
-			Integer process = battlePeriodMember.getProcess();
+			
 			
 		//	Integer score = battlePeriodMember.getScore();
 			
@@ -285,21 +305,15 @@ public class QuestionApi {
 				score = 0;
 			}*/
 			
-			if(process==null){
-				process = 0;
-			}
 			
 			
-			process = process + rightAddProcess;
 			
 		//	score = score+rightAddScore;
 			
 			paperScore = paperScore + rightAddScore;
 			
 			result.put("right", true);
-			result.put("process", rightAddProcess);
 			
-			battlePeriodMember.setProcess(process);
 			
 			/*if(process>=120){
 				battleRoom.setStatus(BattleRoom.STATUS_END);
@@ -316,15 +330,12 @@ public class QuestionApi {
 				paperProcess = 0;
 			}
 			
-			paperProcess = paperProcess+rightAddProcess;
-			
 			questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setScore(paperScore);
-			battleMemberPaperAnswer.setProcess(paperProcess);
-			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+			
 			
 		}else{
 			
@@ -378,6 +389,35 @@ public class QuestionApi {
 			}*/
 		}
 		
+		Integer process = battlePeriodMember.getProcess();
+		
+		if(process==null){
+			process = 0;
+		}
+		
+		
+		if(battleMemberPaperAnswer.getRightSum()==null||battleMemberPaperAnswer.getRightSum()==0){
+			process = 0;
+		}else if(battleMemberPaperAnswer.getRightSum()==1){
+			process = battleRoom.getRight1AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==2){
+			process = battleRoom.getRight2AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==3){
+			process = battleRoom.getRight3AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==4){
+			process = battleRoom.getRight4AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==5){
+			process = battleRoom.getRight5AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==6){
+			process = battleRoom.getRight6AddProcess();
+		}
+		
+		result.put("process", process);
+		
+		battlePeriodMember.setProcess(process);
+		
+		battleMemberPaperAnswer.setProcess(process);
+		battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 
 		Integer passCount = battleMemberPaperAnswer.getPassCount();
 		if(passCount==null){
@@ -532,8 +572,7 @@ public class QuestionApi {
 		battleMemberPaperAnswer.setThisRewardBean(0L);
 		battleMemberPaperAnswer.setIsSyncData(0);
 		
-		battleMemberPaperAnswer.setFullRightAddScore(battleRoom.getFullRightAddScore());
-		battleMemberPaperAnswer.setRightAddProcess(battleRoom.getRightAddProcess());
+
 		battleMemberPaperAnswer.setRightAddScore(battleRoom.getRightAddScore());
 		battleMemberPaperAnswer.setWrongSubScore(battleRoom.getWrongSubScore());
 		

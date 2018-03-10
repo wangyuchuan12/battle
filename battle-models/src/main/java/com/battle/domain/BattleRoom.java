@@ -162,8 +162,28 @@ public class BattleRoom implements Serializable{
 	private Integer wrongSubScore;
 	
 	@ParamAnnotation
-	@Column(name="right_add_process")
-	private Integer rightAddProcess;
+	@Column(name="right1_add_process")
+	private Integer right1AddProcess;
+	
+	@ParamAnnotation
+	@Column(name="right2_add_process")
+	private Integer right2AddProcess;
+	
+	@ParamAnnotation
+	@Column(name="right3_add_process")
+	private Integer right3AddProcess;
+	
+	@ParamAnnotation
+	@Column(name="right4_add_process")
+	private Integer right4AddProcess;
+	
+	@ParamAnnotation
+	@Column(name="right5_add_process")
+	private Integer right5AddProcess;
+	
+	@ParamAnnotation
+	@Column(name="right6_add_process")
+	private Integer right6AddProcess;
 	
 	@ParamAnnotation
 	@Column(name="full_right_add_score")
@@ -455,12 +475,52 @@ public class BattleRoom implements Serializable{
 		this.wrongSubScore = wrongSubScore;
 	}
 
-	public Integer getRightAddProcess() {
-		return rightAddProcess;
+	public Integer getRight1AddProcess() {
+		return right1AddProcess;
 	}
 
-	public void setRightAddProcess(Integer rightAddProcess) {
-		this.rightAddProcess = rightAddProcess;
+	public void setRight1AddProcess(Integer right1AddProcess) {
+		this.right1AddProcess = right1AddProcess;
+	}
+
+	public Integer getRight2AddProcess() {
+		return right2AddProcess;
+	}
+
+	public void setRight2AddProcess(Integer right2AddProcess) {
+		this.right2AddProcess = right2AddProcess;
+	}
+
+	public Integer getRight3AddProcess() {
+		return right3AddProcess;
+	}
+
+	public void setRight3AddProcess(Integer right3AddProcess) {
+		this.right3AddProcess = right3AddProcess;
+	}
+
+	public Integer getRight4AddProcess() {
+		return right4AddProcess;
+	}
+
+	public void setRight4AddProcess(Integer right4AddProcess) {
+		this.right4AddProcess = right4AddProcess;
+	}
+
+	public Integer getRight5AddProcess() {
+		return right5AddProcess;
+	}
+
+	public void setRight5AddProcess(Integer right5AddProcess) {
+		this.right5AddProcess = right5AddProcess;
+	}
+
+	public Integer getRight6AddProcess() {
+		return right6AddProcess;
+	}
+
+	public void setRight6AddProcess(Integer right6AddProcess) {
+		this.right6AddProcess = right6AddProcess;
 	}
 
 	public Integer getFullRightAddScore() {
