@@ -170,7 +170,7 @@ public class BattlePkApi {
 			battleRoom.setMaxinum(maxinumInt);
 			battleRoom.setMininum(mininumInt);
 			battleRoom.setIsSearchAble(0);
-			battleRoom.setScrollGogal(1000);
+			battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
 			battleRoom.setPlaces(10);
 			battleRoom.setIsDanRoom(0);
 			battleRoom.setIsIncrease(1);

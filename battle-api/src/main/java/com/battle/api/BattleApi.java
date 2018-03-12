@@ -1658,6 +1658,8 @@ public class BattleApi {
 			memberScoreGogal = 0;
 		}
 		
+		Integer thisScore = 0;
+		
 		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
 			
 			Integer isPass = battleMemberPaperAnswer.getIsPass();
@@ -1672,6 +1674,8 @@ public class BattleApi {
 			Integer process = battleMemberPaperAnswer.getProcess();
 			
 			Integer score = battleMemberPaperAnswer.getScore();
+			
+			
 			
 			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
 			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
@@ -1711,6 +1715,8 @@ public class BattleApi {
 			if(memberScore==null){
 				memberScore = 0;
 			}
+			
+			thisScore = thisScore+score;
 			
 			roomScore = roomScore+score;
 			
@@ -1896,6 +1902,8 @@ public class BattleApi {
 		data.put("rewardBean", battlePeriodMember.getRewardBean());
 		
 		data.put("members", battlePeriodMembers);
+		
+		data.put("thisScore", thisScore);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
