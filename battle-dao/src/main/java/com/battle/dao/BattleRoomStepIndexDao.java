@@ -11,10 +11,10 @@ import com.battle.domain.BattleRoomStepIndex;
 
 public interface BattleRoomStepIndexDao extends CrudRepository<BattleRoomStepIndex, String>{
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattleRoomStepIndex> findAllByRoomIdOrderByStepIndexAsc(String roomId);
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattleRoomStepIndex> findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(
 			String roomId,Integer startIndex, Integer endIndex);
 
