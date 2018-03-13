@@ -42,7 +42,7 @@ public class BattleMemberLoveCooling  implements Serializable{
 	
 	//指向BattlePeriodMember
 	@ParamAnnotation
-	@Column(name="battle_member_id")
+	@Column(name="battle_member_id",unique=true)
 	private String battleMemberId;
 	
 	@ParamAnnotation

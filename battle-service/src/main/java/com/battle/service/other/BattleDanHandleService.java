@@ -17,7 +17,6 @@ import com.battle.domain.BattleDan;
 import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
-import com.battle.domain.BattleRoomGroup;
 import com.battle.domain.BattleRoomReward;
 import com.battle.service.BattleAccountResultService;
 import com.battle.service.BattleDanService;

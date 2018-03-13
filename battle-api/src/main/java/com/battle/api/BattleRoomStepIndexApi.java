@@ -186,6 +186,8 @@ public class BattleRoomStepIndexApi {
 					battleRoomStepIndex.setRoomId(roomId);
 					battleRoomStepIndex.setStepIndex(battleStepIndexModel.getStepIndex());
 					
+					battleRoomStepIndex.setIsBig(battleStepIndexModel.getIsBig());
+					
 					battleRoomStepIndexService.add(battleRoomStepIndex);
 					
 					battleRoomStepIndexs.add(battleRoomStepIndex);
@@ -213,6 +215,8 @@ public class BattleRoomStepIndexApi {
 					responseIndex.put("roomId", battleRoomStepIndex.getRoomId());
 					responseIndex.put("rewardType", battleRoomStepIndex.getRewardType());
 					responseIndex.put("stepIndex", battleRoomStepIndex.getStepIndex());
+					responseIndex.put("imgUrl", battleRoomStepIndex.getImgUrl());
+					responseIndex.put("isBig", battleRoomStepIndex.getIsBig());
 					responseIndexes.add(responseIndex);
 				}
 			}

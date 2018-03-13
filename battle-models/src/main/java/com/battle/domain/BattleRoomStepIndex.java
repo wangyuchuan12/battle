@@ -61,6 +61,10 @@ public class BattleRoomStepIndex implements Serializable{
 	@ParamAnnotation
 	private String imgUrl;
 	
+	@Column(name="is_big")
+	@ParamAnnotation
+	private Integer isBig;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -127,6 +131,14 @@ public class BattleRoomStepIndex implements Serializable{
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public Integer getIsBig() {
+		return isBig;
+	}
+
+	public void setIsBig(Integer isBig) {
+		this.isBig = isBig;
 	}
 
 	public DateTime getCreateAt() {
