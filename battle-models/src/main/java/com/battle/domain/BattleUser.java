@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -16,6 +18,7 @@ import com.wyc.annotation.IdAnnotation;
 import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_user",indexes={@Index(columnList="battle_id,open_id,user_id,current_room_id",name="battleUserIndex")})

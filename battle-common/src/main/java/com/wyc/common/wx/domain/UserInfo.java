@@ -9,6 +9,8 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -20,6 +22,7 @@ import com.wyc.annotation.ParamAnnotation;
 import com.wyc.annotation.ParamEntityAnnotation;
 
 
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @ParamEntityAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
 @Entity(name="user_info")
 @Table(indexes={@Index(columnList="openid",name="openid_index"),
