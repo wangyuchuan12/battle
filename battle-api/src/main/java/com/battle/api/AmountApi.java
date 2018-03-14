@@ -59,7 +59,7 @@ public class AmountApi {
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		Pageable pageable = new PageRequest(0, 50);
-		
+	
 		List<AccountAmountTakeoutRecord> records = accountAmountTakeoutRecordService.findAllByAccountIdOrderByCreateAtDesc(userInfo.getAccountId(),pageable);
 		
 		List<Map<String, Object>> responseDatas = new ArrayList<>();
