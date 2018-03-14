@@ -1,5 +1,6 @@
 package com.wyc.common.wx.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -27,8 +28,13 @@ import com.wyc.annotation.ParamEntityAnnotation;
 @Entity(name="user_info")
 @Table(indexes={@Index(columnList="openid",name="openid_index"),
 				@Index(columnList="token",name="token_index")})
-public class UserInfo {
-    @Id
+public class UserInfo implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @IdAnnotation
     @AttrAnnotation(name=AttrEnum.userInfoId)
     private String id;
