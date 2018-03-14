@@ -1,8 +1,12 @@
 package com.battle.dao;
 
 import java.util.List;
+
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -10,6 +14,7 @@ import com.battle.domain.BattleQuestion;
 
 public interface BattleQuestionDao extends CrudRepository<BattleQuestion, String>{
 
+	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	@Query("from com.battle.domain.BattleQuestion bq where bq.battleId=:battleId and bq.periodStageId=:periodStageId order by rand()")
 	List<BattleQuestion> findAllByBattleIdAndPeriodStageIdRandom(@Param("battleId")String battleId,@Param("periodStageId")String periodStageId,Pageable pageable);
 
