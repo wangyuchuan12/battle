@@ -119,6 +119,18 @@ public class BattlePeriodMember implements Serializable{
 	private String danId;
 	
 	@ParamAnnotation
+	@Column(name="z_index")
+	private Integer index;
+	
+	@ParamAnnotation
+	@Column(name="flag_img")
+	private String flagImg;
+	
+	@ParamAnnotation
+	@Column(name="flag_id")
+	private String flagId;
+	
+	@ParamAnnotation
 	@Column(name = "takepart_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -337,6 +349,32 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setDanId(String danId) {
 		this.danId = danId;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+	
+	public String getFlagImg() {
+		return flagImg;
+	}
+
+	public void setFlagImg(String flagImg) {
+		this.flagImg = flagImg;
+	}
+	
+	
+
+	public String getFlagId() {
+		return flagId;
+	}
+
+	public void setFlagId(String flagId) {
+		this.flagId = flagId;
 	}
 
 	public DateTime getCreateAt() {

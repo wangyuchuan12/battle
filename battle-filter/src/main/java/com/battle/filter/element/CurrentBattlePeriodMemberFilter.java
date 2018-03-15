@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.BattleStepFlag;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.BattleStepFlagService;
 import com.wyc.AttrEnum;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
@@ -25,6 +27,9 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 	
 	@Autowired
 	private BattleRoomService battleRoomService;
+	
+	@Autowired
+	private BattleStepFlagService battleStepFlagService;
 	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -49,6 +54,23 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 		battlePeriodMember = battlePeriodMemberService.findOneByRoomIdAndBattleUserIdAndIsDel(roomId,battleUserId,0);
 		if(battlePeriodMember==null){
 			BattleRoom battleRoom = battleRoomService.findOne(roomId);
+			Integer maxIndex = battleRoom.getMaxIndex();
+			maxIndex++;
+			BattleStepFlag battleStepFlag = battleStepFlagService.findOneByIndex(maxIndex);
+			
+			
+			if(battleStepFlag==null){
+				maxIndex++;
+				battleStepFlag = battleStepFlagService.findOneByIndex(maxIndex);
+				if(battleStepFlag==null){
+					battleStepFlag = battleStepFlagService.findOneByIndex(1);
+					battleRoom.setMaxIndex(1);
+				}
+			}
+			
+			
+			
+			sessionManager.update(battleRoom);
 			Integer loveCount = battleRoom.getLoveCount();
 			if(loveCount==null||loveCount.intValue()==0){
 				loveCount = 4;
@@ -57,6 +79,16 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			String battleId = battleRoom.getBattleId();
 			BattlePeriod battlePeriod = battlePeriodService.findOne(periodId);
 			battlePeriodMember = new BattlePeriodMember();
+			
+			if(battleStepFlag!=null){
+				battleRoom.setMaxIndex(battleStepFlag.getIndex());
+				sessionManager.update(battleRoom);
+				
+				battlePeriodMember.setIndex(battleStepFlag.getIndex());
+				battlePeriodMember.setFlagImg(battleStepFlag.getImgUrl());
+				
+				battlePeriodMember.setFlagId(battleStepFlag.getId());
+			}
 			battlePeriodMember.setBattleId(battleId);
 			battlePeriodMember.setBattleUserId(battleUserId);
 			battlePeriodMember.setPeriodId(periodId);

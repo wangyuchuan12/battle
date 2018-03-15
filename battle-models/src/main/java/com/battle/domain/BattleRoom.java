@@ -275,6 +275,10 @@ public class BattleRoom implements Serializable{
 	private Integer isInit;
 	
 	@ParamAnnotation
+	@Column(name="max_index")
+	private Integer maxIndex;
+	
+	@ParamAnnotation
 	@Column(name="start_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime startTime;
@@ -747,6 +751,14 @@ public class BattleRoom implements Serializable{
 
 	public void setIsInit(Integer isInit) {
 		this.isInit = isInit;
+	}
+	
+	public Integer getMaxIndex() {
+		return maxIndex;
+	}
+
+	public void setMaxIndex(Integer maxIndex) {
+		this.maxIndex = maxIndex;
 	}
 
 	public DateTime getCreateAt() {

@@ -15,24 +15,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomStepIndex;
+import com.battle.domain.BattleStepDomain;
 import com.battle.domain.BattleStepIndexModel;
 import com.battle.domain.BattleStepModel;
 import com.battle.filter.element.CurrentMemberInfoFilter;
-import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
+import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleRoomStepIndexService;
+import com.battle.service.BattleStepDomainService;
 import com.battle.service.BattleStepIndexModelService;
 import com.battle.service.BattleStepModelService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
+import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -57,7 +59,61 @@ public class BattleRoomStepIndexApi {
 	private BattleMemberPaperAnswerService battleMemberPaperAnswerService;
 	
 	@Autowired
+	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleStepDomainService battleStepDomainService;
+	
+	@Autowired
+	private WxUserInfoService userInfoService;
+	
+	
+	@RequestMapping(value="holdDomain")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
+	public ResultVo holdDomain(HttpServletRequest httpServletRequest)throws Exception{
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		BattleStepDomain battleStepDomain = battleStepDomainService.findOneByRoomIdAndStepIndex(battlePeriodMember.getRoomId(),battlePeriodMember.getProcess());
+		
+		battleStepDomain.setFlagId(battlePeriodMember.getFlagId());
+		
+		battleStepDomain.setFlagImg(battlePeriodMember.getFlagImg());
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		
+		Long beanNum = account.getWisdomCount();
+		Integer costBean = battleStepDomain.getCostBean();
+		if(beanNum==null){
+			beanNum = 0L;
+		}
+		
+		if(costBean==null){
+			costBean = 0;
+		}
+		
+		beanNum = beanNum - costBean;
+		
+		if(beanNum<0){
+			beanNum = 0L;
+		}
+		account.setWisdomCount(beanNum);
+		
+		accountService.update(account);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		
+		return resultVo;
+	}
 	
 	@RequestMapping(value="receive")
 	@ResponseBody
@@ -74,6 +130,7 @@ public class BattleRoomStepIndexApi {
 		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.findAllByBattlePeriodMemberIdAndIsReceive(battlePeriodMember.getId(),0);
 		
 		Account account = accountService.fineOneSync(userInfo.getAccountId());
+	
 		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
 			
 			battleMemberPaperAnswer.setIsReceive(1);
@@ -84,13 +141,7 @@ public class BattleRoomStepIndexApi {
 			
 			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
 			
-			
-			
-			System.out.println(".....................startIndex:"+startIndex+",endIndex:"+endIndex);
-			
 			List<BattleRoomStepIndex> battleRoomStepIndexs =  battleRoomStepIndexService.findAllByRoomIdAndStepIndexGreaterThanAndStepIndexLessThanEqualOrderByStepIndexAsc(battlePeriodMember.getRoomId(),startIndex,endIndex);
-			
-			
 			
 			Long wisdomCount = account.getWisdomCount();
 			if(wisdomCount==null){
@@ -108,11 +159,57 @@ public class BattleRoomStepIndexApi {
 			}
 		}
 		
-		accountService.update(account);
+		
 		
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
+		
+		Map<String, Object> data = new HashMap<>();
+		
+		BattleStepDomain battleStepDomain = battleStepDomainService.findOneByRoomIdAndStepIndex(battlePeriodMember.getRoomId(),battlePeriodMember.getProcess());
+		if(battleStepDomain!=null){
+			
+			BattlePeriodMember domainBattlePeriodMember = battlePeriodMemberService.findOne(battleStepDomain.getMemberId());
+			Map<String, Object> domain = new HashMap<>();
+			domain.put("costBean", battleStepDomain.getCostBean());
+			domain.put("memberId", battleStepDomain.getMemberId());
+			domain.put("stepIndex", battleStepDomain.getStepIndex());
+			domain.put("headImg", domainBattlePeriodMember.getHeadImg());
+			data.put("domain", domain);
+			
+			Long beanNum = account.getWisdomCount();
+			if(beanNum==null){
+				beanNum = 0L;
+			}
+			
+			Integer costBean = battleStepDomain.getCostBean();
+			if(costBean==null){
+				costBean = 0;
+			}
+			if(beanNum>costBean){
+				beanNum = 0L;
+			}else{
+				beanNum = beanNum - costBean;
+			}
+			
+			account.setWisdomCount(beanNum);
+			
+			UserInfo domainUserInfo = userInfoService.findOne(domainBattlePeriodMember.getUserId());
+			
+			Account domainAccount = accountService.fineOneSync(domainUserInfo.getAccountId());
+			
+			Long domainbBeanNum = domainAccount.getWisdomCount();
+			domainbBeanNum = domainbBeanNum + costBean;
+			domainAccount.setWisdomCount(domainbBeanNum);
+			
+			accountService.update(domainAccount);
+		}
+		
+		accountService.update(account);
+		
+		resultVo.setData(data);
+	
 		
 		return resultVo;
 	}
