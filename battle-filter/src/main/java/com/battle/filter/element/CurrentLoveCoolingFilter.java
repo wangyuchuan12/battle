@@ -40,6 +40,8 @@ public class CurrentLoveCoolingFilter extends Filter{
 			battleMemberLoveCooling.setMillisec(millisec);
 			battleMemberLoveCooling.setStatus(BattlePeriodMember.STATUS_FREE);
 			battleMemberLoveCoolingService.add(battleMemberLoveCooling);
+			
+			System.out.println("***********************************************");
 		}else{
 			
 		}
