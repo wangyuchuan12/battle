@@ -113,7 +113,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		classes.add(LoginStatusFilter.class);
 		classes.add(CurrentBattleUserFilter.class);
 		classes.add(CurrentBattlePeriodMemberFilter.class);
-		classes.add(CurrentLoveCoolingFilter.class);
+		//classes.add(CurrentLoveCoolingFilter.class);
 		return classes;
 	}
 
