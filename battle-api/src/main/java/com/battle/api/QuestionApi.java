@@ -420,9 +420,9 @@ public class QuestionApi {
 		
 		battleMemberPaperAnswer.setProcess(paperProcess);
 		
-		battlePeriodMember.setProcess(process+paperProcess);
-
-		battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
+			battlePeriodMember.setProcess(process+paperProcess);
+		}
 
 		Integer passCount = battleMemberPaperAnswer.getPassCount();
 		if(passCount==null){
