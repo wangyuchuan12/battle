@@ -10,5 +10,8 @@ public interface BattleMemberLoveCoolingDao extends CrudRepository<BattleMemberL
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattleMemberLoveCooling findOneByBattleMemberId(String battleMemberId);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	BattleMemberLoveCooling findOne(String id);
 
 }
