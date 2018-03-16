@@ -1778,7 +1778,7 @@ public class BattleApi {
 		
 		battlePeriodMember.setScore(memberScore);
 		
-		battlePeriodMemberService.update(battlePeriodMember);
+		sessionManager.update(battlePeriodMember);
 		
 		Integer roomScore = battleRoom.getRoomScore();
 		

@@ -23,13 +23,13 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(String battleId, String periodId, String roomId,List<Integer> statuses,Integer isDel,Pageable pageable);
 
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	BattlePeriodMember findOneByRoomIdAndBattleUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
+	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	@Query(value="select count(*)+1 from com.battle.domain.BattlePeriodMember bm where bm.roomId=:roomId and bm.score>:score ")
+	//@Query(value="select count(*)+1 from com.battle.domain.BattlePeriodMember bm where bm.roomId=:roomId and bm.score>:score ")
 	Long rank(@Param("roomId")String roomId,@Param("score")Integer score);
 
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
@@ -39,7 +39,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	List<BattlePeriodMember> findAllByBattleIdAndPeriodIdAndRoomId(String battleId, String periodId, String roomId,
 			Pageable pageable);
 	
-	@Cacheable(value="userCache")
+	//@Cacheable(value="userCache")
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	BattlePeriodMember findOne(String id);
 
