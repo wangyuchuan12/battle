@@ -29,7 +29,7 @@ public interface BattlePeriodMemberDao extends CrudRepository<BattlePeriodMember
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
 	BattlePeriodMember findOneByRoomIdAndUserIdAndIsDel(String roomId,String battleUserId,Integer isDel);
 	
-	//@Query(value="select count(*)+1 from com.battle.domain.BattlePeriodMember bm where bm.roomId=:roomId and bm.score>:score ")
+	@Query(value="select count(*)+1 from com.battle.domain.BattlePeriodMember bm where bm.roomId=:roomId and bm.score>:score ")
 	Long rank(@Param("roomId")String roomId,@Param("score")Integer score);
 
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
