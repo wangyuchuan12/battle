@@ -20,7 +20,7 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 
 //爱心冷却
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 @ParamEntityAnnotation
 @Entity
 @Table(name="battle_member_love_cooling",indexes={@Index(columnList="battle_member_id",name="battleMemberLoveCoolingIndex")})
