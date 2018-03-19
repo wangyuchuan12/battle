@@ -389,6 +389,14 @@ public class QuestionApi {
 			}*/
 		}
 		
+		Integer answerCount = battleMemberPaperAnswer.getAnswerCount();
+		
+		if(answerCount==null){
+			answerCount = 0;
+		}
+		
+		battleMemberPaperAnswer.setAnswerCount(answerCount+1);
+		
 		Integer process = battlePeriodMember.getProcess();
 		
 		Integer paperProcess = 0;
@@ -470,13 +478,7 @@ public class QuestionApi {
 		
 		questionAnswerItemService.add(questionAnswerItem);
 		
-		Integer answerCount = battleMemberPaperAnswer.getAnswerCount();
 		
-		if(answerCount==null){
-			answerCount = 0;
-		}
-		
-		battleMemberPaperAnswer.setAnswerCount(answerCount+1);
 		
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
 			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
