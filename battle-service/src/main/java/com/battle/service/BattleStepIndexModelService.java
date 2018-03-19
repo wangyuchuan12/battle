@@ -17,7 +17,7 @@ public class BattleStepIndexModelService {
 
 	public List<BattleStepIndexModel> findAllByIsDel(Pageable pageable,Integer isDel) {
 		
-		return battleStepIndexModelDao.findAllAndIsDel(pageable,isDel);
+		return battleStepIndexModelDao.findAllByIsDel(pageable,isDel);
 	}
 
 	public List<BattleStepIndexModel> findAllByModelIdAndIsDel(String modelId,Integer isDel) {
