@@ -44,6 +44,10 @@ public class BattleStepIndexModel implements Serializable{
 	@ParamAnnotation
 	private Integer loveNum;
 	
+	@Column(name="phy_num")
+	@ParamAnnotation
+	private Integer phyNum;
+	
 	@Column(name="step_index")
 	@ParamAnnotation
 	private Integer stepIndex;
@@ -148,6 +152,14 @@ public class BattleStepIndexModel implements Serializable{
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+
+	public Integer getPhyNum() {
+		return phyNum;
+	}
+
+	public void setPhyNum(Integer phyNum) {
+		this.phyNum = phyNum;
 	}
 
 	public DateTime getCreateAt() {

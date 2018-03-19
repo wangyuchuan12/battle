@@ -428,6 +428,9 @@ public class QuestionApi {
 		
 		battleMemberPaperAnswer.setProcess(paperProcess);
 		
+		
+		System.out.println("...........battleMemberPaperAnswer.getAnswerCount():"+battleMemberPaperAnswer.getAnswerCount());
+		System.out.println("...........battleMemberPaperAnswer.getQuestionCount():"+battleMemberPaperAnswer.getQuestionCount());
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
 			battlePeriodMember.setProcess(process+paperProcess);
 		}
