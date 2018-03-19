@@ -60,6 +60,11 @@ public class BattleStepIndexModel implements Serializable{
 	@ParamAnnotation
 	private Integer isBig;
 	
+	
+	@Column(name="is_del")
+	@ParamAnnotation
+	private Integer isDel;
+	
 	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -135,6 +140,14 @@ public class BattleStepIndexModel implements Serializable{
 
 	public void setIsBig(Integer isBig) {
 		this.isBig = isBig;
+	}
+	
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
 	public DateTime getCreateAt() {

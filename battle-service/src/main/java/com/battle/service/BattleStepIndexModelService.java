@@ -15,14 +15,14 @@ public class BattleStepIndexModelService {
 	@Autowired
 	private BattleStepIndexModelDao battleStepIndexModelDao;
 
-	public List<BattleStepIndexModel> findAll(Pageable pageable) {
+	public List<BattleStepIndexModel> findAllByIsDel(Pageable pageable,Integer isDel) {
 		
-		return battleStepIndexModelDao.findAll(pageable);
+		return battleStepIndexModelDao.findAllAndIsDel(pageable,isDel);
 	}
 
-	public List<BattleStepIndexModel> findAllByModelId(String modelId) {
+	public List<BattleStepIndexModel> findAllByModelIdAndIsDel(String modelId,Integer isDel) {
 	
-		return battleStepIndexModelDao.findAllByModelId(modelId);
+		return battleStepIndexModelDao.findAllByModelIdAndIsDel(modelId,isDel);
 		
 	}
 }

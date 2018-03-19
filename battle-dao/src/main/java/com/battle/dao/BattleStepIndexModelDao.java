@@ -10,9 +10,9 @@ import com.battle.domain.BattleStepIndexModel;
 public interface BattleStepIndexModelDao extends CrudRepository<BattleStepIndexModel, String>{
 
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
-	List<BattleStepIndexModel> findAll(Pageable pageable);
+	List<BattleStepIndexModel> findAllAndIsDel(Pageable pageable,Integer isDel);
 
 	//@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
-	List<BattleStepIndexModel> findAllByModelId(String modelId);
+	List<BattleStepIndexModel> findAllByModelIdAndIsDel(String modelId,Integer isDel);
 
 }
