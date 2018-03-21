@@ -434,8 +434,7 @@ public class QuestionApi {
 		
 		
 		
-		battlePeriodMemberService.update(battlePeriodMember);
-		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
+		
 		
 		result.put("battleMemberQuestionAnswerId",battleMemberQuestionAnswer.getId());
 		
@@ -449,15 +448,22 @@ public class QuestionApi {
 		
 		questionAnswerItemService.add(questionAnswerItem);
 		
-		
-		
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
 			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
 			result.put("isLast", true);
 			
+			Integer score = battlePeriodMember.getScore();
+			
+			score = score + battleMemberPaperAnswer.getScore();
+			
+			battlePeriodMember.setScore(score);
+			
 		}else{
 			result.put("isLast", false);
 		}
+		
+		battlePeriodMemberService.update(battlePeriodMember);
+		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
 		
 		sessionManager.update(questionAnswer);
 		sessionManager.update(battleMemberPaperAnswer);
