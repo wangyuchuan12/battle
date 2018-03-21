@@ -393,9 +393,11 @@ public class QuestionApi {
 			
 			battlePeriodMember.setProcess(endIndex);
 			
+			result.put("score", rightAddScore);
+			
 		}else{
 			
-			
+			result.put("score", 0);
 
 		}
 		
@@ -460,8 +462,6 @@ public class QuestionApi {
 		}else{
 			result.put("isLast", false);
 		}
-		
-		result.put("score", rightAddScore);
 		
 		result.put("memberScore", battlePeriodMember.getScore());
 		
