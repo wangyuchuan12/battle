@@ -319,6 +319,10 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setScore(paperScore);
+			
+			Integer score = battlePeriodMember.getScore();
+			
+			battlePeriodMember.setScore(score+rightAddScore);
 		}else{
 			Integer paperScore = battleMemberPaperAnswer.getScore();
 			if(paperScore==null){
@@ -395,6 +399,8 @@ public class QuestionApi {
 			
 			result.put("score", rightAddScore);
 			
+			
+			
 		}else{
 			
 			result.put("score", 0);
@@ -449,10 +455,6 @@ public class QuestionApi {
 		result.put("memberProcess", battlePeriodMember.getProcess());
 		
 		questionAnswerItemService.add(questionAnswerItem);
-		
-		Integer score = battlePeriodMember.getScore();
-		
-		battlePeriodMember.setScore(score+rightAddScore);
 		
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
 			
