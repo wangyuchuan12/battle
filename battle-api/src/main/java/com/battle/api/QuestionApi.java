@@ -461,6 +461,10 @@ public class QuestionApi {
 			result.put("isLast", false);
 		}
 		
+		result.put("score", rightAddScore);
+		
+		result.put("memberScore", battlePeriodMember.getScore());
+		
 		battlePeriodMemberService.update(battlePeriodMember);
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
 		
