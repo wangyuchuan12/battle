@@ -448,15 +448,14 @@ public class QuestionApi {
 		
 		questionAnswerItemService.add(questionAnswerItem);
 		
+		Integer score = battlePeriodMember.getScore();
+		
+		battlePeriodMember.setScore(score+rightAddScore);
+		
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
+			
 			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.END_STATUS);
 			result.put("isLast", true);
-			
-			Integer score = battlePeriodMember.getScore();
-			
-			score = score + battleMemberPaperAnswer.getScore();
-			
-			battlePeriodMember.setScore(score);
 			
 		}else{
 			result.put("isLast", false);
