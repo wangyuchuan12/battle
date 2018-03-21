@@ -307,62 +307,19 @@ public class QuestionApi {
 			process = 0;
 		}
 		
-		
-		if(battleMemberPaperAnswer.getRightSum()==null||battleMemberPaperAnswer.getRightSum()==0){
-			paperProcess = 0;
-		}else if(battleMemberPaperAnswer.getRightSum()==1){
-			paperProcess = battleRoom.getRight1AddProcess();
-		}else if(battleMemberPaperAnswer.getRightSum()==2){
-			paperProcess = battleRoom.getRight2AddProcess();
-		}else if(battleMemberPaperAnswer.getRightSum()==3){
-			paperProcess = battleRoom.getRight3AddProcess();
-		}else if(battleMemberPaperAnswer.getRightSum()==4){
-			paperProcess = battleRoom.getRight4AddProcess();
-		}else if(battleMemberPaperAnswer.getRightSum()==5){
-			paperProcess = battleRoom.getRight5AddProcess();
-		}else if(battleMemberPaperAnswer.getRightSum()==6){
-			paperProcess = battleRoom.getRight6AddProcess();
-		}
-		
-		result.put("process", paperProcess);
-		
-		battleMemberPaperAnswer.setProcess(paperProcess);
-		
-		
-		
 		if(questionAnswerItem.getIsRight()==1){
-			
-			
 			Integer paperScore = battleMemberPaperAnswer.getScore();
 			if(paperScore==null){
 				paperScore = 0;
 			}
 			
 			paperScore = paperScore + rightAddScore;
-			
-			result.put("right", true);
-			
-
-			if(paperProcess==null){
-				paperProcess = 0;
-			}
-			
 			questionAnswer.setRightSum(questionAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setRightSum(battleMemberPaperAnswer.getRightSum()+1);
 			
 			battleMemberPaperAnswer.setScore(paperScore);
-			
-			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
-			
-			Integer endIndex = startIndex + paperProcess;
-			
-			battleMemberPaperAnswer.setEndIndex(endIndex);
-			
-			battlePeriodMember.setProcess(endIndex);
-			
 		}else{
-			
 			Integer paperScore = battleMemberPaperAnswer.getScore();
 			if(paperScore==null){
 				paperScore = 0;
@@ -393,6 +350,52 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setScore(paperScore);
 			
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
+		}
+		
+		
+		if(battleMemberPaperAnswer.getRightSum()==null||battleMemberPaperAnswer.getRightSum()==0){
+			paperProcess = 0;
+		}else if(battleMemberPaperAnswer.getRightSum()==1){
+			paperProcess = battleRoom.getRight1AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==2){
+			paperProcess = battleRoom.getRight2AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==3){
+			paperProcess = battleRoom.getRight3AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==4){
+			paperProcess = battleRoom.getRight4AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==5){
+			paperProcess = battleRoom.getRight5AddProcess();
+		}else if(battleMemberPaperAnswer.getRightSum()==6){
+			paperProcess = battleRoom.getRight6AddProcess();
+		}
+		
+		result.put("process", paperProcess);
+		
+		battleMemberPaperAnswer.setProcess(paperProcess);
+		
+		
+		
+		if(questionAnswerItem.getIsRight()==1){
+			
+			result.put("right", true);
+			
+
+			if(paperProcess==null){
+				paperProcess = 0;
+			}
+			
+			
+			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
+			
+			Integer endIndex = startIndex + paperProcess;
+			
+			battleMemberPaperAnswer.setEndIndex(endIndex);
+			
+			battlePeriodMember.setProcess(endIndex);
+			
+		}else{
+			
+			
 
 		}
 		
