@@ -27,7 +27,7 @@ public class BattleNoticeApi {
 	@Autowired
 	private BattleNoticeService battleNoticeService;
 	
-	@RequestMapping(value="receiveMemberNotice")
+	@RequestMapping(value="receiveNotice")
 	@ResponseBody
 	@Transactional
 	public ResultVo receiveNotice(HttpServletRequest httpServletRequest){
