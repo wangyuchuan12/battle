@@ -74,6 +74,8 @@ public class BattleNoticeApi {
 			return resultVo;
 		}else{
 			
+			
+			System.out.println(".......battleNotice:"+battleNotice);
 			battleNotice.setIsRead(1);
 			battleNoticeService.update(battleNotice);
 			ResultVo resultVo = new ResultVo();
