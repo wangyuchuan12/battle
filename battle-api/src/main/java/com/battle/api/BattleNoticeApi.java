@@ -17,8 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleNotice;
+import com.battle.domain.BattlePeriodMember;
+import com.battle.filter.element.CurrentMemberInfoFilter;
+import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleNoticeService;
+import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.session.SessionManager;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/battleNotice/")
@@ -30,8 +36,13 @@ public class BattleNoticeApi {
 	@RequestMapping(value="receiveNotice")
 	@ResponseBody
 	@Transactional
-	public ResultVo receiveNotice(HttpServletRequest httpServletRequest){
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo receiveNotice(HttpServletRequest httpServletRequest)throws Exception{
 		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+
 		String type = httpServletRequest.getParameter("type");
 		
 		Integer typeInt = Integer.parseInt(type);
@@ -39,7 +50,7 @@ public class BattleNoticeApi {
 		Pageable pageable = new PageRequest(0,1,sort);
 		
 		String roomId = httpServletRequest.getParameter("roomId");
-		Page<BattleNotice> battleNoticePage = battleNoticeService.findAllByTypeAndRoomIdAndIsRead(typeInt,roomId,0,pageable);
+		Page<BattleNotice> battleNoticePage = battleNoticeService.findAllByUserIdAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
 	
 		List<BattleNotice> battleNotices = battleNoticePage.getContent();
 		
@@ -54,7 +65,7 @@ public class BattleNoticeApi {
 			if(battleNotice!=null){
 				break;
 			}else{
-				battleNoticePage = battleNoticeService.findAllByTypeAndRoomIdAndIsRead(typeInt,roomId,0,pageable);
+				battleNoticePage = battleNoticeService.findAllByUserIdAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
 				battleNotices = battleNoticePage.getContent();
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
@@ -73,9 +84,6 @@ public class BattleNoticeApi {
 			resultVo.setSuccess(true);
 			return resultVo;
 		}else{
-			
-			
-			System.out.println(".......battleNotice:"+battleNotice);
 			battleNotice.setIsRead(1);
 			battleNoticeService.update(battleNotice);
 			ResultVo resultVo = new ResultVo();

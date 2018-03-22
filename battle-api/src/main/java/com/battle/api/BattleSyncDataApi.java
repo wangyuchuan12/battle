@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleMemberPaperAnswer;
+import com.battle.domain.BattleNotice;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
+import com.battle.service.BattleNoticeService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
@@ -44,6 +46,9 @@ public class BattleSyncDataApi {
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
 	
+	@Autowired
+	private BattleNoticeService battleNoticeService;
+	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	
 	@RequestMapping(value="syncPaperData")
@@ -55,7 +60,10 @@ public class BattleSyncDataApi {
 		
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
+		
 		
 		
 		if(battlePeriodMember.getScore()>=battlePeriodMember.getScrollGogal()){
@@ -102,13 +110,62 @@ public class BattleSyncDataApi {
 		List<Integer> statuses = new ArrayList<>();
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
 		statuses.add(BattlePeriodMember.STATUS_IN);
+		statuses.add(BattlePeriodMember.STATUS_END);
 		
-		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0, pageable);
+		List<BattlePeriodMember> allBattlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomIdAndStatusInAndIsDel(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId(), statuses, 0, pageable);
+		List<BattlePeriodMember> battlePeriodMembers = new ArrayList<>();
 		
+		for(BattlePeriodMember allBattlePeriodMember:allBattlePeriodMembers){
+			if(allBattlePeriodMember.getStatus()==BattlePeriodMember.STATUS_IN){
+				battlePeriodMembers.add(allBattlePeriodMember);
+			}
+		}
 		if(battlePeriodMembers==null||battlePeriodMembers.size()==0){
 			battleRoom.setStatus(BattleRoom.STATUS_END);
 			battleRoomService.update(battleRoom);
 		}
+		
+		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.
+				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
+		
+		for(BattleMemberPaperAnswer battleMemberPaperAnswer:battleMemberPaperAnswers){
+			
+			battleMemberPaperAnswer.setIsSyncData(1);
+			
+			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
+			Integer endIndex = battleMemberPaperAnswer.getEndIndex();
+			
+			Integer process = battleMemberPaperAnswer.getProcess();
+			
+			if(startIndex==null){
+				startIndex = 0;
+			}
+			
+			
+			if(process==null){
+				process = 0;
+			}
+			
+			endIndex = startIndex+process;
+			battleMemberPaperAnswer.setEndIndex(endIndex);
+			
+			for(BattlePeriodMember allBattlePeriodMember:allBattlePeriodMembers){
+				if(!allBattlePeriodMember.getId().equals(battlePeriodMember.getId())){
+					BattleNotice battleNotice = new BattleNotice();
+					battleNotice.setIsRead(0);
+					battleNotice.setMemberId(battlePeriodMember.getId());
+					battleNotice.setProcess(endIndex);
+					battleNotice.setRoomId(battlePeriodMember.getRoomId());
+					battleNotice.setToUser(allBattlePeriodMember.getUserId());
+					battleNotice.setType(BattleNotice.MEMBER_TYPE);
+					battleNoticeService.add(battleNotice);
+				}
+				
+			}
+			
+		}
+		
+		
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			Map<String, Object> data = new HashMap<>();
@@ -139,10 +196,6 @@ public class BattleSyncDataApi {
 			return resultVo;
 			
 		}
-		
-		
-		
-		
 		return null;
 	}
 }

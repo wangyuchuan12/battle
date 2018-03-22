@@ -19,6 +19,7 @@ import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
+import com.battle.domain.BattleNotice;
 import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
@@ -33,6 +34,7 @@ import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleMemberLoveCoolingService;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberQuestionAnswerService;
+import com.battle.service.BattleNoticeService;
 import com.battle.service.BattlePeriodMemberService;
 //import com.battle.service.BattlePeriodService;
 import com.battle.service.BattlePeriodStageService;
@@ -96,6 +98,9 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
+	
+	@Autowired
+	private BattleNoticeService battleNoticeService;
 
 	final static Logger logger = LoggerFactory.getLogger(QuestionApi.class);
 	
@@ -400,7 +405,6 @@ public class QuestionApi {
 			battlePeriodMember.setProcess(endIndex);
 			
 			result.put("score", rightAddScore);
-			
 			
 			
 		}else{
