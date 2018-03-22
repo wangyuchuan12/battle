@@ -167,7 +167,7 @@ public class BattleSyncDataApi {
 		
 		
 		
-		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+		//if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			Map<String, Object> data = new HashMap<>();
 			
 			
@@ -195,7 +195,7 @@ public class BattleSyncDataApi {
 			
 			return resultVo;
 			
-		}
-		return null;
+		//}
+		//return null;
 	}
 }
