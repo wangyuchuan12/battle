@@ -149,12 +149,14 @@ public class BattleSyncDataApi {
 			endIndex = startIndex+process;
 			battleMemberPaperAnswer.setEndIndex(endIndex);
 			
+			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
+			
 			for(BattlePeriodMember allBattlePeriodMember:allBattlePeriodMembers){
 				if(!allBattlePeriodMember.getId().equals(battlePeriodMember.getId())){
 					BattleNotice battleNotice = new BattleNotice();
 					battleNotice.setIsRead(0);
 					battleNotice.setMemberId(battlePeriodMember.getId());
-					battleNotice.setProcess(endIndex);
+					battleNotice.setProcess(battleMemberPaperAnswer.getProcess());
 					battleNotice.setRoomId(battlePeriodMember.getRoomId());
 					battleNotice.setToUser(allBattlePeriodMember.getUserId());
 					battleNotice.setType(BattleNotice.MEMBER_TYPE);
