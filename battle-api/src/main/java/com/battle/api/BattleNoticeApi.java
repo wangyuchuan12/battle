@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleNotice;
-import com.battle.domain.BattlePeriodMember;
-import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleNoticeService;
 import com.wyc.annotation.HandlerAnnotation;
@@ -47,26 +44,19 @@ public class BattleNoticeApi {
 		
 		Integer typeInt = Integer.parseInt(type);
 		Sort sort = new Sort(Direction.ASC,"createAt");
-		Pageable pageable = new PageRequest(0,1,sort);
+		Pageable pageable = new PageRequest(0,10,sort);
 		
 		String roomId = httpServletRequest.getParameter("roomId");
-		Page<BattleNotice> battleNoticePage = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
 	
-		List<BattleNotice> battleNotices = battleNoticePage.getContent();
+		List<BattleNotice> battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
 		
-		BattleNotice battleNotice = null;
-		
-		if(battleNotices!=null&&battleNotices.size()>0){
-			battleNotice = battleNotices.get(0);
-		}
 		
 		
 		while(true){
-			if(battleNotice!=null){
+			if(battleNotices!=null&&battleNotices.size()>0){
 				break;
 			}else{
-				battleNoticePage = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
-				battleNotices = battleNoticePage.getContent();
+				battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
 						Thread.sleep(1000);
@@ -74,26 +64,24 @@ public class BattleNoticeApi {
 						
 					}
 				}else{
-					battleNotice = battleNotices.get(0);
+					break;
 				}
 			}
 		}
 		
-		if(battleNotice==null){
-			ResultVo resultVo = new ResultVo();
-			resultVo.setSuccess(true);
-			return resultVo;
-		}else{
+		for(BattleNotice battleNotice:battleNotices){
 			battleNotice.setIsRead(1);
+			
 			battleNoticeService.update(battleNotice);
-			ResultVo resultVo = new ResultVo();
-			
-			resultVo.setSuccess(true);
-			
-			resultVo.setData(battleNotice);
-			
-			return resultVo;
 		}
+		
+		ResultVo resultVo = new ResultVo();
+		
+		resultVo.setSuccess(true);
+		
+		resultVo.setData(battleNotices);
+		
+		return resultVo;
 		
 		
 	}

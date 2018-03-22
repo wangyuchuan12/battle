@@ -1,10 +1,10 @@
 package com.battle.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ public class BattleNoticeService {
 	@Autowired
 	private BattleNoticeDao battleNoticeDao;
 
-	public Page<BattleNotice> findAllByToUserAndTypeAndRoomIdAndIsRead(String userId , Integer type, String roomId, int isRead,
+	public List<BattleNotice> findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(String userId , Integer type, String roomId, int isRead,
 			Pageable pageable) {
 		
-		return battleNoticeDao.findAllByToUserAndTypeAndRoomIdAndIsRead(userId,type,roomId,isRead,pageable);
+		return battleNoticeDao.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userId,type,roomId,isRead,pageable);
 	}
 
 	public void update(BattleNotice battleNotice) {
