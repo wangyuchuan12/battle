@@ -58,6 +58,10 @@ public class BattleSyncDataApi {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		
+		if(battlePeriodMember.getScore()>=battlePeriodMember.getScrollGogal()){
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_COMPLETE);
+			battlePeriodMemberService.update(battlePeriodMember);
+		}
 		
 		BattleRoom battleRoom = null;
 		
