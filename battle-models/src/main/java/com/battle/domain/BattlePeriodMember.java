@@ -44,6 +44,9 @@ public class BattlePeriodMember implements Serializable{
 	//退出
 	public static final Integer STATUS_OUT=3;
 	
+	//结束或者失败了
+	public static final Integer STATUS_END = 4;
+	
 	
 	@Id
 	@IdAnnotation

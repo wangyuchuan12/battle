@@ -19,6 +19,7 @@ import com.battle.domain.BattleAccountResult;
 import com.battle.domain.BattleMemberLoveCooling;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberQuestionAnswer;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePeriodStage;
 import com.battle.domain.BattleQuestion;
@@ -354,6 +355,7 @@ public class QuestionApi {
 			battleMemberPaperAnswer.setScore(paperScore);
 			
 			battleMemberPaperAnswer.setWrongSum(battleMemberPaperAnswer.getWrongSum()+1);
+			
 		}
 		
 		
