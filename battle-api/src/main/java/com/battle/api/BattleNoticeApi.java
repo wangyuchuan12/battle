@@ -50,7 +50,7 @@ public class BattleNoticeApi {
 		Pageable pageable = new PageRequest(0,1,sort);
 		
 		String roomId = httpServletRequest.getParameter("roomId");
-		Page<BattleNotice> battleNoticePage = battleNoticeService.findAllByUserIdAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
+		Page<BattleNotice> battleNoticePage = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
 	
 		List<BattleNotice> battleNotices = battleNoticePage.getContent();
 		
@@ -65,7 +65,7 @@ public class BattleNoticeApi {
 			if(battleNotice!=null){
 				break;
 			}else{
-				battleNoticePage = battleNoticeService.findAllByUserIdAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
+				battleNoticePage = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsRead(userInfo.getId(),typeInt,roomId,0,pageable);
 				battleNotices = battleNoticePage.getContent();
 				if(battleNotices==null||battleNotices.size()==0){
 					try{

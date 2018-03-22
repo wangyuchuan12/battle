@@ -17,10 +17,10 @@ public class BattleNoticeService {
 	@Autowired
 	private BattleNoticeDao battleNoticeDao;
 
-	public Page<BattleNotice> findAllByUserIdAndTypeAndRoomIdAndIsRead(String userId , Integer type, String roomId, int isRead,
+	public Page<BattleNotice> findAllByToUserAndTypeAndRoomIdAndIsRead(String userId , Integer type, String roomId, int isRead,
 			Pageable pageable) {
 		
-		return battleNoticeDao.findAllByUserIdAndTypeAndRoomIdAndIsRead(userId,type,roomId,isRead,pageable);
+		return battleNoticeDao.findAllByToUserAndTypeAndRoomIdAndIsRead(userId,type,roomId,isRead,pageable);
 	}
 
 	public void update(BattleNotice battleNotice) {

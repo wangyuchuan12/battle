@@ -8,6 +8,6 @@ import com.battle.domain.BattleNotice;
 
 public interface BattleNoticeDao extends CrudRepository<BattleNotice, String>{
 
-	Page<BattleNotice> findAllByUserIdAndTypeAndRoomIdAndIsRead(String userId ,Integer type, String roomId, int isRead, Pageable pageable);
+	Page<BattleNotice> findAllByToUserAndTypeAndRoomIdAndIsRead(String userId ,Integer type, String roomId, int isRead, Pageable pageable);
 
 }
