@@ -520,7 +520,7 @@ public class QuestionApi {
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.
 				findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), 
-						battlePeriodMember.getPeriodId(), stageIndex);
+						battlePeriodMember.getPeriodId(), battlePeriodMember.getStageIndex());
 		Integer passCount = battlePeriodStage.getPassCount();
 		
 		if(passCount==null){
