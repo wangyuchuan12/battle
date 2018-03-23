@@ -156,7 +156,7 @@ public class BattleSyncDataApi {
 					BattleNotice battleNotice = new BattleNotice();
 					battleNotice.setIsRead(0);
 					battleNotice.setMemberId(battlePeriodMember.getId());
-					battleNotice.setProcess(battleMemberPaperAnswer.getProcess());
+					battleNotice.setProcess(endIndex);
 					battleNotice.setRoomId(battlePeriodMember.getRoomId());
 					battleNotice.setToUser(allBattlePeriodMember.getUserId());
 					battleNotice.setType(BattleNotice.MEMBER_TYPE);
