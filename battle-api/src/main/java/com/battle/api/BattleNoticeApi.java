@@ -51,16 +51,16 @@ public class BattleNoticeApi {
 		List<BattleNotice> battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
 		
 		
-		
+		System.out.println(".........battleNotices0:"+battleNotices);
 		while(true){
 			if(battleNotices!=null&&battleNotices.size()>0){
 				break;
 			}else{
 				battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
-				System.out.println(".........battleNotices:"+battleNotices);
+				System.out.println(".........battleNotices1:"+battleNotices);
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
-						Thread.sleep(1000);
+						Thread.sleep(10000);
 					}catch(Exception e){
 						
 					}
