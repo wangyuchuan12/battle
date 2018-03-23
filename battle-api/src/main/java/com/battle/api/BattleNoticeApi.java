@@ -57,6 +57,7 @@ public class BattleNoticeApi {
 				break;
 			}else{
 				battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
+				System.out.println(".........battleNotices:"+battleNotices);
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
 						Thread.sleep(1000);
@@ -68,6 +69,8 @@ public class BattleNoticeApi {
 				}
 			}
 		}
+		
+		System.out.println(".........battleNotices2:"+battleNotices);
 		
 		for(BattleNotice battleNotice:battleNotices){
 			battleNotice.setIsRead(1);
