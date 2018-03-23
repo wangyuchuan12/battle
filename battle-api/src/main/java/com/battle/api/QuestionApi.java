@@ -157,9 +157,9 @@ public class QuestionApi {
 		
 		String id = httpServletRequest.getParameter("id");
 		
-		//String stageIndex = httpServletRequest.getParameter("stageIndex");
+		String stageIndex = httpServletRequest.getParameter("stageIndex");
 		
-		Integer stageIndex = battlePeriodMember.getStageIndex();
+		System.out.println("member.stageIndex:"+battlePeriodMember.getStageIndex()+",stageIndex:"+stageIndex);
 		
 		Question question = questionService.findOne(id);
 		
@@ -520,7 +520,7 @@ public class QuestionApi {
 		
 		BattlePeriodStage battlePeriodStage = battlePeriodStageService.
 				findOneByBattleIdAndPeriodIdAndIndex(battlePeriodMember.getBattleId(), 
-						battlePeriodMember.getPeriodId(), battlePeriodMember.getStageIndex());
+						battlePeriodMember.getPeriodId(), stageIndex);
 		Integer passCount = battlePeriodStage.getPassCount();
 		
 		if(passCount==null){
