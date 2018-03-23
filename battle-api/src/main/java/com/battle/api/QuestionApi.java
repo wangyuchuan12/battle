@@ -157,8 +157,9 @@ public class QuestionApi {
 		
 		String id = httpServletRequest.getParameter("id");
 		
-		String stageIndex = httpServletRequest.getParameter("stageIndex");
+		//String stageIndex = httpServletRequest.getParameter("stageIndex");
 		
+		Integer stageIndex = battlePeriodMember.getStageIndex();
 		
 		Question question = questionService.findOne(id);
 		
