@@ -52,6 +52,8 @@ public class BattleNoticeApi {
 		
 		
 		System.out.println(".........battleNotices0:"+battleNotices);
+		
+		int index = 0;
 		while(true){
 			if(battleNotices!=null&&battleNotices.size()>0){
 				break;
@@ -67,6 +69,11 @@ public class BattleNoticeApi {
 				}else{
 					break;
 				}
+			}
+			index++;
+			
+			if(index>=5){
+				break;
 			}
 		}
 		
