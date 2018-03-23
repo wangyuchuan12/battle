@@ -387,23 +387,25 @@ public class QuestionApi {
 		
 		
 		
+		if(paperProcess==null){
+			paperProcess = 0;
+		}
+		
+		
+		Integer startIndex = battleMemberPaperAnswer.getStartIndex();
+		
+		Integer endIndex = startIndex + paperProcess;
+		
+		battleMemberPaperAnswer.setEndIndex(endIndex);
+		
+		battlePeriodMember.setProcess(endIndex);
+		
 		if(questionAnswerItem.getIsRight()==1){
 			
 			result.put("right", true);
 			
 
-			if(paperProcess==null){
-				paperProcess = 0;
-			}
 			
-			
-			Integer startIndex = battleMemberPaperAnswer.getStartIndex();
-			
-			Integer endIndex = startIndex + paperProcess;
-			
-			battleMemberPaperAnswer.setEndIndex(endIndex);
-			
-			battlePeriodMember.setProcess(endIndex);
 			
 			result.put("score", rightAddScore);
 			

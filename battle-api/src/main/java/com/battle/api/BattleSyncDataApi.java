@@ -146,8 +146,6 @@ public class BattleSyncDataApi {
 				process = 0;
 			}
 			
-			endIndex = startIndex+process;
-			battleMemberPaperAnswer.setEndIndex(endIndex);
 			
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			
