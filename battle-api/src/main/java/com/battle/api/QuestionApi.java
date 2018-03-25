@@ -159,7 +159,7 @@ public class QuestionApi {
 		
 		//String stageIndex = httpServletRequest.getParameter("stageIndex");
 		
-		//System.out.println("member.stageIndex:"+battlePeriodMember.getStageIndex()+",stageIndex:"+stageIndex);
+		System.out.println("member.stageIndex:"+battlePeriodMember.getStageIndex());
 		
 		Integer stageIndex = battlePeriodMember.getStageIndex()-1;
 		
@@ -180,7 +180,7 @@ public class QuestionApi {
 			return resultVo;
 		}
 		
-		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByQuestionAnswerId(questionAnswer.getId());
+		BattleMemberPaperAnswer battleMemberPaperAnswer = battleMemberPaperAnswerService.findOneByBattlePeriodMemberIdAndStageIndex(battlePeriodMember.getId(), stageIndex);
 		
 		
 		QuestionAnswerItem questionAnswerItem = new QuestionAnswerItem();
