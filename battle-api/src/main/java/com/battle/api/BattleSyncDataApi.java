@@ -89,7 +89,7 @@ public class BattleSyncDataApi {
 			
 		}
 		
-		if(battlePeriodMember.getLoveResidule()==0){
+		if(battlePeriodMember.getLoveResidule()<=0){
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_END);
 			battlePeriodMemberService.update(battlePeriodMember);
 		}
@@ -99,9 +99,6 @@ public class BattleSyncDataApi {
 			battleRoomService.update(battleRoom);
 		}
 		
-		
-		
-	
 		
 		Sort sort = new Sort(Direction.DESC,"score");
 		
@@ -158,6 +155,10 @@ public class BattleSyncDataApi {
 					battleNotice.setRoomId(battlePeriodMember.getRoomId());
 					battleNotice.setToUser(allBattlePeriodMember.getUserId());
 					battleNotice.setType(BattleNotice.MEMBER_TYPE);
+					
+					battleNotice.setLoveResidule(battlePeriodMember.getLoveResidule());
+					
+					battleNotice.setScore(battlePeriodMember.getScore());
 					battleNoticeService.add(battleNotice);
 				}
 				

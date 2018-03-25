@@ -59,6 +59,15 @@ public class BattleNotice {
 	@Column
 	private Integer process;
 	
+	
+	@ParamAnnotation
+	@Column(name="love_residule")
+	private Integer loveResidule;
+	
+	@ParamAnnotation
+	@Column
+	private Integer score;
+	
 	@ParamAnnotation
 	@Column(name="room_status")
 	private Integer roomStatus;
@@ -146,6 +155,22 @@ public class BattleNotice {
 
 	public void setRoomStatus(Integer roomStatus) {
 		this.roomStatus = roomStatus;
+	}
+	
+	public Integer getLoveResidule() {
+		return loveResidule;
+	}
+
+	public void setLoveResidule(Integer loveResidule) {
+		this.loveResidule = loveResidule;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	public DateTime getCreateAt() {
