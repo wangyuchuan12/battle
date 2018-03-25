@@ -465,6 +465,8 @@ public class QuestionApi {
 		
 		result.put("memberProcess", battlePeriodMember.getProcess());
 		
+		result.put("loveResidule", battlePeriodMember.getLoveResidule());
+		
 		questionAnswerItemService.add(questionAnswerItem);
 		
 		if(battleMemberPaperAnswer.getAnswerCount()>=battleMemberPaperAnswer.getQuestionCount()){
