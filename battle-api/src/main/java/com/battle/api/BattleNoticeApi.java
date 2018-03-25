@@ -62,7 +62,7 @@ public class BattleNoticeApi {
 				System.out.println(".........battleNotices1:"+battleNotices);
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
-						Thread.sleep(10000);
+						Thread.sleep(5000);
 					}catch(Exception e){
 						
 					}

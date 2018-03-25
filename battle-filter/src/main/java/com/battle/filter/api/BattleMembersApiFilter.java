@@ -44,6 +44,8 @@ public class BattleMembersApiFilter extends Filter{
 		
 		statuses.add(BattlePeriodMember.STATUS_IN);
 		statuses.add(BattlePeriodMember.STATUS_COMPLETE);
+		statuses.add(BattlePeriodMember.STATUS_END);
+		statuses.add(BattlePeriodMember.STATUS_OUT);
 		List<BattlePeriodMember> members = new ArrayList<>();
 		
 		if(!CommonUtil.isEmpty(groupId)){

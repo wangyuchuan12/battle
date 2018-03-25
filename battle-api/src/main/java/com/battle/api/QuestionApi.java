@@ -472,6 +472,7 @@ public class QuestionApi {
 			
 		}else{
 			result.put("isLast", false);
+			battleMemberPaperAnswer.setStatus(BattleMemberPaperAnswer.IN_STATUS);
 		}
 		
 		result.put("memberScore", battlePeriodMember.getScore());
