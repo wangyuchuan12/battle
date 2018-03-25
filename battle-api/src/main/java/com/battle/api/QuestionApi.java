@@ -157,9 +157,11 @@ public class QuestionApi {
 		
 		String id = httpServletRequest.getParameter("id");
 		
-		String stageIndex = httpServletRequest.getParameter("stageIndex");
+		//String stageIndex = httpServletRequest.getParameter("stageIndex");
 		
-		System.out.println("member.stageIndex:"+battlePeriodMember.getStageIndex()+",stageIndex:"+stageIndex);
+		//System.out.println("member.stageIndex:"+battlePeriodMember.getStageIndex()+",stageIndex:"+stageIndex);
+		
+		Integer stageIndex = battlePeriodMember.getStageIndex()-1;
 		
 		Question question = questionService.findOne(id);
 		
