@@ -99,10 +99,10 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("costBean",battleRoom.getCostBean());
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
-			Sort sort = new Sort(Direction.ASC,"rank");
-			Pageable pageable = new PageRequest(0,10,sort);
-			Page<BattleMemberRank> battleMemberRanks = battleMemberRankService.findAllByRoomId(battleRoom.getId(),pageable);
-			data.put("ranks", battleMemberRanks.getContent());
+			BattleMemberRank battleMemberRank = battleMemberRankService.findOneByMemberId(battlePeriodMember.getId());
+			if(battleMemberRank!=null){
+				data.put("rank",battleMemberRank.getRank());
+			}
 		}
 		
 		ResultVo resultVo = new ResultVo();

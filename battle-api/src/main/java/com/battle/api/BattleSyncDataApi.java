@@ -188,19 +188,21 @@ public class BattleSyncDataApi {
 					battleMemberRanks.add(battleMemberRank);
 					
 					
-					BattleNotice battleNotice = new BattleNotice();
-					battleNotice.setIsRead(0);
-					battleNotice.setMemberId(battlePeriodMember.getId());
-
-					battleNotice.setRoomId(battlePeriodMember.getRoomId());
-					battleNotice.setToUser(vaildMember.getUserId());
-					battleNotice.setType(BattleNotice.ROOM_TYPE);
-					
-					battleNotice.setRoomStatus(battleRoom.getStatus());
-					
-					
-					battleNotice.setScore(battlePeriodMember.getScore());
-					battleNoticeService.add(battleNotice);
+					if(vaildMember.getId().equals(battlePeriodMember.getId())){
+						BattleNotice battleNotice = new BattleNotice();
+						battleNotice.setIsRead(0);
+						battleNotice.setMemberId(battlePeriodMember.getId());
+	
+						battleNotice.setRoomId(battlePeriodMember.getRoomId());
+						battleNotice.setToUser(vaildMember.getUserId());
+						battleNotice.setType(BattleNotice.ROOM_TYPE);
+						
+						battleNotice.setRoomStatus(battleRoom.getStatus());
+						
+						
+						battleNotice.setScore(battlePeriodMember.getScore());
+						battleNoticeService.add(battleNotice);
+					}
 					
 				}
 				
@@ -217,6 +219,9 @@ public class BattleSyncDataApi {
 			}
 			
 			data.put("ranks", battleMemberRanks);
+			
+			BattleMemberRank battleMemberRank = battleMemberRankService.findOneByMemberId(battlePeriodMember.getId());
+			data.put("rank", battleMemberRank.getRank());
 			
 		}
 		
