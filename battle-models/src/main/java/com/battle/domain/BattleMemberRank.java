@@ -23,7 +23,7 @@ public class BattleMemberRank {
 	private String id;
 	
 	@ParamAnnotation
-	@Column(name="member_id")
+	@Column(name="member_id",unique=true)
 	private String memberId;
 	
 	@ParamAnnotation
