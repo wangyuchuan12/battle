@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberRank;
 import com.battle.domain.BattleNotice;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
@@ -39,9 +38,6 @@ import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
-
-import sun.org.mozilla.javascript.internal.ast.VariableDeclaration;
-
 @Controller
 @RequestMapping(value="/api/battle/sync")
 public class BattleSyncDataApi {
