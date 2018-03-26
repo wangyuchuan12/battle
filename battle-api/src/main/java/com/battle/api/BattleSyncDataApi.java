@@ -36,8 +36,12 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.AccountService;
+import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.wx.domain.UserInfo;
 @Controller
 @RequestMapping(value="/api/battle/sync")
 public class BattleSyncDataApi {
@@ -59,6 +63,12 @@ public class BattleSyncDataApi {
 	
 	@Autowired
 	private BattleRoomRewardService battleRoomRewardService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private WxUserInfoService userInfoService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	
@@ -180,6 +190,28 @@ public class BattleSyncDataApi {
 					
 					if(battleRoomReward!=null){
 						battleMemberRank.setRewardBean(battleRoomReward.getRewardBean());
+						
+						UserInfo userInfo = userInfoService.findOne(vaildMember.getUserId());
+						
+						Account account = accountService.fineOneSync(userInfo.getAccountId());
+						
+						Integer rewardBean = battleRoomReward.getRewardBean();
+						
+						if(rewardBean==null){
+							rewardBean = 0;
+						}
+						
+						Long wisdomCount = account.getWisdomCount();
+						wisdomCount = wisdomCount + rewardBean;
+						
+						account.setWisdomCount(wisdomCount);
+						
+						accountService.update(account);
+						
+						vaildMember.setRewardBean(rewardBean);
+						
+						battlePeriodMemberService.update(vaildMember);
+						
 					}else{
 						battleMemberRank.setRewardBean(0);
 					}
@@ -202,6 +234,8 @@ public class BattleSyncDataApi {
 						
 						battleNotice.setScore(battlePeriodMember.getScore());
 						battleNoticeService.add(battleNotice);
+						
+						battlePeriodMember = vaildMember;
 					}
 					
 				}
