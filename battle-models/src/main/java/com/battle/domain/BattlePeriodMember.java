@@ -370,8 +370,6 @@ public class BattlePeriodMember implements Serializable{
 		this.flagImg = flagImg;
 	}
 	
-	
-
 	public String getFlagId() {
 		return flagId;
 	}

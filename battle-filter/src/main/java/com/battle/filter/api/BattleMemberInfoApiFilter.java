@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
+import com.battle.domain.BattleMemberRank;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
@@ -13,12 +22,16 @@ import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
 import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleMemberRankService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.filter.Filter;
 import com.wyc.common.session.SessionManager;
 
 public class BattleMemberInfoApiFilter extends Filter{
+	
+	@Autowired
+	private BattleMemberRankService battleMemberRankService;
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
@@ -84,6 +97,13 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
 		
 		data.put("costBean",battleRoom.getCostBean());
+		
+		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			Sort sort = new Sort(Direction.ASC,"rank");
+			Pageable pageable = new PageRequest(0,10,sort);
+			Page<BattleMemberRank> battleMemberRanks = battleMemberRankService.findAllByRoomId(battleRoom.getId(),pageable);
+			data.put("ranks", battleMemberRanks.getContent());
+		}
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(data);
