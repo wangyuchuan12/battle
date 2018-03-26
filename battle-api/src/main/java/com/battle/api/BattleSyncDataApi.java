@@ -187,6 +187,21 @@ public class BattleSyncDataApi {
 					battleMemberRankService.add(battleMemberRank);
 					battleMemberRanks.add(battleMemberRank);
 					
+					
+					BattleNotice battleNotice = new BattleNotice();
+					battleNotice.setIsRead(0);
+					battleNotice.setMemberId(battlePeriodMember.getId());
+
+					battleNotice.setRoomId(battlePeriodMember.getRoomId());
+					battleNotice.setToUser(vaildMember.getUserId());
+					battleNotice.setType(BattleNotice.ROOM_TYPE);
+					
+					battleNotice.setRoomStatus(battleRoom.getStatus());
+					
+					
+					battleNotice.setScore(battlePeriodMember.getScore());
+					battleNoticeService.add(battleNotice);
+					
 				}
 				
 				battleRoom.setIsEndHandle(1);
@@ -229,14 +244,14 @@ public class BattleSyncDataApi {
 			
 			battleMemberPaperAnswerService.update(battleMemberPaperAnswer);
 			
-			for(BattlePeriodMember allBattlePeriodMember:allBattlePeriodMembers){
-				if(!allBattlePeriodMember.getId().equals(battlePeriodMember.getId())){
+			for(BattlePeriodMember validMember:validMembers){
+				if(!validMember.getId().equals(battlePeriodMember.getId())){
 					BattleNotice battleNotice = new BattleNotice();
 					battleNotice.setIsRead(0);
 					battleNotice.setMemberId(battlePeriodMember.getId());
 					battleNotice.setProcess(endIndex);
 					battleNotice.setRoomId(battlePeriodMember.getRoomId());
-					battleNotice.setToUser(allBattlePeriodMember.getUserId());
+					battleNotice.setToUser(validMember.getUserId());
 					battleNotice.setType(BattleNotice.MEMBER_TYPE);
 					
 					battleNotice.setLoveResidule(battlePeriodMember.getLoveResidule());
