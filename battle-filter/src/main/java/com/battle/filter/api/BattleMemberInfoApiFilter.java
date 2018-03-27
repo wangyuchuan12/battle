@@ -86,7 +86,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("endType", battleRoom.getEndType());
 
 		
-		data.put("rewardBean", battlePeriodMember.getRewardBean());
+		
 		
 		data.put("places",battleRoom.getPlaces());
 		
@@ -102,6 +102,7 @@ public class BattleMemberInfoApiFilter extends Filter{
 			BattleMemberRank battleMemberRank = battleMemberRankService.findOneByMemberId(battlePeriodMember.getId());
 			if(battleMemberRank!=null){
 				data.put("rank",battleMemberRank.getRank());
+				data.put("rewardBean", battleMemberRank.getRewardBean());
 			}
 		}
 		
