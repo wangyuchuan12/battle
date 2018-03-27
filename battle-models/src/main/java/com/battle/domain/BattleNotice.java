@@ -72,6 +72,13 @@ public class BattleNotice {
 	@Column(name="room_status")
 	private Integer roomStatus;
 	
+	@ParamAnnotation
+	@Column
+	private Integer rank;
+	
+	@ParamAnnotation
+	@Column(name="reward_bean")
+	private Integer rewardBean;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -173,8 +180,24 @@ public class BattleNotice {
 		this.score = score;
 	}
 
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
+	}
+
 	public DateTime getCreateAt() {
 		return createAt;
+	}
+	
+	public Integer getRewardBean() {
+		return rewardBean;
+	}
+
+	public void setRewardBean(Integer rewardBean) {
+		this.rewardBean = rewardBean;
 	}
 
 	public void setCreateAt(DateTime createAt) {

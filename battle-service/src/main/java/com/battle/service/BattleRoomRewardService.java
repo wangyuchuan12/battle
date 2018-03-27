@@ -40,4 +40,10 @@ public class BattleRoomRewardService {
 		
 		return battleRoomRewardDao.findAllByRoomIdAndIsReceiveOrderByRankAsc(roomId,isReceive);
 	}
+
+	public BattleRoomReward findOneByReceiveMemberId(String receiveMemberId) {
+		
+		return battleRoomRewardDao.findOneByReceiveMemberId(receiveMemberId);
+		
+	}
 }

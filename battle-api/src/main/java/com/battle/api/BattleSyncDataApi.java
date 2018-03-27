@@ -234,8 +234,15 @@ public class BattleSyncDataApi {
 						
 						battleNotice.setRoomStatus(battleRoom.getStatus());
 						
+						battleNotice.setRank(battleMemberRank.getRank());
 						
 						battleNotice.setScore(battlePeriodMember.getScore());
+						
+						if(battleRoomReward!=null){
+							battleNotice.setRewardBean(battleRoomReward.getRewardBean());
+						}else{
+							battleNotice.setRewardBean(0);
+						}
 						battleNoticeService.add(battleNotice);
 						
 						battlePeriodMember = vaildMember;
@@ -311,6 +318,14 @@ public class BattleSyncDataApi {
 		//if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			
 			
+			BattleRoomReward battleRoomReward = battleRoomRewardService.findOneByReceiveMemberId(battlePeriodMember.getId());
+		
+			if(battleRoomReward!=null){
+				data.put("rewardBean", battleRoomReward.getRewardBean());
+			}else{
+				data.put("rewardBean", 0);
+			}
+			
 			data.put("roomStatus", battleRoom.getStatus());
 			data.put("status", battlePeriodMember.getStatus());
 			data.put("endType", battleRoom.getEndType());
@@ -324,7 +339,7 @@ public class BattleSyncDataApi {
 			
 			data.put("scoreGogal", battlePeriodMember.getScrollGogal());
 			
-			data.put("rewardBean", battlePeriodMember.getRewardBean());
+			
 			
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
