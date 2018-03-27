@@ -243,7 +243,7 @@ public class BattleSyncDataApi {
 							battleNotice.setRewardBean(0);
 						}
 						battleNoticeService.add(battleNotice);
-						
+					}else{
 						battlePeriodMember = vaildMember;
 					}
 					
