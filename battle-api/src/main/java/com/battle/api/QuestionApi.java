@@ -351,9 +351,11 @@ public class QuestionApi {
 			if(loveResidule==battlePeriodMember.getLoveCount()){
 				BattleMemberLoveCooling battleMemberLoveCooling = battleMemberLoveCoolingService.
 						findOneByBattleMemberId(battleMemberPaperAnswer.getBattlePeriodMemberId());
-				battleMemberLoveCooling.setStartDatetime(new DateTime());
-				battleMemberLoveCooling.setSchedule(0L);
-				battleMemberLoveCoolingService.update(battleMemberLoveCooling);
+				if(battleMemberLoveCooling!=null){
+					battleMemberLoveCooling.setStartDatetime(new DateTime());
+					battleMemberLoveCooling.setSchedule(0L);
+					battleMemberLoveCoolingService.update(battleMemberLoveCooling);
+				}
 			}
 			loveResidule--;
 			battlePeriodMember.setLoveResidule(loveResidule);

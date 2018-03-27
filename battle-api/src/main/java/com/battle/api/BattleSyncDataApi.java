@@ -208,9 +208,9 @@ public class BattleSyncDataApi {
 						
 						accountService.update(account);
 						
-						vaildMember.setRewardBean(rewardBean);
+						//vaildMember.setRewardBean(rewardBean);
 						
-						battlePeriodMemberService.update(vaildMember);
+						//battlePeriodMemberService.update(vaildMember);
 						
 					}else{
 						battleMemberRank.setRewardBean(0);
