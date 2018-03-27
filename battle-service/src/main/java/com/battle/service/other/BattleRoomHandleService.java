@@ -77,6 +77,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setMaxIndex(0);
 		
+		battleRoom.setIsEndHandle(0);
+		
 		return battleRoom;
 	}
 }

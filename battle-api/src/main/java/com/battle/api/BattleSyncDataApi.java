@@ -168,8 +168,11 @@ public class BattleSyncDataApi {
 		//游戏结束了,结束之后的一些数据处理
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			List<BattleMemberRank> battleMemberRanks = new ArrayList<>();
+			if(battleRoom.getIsEndHandle()==null){
+				battleRoom.setIsEndHandle(0);
+			}
 			//是否处理过数据
-			if(battleRoom.getIsEndHandle()==0){
+			if(battleRoom.getIsEndHandle().intValue()==0){
 				List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
 				Map<String, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 				for(BattleRoomReward battleRoomReward:battleRoomRewards){
