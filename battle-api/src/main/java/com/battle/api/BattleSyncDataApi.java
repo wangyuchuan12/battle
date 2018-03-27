@@ -85,6 +85,10 @@ public class BattleSyncDataApi {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		
+		if(battlePeriodMember.getLoveResidule()<=0){
+			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_END);
+			battlePeriodMemberService.update(battlePeriodMember);
+		}
 		
 		
 		if(battlePeriodMember.getScore()>=battlePeriodMember.getScrollGogal()){
@@ -108,11 +112,6 @@ public class BattleSyncDataApi {
 				return resultVo;
 			}
 			
-		}
-		
-		if(battlePeriodMember.getLoveResidule()<=0){
-			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_END);
-			battlePeriodMemberService.update(battlePeriodMember);
 		}
 		
 		
