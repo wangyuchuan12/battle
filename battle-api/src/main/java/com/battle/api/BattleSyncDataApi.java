@@ -223,7 +223,7 @@ public class BattleSyncDataApi {
 					battleMemberRanks.add(battleMemberRank);
 					
 					
-					if(vaildMember.getId().equals(battlePeriodMember.getId())){
+					if(!vaildMember.getId().equals(battlePeriodMember.getId())){
 						BattleNotice battleNotice = new BattleNotice();
 						battleNotice.setIsRead(0);
 						battleNotice.setMemberId(battlePeriodMember.getId());
