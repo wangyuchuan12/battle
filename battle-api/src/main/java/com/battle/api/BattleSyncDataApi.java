@@ -136,7 +136,7 @@ public class BattleSyncDataApi {
 
 			@Override
 			public int compare(BattlePeriodMember member1, BattlePeriodMember member2) {
-				return member1.getScore().compareTo(member2.getScore());
+				return -(member1.getScore().compareTo(member2.getScore()));
 			}
 		});
 		
