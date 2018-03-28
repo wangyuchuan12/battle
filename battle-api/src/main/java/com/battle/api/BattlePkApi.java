@@ -219,7 +219,9 @@ public class BattlePkApi {
 		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
-				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
 				battlePkService.update(battlePk);
 			}
 		}
@@ -331,7 +333,9 @@ public class BattlePkApi {
 		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
-				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
 				battlePkService.update(battlePk);
 			}
 		}
@@ -557,7 +561,9 @@ public class BattlePkApi {
 		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
-				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
 				battlePkService.update(battlePk);
 			}
 		}
