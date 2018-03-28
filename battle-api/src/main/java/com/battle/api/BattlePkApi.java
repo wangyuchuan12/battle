@@ -220,8 +220,8 @@ public class BattlePkApi {
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
-				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePkService.update(battlePk);
 			}
 		}
@@ -330,15 +330,15 @@ public class BattlePkApi {
 		
 		BattlePk battlePk = battlePkService.findOne(id);
 		
-		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
+		/*if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
-				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePkService.update(battlePk);
 			}
-		}
+		}*/
 		
 		if(CommonUtil.isEmpty(battlePk.getBeatUserId())){
 			ResultVo resultVo = new ResultVo();
@@ -562,8 +562,8 @@ public class BattlePkApi {
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
-				battlePk.setHomeStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePkService.update(battlePk);
 			}
 		}
