@@ -578,30 +578,13 @@ public class BattlePkApi {
 		
 		
 		battlePkService.update(battlePk);
-		
-		BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
-		
-		Map<String, Object> data = new HashMap<>();
-		data.put("battleCount", battlePk.getBattleCount());
-		data.put("battleId", battlePk.getBattleId());
-		data.put("beatStatus", battlePk.getBeatStatus());
-		data.put("beatUserId", battlePk.getBeatUserId());
-		data.put("beatUserImgurl", battlePk.getBeatUserImgurl());
-		data.put("beatUsername", battlePk.getBeatUsername());
-		data.put("homeStatus", battlePk.getHomeStatus());
-		data.put("homeUserId", battlePk.getHomeUserId());
-		data.put("homeUserImgurl", battlePk.getHomeUserImgurl());
-		data.put("homeUsername", battlePk.getHomeUsername());
-		data.put("id", battlePk.getId());
-		data.put("periodId", battlePk.getPeriodId());
-		data.put("roomId", battlePk.getRoomId());
-		data.put("roomStatus", battleRoom.getStatus());
+	
 		
 		ResultVo resultVo = new ResultVo();
 		
 		resultVo.setSuccess(true);
 		
-		resultVo.setData(data);
+		resultVo.setData(battlePk);
 		
 		return resultVo;
 		
