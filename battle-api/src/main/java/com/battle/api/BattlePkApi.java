@@ -17,26 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.Battle;
 import com.battle.domain.BattleCreateDetail;
-import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattlePk;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomPk;
-import com.battle.domain.BattleUser;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleCreateDetailService;
-import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePkService;
 import com.battle.service.BattleRoomPkService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
-import com.battle.service.BattleUserService;
-import com.battle.service.other.BattlePkImmediateService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
 import com.wyc.annotation.HandlerAnnotation;
-import com.wyc.common.config.AppConfig;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
@@ -62,16 +56,7 @@ public class BattlePkApi {
 	private BattleRoomService battleRoomService;
 	
 	@Autowired
-	private BattlePkImmediateService battlePkImmediateService;
-	
-	@Autowired
 	private BattlePkRedisService battlePkRedisService;
-	
-	@Autowired
-	private BattlePeriodMemberService battlePeriodMemberService;
-	
-	@Autowired
-	private BattleUserService battleUserService;
 	
 	@Autowired
 	private BattleRoomPkService battleRoomPkService;
@@ -567,11 +552,29 @@ public class BattlePkApi {
 		
 		battlePkService.update(battlePk);
 		
+		BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("battleCount", battlePk.getBattleCount());
+		data.put("battleId", battlePk.getBattleId());
+		data.put("beatStatus", battlePk.getBeatStatus());
+		data.put("beatUserId", battlePk.getBeatUserId());
+		data.put("beatUserImgurl", battlePk.getBeatUserImgurl());
+		data.put("beatUsername", battlePk.getBeatUsername());
+		data.put("homeStatus", battlePk.getHomeStatus());
+		data.put("homeUserId", battlePk.getHomeUserId());
+		data.put("homeUserImgurl", battlePk.getHomeUserImgurl());
+		data.put("homeUsername", battlePk.getHomeUsername());
+		data.put("id", battlePk.getId());
+		data.put("periodId", battlePk.getPeriodId());
+		data.put("roomId", battlePk.getRoomId());
+		data.put("roomStatus", battleRoom.getStatus());
+		
 		ResultVo resultVo = new ResultVo();
 		
 		resultVo.setSuccess(true);
 		
-		resultVo.setData(battlePk);
+		resultVo.setData(data);
 		
 		return resultVo;
 		
