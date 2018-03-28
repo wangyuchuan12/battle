@@ -187,7 +187,10 @@ public class BattlePkApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		
 		BattlePk battlePk = battlePkService.findOneByHomeUserId(userInfo.getId());
+		
 
 		if(battlePk==null){
 			battlePk = new BattlePk();
@@ -211,6 +214,14 @@ public class BattlePkApi {
 			
 			battlePkService.add(battlePk);
 			
+		}
+		
+		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
+			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePkService.update(battlePk);
+			}
 		}
 		
 		if(battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_FREE||battlePk.getRoomStatus()==BattlePk.ROOM_STATUS_END){
@@ -316,6 +327,14 @@ public class BattlePkApi {
 		String id = httpServletRequest.getParameter("id");
 		
 		BattlePk battlePk = battlePkService.findOne(id);
+		
+		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
+			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePkService.update(battlePk);
+			}
+		}
 		
 		if(CommonUtil.isEmpty(battlePk.getBeatUserId())){
 			ResultVo resultVo = new ResultVo();
@@ -533,6 +552,14 @@ public class BattlePkApi {
 			resultVo.setErrorMsg("返回battlePk对象为空");
 			logger.error("调用immediateData方法的时候返回battlePk对象为空");
 			return resultVo;
+		}
+		
+		if(battlePk.getRoomStatus().intValue()!=BattlePk.ROOM_STATUS_END){
+			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_END);
+				battlePkService.update(battlePk);
+			}
 		}
 		
 		String homeUserId = battlePk.getHomeUserId();
