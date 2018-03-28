@@ -222,6 +222,7 @@ public class BattlePkApi {
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setRoomId("");
 				battlePkService.update(battlePk);
 			}
 		}
@@ -564,6 +565,7 @@ public class BattlePkApi {
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
 				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setRoomId("");
 				battlePkService.update(battlePk);
 			}
 		}
