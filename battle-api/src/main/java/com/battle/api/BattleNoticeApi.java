@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.domain.BattleNotice;
+import com.battle.domain.BattleRoom;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleNoticeService;
+import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
@@ -29,6 +31,10 @@ public class BattleNoticeApi {
 	
 	@Autowired
 	private BattleNoticeService battleNoticeService;
+	
+	@Autowired
+	private BattleRoomService battleRoomService;
+
 	
 	@RequestMapping(value="receiveNotice")
 	@ResponseBody
@@ -49,8 +55,6 @@ public class BattleNoticeApi {
 	
 		List<BattleNotice> battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
 		
-		
-		System.out.println(".........battleNotices0:"+battleNotices+",type:"+type);
 		
 		int index = 0;
 		while(true){
@@ -78,11 +82,17 @@ public class BattleNoticeApi {
 		
 		System.out.println(".........battleNotices2:"+battleNotices+",type:"+type);
 		
-		for(BattleNotice battleNotice:battleNotices){
-			battleNotice.setIsRead(1);
-			
-			battleNoticeService.update(battleNotice);
+		
+		if(battleNotices!=null&&battleNotices.size()>0){
+			for(BattleNotice battleNotice:battleNotices){
+				battleNotice.setIsRead(1);
+				
+				battleNoticeService.update(battleNotice);
+			}
+		}else{
+	
 		}
+		
 		
 		ResultVo resultVo = new ResultVo();
 		

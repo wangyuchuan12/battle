@@ -85,9 +85,6 @@ public class BattleMemberInfoApiFilter extends Filter{
 		
 		data.put("endType", battleRoom.getEndType());
 
-		
-		
-		
 		data.put("places",battleRoom.getPlaces());
 		
 		data.put("isDanRoom",battleRoom.getIsDanRoom());

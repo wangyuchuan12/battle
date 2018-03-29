@@ -35,6 +35,7 @@ import com.battle.service.BattleNoticeService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.other.BattleDanHandleService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -69,6 +70,9 @@ public class BattleSyncDataApi {
 	
 	@Autowired
 	private WxUserInfoService userInfoService;
+	
+	@Autowired
+	private BattleDanHandleService battleDanHandleService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	

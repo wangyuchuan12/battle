@@ -102,7 +102,7 @@ public class BattleDanHandleService {
 					battleRoomReward.setReceiveMemberId(battlePeriodMember.getId());
 					battlePeriodMember.setRewardBean(battleRoomReward.getRewardBean());
 									
-					battlePeriodMemberService.update(battlePeriodMember);
+					//battlePeriodMemberService.update(battlePeriodMember);
 					battleRoomRewardService.update(battleRoomReward);
 					
 					UserInfo userInfo = userInfoService.findOne(battlePeriodMember.getUserId());
