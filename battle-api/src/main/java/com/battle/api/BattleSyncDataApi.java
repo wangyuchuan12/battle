@@ -176,6 +176,8 @@ public class BattleSyncDataApi {
 			}
 			//是否处理过数据
 			if(battleRoom.getIsEndHandle().intValue()==0){
+				
+				battleDanHandleService.rewardReceive(battleRoom);
 				List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdOrderByRankAsc(battleRoom.getId());
 				Map<String, BattleRoomReward> battleRoomRewardMap = new HashMap<>();
 				for(BattleRoomReward battleRoomReward:battleRoomRewards){
