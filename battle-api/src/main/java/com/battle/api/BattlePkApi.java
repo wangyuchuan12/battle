@@ -428,14 +428,14 @@ public class BattlePkApi {
 			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomId("");
 				battlePkService.update(battlePk);
 			}
 		}
 		
-		BattleRoom battleRoom = null;
+		/*BattleRoom battleRoom = null;
 		if(!CommonUtil.isEmpty(battlePk.getRoomId())){
 			battleRoom = battleRoomService.findOne(battlePk.getRoomId());
 		}
@@ -479,7 +479,7 @@ public class BattlePkApi {
 			battlePk.setRoomStatus(BattlePk.ROOM_STATUS_CALL);
 			
 			battlePkService.update(battlePk);
-		}
+		}*/
 		
 		Map<String, Object> data = new HashMap<>();
 		
