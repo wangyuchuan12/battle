@@ -32,7 +32,6 @@ public class BattleNoticeApi {
 	
 	@RequestMapping(value="receiveNotice")
 	@ResponseBody
-	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo receiveNotice(HttpServletRequest httpServletRequest)throws Exception{
 		
@@ -51,7 +50,7 @@ public class BattleNoticeApi {
 		List<BattleNotice> battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
 		
 		
-		System.out.println(".........battleNotices0:"+battleNotices);
+		System.out.println(".........battleNotices0:"+battleNotices+",type:"+type);
 		
 		int index = 0;
 		while(true){
@@ -59,7 +58,7 @@ public class BattleNoticeApi {
 				break;
 			}else{
 				battleNotices = battleNoticeService.findAllByToUserAndTypeAndRoomIdAndIsReadGroupByMemberId(userInfo.getId(),typeInt,roomId,0,pageable);
-				System.out.println(".........battleNotices1:"+battleNotices);
+				System.out.println(".........battleNotices1:"+battleNotices+",type:"+type);
 				if(battleNotices==null||battleNotices.size()==0){
 					try{
 						Thread.sleep(5000);
@@ -77,7 +76,7 @@ public class BattleNoticeApi {
 			}
 		}
 		
-		System.out.println(".........battleNotices2:"+battleNotices);
+		System.out.println(".........battleNotices2:"+battleNotices+",type:"+type);
 		
 		for(BattleNotice battleNotice:battleNotices){
 			battleNotice.setIsRead(1);
