@@ -622,14 +622,14 @@ public class BattlePkApi {
 			if(battleRoom!=null){
 				if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
 					battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-					battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+					battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 					battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 					battlePk.setRoomId("");
 					battlePkService.update(battlePk);
 				}
 			}else{
 				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
-				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
 				battlePk.setRoomId("");
 				battlePkService.update(battlePk);
