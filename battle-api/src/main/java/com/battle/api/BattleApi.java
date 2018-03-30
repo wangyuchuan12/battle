@@ -913,6 +913,8 @@ public class BattleApi {
 		}
 		loveResidule++;
 		
+		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
+		
 		battlePeriodMember.setLoveResidule(loveResidule);
 		
 		battlePeriodMemberService.update(battlePeriodMember);
