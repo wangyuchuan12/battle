@@ -904,6 +904,11 @@ public class BattleApi {
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		Integer loveResidule = battlePeriodMember.getLoveResidule();
 		Integer loveCount = battlePeriodMember.getLoveCount();
+		
+		if(loveResidule==null||loveResidule<0){
+			loveResidule = 0;
+		}
+		
 		if(loveResidule>=loveCount){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
@@ -911,6 +916,7 @@ public class BattleApi {
 			resultVo.setErrorMsg("爱心已充满");
 			return resultVo;
 		}
+
 		loveResidule++;
 		
 		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
