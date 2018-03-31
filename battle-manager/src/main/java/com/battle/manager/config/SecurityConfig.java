@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Configuration
 public class SecurityConfig {
-      
+    
 	@Bean
 	public CredentialsMatcher credentialsMatcher() {
 		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
@@ -40,6 +40,7 @@ public class SecurityConfig {
 		return matcher;
 	}
 
+	/*
 	@Bean
 	@Autowired
 	public UserRealm userRealm(CredentialsMatcher credentialsMatcher) {
@@ -97,12 +98,12 @@ public class SecurityConfig {
 		securityManager.setRealm(userRealm);
 		return securityManager;
 	}
-
+*/
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
-
+/*
 	@Bean
 	@Autowired
 	public MethodInvokingFactoryBean methodInvokingFactoryBean(
@@ -113,7 +114,7 @@ public class SecurityConfig {
 		methodInvokingFactoryBean
 				.setArguments(new Object[] { securityManager });
 		return methodInvokingFactoryBean;
-	}
+	}*/
 
 	@Bean
 	@DependsOn(value = "lifecycleBeanPostProcessor")
@@ -121,6 +122,7 @@ public class SecurityConfig {
 		return new DefaultAdvisorAutoProxyCreator();
 	}
 
+	/*
 	@Bean
 	@Autowired
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(
@@ -128,6 +130,6 @@ public class SecurityConfig {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
 		return authorizationAttributeSourceAdvisor;
-	}
+	}*/
 
 }
