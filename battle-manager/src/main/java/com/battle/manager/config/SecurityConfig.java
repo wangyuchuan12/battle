@@ -117,11 +117,12 @@ public class SecurityConfig {
 		return methodInvokingFactoryBean;
 	}
 
+	/*
 	@Bean
 	@DependsOn(value = "lifecycleBeanPostProcessor")
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		return new DefaultAdvisorAutoProxyCreator();
-	}
+	}*/
 
 	
 	@Bean
