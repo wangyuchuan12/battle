@@ -29,7 +29,8 @@
             com.wyc.common.config.AppConfig,
             com.wyc.common.config.WebConfig2,
             com.wyc.common.config.DatabaseConfig,
-            com.wyc.common.config.SessionConfig
+            com.wyc.common.config.SessionConfig,
+            com.battle.manager.config.SecurityConfig
         </param-value>
     </context-param>
     
@@ -62,7 +63,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>com.wyc.common.config.WebConfig</param-value>
+            <param-value>com.wyc.common.config.WebConfig2</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
