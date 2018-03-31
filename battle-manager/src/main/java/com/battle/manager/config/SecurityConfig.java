@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Configuration
 public class SecurityConfig {
-      /*
+      
 	@Bean
 	public CredentialsMatcher credentialsMatcher() {
 		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
@@ -128,6 +128,6 @@ public class SecurityConfig {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
 		return authorizationAttributeSourceAdvisor;
-	}*/
+	}
 
 }
