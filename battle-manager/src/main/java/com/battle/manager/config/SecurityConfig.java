@@ -40,7 +40,7 @@ public class SecurityConfig {
 		return matcher;
 	}
 
-	/*
+	
 	@Bean
 	@Autowired
 	public UserRealm userRealm(CredentialsMatcher credentialsMatcher) {
@@ -98,7 +98,6 @@ public class SecurityConfig {
 		securityManager.setRealm(userRealm);
 		return securityManager;
 	}
-*/
 	
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -118,12 +117,12 @@ public class SecurityConfig {
 		return methodInvokingFactoryBean;
 	}*/
 
-	
+	/*
 	@Bean
 	@DependsOn(value = "lifecycleBeanPostProcessor")
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		return new DefaultAdvisorAutoProxyCreator();
-	}
+	}*/
 
 	/*
 	@Bean
