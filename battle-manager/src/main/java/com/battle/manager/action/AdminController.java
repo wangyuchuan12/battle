@@ -56,7 +56,7 @@ public class AdminController extends BaseController{
     		admin.setPassword(passwordSha);
     		admin.setSalt(salt);
     		admin.setRoles("god");
-    		adminService.save(admin);
+    		adminService.add(admin);
     	}
     	return null;
     }
@@ -74,7 +74,7 @@ public class AdminController extends BaseController{
 	    // 更新最新登陆时间
 	    Admin admin = adminService.getAdminByName(username);
 	    admin.setLastLogin(new DateTime());
-	    adminService.save(admin);
+	    adminService.update(admin);
 
 	    return "redirect:/manager/business_info";
 	} catch (Exception e) {
@@ -154,7 +154,7 @@ public class AdminController extends BaseController{
 	String passwordSha = new Sha256Hash(password, randomHex).toString();
 	admin_login.setPassword(passwordSha);
 	admin_login.setSalt(randomHex);
-	adminService.save(admin_login);
+	adminService.update(admin_login);
 	return "redirect:/admin/";
     }
 
@@ -214,12 +214,11 @@ public class AdminController extends BaseController{
 	    return "admin/error";
 	}
 	admin_update.setEmail(email);
-	admin_update.setId(id);
 	admin_update.setUsername(username);
 	admin_update.setMobile(mobile);
 	admin_update.setRealname(realname);
 	admin_update.setRoles(roles);
-	adminService.save(admin_update);
+	adminService.update(admin_update);
 	return "redirect:/admin/list";
     }
 
@@ -294,7 +293,7 @@ public class AdminController extends BaseController{
 	// 设置密码过期日期；
 	admin_add.setOver_date(date_over);
 	admin_add.setEmail(email);
-	admin_add = adminService.save(admin_add);
+	adminService.add(admin_add);
 	
 	return "redirect:/admin/list";
 
@@ -325,11 +324,10 @@ public class AdminController extends BaseController{
 
 	// to judge the username whether has the right to reset the password;
 	if (admin_user.getRoles().contains("admin")) {
-	    admin_add.setId(id);
 	    admin_add.setPassword(passwordSha);
 	    admin_add.setSalt(randomHex);
 	    admin_add.setUpdatedAt(new DateTime());
-	    adminService.save(admin_add);
+	    adminService.add(admin_add);
 	} else {
 	    return "admin/reset_admin_alarm";
 	}

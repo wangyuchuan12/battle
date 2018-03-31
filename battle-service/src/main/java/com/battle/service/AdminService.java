@@ -1,4 +1,7 @@
 package com.battle.service;
+import java.util.UUID;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +15,20 @@ public class AdminService {
     public Admin findByUsername(String username) {
         return adminRepository.findByUsername(username);
     }
-    public Admin save(Admin admin) {
+    public Admin update(Admin admin) {
+    	admin.setUpdatedAt(new DateTime());
         return adminRepository.save(admin);
-        
     }
+    
+    public void add(Admin admin){
+    	admin.setId(UUID.randomUUID().toString());
+    	admin.setCreatedAt(new DateTime());
+    	admin.setUpdatedAt(new DateTime());
+    	
+    	adminRepository.save(admin);
+    	
+    }
+    
     public Iterable<Admin> findAll() {
        return adminRepository.findAll();
         

@@ -22,8 +22,7 @@ public class Admin{
     public static final int GIRL_SEX = 2 ;
     public static final int UNSPECIFIED_SEX = 0;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
     @Column(name = "username", nullable = false, length = 100)
     private String username;
@@ -90,13 +89,7 @@ public class Admin{
         this.deadline = deadline;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
+   
 
     public void setUsername(String username) {
         this.username = username;
@@ -169,8 +162,16 @@ public class Admin{
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
+    
+    public String getId() {
+		return id;
+	}
 
-    // java的Timestamp与mysql的datetime一一对应
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	// java的Timestamp与mysql的datetime一一对应
     public Timestamp getOver_date() {
         return over_date;
     }
