@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer" exported="true"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
 	<classpathentry kind="output" path="bin"/>
-	<classpathentry kind="src" path="/battle-common" exported="true"/>
-	<classpathentry kind="src" path="/battle-models" exported="true"/>
-	<classpathentry kind="src" path="/battle-dao" exported="true"/>
-	<classpathentry kind="src" path="/battle-service" exported="true"/>
 </classpath>

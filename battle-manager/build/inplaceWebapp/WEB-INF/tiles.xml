@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+ 
+    <definition name="adminLayout" template="/WEB-INF/views/admin/layout.jsp">
+        <!--<put-attribute name="dashboard_active" value="" />-->
+        <!--<put-attribute name="admin_active" value="" />-->
+        <put-attribute name="header" value="/WEB-INF/views/admin/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/views/admin/menu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/admin/footer.jsp" />
+    </definition>
+ 
+</tiles-definitions>
