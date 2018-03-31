@@ -31,7 +31,6 @@ import com.wyc.common.util.DateFormatUtil;
 import com.wyc.common.util.ValidateUtil;
 
 @Controller
-@RequestMapping(value="/battle/manager/action")
 public class AdminController extends BaseController{
     final static Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
