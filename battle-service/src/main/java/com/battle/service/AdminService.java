@@ -1,9 +1,9 @@
-package com.battle.manager.service;
+package com.battle.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.battle.manager.dao.AdminRepository;
-import com.battle.manager.domain.Admin;
+import com.battle.dao.AdminRepository;
+import com.battle.domain.Admin;
 //import com.nanosic.dante.repositories.AdminRepository;
 @Service
 public class AdminService {

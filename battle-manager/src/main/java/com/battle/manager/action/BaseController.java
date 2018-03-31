@@ -10,8 +10,9 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import com.battle.manager.domain.Admin;
-import com.battle.manager.service.AdminService;
+import com.battle.domain.Admin;
+import com.battle.service.AdminService;
+
 
 public class BaseController<T> implements FactoryBean<T>{
     @Autowired

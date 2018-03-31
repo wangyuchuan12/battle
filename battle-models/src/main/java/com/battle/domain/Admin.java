@@ -1,4 +1,4 @@
-package com.battle.manager.domain;
+package com.battle.domain;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;

@@ -1,9 +1,11 @@
-package com.battle.manager.dao;
+package com.battle.dao;
 
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.battle.manager.domain.Admin;
+import com.battle.domain.Admin;
+
+
 
 
 public interface AdminRepository extends CrudRepository<Admin, Long>{

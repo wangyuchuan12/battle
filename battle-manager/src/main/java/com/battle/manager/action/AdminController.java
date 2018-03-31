@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.battle.manager.domain.Admin;
-import com.battle.manager.service.AdminService;
+import com.battle.domain.Admin;
+import com.battle.service.AdminService;
 import com.wyc.common.util.DateFormatUtil;
 import com.wyc.common.util.ValidateUtil;
 
