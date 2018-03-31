@@ -29,7 +29,8 @@
             com.wyc.common.config.AppConfig,
             com.wyc.common.config.WebConfig2,
             com.wyc.common.config.DatabaseConfig,
-            com.wyc.common.config.SessionConfig
+            com.wyc.common.config.SessionConfig,
+            com.battle.manager.config.SecurityConfig
         </param-value>
     </context-param>
     
