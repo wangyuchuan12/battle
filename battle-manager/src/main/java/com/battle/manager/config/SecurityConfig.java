@@ -104,7 +104,7 @@ public class SecurityConfig {
 		return new LifecycleBeanPostProcessor();
 	}
 	
-/*
+
 	@Bean
 	@Autowired
 	public MethodInvokingFactoryBean methodInvokingFactoryBean(
@@ -115,7 +115,7 @@ public class SecurityConfig {
 		methodInvokingFactoryBean
 				.setArguments(new Object[] { securityManager });
 		return methodInvokingFactoryBean;
-	}*/
+	}
 
 	/*
 	@Bean
@@ -124,7 +124,7 @@ public class SecurityConfig {
 		return new DefaultAdvisorAutoProxyCreator();
 	}*/
 
-	/*
+	
 	@Bean
 	@Autowired
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(
@@ -132,6 +132,6 @@ public class SecurityConfig {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
 		return authorizationAttributeSourceAdvisor;
-	}*/
+	}
 
 }
