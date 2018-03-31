@@ -99,12 +99,12 @@ public class SecurityConfig {
 		return securityManager;
 	}
 */
-	/*
+	
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
-	*/
+	
 /*
 	@Bean
 	@Autowired
