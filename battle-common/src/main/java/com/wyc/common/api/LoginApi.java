@@ -37,7 +37,7 @@ public class LoginApi{
 	@Autowired
 	private WxUserInfoService wxUserInfoService;
 	
-	@Autowired
+	//@Autowired
 	private AccountService accountService;
 	
 	final static Logger logger = LoggerFactory.getLogger(LoginApi.class);
