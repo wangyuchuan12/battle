@@ -167,8 +167,8 @@ public class BattleApi {
 		Battle battle = sessionManager.findOne(Battle.class, battleId);
 		
 		data.put("id", battle.getId());
-		data.put("currentPeriodId", battle.getCurrentPeriodId());
-		data.put("distance", battle.getDistance());
+		//data.put("currentPeriodId", battle.getCurrentPeriodId());
+		//data.put("distance", battle.getDistance());
 		data.put("headImg", battle.getHeadImg());
 		data.put("instruction", battle.getInstruction());
 		data.put("isActivation", battle.getIsActivation());
@@ -1551,7 +1551,7 @@ public class BattleApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo myPersonalRoom(HttpServletRequest httpServletRequest)throws Exception{
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		/*SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		String battleId = httpServletRequest.getParameter("battleId");
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -1570,12 +1570,13 @@ public class BattleApi {
 			return resultVo;
 		}else{
 			httpServletRequest.setAttribute("battleId", battleId);
-			httpServletRequest.setAttribute("periodId",battle.getCurrentPeriodId());
+			//httpServletRequest.setAttribute("periodId",battle.getCurrentPeriodId());
 			httpServletRequest.setAttribute("maxinum", 40);
 			httpServletRequest.setAttribute("mininum", 2);
 			ResultVo resultVo = addRoom(httpServletRequest);
 			return resultVo;
-		}
+		}*/
+		return null;
 		
 	}
 	

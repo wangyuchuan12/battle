@@ -36,11 +36,19 @@ public class ResourceApi {
 		SessionManager sessionManager = SessionManager.getFilterManager(multipartHttpServletRequest);
 		MyResource myResource = (MyResource)sessionManager.getObject(MyResource.class);
 		
-		ResultVo resultVo = new ResultVo();
-		resultVo.setSuccess(true);
-		resultVo.setMsg("上传文件成功");
-		resultVo.setData(myResource);
-		return resultVo;
+		if(myResource!=null){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			resultVo.setMsg("上传文件成功");
+			resultVo.setData(myResource);
+			return resultVo;
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setMsg("上传文件失败");
+			return resultVo;
+		}
+		
 	}
 	
 	@ResponseBody

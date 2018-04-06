@@ -60,6 +60,7 @@ public class AdminController extends BaseController{
     	}
     	return null;
     }
+  
     
     @RequestMapping(value = "/admin/login", method = RequestMethod.POST)
     public String doLogin(@RequestParam(value = "username") String username,
@@ -76,7 +77,7 @@ public class AdminController extends BaseController{
 	    admin.setLastLogin(new DateTime());
 	    adminService.update(admin);
 
-	    return "redirect:/manager/business_info";
+	    return "redirect:/battle/list";
 	} catch (Exception e) {
 	    logger.debug("Login fail: {}", e);
 	}
@@ -311,7 +312,7 @@ public class AdminController extends BaseController{
     }
 
     @RequestMapping("/admin/reset_admin")
-    public String resetPasswordImpl(@RequestParam(value = "id") Long id,
+    public String resetPasswordImpl(
 	    @RequestParam(value = "username") String username,
 	    @RequestParam(value = "password") String password, Model m) {
 	Subject subject = SecurityUtils.getSubject();

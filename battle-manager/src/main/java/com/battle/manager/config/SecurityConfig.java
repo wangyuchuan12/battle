@@ -11,12 +11,10 @@ import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.WebSecurityManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import com.battle.manager.security.OrRolesAuthorizationFilter;
 import com.battle.manager.security.UserRealm;
@@ -54,7 +52,7 @@ public class SecurityConfig {
 	public ShiroFilterFactoryBean shiroFilter(WebSecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		shiroFilter.setLoginUrl("/admin/login");
-		shiroFilter.setSuccessUrl("/manager/goods");
+		shiroFilter.setSuccessUrl("/battle/list");
 
 		Map<String, String> definitionsMap = new LinkedHashMap<>();
 		definitionsMap.put("/admin/login", "anon");
