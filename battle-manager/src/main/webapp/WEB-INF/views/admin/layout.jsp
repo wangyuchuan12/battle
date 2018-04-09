@@ -62,7 +62,9 @@
 
 <script>
 	function uploadFile(callback){
+		$("#file").unbind("change");
 		$("#file").on("change",function(){
+			alert("change");
 			var contextUrl = $("#contextUrl").textbox().textbox('getValue');
 			var fileupUrl = contextUrl+"/api/common/resource/upload";
 			$.ajaxFileUpload({
@@ -115,6 +117,7 @@
 -->
 <script src="<c:url value="/js/init.js"/>"></script>
 <script src="<c:url value="/js/jquery.datetimepicker.js"/>"></script>
+<script src="<c:url value="/js/flowJS.js"/>"></script>
 
 
 <!-- 导入easyui类库 -->
