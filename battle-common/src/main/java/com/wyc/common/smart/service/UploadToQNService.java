@@ -14,6 +14,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.wyc.common.domain.MyResource;
 import com.wyc.common.service.MyResourceService;
+import com.wyc.common.wx.domain.WxContext;
 
 @Service
 public class UploadToQNService {
@@ -22,17 +23,20 @@ public class UploadToQNService {
     String SECRET_KEY = "nL8W-aLnv1hxZeZECQRmsln15kO8F-EvmMbltCBM";
     //要上传的空间
     String bucketname = "picture";
-    
+    @Autowired
+    private WxContext wxContext;
   //密钥配置
-    Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+    Auth auth = null;
     //创建上传对象
     UploadManager uploadManager = new UploadManager();
     @Autowired
     private MyResourceService resourceService;
     private Logger logger = LoggerFactory.getLogger(UploadToQNService.class);
     private String upload(String filePath , String key) throws IOException{
-    	
-        String token = auth.uploadToken(bucketname,key);
+    	if(auth==null){
+    		auth = Auth.create(wxContext.getQnAccessKey(), wxContext.getQnScretKey());
+    	}
+        String token = auth.uploadToken(wxContext.getQnBucketname(),key);
         //调用put方法上传
         Response res = uploadManager.put(filePath, key, token);
         //打印返回的信息

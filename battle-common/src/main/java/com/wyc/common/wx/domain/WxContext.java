@@ -49,6 +49,15 @@ public class WxContext {
     
     @Column(name="apply_expert_project_code")
     private String applyExpertProjectCode;
+ 
+    @Column(name="qn_access_key")
+    private String qnAccessKey;
+    
+    @Column(name="qn_scret_key")
+    private String qnScretKey;
+    
+    @Column(name="qn_bucketname")
+    private String qnBucketname;
     
     public Integer getShareNumShowAnswer() {
 		return shareNumShowAnswer;
@@ -141,5 +150,23 @@ public class WxContext {
 	}
 	public void setApplyExpertProjectCode(String applyExpertProjectCode) {
 		this.applyExpertProjectCode = applyExpertProjectCode;
+	}
+	public String getQnAccessKey() {
+		return qnAccessKey;
+	}
+	public void setQnAccessKey(String qnAccessKey) {
+		this.qnAccessKey = qnAccessKey;
+	}
+	public String getQnScretKey() {
+		return qnScretKey;
+	}
+	public void setQnScretKey(String qnScretKey) {
+		this.qnScretKey = qnScretKey;
+	}
+	public String getQnBucketname() {
+		return qnBucketname;
+	}
+	public void setQnBucketname(String qnBucketname) {
+		this.qnBucketname = qnBucketname;
 	}
 }

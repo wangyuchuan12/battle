@@ -176,6 +176,10 @@ public class AppConfig{
 	        wxContext.setSubmailAppid(myProperties.getProperty("submail_appid"));
 	        wxContext.setSubmailSignature(myProperties.getProperty("submail_signature"));
 	        wxContext.setApplyExpertProjectCode(myProperties.getProperty("apply_expert_project_code"));
+	        
+	        wxContext.setQnAccessKey(myProperties.getProperty("qn_accessKey"));
+	        wxContext.setQnScretKey(myProperties.getProperty("qn_scretKey"));
+	        wxContext.setQnBucketname(myProperties.getProperty("qn_bucketname"));
 //	        wxContext = wxContextService.getWxContextBean();
 	        return wxContext;
 	    }
