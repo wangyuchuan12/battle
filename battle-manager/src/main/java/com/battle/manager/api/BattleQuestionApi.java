@@ -137,6 +137,8 @@ public class BattleQuestionApi {
 		String battleId = httpServletRequest.getParameter("battleId");
 		List<BattlePeriod> battlePeriods = battlePeriodService.findAllByBattleIdOrderByIndexAsc(battleId);
 		
+		
+		System.out.println(".................battleId:"+battleId+",battlePeriods:"+battlePeriods);
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battlePeriods);

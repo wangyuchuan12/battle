@@ -243,6 +243,7 @@ function addBattle(){
 	}else{
 		isActivation = 0;
 	}
+	$("#addDialog").dialog("close");
 	$.ajax({
 		url:"/api/battle/add",
 		dataType:'json',
