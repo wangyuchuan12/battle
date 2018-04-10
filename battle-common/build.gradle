@@ -1,10 +1,15 @@
 buildscript {
+	ext {
+        springBootVersion = '1.2.8.RELEASE'
+    }
     repositories {
         //maven { url "http://maven.oschina.net/content/groups/public/" }
         jcenter()
     }
     dependencies {
-        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.springframework:springloaded:1.2.7.RELEASE'
     }
 }
 
@@ -17,9 +22,11 @@ repositories {
 }
 
 apply plugin: 'java'
+apply plugin: 'spring-boot'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 
 
 compileJava.options.encoding = 'UTF-8'
@@ -28,13 +35,16 @@ compileJava.options.encoding = 'UTF-8'
 dependencies {
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     compile 'jstl:jstl:1.2'
-  //  compile 'javax.servlet.jsp.jstl:jstl-api:1.2'
-    compile 'org.springframework:spring-aspects:4.2.0.RELEASE'
-    compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
-
     compile 'mysql:mysql-connector-java:5.1.33'
     compile 'com.alibaba:druid:1.0.12'
+  //  compile 'javax.servlet.jsp.jstl:jstl-api:1.2'
+  
+  	
+  	
+    compile 'org.springframework:spring-aspects:4.2.0.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'    
     compile 'org.springframework.data:spring-data-jpa:1.7.1.RELEASE'
+   
     compile 'org.hibernate:hibernate-entitymanager:4.3.6.Final'
     //compile 'com.zaxxer:HikariCP:2.2.5'
 	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '4.3.6.Final'
@@ -73,7 +83,15 @@ dependencies {
 	
 	compile 'com.esotericsoftware:kryo:3.0.1'
 	
-	compile("org.springframework.boot:spring-boot-starter-websocket:1.2.4.RELEASE")
+	compile("org.apache.tomcat.embed:tomcat-embed-websocket:7.0.72")
+	
+	//compile("org.springframework.boot:spring-boot-starter-websocket:1.2.4.RELEASE")
+	//compile("org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE")
+	//compile('org.springframework.boot:spring-boot-starter-web:1.2.8.RELEASE')
+    //providedRuntime('org.springframework.boot:spring-boot-starter-tomcat:1.2.8.RELEASE')
+	compile("org.springframework:spring-websocket:4.2.0.RELEASE")
+	compile("org.springframework:spring-messaging:4.2.0.RELEASE")
+	compile("org.springframework:spring-core:4.2.0.RELEASE")
 	
 	//compile 'javax:javaee-api:7.0'
 	
@@ -87,7 +105,12 @@ dependencies {
 	//compile("org.springframework:spring-messaging:4.2.0.RELEASE")
     //compile("org.springframework:spring-websocket:4.2.0.RELEASE")
     
-    //compile 'org.apache.tomcat.embed:tomcat-embed-websocket:7.0.52'
+    //compile 'org.apache.tomcat.embed:tomcat-embed-websocket:7.0.72'
     
    // testCompile("junit:junit")
+   
+    /*def tomcatVersion = '7.0.59'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"*/
 }

@@ -108,10 +108,10 @@ public class DistributionAmountUtil {
         return true;  
     }  
       
-    public static void main(String[] args)throws Exception {  
+   /* public static void main(String[] args)throws Exception {  
         //随机一个188.88  5个红包  
     	DistributionAmountUtil dd = new DistributionAmountUtil();  
         //单位是分  
     	System.out.println(dd.splitRedPackets(100,3,0,100));
-    }  
+    }  */
 }  

@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.ehcache.Element;
-import sun.security.jca.GetInstance;
 
 public class EhRedisCache implements Cache{
 	
@@ -218,6 +218,11 @@ public class EhRedisCache implements Cache{
 
 		@Override
 		public <T> T get(Object key, Class<T> type) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public <T> T get(Object key, Callable<T> type) {
 			// TODO Auto-generated method stub
 			return null;
 		}

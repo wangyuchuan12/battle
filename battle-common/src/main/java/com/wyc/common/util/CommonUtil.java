@@ -30,7 +30,7 @@ import javax.imageio.ImageIO;
  */
 public class CommonUtil {
 	
-	public static void main(String[]args){
+	/*public static void main(String[]args){
 	//	System.out.println(filterEmoji("sdfsdfdsf所属💗❤🐶🐈️️️🐔🐦⏰"));
 		List<String> list = new ArrayList<>();
 		list.add("1");
@@ -43,7 +43,7 @@ public class CommonUtil {
 		System.out.println(list.subList(0, 6));
 		
 		
-	}
+	}*/
 	
 	/**
      * 检测是否有emoji字符

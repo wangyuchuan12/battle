@@ -22,7 +22,11 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         }
 
         System.out.println("Before Handshake");
-        return super.beforeHandshake(request, response, wsHandler, attributes);
+        boolean b = super.beforeHandshake(request, response, wsHandler, attributes);
+        
+        System.out.println("Before Handshake.b:"+b);
+        
+        return b;
     }
 
     @Override

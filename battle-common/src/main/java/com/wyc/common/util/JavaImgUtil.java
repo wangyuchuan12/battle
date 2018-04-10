@@ -10,7 +10,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class JavaImgUtil{
-	public static void main(String[]args)throws Exception{
+	/*public static void main(String[]args)throws Exception{
 		
 		
 		
@@ -27,7 +27,7 @@ public class JavaImgUtil{
         tt.writeImageLocal("/var/root/Desktop/aassss.jpg", tt.modifyImagetogeter(d,b));    
         //将多张图片合在一起    
         System.out.println("success");  
-	}
+	}*/
 	
 	
 	
