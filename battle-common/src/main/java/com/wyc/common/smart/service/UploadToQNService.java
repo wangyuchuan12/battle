@@ -49,7 +49,7 @@ public class UploadToQNService {
         try {
             String returnBody = upload(myResource.getSystemUrl(), myResource.getId());
             HashMap<String, String> hashMap = objectMapper.readValue(returnBody, HashMap.class);
-            myResource.setUrl("http://7xlw44.com1.z0.glb.clouddn.com/"+hashMap.get("key"));
+            myResource.setUrl("http://"+wxContext.getQnDomain()+"/"+hashMap.get("key"));
             resourceService.save(myResource);
         } catch (Exception e) {
             logger.error("has error:{}",e);

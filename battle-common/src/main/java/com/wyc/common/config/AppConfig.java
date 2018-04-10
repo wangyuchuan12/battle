@@ -180,6 +180,7 @@ public class AppConfig{
 	        wxContext.setQnAccessKey(myProperties.getProperty("qn_accessKey"));
 	        wxContext.setQnScretKey(myProperties.getProperty("qn_scretKey"));
 	        wxContext.setQnBucketname(myProperties.getProperty("qn_bucketname"));
+	        wxContext.setQnDomain(myProperties.getProperty("qn_domain"));
 //	        wxContext = wxContextService.getWxContextBean();
 	        return wxContext;
 	    }

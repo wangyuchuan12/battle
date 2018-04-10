@@ -59,6 +59,9 @@ public class WxContext {
     @Column(name="qn_bucketname")
     private String qnBucketname;
     
+    @Column(name="qn_domain")
+    private String qnDomain;
+    
     public Integer getShareNumShowAnswer() {
 		return shareNumShowAnswer;
 	}
@@ -168,5 +171,11 @@ public class WxContext {
 	}
 	public void setQnBucketname(String qnBucketname) {
 		this.qnBucketname = qnBucketname;
+	}
+	public String getQnDomain() {
+		return qnDomain;
+	}
+	public void setQnDomain(String qnDomain) {
+		this.qnDomain = qnDomain;
 	}
 }
