@@ -28,6 +28,7 @@ import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.util.CommonUtil;
 
@@ -90,7 +91,11 @@ public class BattleQuestionApi {
 		
 		List<String> subjectIds = battleSubjectService.getIdsByBattleId(battleId);
 		
-		List<Object[]> stageSubjectQuestionNums = battleQuestionService.getQuestionNumByStageIdsAndSubjectIds(stageIds,subjectIds);
+		List<Object[]> stageSubjectQuestionNums = new ArrayList<>();
+		
+		if(subjectIds!=null&&subjectIds.size()>0){
+			stageSubjectQuestionNums = battleQuestionService.getQuestionNumByStageIdsAndSubjectIds(stageIds,subjectIds);
+		}
 		
 		
 		List<Map<String, Object>> data = new ArrayList<>();
@@ -152,8 +157,11 @@ public class BattleQuestionApi {
 		String[] subjectIds = new String[]{
 				subjectId
 		};
-		List<BattleQuestion> battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdInAndIsDel(battleId, stageId, subjectIds,0);
+		List<BattleQuestion> battleQuestions = new ArrayList<>();
 		
+		if(!CommonUtil.isEmpty(battleId)&&!CommonUtil.isEmpty(battleId)&&!CommonUtil.isEmpty(subjectId)){
+			battleQuestions = battleQuestionService.findAllByBattleIdAndPeriodStageIdAndBattleSubjectIdInAndIsDel(battleId, stageId, subjectIds,0);
+		}
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		resultVo.setData(battleQuestions);

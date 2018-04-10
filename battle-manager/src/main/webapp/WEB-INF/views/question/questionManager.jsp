@@ -506,6 +506,12 @@ $(document).ready(function() {
 			
 			$("#questionImg").attr("isImg","0");
 			
+			$("#questionOperationWords>ul>li").empty();
+			$("#questionOperationFillwords>ul>li>input").val("");
+			
+			$("#questionOperationSelect>ul>li>input").val("");
+			
+			$("#questionTextarea").val("");
 			this.setNext("initEdit");
 			this.next();
 		},
@@ -701,7 +707,7 @@ $(document).ready(function() {
 		},
 		
 		initQuestionOperationSelect:function(){
-			$("#questionOperationSelect>ul>li>input").val("");
+			//$("#questionOperationSelect>ul>li>input").val("");
 		},
 		
 		fillWordsEvent:function(){
@@ -803,12 +809,12 @@ $(document).ready(function() {
 		
 		//初始化填词功能
 		initQuestionOperationFillwords:function(){
-			var outThis = this;
+			/*
 			$("#questionOperationWords>ul>li").empty();
 			$("#questionOperationFillwords>ul>li>input").val("");
+			*/
 			this.setNext("showQuestionOperationFillwordsStatus");
 			this.next();
-			
 			this.setNext("fillWordsEvent");
 			this.next();
 			

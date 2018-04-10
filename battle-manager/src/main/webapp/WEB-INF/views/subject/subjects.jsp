@@ -15,10 +15,10 @@
         </div>
      
     </div>
-    
+    <input id="battleId" value="${battle.id}" hidden="true"/>
     <div class="tableHeader">
           <ul>
-          	<li><a href="">新增</a></li>
+          	<li><a href="javascript:void(0)" onclick="addOpen()">新增</a></li>
           </ul>
     </div>
     <div class="row">
@@ -50,8 +50,7 @@
                                     </td>
                                     <td name="name">${subject.name}</td>
                                     <td class="center">                                   
-                                       <a href="javascript:void(0)" onclick="updateOpen('${subject.id}')" style="padding-left:20px;padding-right:20px;">修改</a>                       
-                                       <a href="" style="width:30px;">删除</a>
+                                       <a href="javascript:void(0)" onclick="updateOpen('${subject.id}')" style="padding-left:20px;padding-right:20px;">修改</a> 
                                     </td>
                                 </tr>
                                 </c:forEach>
@@ -99,6 +98,41 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#updateDialog').dialog('close')" iconcls="icon-cancel">取消</a> 
 	    </div> 
 </div>
+
+
+
+
+<div id="addDialog" class="easyui-dialog" style="width: 400px; height: 500px; padding: 10px 20px;"
+       closed="true" buttons="#dlg-buttons2"> 
+		    <form>
+		    	<table cellpadding="5">
+		    		<tr>
+		    			<img src="" id = "addDialogImg" name="img" style="width:200px;height:200px;"></img>
+		    		</tr>
+		    		<tr>
+		    			<td>名称</td>
+		    			<td>
+		    				<input class="easyui-textbox" type="text" id="addDialogName" name="name" data-options="required:true"/>
+		    			</td>
+		    		</tr>
+		    		
+		    		<tr>
+		    			<td>序号</td>
+		    			<td>
+		    				<input class="easyui-numberbox" type="text" id="addDialogSeq" name="seq" data-options="required:true"/>
+		    			</td>
+		    		</tr>
+		    		
+		   
+		    		
+		    	</table>
+		   	 </form>
+		   	 
+		<div id="dlg-buttons2"> 
+	        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addSubject()" iconcls="icon-save">保存</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#addDialog').dialog('close')" iconcls="icon-cancel">取消</a> 
+	    </div> 
+</div>
 </tiles:putAttribute>
 <tiles:putAttribute name="footerJavascript">
 <script>
@@ -115,7 +149,51 @@ $(document).ready(function() {
 		});
 	});
 	
+	$("#addDialogImg").click(function(){
+		uploadFile({
+			success:function(data){
+				var url = data.url;
+				$("#addDialogImg").attr("src",url);
+			},
+			fail:function(){
+				alert("fail")
+			}
+		});
+	});
+	
 });
+
+function addOpen(){
+	$("#addDialog").dialog("open").dialog("setTitle","新增类型");
+}
+
+function addSubject(){
+	var name = $("#addDialogName").textbox().textbox('getValue');
+	var seq = $("#addDialogSeq").textbox().textbox('getValue');
+	var imgUrl = $("#addDialogImg").attr("src");
+	var battleId = $("#battleId").val();
+	$.ajax({
+		url:"/api/battle/subject/add",
+		dataType:'json',
+		type:"POST",
+		data:{
+			name:name,
+			seq:seq,
+			imgUrl:imgUrl,
+			battleId:battleId
+		},
+		success:function(resp){
+			if(resp.success){
+				location.reload();
+			}else{
+				alert("保存发生错误");
+			}
+		},
+		error:function(){
+			alert("保存发生错误");
+		}
+	});
+}
 
 function updateSubject(){
 	var id = $("#updateDialogId").textbox().textbox('getValue');

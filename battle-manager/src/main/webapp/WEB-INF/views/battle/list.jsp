@@ -255,7 +255,7 @@ function addBattle(){
 			status:status
 		},
 		success:function(resp){
-			alert("success");
+			location.reload();
 		},
 		error:function(){
 			alert("保存发生错误");
