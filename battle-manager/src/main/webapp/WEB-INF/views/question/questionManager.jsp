@@ -369,7 +369,7 @@ $(document).ready(function() {
 			}
 			
 			$("#editDialog").dialog("close");
-			$.ajax({
+			request({
 				url:"/api/battle/question/addQuestion",
 				dataType:'json',
 				type:"POST",
@@ -465,7 +465,7 @@ $(document).ready(function() {
 			}
 			
 			$("#editDialog").dialog("close");		
-			$.ajax({
+			request({
 				url:"/api/battle/question/updateQuestion",
 				dataType:'json',
 				type:"POST",
@@ -526,7 +526,7 @@ $(document).ready(function() {
 			this.setNext("initEdit");
 			this.next();
 			$("#editDialog").dialog("open").dialog("setTitle","修改题目");
-			$.ajax({
+			request({
 				url:"/api/battle/question/info",
 				dataType:'json',
 				type:"POST",
@@ -1007,7 +1007,7 @@ $(document).ready(function() {
 		initStages:function(){
 			var outThis = this;
 			var periodId = this.flowData("periodId");
-			$.ajax({
+			request({
 				url:"/api/battle/question/stages",
 				dataType:'json',
 				type:"POST",
@@ -1045,7 +1045,7 @@ $(document).ready(function() {
 			var outThis = this;
 			var battleId = this.flowData("battleId");
 			var stageId = this.flowData("stageId");
-			$.ajax({
+			request({
 				url:"/api/battle/question/queryQuestionCount",
 				dataType:'json',
 				type:"POST",
@@ -1069,7 +1069,7 @@ $(document).ready(function() {
 			var battleId = this.flowData("battleId");
 			var stageId = this.flowData("stageId");
 			var subjectId = this.flowData("subjectId");
-			$.ajax({
+			request({
 				url:"/api/battle/question/questions",
 				dataType:'json',
 				type:"POST",
@@ -1094,7 +1094,7 @@ $(document).ready(function() {
 		initSubjects:function(){
 			var outThis = this;
 			var battleId = this.flowData("battleId");
-			$.ajax({
+			request({
 				url:"/api/battle/question/subjects",
 				dataType:'json',
 				type:"POST",
@@ -1131,7 +1131,7 @@ $(document).ready(function() {
 		initPeriods:function(){
 			var outThis = this;
 			var battleId = this.stepData("battleId");
-			$.ajax({
+			request({
 				url:"/api/battle/question/periods",
 				dataType:'json',
 				type:"POST",

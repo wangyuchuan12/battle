@@ -244,7 +244,7 @@ function addBattle(){
 		isActivation = 0;
 	}
 	$("#addDialog").dialog("close");
-	$.ajax({
+	request({
 		url:"/api/battle/add",
 		dataType:'json',
 		type:"POST",
@@ -285,7 +285,7 @@ function updateBattle(){
 		status = 1;
 	}
 	
-	$.ajax({
+	request({
 		url:"/api/battle/update",
 		dataType:'json',
 		type:"POST",
@@ -317,7 +317,7 @@ function updateBattle(){
 }
 
 function updateOpen(id){
-	$.ajax({
+	request({
 		url:"/api/battle/info",
 		dataType:'json',
 		type:"POST",

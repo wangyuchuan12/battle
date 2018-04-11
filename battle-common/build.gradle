@@ -34,13 +34,13 @@ apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
 
 
-/*gretty {
+gretty {
     servletContainer = 'tomcat8'
     managedClassReload = true
-    contextPath = "/"
+    contextPath = "/manager"
     fileLogEnabled = false
     loggingLevel = "ALL"
-}*/
+}
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -119,14 +119,14 @@ dependencies {
 	
 	compile 'com.esotericsoftware:kryo:3.0.1'
 	
-	/*
+	
 	compile("org.apache.tomcat.embed:tomcat-embed-websocket:8.0.24")
 	
 	
 	compile("org.springframework:spring-websocket:4.2.0.RELEASE")
 	compile("org.springframework:spring-messaging:4.2.0.RELEASE")
 	compile("org.springframework:spring-core:4.2.0.RELEASE")
-	*/
+	
 	
 	
 }

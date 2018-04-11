@@ -30,12 +30,12 @@ task copylib(type:Copy){
 }
 
 gretty {
-    servletContainer = 'jetty9'
+    servletContainer = 'tomcat8'
     managedClassReload = true
-    contextPath = "/"
+    contextPath = "/manager"
     fileLogEnabled = false
     loggingLevel = "ALL"
-    httpPort = 80
+    httpPort = 8080
 }
 
 allprojects {

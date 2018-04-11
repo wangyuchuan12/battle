@@ -172,7 +172,7 @@ function addSubject(){
 	var seq = $("#addDialogSeq").textbox().textbox('getValue');
 	var imgUrl = $("#addDialogImg").attr("src");
 	var battleId = $("#battleId").val();
-	$.ajax({
+	request({
 		url:"/api/battle/subject/add",
 		dataType:'json',
 		type:"POST",
@@ -201,7 +201,7 @@ function updateSubject(){
 	var seq = $("#updateDialogSeq").textbox().textbox('getValue');
 	var imgUrl = $("#updateDialogImg").attr("src");
 	
-	$.ajax({
+	request({
 		url:"/api/battle/subject/update",
 		dataType:'json',
 		type:"POST",
@@ -233,7 +233,7 @@ function updateSubject(){
 
 
 function updateOpen(id){
-	$.ajax({
+	request({
 		url:"/api/battle/subject/info",
 		dataType:'json',
 		type:"POST",

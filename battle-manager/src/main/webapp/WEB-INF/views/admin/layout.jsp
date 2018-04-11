@@ -54,13 +54,25 @@
 
 <script src="<c:url value="/js/jquery-2.1.4.min.js"/>"></script>
 
-<input type="hidden" value="<c:url value=""/>" id="contextUrl"/>
+<input type="hidden" value="<c:url value="/"/>" id="contextUrl"/>
 
 <form action="<c:url value="/api/common/resource"/>" id="fileForm">
 	<input type="file" name="file" id="file" style="width:0px;height:0px;"/>
 </form>
 
 <script>
+
+	var contextUrl = $("#contextUrl").val();
+
+	
+	
+	function request(params){
+		var url = params.url;
+		url = contextUrl+url;
+		params.url = url;
+		$.ajax(params);
+	}
+	
 	function uploadFile(callback){
 		$("#file").unbind("change");
 		$("#file").on("change",function(){
