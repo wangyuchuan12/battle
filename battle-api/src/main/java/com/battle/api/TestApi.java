@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.battle.service.other.CustomService;
 import com.battle.service.other.MessageHandleService;
-import com.wyc.common.config.scoket.CountWebSocketHandler;
+//import com.wyc.common.config.scoket.CountWebSocketHandler;
 
 @Controller
 @RequestMapping(value="/api/test")
@@ -26,8 +26,8 @@ public class TestApi {
 	@Autowired
 	private CustomService customService;
 	
-	@Autowired
-	private CountWebSocketHandler countWebSocketHandler;
+	//@Autowired
+	//private CountWebSocketHandler countWebSocketHandler;
 	
 	@ResponseBody
 	@RequestMapping(value="test")
