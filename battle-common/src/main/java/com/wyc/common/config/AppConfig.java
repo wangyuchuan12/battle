@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import javax.net.ssl.SSLContext;
 import javax.transaction.Transactional;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -15,15 +16,9 @@ import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
-
-
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.danga.MemCached.MemCachedClient;
@@ -37,8 +32,6 @@ import com.wyc.common.util.MyLongDateFormat;
 import com.wyc.common.util.MySimpleDateFormat;
 import com.wyc.common.wx.domain.WxContext;
 
-import ch.qos.logback.core.net.server.Client;
-
 
 
 @Configuration
@@ -49,9 +42,7 @@ import ch.qos.logback.core.net.server.Client;
         @Filter(type=FilterType.ASSIGNABLE_TYPE,value=GameWebConfig.class)
 })*/
 @EnableScheduling
-
 public class AppConfig{
-	 
 	 	@Autowired
 	 	private HrefService hrefService;
 	    final static Logger logger = LoggerFactory.getLogger(AppConfig.class);
@@ -62,12 +53,10 @@ public class AppConfig{
 	    
 	    @Bean
 	    public SockIOPool sockIoPool(){
-	        
 	        String[] servers =
 	        {
 	              "127.0.0.1:8888"
 	        };
-	        
 	        System.out.println(".....5");
 	        SockIOPool sockIOPool = SockIOPool.getInstance();
 	        sockIOPool.setServers(servers);

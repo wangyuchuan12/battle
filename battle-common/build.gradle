@@ -7,9 +7,12 @@ buildscript {
         jcenter()
     }
     dependencies {
+    	/*
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'org.springframework:springloaded:1.2.7.RELEASE'
+        */
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
     }
 }
 
@@ -21,19 +24,29 @@ repositories {
     mavenCentral()
 }
 
+
 apply plugin: 'java'
-apply plugin: 'spring-boot'
+//apply plugin: 'spring-boot'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
-apply plugin: 'com.bmuschko.tomcat'
+//apply plugin: 'com.bmuschko.tomcat'
+apply plugin: 'org.akhikhl.gretty'
 
+
+gretty {
+    servletContainer = 'tomcat8'
+    managedClassReload = true
+    contextPath = "/"
+    fileLogEnabled = false
+    loggingLevel = "ALL"
+}
 
 compileJava.options.encoding = 'UTF-8'
 
 
 dependencies {
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    //providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     compile 'jstl:jstl:1.2'
     compile 'mysql:mysql-connector-java:5.1.33'
     compile 'com.alibaba:druid:1.0.12'
@@ -50,7 +63,7 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '4.3.6.Final'
     compile 'org.apache.tiles:tiles-servlet:3.0.5'
     compile 'org.apache.tiles:tiles-jsp:3.0.5'
-
+	
     compile 'org.apache.shiro:shiro-spring:1.2.3'
 
     compile 'joda-time:joda-time:2.5'
@@ -83,7 +96,7 @@ dependencies {
 	
 	compile 'com.esotericsoftware:kryo:3.0.1'
 	
-	compile("org.apache.tomcat.embed:tomcat-embed-websocket:7.0.72")
+	compile("org.apache.tomcat.embed:tomcat-embed-websocket:8.0.24")
 	
 	//compile("org.springframework.boot:spring-boot-starter-websocket:1.2.4.RELEASE")
 	//compile("org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE")
