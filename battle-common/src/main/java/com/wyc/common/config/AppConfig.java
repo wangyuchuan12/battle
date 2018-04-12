@@ -45,6 +45,7 @@ import com.wyc.common.wx.domain.WxContext;
 public class AppConfig{
 	 	@Autowired
 	 	private HrefService hrefService;
+	 
 	    final static Logger logger = LoggerFactory.getLogger(AppConfig.class);
 	    @Bean
 	    public ApplicationContextProvider applicationContextProvider() {
@@ -171,6 +172,7 @@ public class AppConfig{
 	        wxContext.setQnBucketname(myProperties.getProperty("qn_bucketname"));
 	        wxContext.setQnDomain(myProperties.getProperty("qn_domain"));
 //	        wxContext = wxContextService.getWxContextBean();
+	        
 	        return wxContext;
 	    }
 	    

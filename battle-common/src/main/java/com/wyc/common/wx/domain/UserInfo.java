@@ -120,11 +120,13 @@ public class UserInfo implements Serializable{
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private Integer isGod;
     
+    @Column(name="is_line")
+    private Integer isLine =0;
+    
     @Column(name = "create_at")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
-    
     private DateTime createAt;
     @Column(name = "update_at")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
@@ -287,5 +289,11 @@ public class UserInfo implements Serializable{
 	}
 	public void setIsSyncDan(Integer isSyncDan) {
 		this.isSyncDan = isSyncDan;
+	}
+	public Integer getIsLine() {
+		return isLine;
+	}
+	public void setIsLine(Integer isLine) {
+		this.isLine = isLine;
 	}
 }

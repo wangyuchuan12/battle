@@ -642,7 +642,7 @@ $(document).ready(function() {
 					success:function(data){
 						var url = data.url;
 						$("#questionImg").attr("src",url);
-						("#questionImg").attr("isImg","1");
+						$("#questionImg").attr("isImg","1");
 					},
 					fail:function(){
 						alert("fail")
