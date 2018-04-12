@@ -35,7 +35,7 @@ gretty {
     contextPath = "/manager"
     fileLogEnabled = false
     loggingLevel = "ALL"
-    httpPort = 8080
+    httpPort = 80
 }
 
 allprojects {
