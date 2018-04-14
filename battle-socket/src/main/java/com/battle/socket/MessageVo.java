@@ -7,6 +7,9 @@ public class MessageVo {
 	public final static int ALL_ONLINE_TYPE = 0;
 	public final static int ROOM_TYPE = 1;
 	public final static int USERS_TYPE = 2;
+	
+	
+	public final static String PROGRESS_CODE = "progressCode";
 	//调用编号
 	private String code;
 	

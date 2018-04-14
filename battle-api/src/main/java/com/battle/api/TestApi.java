@@ -22,6 +22,7 @@ import com.battle.service.other.MessageHandleService;
 import com.battle.socket.MessageHandler;
 //import com.wyc.common.config.scoket.CountWebSocketHandler;
 import com.battle.socket.MessageVo;
+import com.battle.socket.service.ProgressStatusSocketService;
 
 @Controller
 @RequestMapping(value="/api/test")
@@ -36,6 +37,9 @@ public class TestApi {
 	
 	@Autowired
 	private MessageHandler messageHandler;
+	
+	@Autowired
+	private ProgressStatusSocketService progressStatusSocketService;
 	
 	
 	//@Autowired
@@ -113,6 +117,16 @@ public class TestApi {
 		
 		
 		return "4444";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="test4")
+	public Object test4(HttpServletRequest httpServletRequest)throws Exception{
+		String roomId = httpServletRequest.getParameter("roomId");
+		
+		progressStatusSocketService.statusPublish(roomId);
+		
+		return "success";
 	}
 	
 }

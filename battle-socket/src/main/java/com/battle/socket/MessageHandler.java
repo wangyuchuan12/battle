@@ -48,11 +48,15 @@ public class MessageHandler {
 		if(messageVo.getType()==MessageVo.ROOM_TYPE){
 			BattleRoom battleRoom = battleRoomService.findOne(messageVo.getRoomId());
 			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
-			
 			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
 				UserInfo userInfo = wxUserInfoService.findOne(battlePeriodMember.getUserId());
-				
-				tokens.add(userInfo.getToken());
+				if(userInfo.getIsLine()==null){
+					userInfo.setIsLine(0);
+					
+				}
+				if(userInfo.getIsLine()==1){
+					tokens.add(userInfo.getToken());
+				}
 			}
 		}
 		
@@ -60,7 +64,13 @@ public class MessageHandler {
 			List<String> userIds = messageVo.getUserIds();
 			for(String userId:userIds){
 				UserInfo userInfo = wxUserInfoService.findOne(userId);
-				tokens.add(userInfo.getToken());
+				if(userInfo.getIsLine()==null){
+					userInfo.setIsLine(0);
+					
+				}
+				if(userInfo.getIsLine()==1){
+					tokens.add(userInfo.getToken());
+				}
 			}
 		}
 		

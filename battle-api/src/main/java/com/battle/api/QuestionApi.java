@@ -12,6 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,6 +49,7 @@ import com.battle.service.QuestionAnswerService;
 import com.battle.service.QuestionOptionService;
 import com.battle.service.QuestionService;
 import com.battle.service.other.AccountResultHandleService;
+import com.battle.socket.service.ProgressStatusSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -101,6 +106,12 @@ public class QuestionApi {
 	
 	@Autowired
 	private BattleNoticeService battleNoticeService;
+	
+	@Autowired
+	private ProgressStatusSocketService progressStatusSocketService;
+	
+	@Autowired
+    private PlatformTransactionManager platformTransactionManager;
 
 	final static Logger logger = LoggerFactory.getLogger(QuestionApi.class);
 	
@@ -109,6 +120,11 @@ public class QuestionApi {
 	@ResponseBody
 	@Transactional
 	public Object battleQuestionAnswer(HttpServletRequest httpServletRequest)throws Exception{
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
@@ -483,12 +499,16 @@ public class QuestionApi {
 		
 		result.put("memberScore", battlePeriodMember.getScore());
 		
+		
+		
 		battlePeriodMemberService.update(battlePeriodMember);
 		battleMemberQuestionAnswerService.add(battleMemberQuestionAnswer);
 		
 		sessionManager.update(questionAnswer);
 		sessionManager.update(battleMemberPaperAnswer);
+		platformTransactionManager.commit(transactionStatus);
 	
+		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember);
 		return resultVo;
 	}
 	

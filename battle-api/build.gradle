@@ -103,6 +103,8 @@ dependencies{
 	
 	compile project(':battle-filter');
 	
+	compile project(':battle-socket');
+	
 }
 
 

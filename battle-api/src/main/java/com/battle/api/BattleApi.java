@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
@@ -63,6 +64,7 @@ import com.battle.service.BattleUserService;
 import com.battle.service.listener.BattleRoomEndListener;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
+import com.battle.socket.service.ProgressStatusSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -135,6 +137,9 @@ public class BattleApi {
 	
 	@Autowired
 	private BattleRoomEndListener battleRoomEndListener;
+	
+	@Autowired
+	private ProgressStatusSocketService progressStatusSocketService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
@@ -1582,7 +1587,6 @@ public class BattleApi {
 	
 	@RequestMapping(value="syncPapersData")
 	@ResponseBody
-	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
 		
@@ -1894,6 +1898,8 @@ public class BattleApi {
 		
 		data.put("status", battleRoom.getStatus());
 		
+		
+		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_COMPLETE){
 			data.put("status", BattleRoom.STATUS_END);
 		}
@@ -1920,6 +1926,8 @@ public class BattleApi {
 		resultVo.setData(data);
 		
 		resultVo.setErrorMsg("同步成功");
+		
+		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember);
 		
 		return resultVo;
 	}
