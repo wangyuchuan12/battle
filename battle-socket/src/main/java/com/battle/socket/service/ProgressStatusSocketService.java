@@ -28,12 +28,16 @@ public class ProgressStatusSocketService {
 	public Object statusPublish(String roomId,BattlePeriodMember battlePeriodMember)throws Exception{
 		List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
 		
+		BattleRoom battleroom = battleRoomService.findOne(roomId);
+		
 		ProgressStatusVo progressStatusVo = new ProgressStatusVo();
 		progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
 		progressStatusVo.setMemberId(battlePeriodMember.getId());
 		progressStatusVo.setProcess(battlePeriodMember.getProcess());
 		progressStatusVo.setScore(battlePeriodMember.getScore());
 		progressStatusVo.setStatus(battlePeriodMember.getStatus());
+		
+		progressStatusVo.setRoomStatus(battleroom.getStatus());
 		
 		progressStatusVos.add(progressStatusVo);
 		
@@ -62,6 +66,7 @@ public class ProgressStatusSocketService {
 			progressStatusVo.setProcess(battlePeriodMember.getProcess());
 			progressStatusVo.setScore(battlePeriodMember.getScore());
 			progressStatusVo.setStatus(battlePeriodMember.getStatus());
+			progressStatusVo.setRoomStatus(battleRoom.getStatus());
 			progressStatusVos.add(progressStatusVo);
 		}
 		

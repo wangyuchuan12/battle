@@ -11,6 +11,16 @@ public class ProgressStatusVo {
 	private String memberId;
 	
 	private Integer status;
+	
+	private Integer roomStatus;
+	
+	public Integer getRoomStatus() {
+		return roomStatus;
+	}
+
+	public void setRoomStatus(Integer roomStatus) {
+		this.roomStatus = roomStatus;
+	}
 
 	public Integer getScore() {
 		return score;
