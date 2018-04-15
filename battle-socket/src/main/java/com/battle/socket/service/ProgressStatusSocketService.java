@@ -1,10 +1,13 @@
 package com.battle.socket.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.service.BattlePeriodMemberService;
@@ -25,7 +28,7 @@ public class ProgressStatusSocketService {
 	private BattleRoomService battleRoomService;
 	
 	
-	public Object statusPublish(String roomId,BattlePeriodMember battlePeriodMember)throws Exception{
+	public Object statusPublish(String roomId,BattlePeriodMember battlePeriodMember,String ...excludeIds)throws Exception{
 		List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
 		
 		BattleRoom battleroom = battleRoomService.findOne(roomId);
@@ -47,13 +50,14 @@ public class ProgressStatusSocketService {
 		messageVo.setType(MessageVo.ROOM_TYPE);
 		messageVo.setRoomId(roomId);
 		messageVo.setData(progressStatusVos);
+		messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
 		
 		messageHandler.sendMessage(messageVo);
 		
 		return messageVo;
 	}
 	
-	public Object statusPublish(String roomId)throws Exception{
+	public Object statusPublish(String roomId,String ...excludeIds)throws Exception{
 		
 		BattleRoom battleRoom = battleRoomService.findOne(roomId);
 		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
@@ -76,7 +80,7 @@ public class ProgressStatusSocketService {
 		messageVo.setType(MessageVo.ROOM_TYPE);
 		messageVo.setRoomId(roomId);
 		messageVo.setData(progressStatusVos);
-		
+		messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
 		messageHandler.sendMessage(messageVo);
 		
 		return messageVo;

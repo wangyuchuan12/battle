@@ -508,7 +508,7 @@ public class QuestionApi {
 		sessionManager.update(battleMemberPaperAnswer);
 		platformTransactionManager.commit(transactionStatus);
 	
-		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember);
+		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 		return resultVo;
 	}
 	

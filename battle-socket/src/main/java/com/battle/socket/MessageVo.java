@@ -22,6 +22,8 @@ public class MessageVo {
 	//房间名称
 	private String roomId;
 	
+	private List<String> excludeUserIds;
+	
 	//用户数据
 	private List<String> userIds;
 
@@ -63,5 +65,13 @@ public class MessageVo {
 
 	public void setUserIds(List<String> userIds) {
 		this.userIds = userIds;
+	}
+
+	public List<String> getExcludeUserIds() {
+		return excludeUserIds;
+	}
+
+	public void setExcludeUserIds(List<String> excludeUserIds) {
+		this.excludeUserIds = excludeUserIds;
 	}
 }

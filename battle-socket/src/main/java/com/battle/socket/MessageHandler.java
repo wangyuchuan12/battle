@@ -35,13 +35,20 @@ public class MessageHandler {
 
 	public void sendMessage(MessageVo messageVo) throws IOException{
 		
+		List<String> excludeUserIds = messageVo.getExcludeUserIds();
 		List<String> tokens = new ArrayList<>();
 		if(messageVo.getType()==MessageVo.ALL_ONLINE_TYPE){
 			Pageable pageable = new PageRequest(0, 100);
 			Page<UserInfo> userInfoPage = wxUserInfoService.findAllByIsLine(1,pageable);
 			
 			for(UserInfo userInfo:userInfoPage.getContent()){
-				tokens.add(userInfo.getToken());
+				if(excludeUserIds==null||excludeUserIds.size()==0){
+					tokens.add(userInfo.getToken());
+				}else{
+					if(!excludeUserIds.contains(userInfo.getId())){
+						tokens.add(userInfo.getToken());
+					}
+				}
 			}
 		}
 		
@@ -55,7 +62,13 @@ public class MessageHandler {
 					
 				}
 				if(userInfo.getIsLine()==1){
-					tokens.add(userInfo.getToken());
+					if(excludeUserIds==null||excludeUserIds.size()==0){
+						tokens.add(userInfo.getToken());
+					}else{
+						if(!excludeUserIds.contains(userInfo.getId())){
+							tokens.add(userInfo.getToken());
+						}
+					}
 				}
 			}
 		}
@@ -69,7 +82,13 @@ public class MessageHandler {
 					
 				}
 				if(userInfo.getIsLine()==1){
-					tokens.add(userInfo.getToken());
+					if(excludeUserIds==null||excludeUserIds.size()==0){
+						tokens.add(userInfo.getToken());
+					}else{
+						if(!excludeUserIds.contains(userInfo.getId())){
+							tokens.add(userInfo.getToken());
+						}
+					}
 				}
 			}
 		}
