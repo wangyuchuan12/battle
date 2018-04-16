@@ -1110,10 +1110,13 @@ public class BattleApi {
 	
 	@RequestMapping(value="roomSignout")
 	@ResponseBody
-	@Transactional
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public Object roomSignOut(HttpServletRequest httpServletRequest)throws Exception{
 		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		
@@ -1144,6 +1147,10 @@ public class BattleApi {
 		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
 		
 		battlePeriodMemberService.update(battlePeriodMember);
+		
+		platformTransactionManager.commit(transactionStatus);
+		
+		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(),battlePeriodMember.getUserId());
 		
 		ResultVo resultVo = new ResultVo();
 		
@@ -1590,6 +1597,8 @@ public class BattleApi {
 		return null;
 		
 	}
+	
+	
 	
 	@RequestMapping(value="syncPapersData")
 	@ResponseBody
