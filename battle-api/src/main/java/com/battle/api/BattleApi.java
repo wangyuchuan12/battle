@@ -1663,6 +1663,8 @@ public class BattleApi {
 			resultVo.setErrorMsg("同步成功");
 			platformTransactionManager.commit(transactionStatus);
 			
+			
+			System.out.println(".....................endStatus");
 			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 			
 			return resultVo;
@@ -1943,6 +1945,7 @@ public class BattleApi {
 		
 		platformTransactionManager.commit(transactionStatus);
 		
+		System.out.println(".....................endStatus2");
 		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 		
 		return resultVo;
