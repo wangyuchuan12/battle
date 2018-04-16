@@ -142,6 +142,8 @@ public class SocketHandler extends TextWebSocketHandler {
         if (acceptorList != null && msgList != null) {
             for (String acceptor : acceptorList) {
                 WebSocketSession session = sessionMap.get(acceptor);
+                
+                System.out.println(".............session:"+session);
                 if (session != null) {
                     for (String msg : msgList) {
                         session.sendMessage(new TextMessage(msg.getBytes()));
