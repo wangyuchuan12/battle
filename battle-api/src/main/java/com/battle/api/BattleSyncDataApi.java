@@ -19,6 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,6 +40,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.other.BattleDanHandleService;
+import com.battle.socket.service.ProgressStatusSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -74,6 +79,12 @@ public class BattleSyncDataApi {
 	@Autowired
 	private BattleDanHandleService battleDanHandleService;
 	
+	@Autowired
+    private PlatformTransactionManager platformTransactionManager;
+	
+	@Autowired
+	private ProgressStatusSocketService progressStatusSocketService;
+	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	
 	@RequestMapping(value="syncPaperData")
@@ -83,6 +94,11 @@ public class BattleSyncDataApi {
 	public ResultVo syncPaperData(HttpServletRequest httpServletRequest)throws Exception{
 		
 		
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
@@ -353,6 +369,9 @@ public class BattleSyncDataApi {
 			
 			resultVo.setErrorMsg("同步成功");
 			
+			
+			platformTransactionManager.commit(transactionStatus);
+			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 			return resultVo;
 			
 		//}
