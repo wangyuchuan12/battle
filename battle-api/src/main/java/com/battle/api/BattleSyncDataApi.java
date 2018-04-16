@@ -40,6 +40,7 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.other.BattleDanHandleService;
+import com.battle.socket.service.BattleEndSocketService;
 import com.battle.socket.service.ProgressStatusSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
@@ -84,6 +85,9 @@ public class BattleSyncDataApi {
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
+	
+	@Autowired
+	private BattleEndSocketService battleEndSocketService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	
@@ -371,6 +375,10 @@ public class BattleSyncDataApi {
 			
 			
 			platformTransactionManager.commit(transactionStatus);
+			
+			if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+				battleEndSocketService.endPublish(battleRoom.getId());
+			}
 			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 			return resultVo;
 			
