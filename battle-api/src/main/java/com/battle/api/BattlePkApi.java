@@ -12,6 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,12 +28,15 @@ import com.battle.domain.BattleRoomPk;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleCreateDetailService;
+import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattlePkService;
 import com.battle.service.BattleRoomPkService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
+import com.battle.socket.service.BattleEndSocketService;
+import com.battle.socket.service.ProgressStatusSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
@@ -60,6 +67,13 @@ public class BattlePkApi {
 	
 	@Autowired
 	private BattleRoomPkService battleRoomPkService;
+	
+	@Autowired
+	private PlatformTransactionManager platformTransactionManager;
+	
+	@Autowired
+	private BattleEndSocketService battleEndSocketService;
+	
 	
 	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
 	
@@ -320,11 +334,15 @@ public class BattlePkApi {
 	
 	@RequestMapping(value="beatOut")
 	@ResponseBody
-	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo beatOut(HttpServletRequest httpServletRequest)throws Exception{
 		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		String id = httpServletRequest.getParameter("id");
@@ -371,6 +389,11 @@ public class BattlePkApi {
 		
 		battleRoomService.update(battleRoom);
 		
+		
+		platformTransactionManager.commit(transactionStatus);
+		
+	
+		battleEndSocketService.endPublish(battleRoom.getId());
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
@@ -522,6 +545,10 @@ public class BattlePkApi {
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo restart(HttpServletRequest httpServletRequest)throws Exception{
 
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
@@ -579,6 +606,10 @@ public class BattlePkApi {
 		battlePk.setPeriodId(battleCreateDetail.getPeriodId());
 		
 		battlePkService.update(battlePk);
+		
+		platformTransactionManager.commit(transactionStatus);
+		
+		battleEndSocketService.endPublish(battleRoom.getId());
 
 		ResultVo resultVo = new ResultVo();
 		
