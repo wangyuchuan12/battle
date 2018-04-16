@@ -52,6 +52,7 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         }
         
         attributes.put("token", token);
+        attributes.put("userId", userInfo.getId());
 
         boolean b = super.beforeHandshake(request, response, wsHandler, attributes);
         

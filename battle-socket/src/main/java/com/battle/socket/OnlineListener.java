@@ -11,19 +11,19 @@ public class OnlineListener {
 
 	@Autowired
 	private WxUserInfoService userInfoService;
-	public void onLine(String token){
+	public void onLine(String id){
 		
-		UserInfo userInfo = userInfoService.findByToken(token);
+		UserInfo userInfo = userInfoService.findOne(id);
 		
 		userInfo.setIsLine(1);
 		
 		userInfoService.update(userInfo);
 	}
 	
-	public void downLine(String token){
+	public void downLine(String id){
 		
 		
-		UserInfo userInfo = userInfoService.findByToken(token);
+		UserInfo userInfo = userInfoService.findOne(id);
 		
 		userInfo.setIsLine(0);
 		

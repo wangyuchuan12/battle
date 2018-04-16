@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.apache.catalina.connector.RequestFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import com.battle.socket.MessageHandler;
 //import com.wyc.common.config.scoket.CountWebSocketHandler;
 import com.battle.socket.MessageVo;
 import com.battle.socket.service.ProgressStatusSocketService;
+import com.wyc.common.service.WxUserInfoService;
+import com.wyc.common.wx.domain.UserInfo;
 
 @Controller
 @RequestMapping(value="/api/test")
@@ -40,6 +43,9 @@ public class TestApi {
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
+	
+	@Autowired
+	private WxUserInfoService wxUserInfoService;
 	
 	
 	//@Autowired
@@ -127,6 +133,37 @@ public class TestApi {
 		progressStatusSocketService.statusPublish(roomId);
 		
 		return "success";
+	}
+	
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value="test5")
+	public Object test5(HttpServletRequest httpServletRequest)throws Exception{
+		UserInfo userInfo = wxUserInfoService.findByToken("bb8b8a92-132e-4c56-ad4a-386e149c0dad");
+		
+		System.out.println("userInfo1:"+userInfo);
+		
+		Thread.sleep(20000);
+		
+		System.out.println("userInfo2:"+userInfo);
+		
+		return userInfo;
+	}
+	
+	
+	@Transactional
+	@ResponseBody
+	@RequestMapping(value="test6")
+	public Object test6(HttpServletRequest httpServletRequest)throws Exception{
+		UserInfo userInfo = wxUserInfoService.findOne("ef346651-ed39-4f6a-9f91-bfe89d1b29da");
+		
+		System.out.println("userInfo3:"+userInfo);
+	
+		
+		System.out.println("userInfo4:"+userInfo);
+		
+		return userInfo;
 	}
 	
 }

@@ -51,6 +51,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	
     	Map<String, Object> attributes = session.getAttributes();
     	Object token = attributes.get("token");
+    	Object userId = attributes.get("userId");
     	sessionMap.put(token.toString(),session);
  
     	
@@ -71,7 +72,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	dataViewService.update(dataView);
     	
     	
-    	onlineListener.onLine(token.toString());
+    	onlineListener.onLine(userId.toString());
     	
     	
     	platformTransactionManager.commit(transactionStatus);
@@ -86,6 +87,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
     	Map<String, Object> attributes = session.getAttributes();
     	Object token = attributes.get("token");
+    	Object userId = attributes.get("userId");
 
     	
     	DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
@@ -107,7 +109,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	dataView.setValue(num+"");
     	dataViewService.update(dataView);
     	
-    	onlineListener.downLine(token.toString());
+    	onlineListener.downLine(userId.toString());
     	
     	
     	platformTransactionManager.commit(transactionStatus);
