@@ -1651,6 +1651,8 @@ public class BattleApi {
 			
 			resultVo.setErrorMsg("同步成功");
 			
+			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
+			
 			return resultVo;
 			
 		}
