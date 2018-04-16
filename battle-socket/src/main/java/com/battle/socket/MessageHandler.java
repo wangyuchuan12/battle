@@ -42,7 +42,9 @@ public class MessageHandler {
 			Page<UserInfo> userInfoPage = wxUserInfoService.findAllByIsLine(1,pageable);
 			
 			for(UserInfo userInfo:userInfoPage.getContent()){
+				System.out.println(".........token:"+userInfo.getToken());
 				if(excludeUserIds==null||excludeUserIds.size()==0){
+					System.out.println(".........token2:"+userInfo.getToken());
 					tokens.add(userInfo.getToken());
 				}else{
 					if(!excludeUserIds.contains(userInfo.getId())){
@@ -57,15 +59,18 @@ public class MessageHandler {
 			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
 			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
 				UserInfo userInfo = wxUserInfoService.findOne(battlePeriodMember.getUserId());
+				System.out.println(".........token3:"+userInfo.getToken());
 				if(userInfo.getIsLine()==null){
 					userInfo.setIsLine(0);
 					
 				}
 				if(userInfo.getIsLine()==1){
 					if(excludeUserIds==null||excludeUserIds.size()==0){
+						System.out.println(".........token4:"+userInfo.getToken());
 						tokens.add(userInfo.getToken());
 					}else{
 						if(!excludeUserIds.contains(userInfo.getId())){
+							System.out.println(".........token5:"+userInfo.getToken());
 							tokens.add(userInfo.getToken());
 						}
 					}
