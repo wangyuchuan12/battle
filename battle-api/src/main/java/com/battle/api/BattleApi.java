@@ -1597,6 +1597,7 @@ public class BattleApi {
 	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
 		
 		
+		System.out.println("............111");
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
     	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     	
@@ -1609,6 +1610,7 @@ public class BattleApi {
 		
 		try{
 			battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
+			System.out.println("............222");
 		}catch(Exception e){
 			logger.error("获取battleRoom错误第一次");
 			try{
@@ -1623,7 +1625,10 @@ public class BattleApi {
 			
 		}
 		
+		System.out.println("............333");
+		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
+			System.out.println("............444");
 			Map<String, Object> data = new HashMap<>();
 			
 			Sort sort = new Sort(Direction.DESC,"score");
@@ -1670,6 +1675,9 @@ public class BattleApi {
 			return resultVo;
 			
 		}
+		
+		
+		
 		
 		List<BattleMemberPaperAnswer> battleMemberPaperAnswers = battleMemberPaperAnswerService.
 				findAllByBattlePeriodMemberIdAndIsSyncData(battlePeriodMember.getId(),0);
@@ -1915,6 +1923,7 @@ public class BattleApi {
 		data.put("status", battleRoom.getStatus());
 		
 		
+		System.out.println("............555");
 		
 		if(battlePeriodMember.getStatus()==BattlePeriodMember.STATUS_COMPLETE){
 			data.put("status", BattleRoom.STATUS_END);
