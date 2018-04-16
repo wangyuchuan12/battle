@@ -21,6 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
@@ -140,6 +143,9 @@ public class BattleApi {
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
+	
+	@Autowired
+    private PlatformTransactionManager platformTransactionManager;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
@@ -1590,6 +1596,11 @@ public class BattleApi {
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
 		
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		String groupId = httpServletRequest.getParameter("groupId");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
@@ -1650,6 +1661,7 @@ public class BattleApi {
 			resultVo.setData(data);
 			
 			resultVo.setErrorMsg("同步成功");
+			platformTransactionManager.commit(transactionStatus);
 			
 			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 			
@@ -1928,6 +1940,8 @@ public class BattleApi {
 		resultVo.setData(data);
 		
 		resultVo.setErrorMsg("同步成功");
+		
+		platformTransactionManager.commit(transactionStatus);
 		
 		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
 		
