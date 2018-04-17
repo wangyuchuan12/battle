@@ -47,4 +47,10 @@ public class AccountService {
 		accountRepository.initDrawUserCanTakeOutCount(count);
 		
 	}
+
+	public void setLoveLife(int loveLife) {
+		
+		accountRepository.setLoveLife(loveLife);
+		
+	}
 }

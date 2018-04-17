@@ -1,5 +1,6 @@
 package com.battle.service.task;
 
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class AccountTask {
 	
 	@Autowired
 	private AccountService accountService;
+
 	
 	@Autowired
 	private BattleGiftService battleGiftService;
@@ -24,5 +26,11 @@ public class AccountTask {
 		accountService.updateAllAboutReceiveGiftCount(0);
 		
 		battleGiftService.setIsReceive(0);
+	}
+	
+	@Scheduled(cron = "0 50 23 * * ?")
+	@Transactional
+	public void initAccount(){
+		accountService.setLoveLife(5);
 	}
 }

@@ -196,7 +196,7 @@ public class LoginApi{
 		account.setCanTakeOutCount(2);
 		account.setEmpiricalValue(new BigDecimal(0));
 		account.setIntegral(0);
-		account.setLoveLife(0);
+		account.setLoveLife(5);
 		account.setLoveLifeLimit(1000);
 		account.setMasonry(0);
 		account.setWisdomCount(0L);
