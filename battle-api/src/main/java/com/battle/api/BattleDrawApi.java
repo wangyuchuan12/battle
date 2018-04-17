@@ -28,7 +28,9 @@ import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.session.SessionManager;
 import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
@@ -48,6 +50,9 @@ public class BattleDrawApi {
 	
 	@Autowired
 	private BattleRoomRewardService battleRoomRewardService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@RequestMapping(value="list")
 	@ResponseBody
@@ -125,6 +130,45 @@ public class BattleDrawApi {
 		return resultVo;
 	}
 	
+	
+	
+	@RequestMapping(value="drawTakepart")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public ResultVo drawTakepart(HttpServletRequest httpServletRequest)throws Exception{
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		
+		Integer loveLife = account.getLoveLife();
+		
+		if(loveLife==null){
+			loveLife = 0;
+		}
+		
+		if(loveLife==0){
+			ResultVo resultVo = new ResultVo();
+			
+			resultVo.setSuccess(false);
+			
+			return resultVo;
+			
+		}else{
+			loveLife--;
+			account.setLoveLife(loveLife);
+			
+			accountService.update(account);
+			
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(true);
+			
+			return resultVo;
+		}
+	}
+	
 	@RequestMapping(value="randomLevel")
 	@ResponseBody
 	@Transactional
@@ -162,6 +206,7 @@ public class BattleDrawApi {
 				}
 			}
 		}
+	
 		
 		
 		if(battleRoom==null){
