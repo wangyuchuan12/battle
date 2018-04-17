@@ -812,6 +812,7 @@ public class BattleDanApi {
 				battleRoomReward.setIsReceive(0);
 				battleRoomReward.setRank(battleDanReward.getRank());
 				battleRoomReward.setRewardBean(battleDanReward.getRewardBean());
+				battleRoomReward.setRewardLove(battleDanReward.getRewardLove());
 				battleRoomReward.setRoomId(battleRoom.getId());
 				
 				battleRoomRewardService.add(battleRoomReward);

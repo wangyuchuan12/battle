@@ -25,6 +25,10 @@ public class BattleDanReward {
 	@ParamAnnotation
 	private Integer rewardBean;
 	
+	@Column(name="reward_love")
+	@ParamAnnotation
+	private Integer rewardLove;
+	
 	@Column
 	@ParamAnnotation
 	private Integer rank;
@@ -75,6 +79,14 @@ public class BattleDanReward {
 
 	public void setDanId(String danId) {
 		this.danId = danId;
+	}
+	
+	public Integer getRewardLove() {
+		return rewardLove;
+	}
+
+	public void setRewardLove(Integer rewardLove) {
+		this.rewardLove = rewardLove;
 	}
 
 	public DateTime getCreateAt() {

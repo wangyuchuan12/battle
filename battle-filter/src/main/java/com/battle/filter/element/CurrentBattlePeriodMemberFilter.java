@@ -112,6 +112,8 @@ public class CurrentBattlePeriodMemberFilter extends Filter{
 			
 			battlePeriodMember.setIsIncrease(battleRoom.getIsIncrease());
 			
+			battlePeriodMember.setRewardLove(0);
+			
 			battlePeriodMemberService.add(battlePeriodMember);
 		}
 	

@@ -541,7 +541,6 @@ public class BattlePkApi {
 	
 	@RequestMapping(value="restart")
 	@ResponseBody
-	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo restart(HttpServletRequest httpServletRequest)throws Exception{
 

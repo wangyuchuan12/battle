@@ -157,6 +157,11 @@ public class BattlePeriodMember implements Serializable{
 	@Column(name="reward_bean")
 	private Integer rewardBean;
 	
+	
+	@ParamAnnotation
+	@Column(name="reward_love")
+	private Integer rewardLove;
+	
 	@ParamAnnotation
 	@Column(name="is_increase")
 	private Integer isIncrease;
@@ -376,6 +381,14 @@ public class BattlePeriodMember implements Serializable{
 
 	public void setFlagId(String flagId) {
 		this.flagId = flagId;
+	}
+	
+	public Integer getRewardLove() {
+		return rewardLove;
+	}
+
+	public void setRewardLove(Integer rewardLove) {
+		this.rewardLove = rewardLove;
 	}
 
 	public DateTime getCreateAt() {

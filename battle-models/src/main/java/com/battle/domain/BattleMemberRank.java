@@ -55,6 +55,10 @@ public class BattleMemberRank {
 	private Integer rewardBean;
 	
 	@ParamAnnotation
+	@Column(name="reward_love")
+	private Integer rewardLove;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -138,6 +142,14 @@ public class BattleMemberRank {
 
 	public void setRewardBean(Integer rewardBean) {
 		this.rewardBean = rewardBean;
+	}
+
+	public Integer getRewardLove() {
+		return rewardLove;
+	}
+
+	public void setRewardLove(Integer rewardLove) {
+		this.rewardLove = rewardLove;
 	}
 
 	public DateTime getCreateAt() {

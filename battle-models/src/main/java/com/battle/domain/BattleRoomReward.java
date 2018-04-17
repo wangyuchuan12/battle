@@ -33,6 +33,11 @@ public class BattleRoomReward {
 	@ParamAnnotation
 	private Integer rewardBean;
 	
+	
+	@Column(name="reward_love")
+	@ParamAnnotation
+	private Integer rewardLove;
+	
 	@Column
 	@ParamAnnotation
 	private Integer rank;
@@ -120,6 +125,14 @@ public class BattleRoomReward {
 
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
+	}
+
+	public Integer getRewardLove() {
+		return rewardLove;
+	}
+
+	public void setRewardLove(Integer rewardLove) {
+		this.rewardLove = rewardLove;
 	}
 
 	public DateTime getCreateAt() {

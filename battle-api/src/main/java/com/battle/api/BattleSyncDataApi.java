@@ -219,6 +219,8 @@ public class BattleSyncDataApi {
 					if(battleRoomReward!=null){
 						battleMemberRank.setRewardBean(battleRoomReward.getRewardBean());
 						
+						battleMemberRank.setRewardLove(battleRoomReward.getRewardLove());
+						
 						UserInfo userInfo = userInfoService.findOne(vaildMember.getUserId());
 						
 						Account account = accountService.fineOneSync(userInfo.getAccountId());
@@ -229,10 +231,22 @@ public class BattleSyncDataApi {
 							rewardBean = 0;
 						}
 						
+						Integer rewardLove = battleRoomReward.getRewardLove();
+						
+						if(rewardLove==null){
+							rewardLove = 0;
+						}
+						
+						Integer loveCount = account.getLoveLife();
+						
+						loveCount = loveCount +rewardLove;
+						
 						Long wisdomCount = account.getWisdomCount();
 						wisdomCount = wisdomCount + rewardBean;
 						
 						account.setWisdomCount(wisdomCount);
+						
+						account.setLoveLife(loveCount);
 						
 						accountService.update(account);
 						
@@ -347,8 +361,10 @@ public class BattleSyncDataApi {
 		
 			if(battleRoomReward!=null){
 				data.put("rewardBean", battleRoomReward.getRewardBean());
+				data.put("rewardLove", battleRoomReward.getRewardLove());
 			}else{
 				data.put("rewardBean", 0);
+				data.put("rewardLove", 0);
 			}
 			
 			data.put("roomStatus", battleRoom.getStatus());
