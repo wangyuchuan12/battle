@@ -17,6 +17,7 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.UserStatusService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.common.service.WxUserInfoService;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Service
@@ -63,7 +64,10 @@ public class MessageHandler {
 			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
 				UserInfo userInfo = wxUserInfoService.findOne(battlePeriodMember.getUserId());
 				
-				UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
+				UserStatus userStatus = null;
+				if(!CommonUtil.isEmpty(userInfo.getStatusId())){
+					userStatus = userStatusService.findOne(userInfo.getStatusId());
+				}
 				if(userStatus==null){
 					userStatus = new UserStatus();
 					userStatus.setIsLine(0);
