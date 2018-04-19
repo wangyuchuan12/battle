@@ -109,6 +109,8 @@ public class LoginApi{
 				System.out.println("..............14");
 				account = initAccount();
 				userInfo.setAccountId(account.getId());
+				
+				wxUserInfoService.update(userInfo);
 			}else{
 				System.out.println("..............15");
 				account = accountService.fineOne(accountId);
@@ -116,6 +118,8 @@ public class LoginApi{
 					System.out.println("..............16");
 					account = initAccount();
 					userInfo.setAccountId(account.getId());
+					
+					wxUserInfoService.update(userInfo);
 				}
 			}
 			System.out.println("..............17");
