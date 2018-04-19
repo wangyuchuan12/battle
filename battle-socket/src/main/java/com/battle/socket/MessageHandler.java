@@ -55,7 +55,8 @@ public class MessageHandler {
 		}
 		
 		if(messageVo.getType()==MessageVo.ROOM_TYPE){
-			List<BattlePeriodMember> battlePeriodMembers = messageVo.getBattlePeriodMembers();
+			BattleRoom battleRoom = battleRoomService.findOne(messageVo.getRoomId());
+			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
 			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
 				UserInfo userInfo = wxUserInfoService.findOne(battlePeriodMember.getUserId());
 				System.out.println(".........token3:"+userInfo.getToken());
