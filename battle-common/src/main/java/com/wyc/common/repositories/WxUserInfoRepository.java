@@ -14,10 +14,10 @@ import com.wyc.common.wx.domain.UserInfo;
 
 public interface WxUserInfoRepository extends CrudRepository<UserInfo, String>{
 	
-	@Cacheable(value="userCache")
+
     public UserInfo findByToken(String token);
 
-	@Cacheable(value="userCache") 
+
     public UserInfo findByOpenid(String openid);
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)

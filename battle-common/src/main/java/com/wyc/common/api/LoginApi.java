@@ -168,6 +168,10 @@ public class LoginApi{
 		
 		System.out.println("......userInfo:"+userInfo);
 		System.out.println("......userInfo.accountId:"+userInfo.getAccountId());
+		
+		if(true){
+			return null;
+		}
 		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
 			ResultVo resultVo = new ResultVo();
