@@ -21,7 +21,7 @@ public interface WxUserInfoRepository extends CrudRepository<UserInfo, String>{
     public UserInfo findByOpenid(String openid);
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@Cacheable(value="userCache")
+	//@Cacheable(value="userCache")
 	public UserInfo findOne(String id);
 
 	@QueryHints({@QueryHint(name ="org.hibernate.cacheable", value ="true") })
