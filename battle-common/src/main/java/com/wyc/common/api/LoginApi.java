@@ -169,9 +169,6 @@ public class LoginApi{
 		System.out.println("......userInfo:"+userInfo);
 		System.out.println("......userInfo.accountId:"+userInfo.getAccountId());
 		
-		if(true){
-			return null;
-		}
 		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
 			ResultVo resultVo = new ResultVo();
@@ -179,20 +176,25 @@ public class LoginApi{
 			resultVo.setErrorMsg("该用户没有登录，不能获取账户信息");
 			return resultVo;
 		}else{
+			System.out.println("..................1");
 			String accountId = userInfo.getAccountId();
 			Account account;
 			if(CommonUtil.isEmpty(accountId)){
+				System.out.println("..................2");
 				account = initAccount();
 				userInfo.setAccountId(accountId);
 				wxUserInfoService.update(userInfo);
 			}else{
+				System.out.println("..................3");
 				account = accountService.fineOneSync(userInfo.getAccountId());
 				if(account==null){
+					System.out.println("..................4");
 					account = initAccount();
 					userInfo.setAccountId(accountId);
 					wxUserInfoService.update(userInfo);
 				}
 			}
+			System.out.println("..................5");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(account);
