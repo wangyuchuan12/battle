@@ -194,7 +194,7 @@ public class LoginApi{
 					wxUserInfoService.update(userInfo);
 				}
 			}
-			System.out.println("..................5");
+			System.out.println("..................");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(account);

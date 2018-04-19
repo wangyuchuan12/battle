@@ -25,7 +25,7 @@ public class AccountService {
 	}
 	
 	public Account fineOneSync(String accountId) {
-		return accountRepository.findOneSync(accountId);
+		return accountRepository.findOne(accountId);
 	}
 
 	public void update(Account account) {
