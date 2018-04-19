@@ -11,8 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
+import com.battle.domain.UserStatus;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.UserStatusService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.wx.domain.UserInfo;
@@ -31,6 +33,9 @@ public class MessageHandler {
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
+	
+	@Autowired
+	private UserStatusService userStatusService;
 
 
 	public void sendMessage(MessageVo messageVo) throws IOException{
@@ -39,16 +44,14 @@ public class MessageHandler {
 		List<String> tokens = new ArrayList<>();
 		if(messageVo.getType()==MessageVo.ALL_ONLINE_TYPE){
 			Pageable pageable = new PageRequest(0, 100);
-			Page<UserInfo> userInfoPage = wxUserInfoService.findAllByIsLine(1,pageable);
+			Page<UserStatus> userInfoPage = userStatusService.findAllByIsLine(1,pageable);
 			
-			for(UserInfo userInfo:userInfoPage.getContent()){
-				System.out.println(".........token:"+userInfo.getToken());
+			for(UserStatus userStatus:userInfoPage.getContent()){
 				if(excludeUserIds==null||excludeUserIds.size()==0){
-					System.out.println(".........token2:"+userInfo.getToken());
-					tokens.add(userInfo.getToken());
+					tokens.add(userStatus.getToken());
 				}else{
-					if(!excludeUserIds.contains(userInfo.getId())){
-						tokens.add(userInfo.getToken());
+					if(!excludeUserIds.contains(userStatus.getId())){
+						tokens.add(userStatus.getToken());
 					}
 				}
 			}
@@ -59,18 +62,28 @@ public class MessageHandler {
 			List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
 			for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
 				UserInfo userInfo = wxUserInfoService.findOne(battlePeriodMember.getUserId());
-				System.out.println(".........token3:"+userInfo.getToken());
-				if(userInfo.getIsLine()==null){
-					userInfo.setIsLine(0);
+				
+				UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
+				if(userStatus==null){
+					userStatus = new UserStatus();
+					userStatus.setIsLine(0);
+					userStatus.setUserId(userInfo.getId());
+					userStatus.setToken(userInfo.getToken());
+					userStatusService.add(userStatus);
 					
+					userInfo.setStatusId(userStatus.getId());
+					
+					wxUserInfoService.update(userInfo);
 				}
-				if(userInfo.getIsLine()==1){
+				if(userStatus.getIsLine()==null){
+					userStatus.setIsLine(0);
+					userStatusService.update(userStatus);
+				}
+				if(userStatus.getIsLine()==1){
 					if(excludeUserIds==null||excludeUserIds.size()==0){
-						System.out.println(".........token4:"+userInfo.getToken());
 						tokens.add(userInfo.getToken());
 					}else{
 						if(!excludeUserIds.contains(userInfo.getId())){
-							System.out.println(".........token5:"+userInfo.getToken());
 							tokens.add(userInfo.getToken());
 						}
 					}
@@ -81,17 +94,29 @@ public class MessageHandler {
 		if(messageVo.getType()==MessageVo.USERS_TYPE){
 			List<String> userIds = messageVo.getUserIds();
 			for(String userId:userIds){
-				UserInfo userInfo = wxUserInfoService.findOne(userId);
-				if(userInfo.getIsLine()==null){
-					userInfo.setIsLine(0);
+				UserStatus userStatus = userStatusService.findOneByUserId(userId);
+				if(userStatus==null){
+					
+					UserInfo userInfo = wxUserInfoService.findOne(userId);
+					userStatus = new UserStatus();
+					userStatus.setIsLine(0);
+					userStatus.setUserId(userId);
+					userStatus.setToken(userInfo.getToken());
+					userStatusService.add(userStatus);
+		
+					userInfo.setStatusId(userStatus.getId());
+					wxUserInfoService.update(userInfo);
+				}
+				if(userStatus.getIsLine()==null){
+					userStatus.setIsLine(0);
 					
 				}
-				if(userInfo.getIsLine()==1){
+				if(userStatus.getIsLine()==1){
 					if(excludeUserIds==null||excludeUserIds.size()==0){
-						tokens.add(userInfo.getToken());
+						tokens.add(userStatus.getToken());
 					}else{
-						if(!excludeUserIds.contains(userInfo.getId())){
-							tokens.add(userInfo.getToken());
+						if(!excludeUserIds.contains(userStatus.getUserId())){
+							tokens.add(userStatus.getToken());
 						}
 					}
 				}

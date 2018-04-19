@@ -1,11 +1,9 @@
 package com.wyc.common.api;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -14,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import com.wyc.common.domain.Account;
-import com.wyc.common.domain.AccountRecord;
 import com.wyc.common.domain.vo.LoginVo;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.service.AccountService;
@@ -166,9 +161,6 @@ public class LoginApi{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
-		System.out.println("......userInfo:"+userInfo);
-		System.out.println("......userInfo.accountId:"+userInfo.getAccountId());
-		
 		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
 			ResultVo resultVo = new ResultVo();
@@ -176,25 +168,20 @@ public class LoginApi{
 			resultVo.setErrorMsg("该用户没有登录，不能获取账户信息");
 			return resultVo;
 		}else{
-			System.out.println("..................1");
 			String accountId = userInfo.getAccountId();
 			Account account;
 			if(CommonUtil.isEmpty(accountId)){
-				System.out.println("..................2");
 				account = initAccount();
 				userInfo.setAccountId(accountId);
 				wxUserInfoService.update(userInfo);
 			}else{
-				System.out.println("..................3");
 				account = accountService.fineOneSync(userInfo.getAccountId());
 				if(account==null){
-					System.out.println("..................4");
 					account = initAccount();
 					userInfo.setAccountId(accountId);
 					wxUserInfoService.update(userInfo);
 				}
 			}
-			System.out.println("..................");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(account);

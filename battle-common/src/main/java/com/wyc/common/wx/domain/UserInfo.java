@@ -120,8 +120,9 @@ public class UserInfo implements Serializable{
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
     private Integer isGod;
     
-    @Column(name="is_line")
-    private Integer isLine =0;
+    @Column(name="status_id")
+    @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
+    private String statusId;
     
     @Column(name = "create_at")
     @ParamAnnotation(type=ParamEntityAnnotation.SESSION_TYPE)
@@ -290,10 +291,10 @@ public class UserInfo implements Serializable{
 	public void setIsSyncDan(Integer isSyncDan) {
 		this.isSyncDan = isSyncDan;
 	}
-	public Integer getIsLine() {
-		return isLine;
+	public String getStatusId() {
+		return statusId;
 	}
-	public void setIsLine(Integer isLine) {
-		this.isLine = isLine;
+	public void setStatusId(String statusId) {
+		this.statusId = statusId;
 	}
 }

@@ -1,12 +1,8 @@
 package com.wyc.common.service;
-
-import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.wyc.common.repositories.WxUserInfoRepository;
@@ -45,10 +41,5 @@ public class WxUserInfoService {
 	public UserInfo findOne(String id) {
 		
 		return userInfoRepository.findOne(id);
-	}
-
-	public Page<UserInfo> findAllByIsLine(int isLine, Pageable pageable) {
-		
-		return userInfoRepository.findAllByIsLine(isLine,pageable);
 	}
 }

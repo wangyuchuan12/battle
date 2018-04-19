@@ -13,8 +13,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.*;
 
-import javax.transaction.Transactional;
-
 /**
  * @author xiaojf 2017/3/2 9:55.
  */
