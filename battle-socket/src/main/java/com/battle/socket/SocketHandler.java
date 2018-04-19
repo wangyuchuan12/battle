@@ -38,7 +38,6 @@ public class SocketHandler extends TextWebSocketHandler {
         
     }
 
-    @Transactional
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     	
@@ -69,7 +68,6 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     
-    @Transactional
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
