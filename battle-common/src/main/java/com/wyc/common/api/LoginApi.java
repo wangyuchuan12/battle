@@ -109,7 +109,7 @@ public class LoginApi{
 				userInfo.setAccountId(account.getId());
 				wxUserInfoService.update(userInfo);
 			}else{
-				account = accountService.findOne(accountId);
+				account = accountService.fineOneSync(accountId);
 				if(account==null){
 					account = initAccount();
 					userInfo.setAccountId(account.getId());
