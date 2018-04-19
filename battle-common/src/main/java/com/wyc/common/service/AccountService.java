@@ -23,11 +23,7 @@ public class AccountService {
 		account.setCreateAt(new DateTime());
 		return accountRepository.save(account);
 	}
-
-	public Account findOne(String id) {
-		return accountRepository.findOne(id);
-	}
-
+	
 	public Account fineOneSync(String accountId) {
 		return accountRepository.findOneSync(accountId);
 	}

@@ -176,7 +176,7 @@ public class LoginApi{
 				userInfo.setAccountId(accountId);
 				wxUserInfoService.update(userInfo);
 			}else{
-				account = accountService.findOne(userInfo.getAccountId());
+				account = accountService.fineOneSync(userInfo.getAccountId());
 				if(account==null){
 					account = initAccount();
 					userInfo.setAccountId(accountId);
