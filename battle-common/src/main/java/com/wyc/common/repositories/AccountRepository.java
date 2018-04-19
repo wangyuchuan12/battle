@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.wyc.common.domain.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String>{
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	//@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Account findOne(String id);
 	
 	@Modifying

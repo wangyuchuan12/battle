@@ -39,7 +39,7 @@ public class LoginApi{
 	
 	final static Logger logger = LoggerFactory.getLogger(LoginApi.class);
 	
-	@Transactional
+	//@Transactional
 	@ResponseBody
 	@RequestMapping(value="loginByJsCode")
 	public Object loginByJsCode(HttpServletRequest httpServletRequest)throws Exception{
