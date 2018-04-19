@@ -33,6 +33,7 @@ public class OnlineListener {
 			userStatus.setUserId(userInfo.getId());
 			userStatusService.add(userStatus);
 			
+			userInfo.setStatusId(userStatus.getId());
 			userInfoService.update(userInfo);
 		}
 		
