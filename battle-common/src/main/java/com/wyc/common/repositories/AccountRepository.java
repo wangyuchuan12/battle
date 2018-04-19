@@ -12,7 +12,7 @@ import com.wyc.common.domain.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String>{
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	Account findOne(@Param("id") String id);
+	Account findOne(String id);
 	
 	@Modifying
 	@Query(value="update com.wyc.common.domain.Account du set du.canTakeOutCount=:count")
