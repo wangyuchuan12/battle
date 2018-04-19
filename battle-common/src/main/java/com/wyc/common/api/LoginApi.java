@@ -39,7 +39,7 @@ public class LoginApi{
 	
 	final static Logger logger = LoggerFactory.getLogger(LoginApi.class);
 	
-	//@Transactional
+	@Transactional
 	@ResponseBody
 	@RequestMapping(value="loginByJsCode")
 	public Object loginByJsCode(HttpServletRequest httpServletRequest)throws Exception{
@@ -104,13 +104,11 @@ public class LoginApi{
 			if(CommonUtil.isEmpty(accountId)){
 				account = initAccount();
 				userInfo.setAccountId(account.getId());
-				wxUserInfoService.update(userInfo);
 			}else{
 				account = accountService.fineOneSync(accountId);
 				if(account==null){
 					account = initAccount();
 					userInfo.setAccountId(account.getId());
-					wxUserInfoService.update(userInfo);
 				}
 			}
 			
