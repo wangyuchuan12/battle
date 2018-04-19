@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.AccountRecord;
 import com.wyc.common.domain.vo.LoginVo;
@@ -163,6 +165,7 @@ public class LoginApi{
 	public ResultVo accountInfo(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
