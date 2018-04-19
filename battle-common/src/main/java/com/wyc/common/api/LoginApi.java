@@ -43,9 +43,7 @@ public class LoginApi{
 	@ResponseBody
 	@RequestMapping(value="loginByJsCode")
 	public Object loginByJsCode(HttpServletRequest httpServletRequest)throws Exception{
-		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		System.out.println("..............8");
 		String token = null;
 		UserInfo userInfo = null;
 		token = httpServletRequest.getParameter("token");
@@ -56,7 +54,6 @@ public class LoginApi{
 		
 			
 		if(userInfo==null){
-			System.out.println("..............9");
 			String code =httpServletRequest.getParameter("code");
 			
 			OpenIdVo openIdVo = null;
@@ -74,9 +71,7 @@ public class LoginApi{
 				return resultVo;
 			}
 			
-			System.out.println("..............10");
 			if(openIdVo==null){
-				System.out.println("..............11");
 				logger.error("登录时获取的openId对象为空");
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(false);
@@ -92,12 +87,7 @@ public class LoginApi{
 			userInfo = wxUserInfoService.findByOpenidAndSource(openId,1);
 		}
 		
-		
-		System.out.println("..............12");
-		
 		if(userInfo!=null){
-			
-			System.out.println("..............13");
 			LoginVo loginVo = new LoginVo();
 			token = UUID.randomUUID().toString();
 			loginVo.setToken(userInfo.getToken());
@@ -106,23 +96,19 @@ public class LoginApi{
 			String accountId = userInfo.getAccountId();
 			Account account;
 			if(CommonUtil.isEmpty(accountId)){
-				System.out.println("..............14");
 				account = initAccount();
 				userInfo.setAccountId(account.getId());
 				
 				wxUserInfoService.update(userInfo);
 			}else{
-				System.out.println("..............15");
 				account = accountService.fineOne(accountId);
 				if(account==null){
-					System.out.println("..............16");
 					account = initAccount();
 					userInfo.setAccountId(account.getId());
 					
 					wxUserInfoService.update(userInfo);
 				}
 			}
-			System.out.println("..............17");
 			
 			sessionManager.save(userInfo);
 			
@@ -132,7 +118,6 @@ public class LoginApi{
 			
 			return resultVo;
 		}else{
-			System.out.println("..............18");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("用户未注册");
@@ -171,35 +156,27 @@ public class LoginApi{
 	public ResultVo accountInfo(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
-		
-		System.out.println("..............1");
 		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
-			System.out.println("..............2");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
 			resultVo.setErrorMsg("该用户没有登录，不能获取账户信息");
 			return resultVo;
 		}else{
-			System.out.println("..............3");
 			String accountId = userInfo.getAccountId();
 			Account account;
 			if(CommonUtil.isEmpty(accountId)){
-				System.out.println("..............4");
 				account = initAccount();
 				userInfo.setAccountId(accountId);
 				wxUserInfoService.update(userInfo);
 			}else{
-				System.out.println("..............5");
 				account = accountService.fineOneSync(userInfo.getAccountId());
 				if(account==null){
-					System.out.println("..............6");
 					account = initAccount();
 					userInfo.setAccountId(accountId);
 					wxUserInfoService.update(userInfo);
 				}
 			}
-			System.out.println("..............7");
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(true);
 			resultVo.setData(account);
@@ -244,10 +221,7 @@ public class LoginApi{
 		String openId = openIdVo.getOpenid();
 		
 		UserInfo userInfo = wxUserInfoService.findByOpenidAndSource(openId,1);
-		System.out.println("..............19");
 		if(userInfo==null){
-			
-			System.out.println("..............20");
 			Account account = initAccount();
 			
 			userInfo = new UserInfo();
