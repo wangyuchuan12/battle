@@ -5,10 +5,6 @@ import com.battle.service.DataViewService;
 import com.wyc.common.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -28,9 +24,6 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Autowired
 	private DataViewService dataViewService;
-    
-    @Autowired
-    private PlatformTransactionManager platformTransactionManager;
     
     @Autowired
     private OnlineListener onlineListener;
@@ -55,10 +48,6 @@ public class SocketHandler extends TextWebSocketHandler {
     	sessionMap.put(token.toString(),session);
  
     	
-    	DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
     	
     	
     	DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
@@ -74,8 +63,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	
     	onlineListener.onLine(userId.toString());
     	
-    	
-    	platformTransactionManager.commit(transactionStatus);
+    
     	
         super.afterConnectionEstablished(session);
     }
@@ -90,10 +78,6 @@ public class SocketHandler extends TextWebSocketHandler {
     	Object userId = attributes.get("userId");
 
     	
-    	DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
     	
     	
     	DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
@@ -110,9 +94,6 @@ public class SocketHandler extends TextWebSocketHandler {
     	dataViewService.update(dataView);
     	
     	onlineListener.downLine(userId.toString());
-    	
-    	
-    	platformTransactionManager.commit(transactionStatus);
     	
     	sessionMap.remove(token.toString());
         super.afterConnectionClosed(session, status);

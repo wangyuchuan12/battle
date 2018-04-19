@@ -80,8 +80,6 @@ public class BattleSyncDataApi {
 	@Autowired
 	private BattleDanHandleService battleDanHandleService;
 	
-	@Autowired
-    private PlatformTransactionManager platformTransactionManager;
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
@@ -98,11 +96,6 @@ public class BattleSyncDataApi {
 	public ResultVo syncPaperData(HttpServletRequest httpServletRequest)throws Exception{
 		
 		
-		
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
@@ -390,12 +383,22 @@ public class BattleSyncDataApi {
 			resultVo.setErrorMsg("同步成功");
 			
 			
-			platformTransactionManager.commit(transactionStatus);
-			
 			if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 				battleEndSocketService.endPublish(battleRoom.getId());
 			}
-			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
+			
+			final BattlePeriodMember battlePeriodMember2 = battlePeriodMember;
+			
+			new Thread(){
+				public void run() {
+					try{
+						progressStatusSocketService.statusPublish(battlePeriodMember2.getRoomId(), battlePeriodMember2,battlePeriodMember2.getUserId());
+					}catch(Exception e){
+						logger.error("{}",e);
+					}
+				}
+			}.start();
+			
 			return resultVo;
 			
 		//}

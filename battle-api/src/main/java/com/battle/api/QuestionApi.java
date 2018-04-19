@@ -104,14 +104,10 @@ public class QuestionApi {
 	@Autowired
 	private BattleMemberLoveCoolingService battleMemberLoveCoolingService;
 	
-	@Autowired
-	private BattleNoticeService battleNoticeService;
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
 	
-	@Autowired
-    private PlatformTransactionManager platformTransactionManager;
 
 	final static Logger logger = LoggerFactory.getLogger(QuestionApi.class);
 	
@@ -121,12 +117,8 @@ public class QuestionApi {
 	@Transactional
 	public Object battleQuestionAnswer(HttpServletRequest httpServletRequest)throws Exception{
 		
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
-		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		final BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
 		
 		BattleRoom battleRoom = battleRoomService.findOne(battlePeriodMember.getRoomId());
 		
@@ -506,9 +498,17 @@ public class QuestionApi {
 		
 		sessionManager.update(questionAnswer);
 		sessionManager.update(battleMemberPaperAnswer);
-		platformTransactionManager.commit(transactionStatus);
 	
-		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
+		new Thread(){
+			public void run() {
+				try{
+					progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
+				}catch(Exception e){
+					logger.error("{}",e);
+				}
+			}
+		}.start();
+		
 		return resultVo;
 	}
 	

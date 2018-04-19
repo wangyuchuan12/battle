@@ -2,6 +2,9 @@ package com.battle.socket;
 
 import java.util.List;
 
+import com.battle.domain.BattlePeriodMember;
+import com.battle.domain.BattleRoom;
+
 public class MessageVo {
 
 	public final static int ALL_ONLINE_TYPE = 0;
@@ -28,6 +31,10 @@ public class MessageVo {
 	
 	//用户数据
 	private List<String> userIds;
+	
+	private BattleRoom battleRoom;
+	
+	private List<BattlePeriodMember> battlePeriodMembers;
 
 	public String getCode() {
 		return code;
@@ -75,5 +82,21 @@ public class MessageVo {
 
 	public void setExcludeUserIds(List<String> excludeUserIds) {
 		this.excludeUserIds = excludeUserIds;
+	}
+
+	public BattleRoom getBattleRoom() {
+		return battleRoom;
+	}
+
+	public void setBattleRoom(BattleRoom battleRoom) {
+		this.battleRoom = battleRoom;
+	}
+
+	public List<BattlePeriodMember> getBattlePeriodMembers() {
+		return battlePeriodMembers;
+	}
+
+	public void setBattlePeriodMembers(List<BattlePeriodMember> battlePeriodMembers) {
+		this.battlePeriodMembers = battlePeriodMembers;
 	}
 }

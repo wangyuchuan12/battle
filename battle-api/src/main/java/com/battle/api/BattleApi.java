@@ -20,10 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.Battle;
@@ -59,7 +55,6 @@ import com.battle.service.BattleRedPacketAmountDistributionService;
 import com.battle.service.BattleRedpacketService;
 import com.battle.service.BattleRoomEntryService;
 import com.battle.service.BattleRoomRecordService;
-import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleSubjectService;
@@ -132,8 +127,6 @@ public class BattleApi {
 	@Autowired
 	private BattleDanTaskUserService battleDanTaskUserService;
 	
-	@Autowired
-	private BattleRoomRewardService battleRoomRewardService;
 	
 	@Autowired
 	private BattleDanHandleService battleDanHandleService;
@@ -144,8 +137,6 @@ public class BattleApi {
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
 	
-	@Autowired
-    private PlatformTransactionManager platformTransactionManager;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
 	@RequestMapping(value="roomInfo")
@@ -611,8 +602,7 @@ public class BattleApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public Object addRoomWidthShare(HttpServletRequest httpServletRequest)throws Exception{
-		
-		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+
 		String roomId = httpServletRequest.getParameter("roomId");
 		
 		String maxinum = httpServletRequest.getParameter("maxinum");
@@ -638,8 +628,6 @@ public class BattleApi {
 		httpServletRequest.setAttribute("periodId", battleRoom.getPeriodId());
 		httpServletRequest.setAttribute("maxinum", maxinumInt);
 		httpServletRequest.setAttribute("mininum", mininumInt);
-		
-		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
 		
 		
 		ResultVo resultVo = addRoom(httpServletRequest);
@@ -1082,7 +1070,6 @@ public class BattleApi {
 		Integer sizeInt = Integer.parseInt(size);
 		
 		
-		Integer c = Integer.parseInt(status);
 		
 		if(sizeInt>20){
 			ResultVo resultVo = new ResultVo();
@@ -1111,12 +1098,9 @@ public class BattleApi {
 	@RequestMapping(value="roomSignout")
 	@ResponseBody
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
+	@Transactional
 	public Object roomSignOut(HttpServletRequest httpServletRequest)throws Exception{
 		
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		
 		
@@ -1150,9 +1134,18 @@ public class BattleApi {
 		
 		battlePeriodMemberService.update(battlePeriodMember);
 		
-		platformTransactionManager.commit(transactionStatus);
+		final BattlePeriodMember battlePeriodMember2 = battlePeriodMember;
 		
-		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(),battlePeriodMember.getUserId());
+		new Thread(){
+			public void run() {
+				try{
+					progressStatusSocketService.statusPublish(battlePeriodMember2.getRoomId(),battlePeriodMember2.getUserId());
+				}catch(Exception e){
+					logger.error("{}",e);
+				}
+			}
+		}.start();
+		
 		
 		ResultVo resultVo = new ResultVo();
 		
@@ -1607,12 +1600,6 @@ public class BattleApi {
 	@HandlerAnnotation(hanlerFilter=CurrentMemberInfoFilter.class)
 	public ResultVo syncPapersData(HttpServletRequest httpServletRequest)throws Exception{
 		
-		
-		System.out.println("............111");
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 		String groupId = httpServletRequest.getParameter("groupId");
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
@@ -1677,12 +1664,7 @@ public class BattleApi {
 			resultVo.setData(data);
 			
 			resultVo.setErrorMsg("同步成功");
-			platformTransactionManager.commit(transactionStatus);
-			
-			
-			System.out.println(".....................endStatus");
-			progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
-			
+					
 			return resultVo;
 			
 		}
@@ -1963,11 +1945,7 @@ public class BattleApi {
 		
 		resultVo.setErrorMsg("同步成功");
 		
-		platformTransactionManager.commit(transactionStatus);
-		
-		System.out.println(".....................endStatus2");
-		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(), battlePeriodMember,battlePeriodMember.getUserId());
-		
+	
 		return resultVo;
 	}
 }
