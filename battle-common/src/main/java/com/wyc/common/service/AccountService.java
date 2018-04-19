@@ -25,7 +25,7 @@ public class AccountService {
 	}
 	
 	public Account fineOneSync(String accountId) {
-		return accountRepository.findOne(accountId);
+		return accountRepository.fineOneSync(accountId);
 	}
 
 	public void update(Account account) {
@@ -48,5 +48,10 @@ public class AccountService {
 		
 		accountRepository.setLoveLife(loveLife);
 		
+	}
+
+	public Account fineOne(String id) {
+		
+		return accountRepository.findOne(id);
 	}
 }

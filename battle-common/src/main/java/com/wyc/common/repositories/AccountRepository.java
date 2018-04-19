@@ -11,8 +11,10 @@ import org.springframework.data.repository.query.Param;
 import com.wyc.common.domain.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String>{
-	//@Lock(LockModeType.PESSIMISTIC_WRITE)
-	Account findOne(String id);
+	
+	@Query(value="from com.wyc.common.domain.Account where id=:id")
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	Account fineOneSync(@Param("id")String id);
 	
 	@Modifying
 	@Query(value="update com.wyc.common.domain.Account du set du.canTakeOutCount=:count")

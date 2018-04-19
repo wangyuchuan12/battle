@@ -105,7 +105,7 @@ public class LoginApi{
 				account = initAccount();
 				userInfo.setAccountId(account.getId());
 			}else{
-				account = accountService.fineOneSync(accountId);
+				account = accountService.fineOne(accountId);
 				if(account==null){
 					account = initAccount();
 					userInfo.setAccountId(account.getId());
