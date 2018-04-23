@@ -76,6 +76,8 @@ public class ProgressStatusSocketService {
 				List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
 				
 				for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+					
+					System.out.println(".........loveResidule:"+battlePeriodMember.getLoveResidule());
 					ProgressStatusVo progressStatusVo = new ProgressStatusVo();
 					progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
 					progressStatusVo.setMemberId(battlePeriodMember.getId());

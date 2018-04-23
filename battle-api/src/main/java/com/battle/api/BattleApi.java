@@ -1128,7 +1128,7 @@ public class BattleApi {
 		
 		battleRoomService.update(battleRoom);
 		
-		battlePeriodMember.setLoveCount(0);
+		battlePeriodMember.setLoveResidule(0);
 		
 		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
 		
