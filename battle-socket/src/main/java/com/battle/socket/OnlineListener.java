@@ -42,7 +42,7 @@ public class OnlineListener {
 				
 				userStatus.setIsLine(1);
 				
-				userInfoService.update(userInfo);
+				userStatusService.update(userStatus);
 			}
 		}.start();
 		
@@ -58,7 +58,7 @@ public class OnlineListener {
 				
 				userStatus.setIsLine(1);
 				
-				userInfoService.update(userInfo);
+				userStatusService.update(userStatus);
 			}
 		}.start();
 	}
