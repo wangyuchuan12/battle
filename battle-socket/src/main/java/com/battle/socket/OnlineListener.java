@@ -2,8 +2,14 @@ package com.battle.socket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.battle.domain.DataView;
 import com.battle.domain.UserStatus;
+import com.battle.service.DataViewService;
 import com.battle.service.UserStatusService;
 import com.wyc.common.service.WxUserInfoService;
 import com.wyc.common.util.CommonUtil;
@@ -17,11 +23,22 @@ public class OnlineListener {
 	
 	@Autowired
 	private UserStatusService userStatusService;
+	
+	@Autowired
+	private DataViewService dataViewService;
+	
+	@Autowired
+    private PlatformTransactionManager platformTransactionManager;
+
 	public void onLine(final String id){
-		
-		
+
 		new Thread(){
 			public void run() {
+				
+				DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+		    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		    	
+		    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 				UserInfo userInfo = userInfoService.findOne(id);
 				
 				UserStatus userStatus = null;
@@ -43,6 +60,19 @@ public class OnlineListener {
 				userStatus.setIsLine(1);
 				
 				userStatusService.update(userStatus);
+				
+				
+				DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
+		    	String value = dataView.getValue();
+		    	Integer num = 0;
+		    	if(CommonUtil.isNotEmpty(value)){
+		    		num = Integer.parseInt(value);
+		    	}
+		    	num++;
+		    	dataView.setValue(num+"");
+		    	dataViewService.update(dataView);
+		    	
+		    	platformTransactionManager.commit(transactionStatus);
 			}
 		}.start();
 		
@@ -52,6 +82,11 @@ public class OnlineListener {
 		
 		new Thread(){
 			public void run() {
+				
+				DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+		    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		    	
+		    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
 				UserInfo userInfo = userInfoService.findOne(id);
 				
 				UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
@@ -59,6 +94,21 @@ public class OnlineListener {
 				userStatus.setIsLine(0);
 				
 				userStatusService.update(userStatus);
+				
+				DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
+		    	String value = dataView.getValue();
+		    	Integer num = 0;
+		    	if(CommonUtil.isNotEmpty(value)){
+		    		num = Integer.parseInt(value);
+		    	}
+		    	num--;
+		    	if(num<0){
+		    		num = 0;
+		    	}
+		    	dataView.setValue(num+"");
+		    	dataViewService.update(dataView);
+		    	
+		    	platformTransactionManager.commit(transactionStatus);
 			}
 		}.start();
 	}

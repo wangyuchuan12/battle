@@ -43,25 +43,10 @@ public class SocketHandler extends TextWebSocketHandler {
     	Object token = attributes.get("token");
     	Object userId = attributes.get("userId");
     	sessionMap.put(token.toString(),session);
- 
-    	
-    	
-    	
-    	DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
-    	String value = dataView.getValue();
-    	Integer num = 0;
-    	if(CommonUtil.isNotEmpty(value)){
-    		num = Integer.parseInt(value);
-    	}
-    	num++;
-    	dataView.setValue(num+"");
-    	dataViewService.update(dataView);
-    	
+     	
     	
     	onlineListener.onLine(userId.toString());
-    	
-    
-    	
+    	   	
         super.afterConnectionEstablished(session);
     }
 
@@ -73,21 +58,6 @@ public class SocketHandler extends TextWebSocketHandler {
     	Object token = attributes.get("token");
     	Object userId = attributes.get("userId");
 
-    	
-    	
-    	
-    	DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
-    	String value = dataView.getValue();
-    	Integer num = 0;
-    	if(CommonUtil.isNotEmpty(value)){
-    		num = Integer.parseInt(value);
-    	}
-    	num--;
-    	if(num<0){
-    		num = 0;
-    	}
-    	dataView.setValue(num+"");
-    	dataViewService.update(dataView);
     	
     	onlineListener.downLine(userId.toString());
     	
