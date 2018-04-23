@@ -1133,18 +1133,11 @@ public class BattleApi {
 		battlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
 		
 		battlePeriodMemberService.update(battlePeriodMember);
+	
 		
-		final BattlePeriodMember battlePeriodMember2 = battlePeriodMember;
+		System.out.println(".......................roomSignOut");
 		
-		new Thread(){
-			public void run() {
-				try{
-					progressStatusSocketService.statusPublish(battlePeriodMember2.getRoomId(),battlePeriodMember2.getUserId());
-				}catch(Exception e){
-					logger.error("{}",e);
-				}
-			}
-		}.start();
+		progressStatusSocketService.statusPublish(battlePeriodMember.getRoomId(),battlePeriodMember.getUserId());
 		
 		
 		ResultVo resultVo = new ResultVo();
