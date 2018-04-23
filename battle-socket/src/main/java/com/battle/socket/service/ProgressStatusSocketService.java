@@ -1,5 +1,6 @@
 package com.battle.socket.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,61 +28,78 @@ public class ProgressStatusSocketService {
 	private BattleRoomService battleRoomService;
 	
 	
-	public Object statusPublish(String roomId,BattlePeriodMember battlePeriodMember,String ...excludeIds)throws Exception{
-		List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
+	public void statusPublish(final String roomId,final BattlePeriodMember battlePeriodMember,final String ...excludeIds){
 		
-		BattleRoom battleroom = battleRoomService.findOne(roomId);
-		
-		ProgressStatusVo progressStatusVo = new ProgressStatusVo();
-		progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
-		progressStatusVo.setMemberId(battlePeriodMember.getId());
-		progressStatusVo.setProcess(battlePeriodMember.getProcess());
-		progressStatusVo.setScore(battlePeriodMember.getScore());
-		progressStatusVo.setStatus(battlePeriodMember.getStatus());
-		
-		progressStatusVo.setRoomStatus(battleroom.getStatus());
-		
-		progressStatusVos.add(progressStatusVo);
-		
-		MessageVo messageVo = new MessageVo();
-		
-		messageVo.setCode(MessageVo.PROGRESS_CODE);
-		messageVo.setType(MessageVo.ROOM_TYPE);
-		messageVo.setRoomId(roomId);
-		messageVo.setData(progressStatusVos);
-		messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
-		
-		messageHandler.sendMessage(messageVo);
-		
-		return messageVo;
+		new Thread(){
+			public void run() {
+				List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
+				
+				BattleRoom battleroom = battleRoomService.findOne(roomId);
+				
+				ProgressStatusVo progressStatusVo = new ProgressStatusVo();
+				progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
+				progressStatusVo.setMemberId(battlePeriodMember.getId());
+				progressStatusVo.setProcess(battlePeriodMember.getProcess());
+				progressStatusVo.setScore(battlePeriodMember.getScore());
+				progressStatusVo.setStatus(battlePeriodMember.getStatus());
+				
+				progressStatusVo.setRoomStatus(battleroom.getStatus());
+				
+				progressStatusVos.add(progressStatusVo);
+				
+				MessageVo messageVo = new MessageVo();
+				
+				messageVo.setCode(MessageVo.PROGRESS_CODE);
+				messageVo.setType(MessageVo.ROOM_TYPE);
+				messageVo.setRoomId(roomId);
+				messageVo.setData(progressStatusVos);
+				messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
+				
+				try {
+					messageHandler.sendMessage(messageVo);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	
 	}
 	
-	public Object statusPublish(String roomId,String ...excludeIds)throws Exception{
+	public void statusPublish(final String roomId,final String ...excludeIds){
 		
-		BattleRoom battleRoom = battleRoomService.findOne(roomId);
-		List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
-		List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
 		
-		for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
-			ProgressStatusVo progressStatusVo = new ProgressStatusVo();
-			progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
-			progressStatusVo.setMemberId(battlePeriodMember.getId());
-			progressStatusVo.setProcess(battlePeriodMember.getProcess());
-			progressStatusVo.setScore(battlePeriodMember.getScore());
-			progressStatusVo.setStatus(battlePeriodMember.getStatus());
-			progressStatusVo.setRoomStatus(battleRoom.getStatus());
-			progressStatusVos.add(progressStatusVo);
-		}
-		
-		MessageVo messageVo = new MessageVo();
-		
-		messageVo.setCode(MessageVo.PROGRESS_CODE);
-		messageVo.setType(MessageVo.ROOM_TYPE);
-		messageVo.setRoomId(roomId);
-		messageVo.setData(progressStatusVos);
-		messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
-		messageHandler.sendMessage(messageVo);
-		
-		return messageVo;
+		new Thread(){
+			public void run() {
+				BattleRoom battleRoom = battleRoomService.findOne(roomId);
+				List<BattlePeriodMember> battlePeriodMembers = battlePeriodMemberService.findAllByBattleIdAndPeriodIdAndRoomId(battleRoom.getBattleId(), battleRoom.getPeriodId(), battleRoom.getId());
+				List<ProgressStatusVo> progressStatusVos = new ArrayList<>();
+				
+				for(BattlePeriodMember battlePeriodMember:battlePeriodMembers){
+					ProgressStatusVo progressStatusVo = new ProgressStatusVo();
+					progressStatusVo.setLoveCount(battlePeriodMember.getLoveResidule());
+					progressStatusVo.setMemberId(battlePeriodMember.getId());
+					progressStatusVo.setProcess(battlePeriodMember.getProcess());
+					progressStatusVo.setScore(battlePeriodMember.getScore());
+					progressStatusVo.setStatus(battlePeriodMember.getStatus());
+					progressStatusVo.setRoomStatus(battleRoom.getStatus());
+					progressStatusVos.add(progressStatusVo);
+				}
+				
+				MessageVo messageVo = new MessageVo();
+				
+				messageVo.setCode(MessageVo.PROGRESS_CODE);
+				messageVo.setType(MessageVo.ROOM_TYPE);
+				messageVo.setRoomId(roomId);
+				messageVo.setData(progressStatusVos);
+				messageVo.setExcludeUserIds(Arrays.asList(excludeIds));
+				try{
+					messageHandler.sendMessage(messageVo);
+				}catch(Exception e){
+					
+				}
+				
+			}
+		}.start();
 	}
 }

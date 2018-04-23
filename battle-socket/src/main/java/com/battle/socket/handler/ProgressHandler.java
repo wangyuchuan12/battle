@@ -1,7 +1,8 @@
-package com.battle.socket;
+package com.battle.socket.handler;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.battle.domain.DataView;
 import com.battle.service.DataViewService;
+import com.battle.socket.OnlineListener;
 import com.wyc.common.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.*;
  * @author xiaojf 2017/3/2 9:55.
  */
 @Service
-public class SocketHandler extends TextWebSocketHandler {
+public class ProgressHandler extends TextWebSocketHandler {
     private Map<String,WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
 
     @Autowired

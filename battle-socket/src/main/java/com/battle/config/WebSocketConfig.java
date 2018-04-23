@@ -34,5 +34,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     	
     	System.out.println("看看这里有没有被调用");
         registry.addHandler(socketHandler, "/socket").setAllowedOrigins("*").addInterceptors(handshakeInterceptor);
+        
     }
 }
