@@ -17,40 +17,49 @@ public class OnlineListener {
 	
 	@Autowired
 	private UserStatusService userStatusService;
-	public void onLine(String id){
+	public void onLine(final String id){
 		
-		UserInfo userInfo = userInfoService.findOne(id);
 		
-		UserStatus userStatus = null;
-		if(!CommonUtil.isEmpty(userInfo.getStatusId())){
-			userStatus = userStatusService.findOne(userInfo.getStatusId());
-		}
+		new Thread(){
+			public void run() {
+				UserInfo userInfo = userInfoService.findOne(id);
+				
+				UserStatus userStatus = null;
+				if(!CommonUtil.isEmpty(userInfo.getStatusId())){
+					userStatus = userStatusService.findOne(userInfo.getStatusId());
+				}
+				
+				if(userStatus==null){
+					userStatus = new UserStatus();
+					userStatus.setIsLine(1);
+					userStatus.setToken(userInfo.getToken());
+					userStatus.setUserId(userInfo.getId());
+					userStatusService.add(userStatus);
+					
+					userInfo.setStatusId(userStatus.getId());
+					userInfoService.update(userInfo);
+				}
+				
+				userStatus.setIsLine(1);
+				
+				userInfoService.update(userInfo);
+			}
+		}.start();
 		
-		if(userStatus==null){
-			userStatus = new UserStatus();
-			userStatus.setIsLine(1);
-			userStatus.setToken(userInfo.getToken());
-			userStatus.setUserId(userInfo.getId());
-			userStatusService.add(userStatus);
-			
-			userInfo.setStatusId(userStatus.getId());
-			userInfoService.update(userInfo);
-		}
-		
-		userStatus.setIsLine(1);
-		
-		userInfoService.update(userInfo);
 	}
 	
-	public void downLine(String id){
+	public void downLine(final String id){
 		
-		
-		UserInfo userInfo = userInfoService.findOne(id);
-		
-		UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
-		
-		userStatus.setIsLine(1);
-		
-		userInfoService.update(userInfo);
+		new Thread(){
+			public void run() {
+				UserInfo userInfo = userInfoService.findOne(id);
+				
+				UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
+				
+				userStatus.setIsLine(1);
+				
+				userInfoService.update(userInfo);
+			}
+		}.start();
 	}
 }
