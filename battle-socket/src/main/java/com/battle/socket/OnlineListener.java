@@ -56,7 +56,7 @@ public class OnlineListener {
 				
 				UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
 				
-				userStatus.setIsLine(1);
+				userStatus.setIsLine(0);
 				
 				userStatusService.update(userStatus);
 			}
