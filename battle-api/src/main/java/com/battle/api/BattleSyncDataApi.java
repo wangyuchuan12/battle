@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battle.domain.BattleMemberPaperAnswer;
 import com.battle.domain.BattleMemberRank;
 import com.battle.domain.BattleNotice;
+import com.battle.domain.BattlePeriod;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
+import com.battle.domain.UserStatus;
 import com.battle.filter.element.CurrentMemberInfoFilter;
 import com.battle.service.BattleMemberPaperAnswerService;
 import com.battle.service.BattleMemberRankService;
@@ -39,6 +41,7 @@ import com.battle.service.BattleNoticeService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.UserStatusService;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.socket.service.BattleEndSocketService;
 import com.battle.socket.service.ProgressStatusSocketService;
@@ -86,6 +89,9 @@ public class BattleSyncDataApi {
 	
 	@Autowired
 	private BattleEndSocketService battleEndSocketService;
+	
+	@Autowired
+	private UserStatusService userStatusService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleSyncDataApi.class);
 	
@@ -159,7 +165,15 @@ public class BattleSyncDataApi {
 		for(BattlePeriodMember allBattlePeriodMember:allBattlePeriodMembers){
 			int status = allBattlePeriodMember.getStatus();
 			if(status==BattlePeriodMember.STATUS_IN){
-				battlePeriodMembers.add(allBattlePeriodMember);
+				
+				UserStatus userStatus = userStatusService.findOneByUserId(allBattlePeriodMember.getUserId());
+				if(userStatus.getIsLine()==1){
+					battlePeriodMembers.add(allBattlePeriodMember);
+				}else{
+					allBattlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
+					battlePeriodMemberService.update(allBattlePeriodMember);
+					progressStatusSocketService.statusPublish(allBattlePeriodMember.getRoomId(), allBattlePeriodMember, allBattlePeriodMember.getUserId());
+				}
 			}
 			
 			if(status==BattlePeriodMember.STATUS_COMPLETE||status==BattlePeriodMember.STATUS_END||status==BattlePeriodMember.STATUS_IN){

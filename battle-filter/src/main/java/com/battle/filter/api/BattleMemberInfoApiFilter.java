@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -94,6 +95,10 @@ public class BattleMemberInfoApiFilter extends Filter{
 		data.put("isFrendGroup",battleRoom.getIsFrendGroup());
 		
 		data.put("costBean",battleRoom.getCostBean());
+		
+		Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
+		
+		data.put("timeDiffer",differ);
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			BattleMemberRank battleMemberRank = battleMemberRankService.findOneByMemberId(battlePeriodMember.getId());

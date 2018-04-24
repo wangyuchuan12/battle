@@ -8,7 +8,7 @@ import com.battle.domain.DataView;
 
 public interface DataViewDao extends CrudRepository<DataView, String>{
 
-	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	DataView findOneByCode(String code);
 
 }
