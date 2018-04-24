@@ -283,6 +283,10 @@ public class BattleRoom implements Serializable{
 	private Integer isEndHandle;
 	
 	@ParamAnnotation
+	@Column(name="is_start")
+	private Integer isStart;
+	
+	@ParamAnnotation
 	@Column(name="start_time")
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime startTime;
@@ -771,6 +775,14 @@ public class BattleRoom implements Serializable{
 
 	public void setIsEndHandle(Integer isEndHandle) {
 		this.isEndHandle = isEndHandle;
+	}
+
+	public Integer getIsStart() {
+		return isStart;
+	}
+
+	public void setIsStart(Integer isStart) {
+		this.isStart = isStart;
 	}
 
 	public DateTime getCreateAt() {

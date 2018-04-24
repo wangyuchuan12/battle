@@ -63,6 +63,7 @@ import com.battle.service.listener.BattleRoomEndListener;
 import com.battle.service.other.BattleDanHandleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.socket.service.ProgressStatusSocketService;
+import com.battle.socket.task.RoomStartTask;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -136,6 +137,9 @@ public class BattleApi {
 	
 	@Autowired
 	private ProgressStatusSocketService progressStatusSocketService;
+	
+	@Autowired
+	private RoomStartTask roomStartTask;
 	
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleApi.class);
@@ -880,6 +884,8 @@ public class BattleApi {
 		battleRoom.setScrollGogal(500);
 		
 		battleRoomService.add(battleRoom);
+		
+		roomStartTask.run(battleRoom);
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(battleRoom);

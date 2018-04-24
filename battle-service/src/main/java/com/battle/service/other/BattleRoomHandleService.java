@@ -79,6 +79,8 @@ public class BattleRoomHandleService {
 		
 		battleRoom.setIsEndHandle(0);
 		
+		battleRoom.setIsStart(0);
+		
 		return battleRoom;
 	}
 }

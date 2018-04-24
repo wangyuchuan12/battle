@@ -9,11 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 
 import com.battle.domain.BattleMemberRank;
 import com.battle.domain.BattlePeriodMember;
@@ -21,7 +16,6 @@ import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleUser;
 import com.battle.filter.element.CurrentBattlePeriodMemberFilter;
 import com.battle.filter.element.CurrentBattleUserFilter;
-import com.battle.filter.element.CurrentLoveCoolingFilter;
 import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattleMemberRankService;
 import com.wyc.AttrEnum;
@@ -99,6 +93,16 @@ public class BattleMemberInfoApiFilter extends Filter{
 		Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
 		
 		data.put("timeDiffer",differ);
+		
+		if(differ<=0){
+			battleRoom.setIsStart(1);
+		}else{
+			battleRoom.setIsStart(0);
+		}
+		
+		sessionManager.update(battleRoom);
+		
+		data.put("isStart",battleRoom.getIsStart());
 		
 		if(battleRoom.getStatus()==BattleRoom.STATUS_END){
 			BattleMemberRank battleMemberRank = battleMemberRankService.findOneByMemberId(battlePeriodMember.getId());

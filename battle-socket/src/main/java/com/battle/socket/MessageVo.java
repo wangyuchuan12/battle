@@ -15,6 +15,10 @@ public class MessageVo {
 	public final static String PROGRESS_CODE = "progressCode";
 	
 	public final static String BATTLE_END_CODE = "battleEndCode";
+	
+	public final static String TAKEPART_CODE = "takepartCode";
+	
+	public final static String ROOM_START_CODE = "roomStartCode";
 	//调用编号
 	private String code;
 	

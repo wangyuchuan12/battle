@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.battle.domain.Battle;
@@ -17,6 +18,8 @@ import com.battle.filter.element.LoginStatusFilter;
 import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
+import com.battle.socket.service.BattleRoomStartService;
+import com.battle.socket.service.BattleRoomTakepartService;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -42,7 +45,13 @@ public class BattleTakepartApiFilter extends Filter{
 	
 	@Autowired
 	private AccountService accountService;
-
+	
+	@Autowired
+	private BattleRoomTakepartService battleRoomTakepartService;
+	
+	@Autowired
+	private BattleRoomStartService battleRoomStartService;
+	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
 		
@@ -158,6 +167,22 @@ public class BattleTakepartApiFilter extends Filter{
 			takepartCount++;
 			battlePeriod.setTakepartCount(takepartCount);
 			BattlePeriodService.update(battlePeriod);
+			
+			battleRoomTakepartService.takepartPublish(battlePeriodMember);
+			
+			
+			Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
+			Integer num = battleRoom.getNum();
+			Integer mininum = battleRoom.getMininum();
+			if(num==null){
+				num  = 0;
+			}
+			if(mininum==null){
+				mininum = 0;
+			}
+			if(differ<=0&&num>=mininum){
+				battleRoomStartService.startPublish(battleRoom);
+			}
 			
 			ResultVo resultVo = new ResultVo();
 			

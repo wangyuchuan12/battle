@@ -50,6 +50,7 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
 import com.battle.service.other.BattleRoomHandleService;
+import com.battle.socket.service.InitRoomService;
 import com.wyc.AttrEnum;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
@@ -93,9 +94,7 @@ public class BattleDanApi {
 	
 	@Autowired
 	private BattleUserService battleUserService;
-	
-	@Autowired
-	private BattleRoomService battleRoomService;
+
 	
 	@Autowired
 	private BattlePeriodMemberService battlePeriodMemberService;
@@ -110,10 +109,16 @@ public class BattleDanApi {
 	private BattleRoomRewardService battleRoomRewardService;
 	
 	@Autowired
+	private BattleRoomService battleRoomService;
+	
+	@Autowired
 	private BattleDanRewardService battleDanRewardService;
 	
 	@Autowired
 	private WxUserInfoService wxUserInfoService;
+	
+	@Autowired
+	private InitRoomService initRoomService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleDanApi.class);
 	
@@ -541,7 +546,7 @@ public class BattleDanApi {
 
 				battleRoom.setStartTime(new DateTime(calendar.getTime()));
 				
-				battleRoomService.add(battleRoom);
+				initRoomService.addRoom(battleRoom);
 				
 				Sort rewardSort = new Sort(Direction.ASC,"rank");
 				Pageable rewardPageable = new PageRequest(0,40,rewardSort);
@@ -800,7 +805,7 @@ public class BattleDanApi {
 			
 			battleRoom.setLoveCount(battleDanUser.getLoveCount());
 			
-			battleRoomService.add(battleRoom);
+			initRoomService.addRoom(battleRoom);
 			
 			Sort rewardSort = new Sort(Direction.ASC,"rank");
 			Pageable rewardPageable = new PageRequest(0,40,rewardSort);
