@@ -31,6 +31,7 @@ import com.battle.service.BattleService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
 import com.battle.socket.service.BattleEndSocketService;
+import com.battle.socket.service.InitRoomService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
@@ -64,6 +65,9 @@ public class BattlePkApi {
 	
 	@Autowired
 	private BattleEndSocketService battleEndSocketService;
+	
+	@Autowired
+	private InitRoomService initRoomService;
 	
 	
 	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
@@ -164,6 +168,7 @@ public class BattlePkApi {
 			battleRoom.setPlaces(10);
 			battleRoom.setIsDanRoom(0);
 			battleRoom.setIsIncrease(1);
+			battleRoom.setStartTime(new DateTime());
 			
 			battleRoomService.add(battleRoom);
 		}
@@ -267,7 +272,9 @@ public class BattlePkApi {
 				
 				battleRoom.setIsIncrease(1);
 				
-				battleRoomService.add(battleRoom);
+				battleRoom.setStartTime(new DateTime());
+				
+				initRoomService.addRoom(battleRoom);
 				
 				battlePk.setRoomId(battleRoom.getId());
 				battlePk.setBattleId(battle.getId());
@@ -585,6 +592,7 @@ public class BattlePkApi {
 		battleRoom.setScrollGogal(battleCreateDetail.getScrollGogal());
 		battleRoom.setPlaces(1);
 		battleRoom.setIsDanRoom(0);
+		battleRoom.setStartTime(new DateTime());
 		
 		battleRoomService.add(battleRoom);
 		
