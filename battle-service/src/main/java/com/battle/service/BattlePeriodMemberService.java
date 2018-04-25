@@ -70,6 +70,7 @@ public class BattlePeriodMemberService {
 		battlePeriodMember.setId(UUID.randomUUID().toString());
 		battlePeriodMember.setUpdateAt(new DateTime());
 		battlePeriodMember.setCreateAt(new DateTime());
+		battlePeriodMemberDao.save(battlePeriodMember);
 		
 	}
 

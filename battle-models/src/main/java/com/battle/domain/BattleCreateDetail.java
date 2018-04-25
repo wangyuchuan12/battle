@@ -15,8 +15,10 @@ import com.wyc.annotation.ParamEntityAnnotation;
 
 @ParamEntityAnnotation
 @Entity
-@Table(name="pk_create_detail")
+@Table(name="battle_create_detail")
 public class BattleCreateDetail {
+	
+	public final static String  PK_CODE = "pk";
 	@Id
 	@IdAnnotation
 	private String id;
@@ -40,6 +42,14 @@ public class BattleCreateDetail {
 	@ParamAnnotation
 	@Column
 	private Integer places;
+	
+	@ParamAnnotation
+	@Column(unique=true)
+	private String code;
+	
+	@ParamAnnotation
+	@Column(name="love_count")
+	private Integer loveCount;
 	
 	@ParamAnnotation
 	@Column(name = "create_at")
@@ -99,6 +109,22 @@ public class BattleCreateDetail {
 
 	public void setPlaces(Integer places) {
 		this.places = places;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Integer getLoveCount() {
+		return loveCount;
+	}
+
+	public void setLoveCount(Integer loveCount) {
+		this.loveCount = loveCount;
 	}
 
 	public DateTime getCreateAt() {

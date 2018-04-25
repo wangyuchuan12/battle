@@ -10,4 +10,6 @@ public interface BattleCreateDetailDao extends CrudRepository<BattleCreateDetail
 
 	List<BattleCreateDetail> findAllByIsDefault(int isDefault);
 
+	BattleCreateDetail findOneByCode(String code);
+
 }

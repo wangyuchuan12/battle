@@ -885,8 +885,6 @@ public class BattleApi {
 		
 		battleRoomService.add(battleRoom);
 		
-		roomStartTask.run(battleRoom);
-		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setData(battleRoom);
 		resultVo.setMsg("添加成功");
@@ -1111,6 +1109,7 @@ public class BattleApi {
 		
 		
 		BattlePeriodMember battlePeriodMember = sessionManager.getObject(BattlePeriodMember.class);
+		
 		
 		if(battlePeriodMember.getStatus()!=BattlePeriodMember.STATUS_IN){
 			ResultVo resultVo = new ResultVo();

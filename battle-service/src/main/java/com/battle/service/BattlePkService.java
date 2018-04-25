@@ -37,6 +37,8 @@ public class BattlePkService {
 	}
 
 	public void add(BattlePk battlePk) {
+		
+		/*
 		try{
 			readWriteLock.writeLock().lock();
 			
@@ -52,11 +54,16 @@ public class BattlePkService {
 		}finally{
 			readWriteLock.writeLock().unlock();
 			
-		}
+		}*/
 		
+		battlePk.setId(UUID.randomUUID().toString());
+		battlePk.setCreateAt(new DateTime());
+		battlePk.setUpdateAt(new DateTime());
+		battlePkDao.save(battlePk);
 	}
 
 	public BattlePk findOne(String id) {
+		/*
 		String key = BATTLE_PK_KEY;
 		key = key+"_"+id;
 		try{
@@ -78,14 +85,15 @@ public class BattlePkService {
 			redisService.setObject(key, BattleRoom.class);
 		}catch(Exception e){
 			logger.error("BattlePkService的findOne方法存储BattlePk对象到redis失败");
-		}
-		
+		}*/
+		BattlePk battlePk = battlePkDao.findOne(id);
 		return battlePk;
 		
 	}
 
 	public void update(BattlePk battlePk) {
 		
+		/*
 		String key = BATTLE_PK_KEY;
 		key = key+"_"+battlePk.getId();
 		try{
@@ -98,7 +106,9 @@ public class BattlePkService {
 		}finally{
 			readWriteLock.writeLock().unlock();
 			
-		}
+		}*/
 		
+		battlePk.setUpdateAt(new DateTime());
+		battlePkDao.save(battlePk);
 	}
 }

@@ -19,6 +19,8 @@ public class MessageVo {
 	public final static String TAKEPART_CODE = "takepartCode";
 	
 	public final static String ROOM_START_CODE = "roomStartCode";
+	
+	public final static String PK_STATUS_CODE = "pkStatusCode";
 	//调用编号
 	private String code;
 	

@@ -18,4 +18,9 @@ public class BattleCreateDetailService {
 		
 		return battleCreateDetailDao.findAllByIsDefault(isDefault);
 	}
+
+	public BattleCreateDetail findOneByCode(String code) {
+		
+		return battleCreateDetailDao.findOneByCode(code);
+	}
 }

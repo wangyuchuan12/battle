@@ -20,6 +20,7 @@ import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.socket.service.BattleRoomStartService;
 import com.battle.socket.service.BattleRoomTakepartService;
+import com.battle.socket.task.RoomStartTask;
 import com.wyc.AttrEnum;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -50,7 +51,7 @@ public class BattleTakepartApiFilter extends Filter{
 	private BattleRoomTakepartService battleRoomTakepartService;
 	
 	@Autowired
-	private BattleRoomStartService battleRoomStartService;
+	private RoomStartTask roomStartTask;
 	
 	@Override
 	public Object handlerFilter(SessionManager sessionManager) throws Exception {
@@ -181,7 +182,7 @@ public class BattleTakepartApiFilter extends Filter{
 				mininum = 0;
 			}
 			if(differ<=0&&num>=mininum){
-				battleRoomStartService.startPublish(battleRoom);
+				roomStartTask.run(battleRoom);
 			}
 			
 			ResultVo resultVo = new ResultVo();

@@ -32,6 +32,7 @@ import com.battle.service.other.BattleRoomHandleService;
 import com.battle.service.redis.BattlePkRedisService;
 import com.battle.socket.service.BattleEndSocketService;
 import com.battle.socket.service.InitRoomService;
+import com.battle.socket.service.PkSocketService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.session.SessionManager;
@@ -68,6 +69,9 @@ public class BattlePkApi {
 	
 	@Autowired
 	private InitRoomService initRoomService;
+	
+	@Autowired
+	private PkSocketService pkSocketService;
 	
 	
 	final static Logger logger = LoggerFactory.getLogger(BattlePkApi.class);
