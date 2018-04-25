@@ -23,8 +23,6 @@ public class RoomStartTask {
 			@Override
 			public void run() {
 				Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
-				
-				System.out.println(".......differ:"+differ);
 				Integer num = battleRoom.getNum();
 				Integer mininum = battleRoom.getMininum();
 				if(num==null){
@@ -33,7 +31,7 @@ public class RoomStartTask {
 				if(mininum==null){
 					mininum = 0;
 				}
-				if(differ<=0&&num>=mininum){
+				if(differ<=-20&&num>=mininum){
 					timer.cancel();
 					battleRoomStartService.startPublish(battleRoom);
 				}
