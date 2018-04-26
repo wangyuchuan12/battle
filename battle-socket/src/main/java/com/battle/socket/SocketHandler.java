@@ -3,6 +3,9 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.battle.domain.DataView;
 import com.battle.service.DataViewService;
 import com.wyc.common.util.CommonUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
@@ -18,13 +21,15 @@ import java.util.*;
  */
 @Service
 public class SocketHandler extends TextWebSocketHandler {
-    private Map<String,WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
+    private static final Map<String,WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
 
     @Autowired
 	private DataViewService dataViewService;
     
     @Autowired
     private OnlineListener onlineListener;
+    
+    final static Logger logger = LoggerFactory.getLogger(SocketHandler.class);
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 //        session.sendMessage(new TextMessage(session.getPrincipal().getName()+",你是第" + (sessionMap.size()) + "位访客")); //p2p
@@ -37,20 +42,37 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
     	
     	Map<String, Object> attributes = session.getAttributes();
-    	Object token = attributes.get("token");
+    	final Object token = attributes.get("token");
     	Object userId = attributes.get("userId");
     	
     	sessionMap.remove(token.toString());
     	
-    	sessionMap.put(token.toString(),session);
-     	
     	
+    	Timer timer = new Timer();
+    	
+    	TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				logger.debug("put session delay 1000 run");
+				sessionMap.put(token.toString(),session);
+				try{
+					
+				}catch(Exception e){
+					logger.error("{}",e);
+				}
+			}
+		};
+		
+		timer.schedule(timerTask, 1000);
+    	
+    
     	onlineListener.onLine(userId.toString());
     	   	
-        super.afterConnectionEstablished(session);
+    	SocketHandler.super.afterConnectionEstablished(session);
     }
 
     
@@ -60,10 +82,9 @@ public class SocketHandler extends TextWebSocketHandler {
     	Map<String, Object> attributes = session.getAttributes();
     	Object token = attributes.get("token");
     	Object userId = attributes.get("userId");
-
     	
     	onlineListener.downLine(userId.toString());
-    	
+
     	sessionMap.remove(token.toString());
         super.afterConnectionClosed(session, status);
     }
