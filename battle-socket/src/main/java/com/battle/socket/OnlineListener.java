@@ -88,9 +88,12 @@ public class OnlineListener {
 		
 		UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
 		
-		userStatus.setIsLine(0);
+		if(userStatus!=null){
 		
-		userStatusService.update(userStatus);
+			userStatus.setIsLine(0);
+			
+			userStatusService.update(userStatus);
+		}
 		
 		/*
 		DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);

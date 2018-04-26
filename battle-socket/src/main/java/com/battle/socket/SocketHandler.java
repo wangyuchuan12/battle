@@ -67,7 +67,7 @@ public class SocketHandler extends TextWebSocketHandler {
 			}
 		};
 		
-		timer.schedule(timerTask, 5000);
+		timer.schedule(timerTask, 1000);
     	
     
     	onlineListener.onLine(userId.toString());
