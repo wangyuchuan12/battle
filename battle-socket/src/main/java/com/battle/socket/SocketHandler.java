@@ -42,6 +42,9 @@ public class SocketHandler extends TextWebSocketHandler {
     	Map<String, Object> attributes = session.getAttributes();
     	Object token = attributes.get("token");
     	Object userId = attributes.get("userId");
+    	
+    	sessionMap.remove(token.toString());
+    	
     	sessionMap.put(token.toString(),session);
      	
     	

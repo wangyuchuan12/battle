@@ -61,7 +61,7 @@ public class OnlineListener {
 				
 				userStatusService.update(userStatus);
 				
-				
+				/*
 				DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
 		    	String value = dataView.getValue();
 		    	Integer num = 0;
@@ -70,7 +70,7 @@ public class OnlineListener {
 		    	}
 		    	num++;
 		    	dataView.setValue(num+"");
-		    	dataViewService.update(dataView);
+		    	dataViewService.update(dataView);*/
 		    	
 		    	platformTransactionManager.commit(transactionStatus);
 			}
@@ -95,6 +95,7 @@ public class OnlineListener {
 				
 				userStatusService.update(userStatus);
 				
+				/*
 				DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
 		    	String value = dataView.getValue();
 		    	Integer num = 0;
@@ -106,7 +107,7 @@ public class OnlineListener {
 		    		num = 0;
 		    	}
 		    	dataView.setValue(num+"");
-		    	dataViewService.update(dataView);
+		    	dataViewService.update(dataView);*/
 		    	
 		    	platformTransactionManager.commit(transactionStatus);
 			}
