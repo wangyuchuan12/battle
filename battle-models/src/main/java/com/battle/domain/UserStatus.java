@@ -34,6 +34,27 @@ public class UserStatus {
 	private String token;
 	
 	@ParamAnnotation
+	@Column(name="on_line_count")
+	private Integer onLineCount;
+	
+	@ParamAnnotation
+	@Column(name="down_line_count")
+	private Integer downLineCount;
+	
+	
+	@ParamAnnotation
+	@Column(name = "on_line_at")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+	private DateTime onLineAt;
+	
+	@ParamAnnotation
+	@Column(name = "down_line_at")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+	private DateTime downLineAt;
+	
+	@ParamAnnotation
 	@Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -75,6 +96,40 @@ public class UserStatus {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public DateTime getOnLineAt() {
+		return onLineAt;
+	}
+
+	public void setOnLineAt(DateTime onLineAt) {
+		this.onLineAt = onLineAt;
+	}
+
+	public DateTime getDownLineAt() {
+		return downLineAt;
+	}
+
+	public void setDownLineAt(DateTime downLineAt) {
+		this.downLineAt = downLineAt;
+	}
+	
+	
+
+	public Integer getOnLineCount() {
+		return onLineCount;
+	}
+
+	public void setOnLineCount(Integer onLineCount) {
+		this.onLineCount = onLineCount;
+	}
+
+	public Integer getDownLineCount() {
+		return downLineCount;
+	}
+
+	public void setDownLineCount(Integer downLineCount) {
+		this.downLineCount = downLineCount;
 	}
 
 	public DateTime getCreateAt() {

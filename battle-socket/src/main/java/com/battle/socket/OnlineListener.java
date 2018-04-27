@@ -2,6 +2,9 @@ package com.battle.socket;
 
 import javax.transaction.Transactional;
 
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -32,13 +35,13 @@ public class OnlineListener {
 	@Autowired
     private PlatformTransactionManager platformTransactionManager;
 
-	
+	final static Logger logger = LoggerFactory.getLogger(OnlineListener.class);
 	@Transactional
 	public void onLine(final String id){
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+		/*DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
     	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);*/
 		UserInfo userInfo = userInfoService.findOne(id);
 		
 		UserStatus userStatus = null;
@@ -51,13 +54,23 @@ public class OnlineListener {
 			userStatus.setIsLine(1);
 			userStatus.setToken(userInfo.getToken());
 			userStatus.setUserId(userInfo.getId());
+			userStatus.setOnLineCount(0);
+			userStatus.setDownLineCount(0);
 			userStatusService.add(userStatus);
 			
 			userInfo.setStatusId(userStatus.getId());
 			userInfoService.update(userInfo);
 		}
 		
+		Integer onLineCount = userStatus.getOnLineCount();
+		if(onLineCount==null){
+			onLineCount = 0;
+		}
+		onLineCount++;
+		userStatus.setOnLineCount(onLineCount);
+		
 		userStatus.setIsLine(1);
+		userStatus.setOnLineAt(new DateTime());
 		
 		userStatusService.update(userStatus);
 		
@@ -72,7 +85,7 @@ public class OnlineListener {
     	dataView.setValue(num+"");
     	dataViewService.update(dataView);*/
     	
-    	platformTransactionManager.commit(transactionStatus);
+    	//platformTransactionManager.commit(transactionStatus);
 		
 	}
 	
@@ -80,19 +93,28 @@ public class OnlineListener {
 	@Transactional
 	public void downLine(final String id){
 
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+		/*DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
     	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);*/
 		UserInfo userInfo = userInfoService.findOne(id);
 		
 		UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
 		
 		if(userStatus!=null){
-		
+			Integer downLineCount = userStatus.getDownLineCount();
+			if(downLineCount==null){
+				downLineCount = 0;
+			}
+			downLineCount++;
+			userStatus.setDownLineCount(downLineCount);
 			userStatus.setIsLine(0);
+			userStatus.setDownLineAt(new DateTime());
 			
 			userStatusService.update(userStatus);
+		}else{
+			logger.error("userStatus is null,this uerId  is {}",id);
+			
 		}
 		
 		/*
@@ -109,7 +131,7 @@ public class OnlineListener {
     	dataView.setValue(num+"");
     	dataViewService.update(dataView);*/
     	
-    	platformTransactionManager.commit(transactionStatus);
+    	//platformTransactionManager.commit(transactionStatus);
 
 	}
 }

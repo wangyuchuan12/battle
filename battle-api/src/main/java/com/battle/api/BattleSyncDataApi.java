@@ -167,7 +167,7 @@ public class BattleSyncDataApi {
 			if(status==BattlePeriodMember.STATUS_IN){
 				
 				UserStatus userStatus = userStatusService.findOneByUserId(allBattlePeriodMember.getUserId());
-				if(userStatus.getIsLine()==1){
+				if(userStatus!=null&&userStatus.getIsLine()==1){
 					battlePeriodMembers.add(allBattlePeriodMember);
 				}else{
 					allBattlePeriodMember.setStatus(BattlePeriodMember.STATUS_OUT);
