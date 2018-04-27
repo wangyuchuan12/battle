@@ -107,10 +107,10 @@ public class MessageHandler {
 					userStatus.setIsLine(0);
 					userStatus.setUserId(userId);
 					userStatus.setToken(userInfo.getToken());
-					userStatusService.add(userStatus);
+					/*userStatusService.add(userStatus);
 		
 					userInfo.setStatusId(userStatus.getId());
-					wxUserInfoService.update(userInfo);
+					wxUserInfoService.update(userInfo);*/
 				}
 				if(userStatus.getIsLine()==null){
 					userStatus.setIsLine(0);
