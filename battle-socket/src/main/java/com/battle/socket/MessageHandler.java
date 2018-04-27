@@ -73,15 +73,16 @@ public class MessageHandler {
 					userStatus.setIsLine(0);
 					userStatus.setUserId(userInfo.getId());
 					userStatus.setToken(userInfo.getToken());
+					/*
 					userStatusService.add(userStatus);
 					
 					userInfo.setStatusId(userStatus.getId());
 					
-					wxUserInfoService.update(userInfo);
+					wxUserInfoService.update(userInfo);*/
 				}
 				if(userStatus.getIsLine()==null){
 					userStatus.setIsLine(0);
-					userStatusService.update(userStatus);
+					//userStatusService.update(userStatus);
 				}
 				if(userStatus.getIsLine()==1){
 					if(excludeUserIds==null||excludeUserIds.size()==0){
