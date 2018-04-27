@@ -36,43 +36,54 @@ public class OnlineListener {
     private PlatformTransactionManager platformTransactionManager;
 
 	final static Logger logger = LoggerFactory.getLogger(OnlineListener.class);
-	@Transactional
 	public void onLine(final String id){
-		/*DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);*/
-		UserInfo userInfo = userInfoService.findOne(id);
 		
-		UserStatus userStatus = null;
-		if(!CommonUtil.isEmpty(userInfo.getStatusId())){
-			userStatus = userStatusService.findOne(userInfo.getStatusId());
-		}
+		new Thread(){
+			public void run() {
+				
+				try{
+					DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+			    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+			    	
+			    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+					UserInfo userInfo = userInfoService.findOne(id);
+					
+					UserStatus userStatus = null;
+					if(!CommonUtil.isEmpty(userInfo.getStatusId())){
+						userStatus = userStatusService.findOne(userInfo.getStatusId());
+					}
+					
+					if(userStatus==null){
+						userStatus = new UserStatus();
+						userStatus.setIsLine(1);
+						userStatus.setToken(userInfo.getToken());
+						userStatus.setUserId(userInfo.getId());
+						userStatus.setOnLineCount(0);
+						userStatus.setDownLineCount(0);
+						userStatusService.add(userStatus);
+						
+						userInfo.setStatusId(userStatus.getId());
+						userInfoService.update(userInfo);
+					}
+					
+					Integer onLineCount = userStatus.getOnLineCount();
+					if(onLineCount==null){
+						onLineCount = 0;
+					}
+					onLineCount++;
+					userStatus.setOnLineCount(onLineCount);
+					
+					userStatus.setIsLine(1);
+					userStatus.setOnLineAt(new DateTime());
+					
+					userStatusService.update(userStatus);
+					platformTransactionManager.commit(transactionStatus);
+				}catch(Exception e){
+					logger.error("");
+				}
+			}
+		}.start();
 		
-		if(userStatus==null){
-			userStatus = new UserStatus();
-			userStatus.setIsLine(1);
-			userStatus.setToken(userInfo.getToken());
-			userStatus.setUserId(userInfo.getId());
-			userStatus.setOnLineCount(0);
-			userStatus.setDownLineCount(0);
-			userStatusService.add(userStatus);
-			
-			userInfo.setStatusId(userStatus.getId());
-			userInfoService.update(userInfo);
-		}
-		
-		Integer onLineCount = userStatus.getOnLineCount();
-		if(onLineCount==null){
-			onLineCount = 0;
-		}
-		onLineCount++;
-		userStatus.setOnLineCount(onLineCount);
-		
-		userStatus.setIsLine(1);
-		userStatus.setOnLineAt(new DateTime());
-		
-		userStatusService.update(userStatus);
 		
 		/*
 		DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
@@ -85,37 +96,43 @@ public class OnlineListener {
     	dataView.setValue(num+"");
     	dataViewService.update(dataView);*/
     	
-    	//platformTransactionManager.commit(transactionStatus);
+    	//
 		
 	}
 	
 	
-	@Transactional
 	public void downLine(final String id){
 
-		/*DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);*/
-		UserInfo userInfo = userInfoService.findOne(id);
-		
-		UserStatus userStatus = userStatusService.findOne(userInfo.getStatusId());
-		
-		if(userStatus!=null){
-			Integer downLineCount = userStatus.getDownLineCount();
-			if(downLineCount==null){
-				downLineCount = 0;
+		new Thread(){
+			public void run() {
+				DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+		    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		    	
+		    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+				UserInfo userInfo = userInfoService.findOne(id);
+				
+				String statusId = userInfo.getStatusId();
+				UserStatus userStatus = userStatusService.findOne(statusId);
+				
+				if(userStatus!=null){
+					Integer downLineCount = userStatus.getDownLineCount();
+					if(downLineCount==null){
+						downLineCount = 0;
+					}
+					downLineCount++;
+					userStatus.setDownLineCount(downLineCount);
+					userStatus.setIsLine(0);
+					userStatus.setDownLineAt(new DateTime());
+					
+					userStatusService.update(userStatus);
+				}else{
+					logger.error("userStatus is null,this uerId  is {},statusId is {}",id,statusId);
+					
+				}
+				platformTransactionManager.commit(transactionStatus);
 			}
-			downLineCount++;
-			userStatus.setDownLineCount(downLineCount);
-			userStatus.setIsLine(0);
-			userStatus.setDownLineAt(new DateTime());
-			
-			userStatusService.update(userStatus);
-		}else{
-			logger.error("userStatus is null,this uerId  is {}",id);
-			
-		}
+		}.start();
+		
 		
 		/*
 		DataView dataView = dataViewService.findOneByCode(DataView.ONELINE_NUM_CODE);
@@ -131,7 +148,7 @@ public class OnlineListener {
     	dataView.setValue(num+"");
     	dataViewService.update(dataView);*/
     	
-    	//platformTransactionManager.commit(transactionStatus);
+    
 
 	}
 }
