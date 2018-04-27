@@ -54,6 +54,10 @@ public class OnlineListener {
 					}
 					
 					if(userStatus==null){
+						userStatus = userStatusService.findOneByUserId(userInfo.getId());
+					}
+					
+					if(userStatus==null){
 						userStatus = new UserStatus();
 						userStatus.setIsLine(1);
 						userStatus.setToken(userInfo.getToken());
@@ -113,6 +117,10 @@ public class OnlineListener {
 				
 				String statusId = userInfo.getStatusId();
 				UserStatus userStatus = userStatusService.findOne(statusId);
+				
+				if(userStatus==null){
+					userStatus = userStatusService.findOneByUserId(userInfo.getId());
+				}
 				
 				if(userStatus!=null){
 					Integer downLineCount = userStatus.getDownLineCount();

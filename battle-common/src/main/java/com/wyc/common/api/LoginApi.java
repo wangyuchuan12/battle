@@ -156,7 +156,6 @@ public class LoginApi{
 	public ResultVo accountInfo(HttpServletRequest httpServletRequest)throws Exception{
 		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
 		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
-		userInfo = wxUserInfoService.findOne(userInfo.getId());
 		if(userInfo==null){
 			ResultVo resultVo = new ResultVo();
 			resultVo.setSuccess(false);
