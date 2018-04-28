@@ -36,57 +36,48 @@ public class OnlineListener {
     private PlatformTransactionManager platformTransactionManager;
 
 	final static Logger logger = LoggerFactory.getLogger(OnlineListener.class);
-	public void onLine(final String id){
+	public synchronized void onLine(final String id){
 		
-		new Thread(){
-			public void run() {
-				
-				try{
-					DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-			    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-			    	
-			    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
-					UserInfo userInfo = userInfoService.findOne(id);
-					
-					UserStatus userStatus = null;
-					if(!CommonUtil.isEmpty(userInfo.getStatusId())){
-						userStatus = userStatusService.findOne(userInfo.getStatusId());
-					}
-					
-					if(userStatus==null){
-						userStatus = userStatusService.findOneByUserId(userInfo.getId());
-					}
-					
-					if(userStatus==null){
-						userStatus = new UserStatus();
-						userStatus.setIsLine(1);
-						userStatus.setToken(userInfo.getToken());
-						userStatus.setUserId(userInfo.getId());
-						userStatus.setOnLineCount(0);
-						userStatus.setDownLineCount(0);
-						userStatusService.add(userStatus);
-						
-						userInfo.setStatusId(userStatus.getId());
-						userInfoService.update(userInfo);
-					}
-					
-					Integer onLineCount = userStatus.getOnLineCount();
-					if(onLineCount==null){
-						onLineCount = 0;
-					}
-					onLineCount++;
-					userStatus.setOnLineCount(onLineCount);
-					
-					userStatus.setIsLine(1);
-					userStatus.setOnLineAt(new DateTime());
-					
-					userStatusService.update(userStatus);
-					platformTransactionManager.commit(transactionStatus);
-				}catch(Exception e){
-					logger.error("");
-				}
-			}
-		}.start();
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+		UserInfo userInfo = userInfoService.findOne(id);
+		
+		UserStatus userStatus = null;
+		if(!CommonUtil.isEmpty(userInfo.getStatusId())){
+			userStatus = userStatusService.findOne(userInfo.getStatusId());
+		}
+		
+		if(userStatus==null){
+			userStatus = userStatusService.findOneByUserId(userInfo.getId());
+		}
+		
+		if(userStatus==null){
+			userStatus = new UserStatus();
+			userStatus.setIsLine(1);
+			userStatus.setToken(userInfo.getToken());
+			userStatus.setUserId(userInfo.getId());
+			userStatus.setOnLineCount(0);
+			userStatus.setDownLineCount(0);
+			userStatusService.add(userStatus);
+			
+			userInfo.setStatusId(userStatus.getId());
+			userInfoService.update(userInfo);
+		}
+		
+		Integer onLineCount = userStatus.getOnLineCount();
+		if(onLineCount==null){
+			onLineCount = 0;
+		}
+		onLineCount++;
+		userStatus.setOnLineCount(onLineCount);
+		
+		userStatus.setIsLine(1);
+		userStatus.setOnLineAt(new DateTime());
+		
+		userStatusService.update(userStatus);
+		platformTransactionManager.commit(transactionStatus);
 		
 		
 		/*
@@ -105,41 +96,37 @@ public class OnlineListener {
 	}
 	
 	
-	public void downLine(final String id){
+	public synchronized void downLine(final String id){
 
-		new Thread(){
-			public void run() {
-				DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
-		    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		    	
-		    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
-				UserInfo userInfo = userInfoService.findOne(id);
-				
-				String statusId = userInfo.getStatusId();
-				UserStatus userStatus = userStatusService.findOne(statusId);
-				
-				if(userStatus==null){
-					userStatus = userStatusService.findOneByUserId(userInfo.getId());
-				}
-				
-				if(userStatus!=null){
-					Integer downLineCount = userStatus.getDownLineCount();
-					if(downLineCount==null){
-						downLineCount = 0;
-					}
-					downLineCount++;
-					userStatus.setDownLineCount(downLineCount);
-					userStatus.setIsLine(0);
-					userStatus.setDownLineAt(new DateTime());
-					
-					userStatusService.update(userStatus);
-				}else{
-					logger.error("userStatus is null,this uerId  is {},statusId is {}",id,statusId);
-					
-				}
-				platformTransactionManager.commit(transactionStatus);
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
+    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    	
+    	TransactionStatus transactionStatus = platformTransactionManager.getTransaction(def);
+		UserInfo userInfo = userInfoService.findOne(id);
+		
+		String statusId = userInfo.getStatusId();
+		UserStatus userStatus = userStatusService.findOne(statusId);
+		
+		if(userStatus==null){
+			userStatus = userStatusService.findOneByUserId(userInfo.getId());
+		}
+		
+		if(userStatus!=null){
+			Integer downLineCount = userStatus.getDownLineCount();
+			if(downLineCount==null){
+				downLineCount = 0;
 			}
-		}.start();
+			downLineCount++;
+			userStatus.setDownLineCount(downLineCount);
+			userStatus.setIsLine(0);
+			userStatus.setDownLineAt(new DateTime());
+			
+			userStatusService.update(userStatus);
+		}else{
+			logger.error("userStatus is null,this uerId  is {},statusId is {}",id,statusId);
+			
+		}
+		platformTransactionManager.commit(transactionStatus);
 		
 		
 		/*
