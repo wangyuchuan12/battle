@@ -172,6 +172,7 @@ public class BattleTakepartApiFilter extends Filter{
 			battleRoomTakepartService.takepartPublish(battlePeriodMember);
 			
 			
+			/*
 			Long differ =(battleRoom.getStartTime().getMillis()-new DateTime().getMillis())/1000;
 			Integer num = battleRoom.getNum();
 			Integer mininum = battleRoom.getMininum();
@@ -182,8 +183,8 @@ public class BattleTakepartApiFilter extends Filter{
 				mininum = 0;
 			}
 			if(differ<=0&&num>=mininum){
-				roomStartTask.run(battleRoom);
-			}
+				
+			}*/
 			
 			ResultVo resultVo = new ResultVo();
 			

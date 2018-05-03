@@ -46,7 +46,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	
     	Map<String, Object> attributes = session.getAttributes();
     	final Object token = attributes.get("token");
-    	Object userId = attributes.get("userId");
+    	final Object userId = attributes.get("userId");
     	
     	sessionMap.remove(token.toString());
     	
@@ -59,6 +59,8 @@ public class SocketHandler extends TextWebSocketHandler {
 			public void run() {
 				logger.debug("put session delay 1000 run");
 				sessionMap.put(token.toString(),session);
+				onlineListener.onLine(userId.toString());
+
 				try{
 					
 				}catch(Exception e){
@@ -69,10 +71,8 @@ public class SocketHandler extends TextWebSocketHandler {
 		
 		timer.schedule(timerTask, 1000);
     	
-    
-    	onlineListener.onLine(userId.toString());
-    	   	
-    	SocketHandler.super.afterConnectionEstablished(session);
+		SocketHandler.super.afterConnectionEstablished(session);
+    	
     }
 
     
@@ -81,10 +81,20 @@ public class SocketHandler extends TextWebSocketHandler {
 
     	Map<String, Object> attributes = session.getAttributes();
     	Object token = attributes.get("token");
-    	Object userId = attributes.get("userId");
+    	final Object userId = attributes.get("userId");
     	
-    	onlineListener.downLine(userId.toString());
-
+    	Timer timer = new Timer();
+    	
+    	TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				onlineListener.downLine(userId.toString());
+			}
+		};
+		
+		timer.schedule(timerTask, 500);
+		
     	sessionMap.remove(token.toString());
         super.afterConnectionClosed(session, status);
     }

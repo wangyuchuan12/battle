@@ -37,7 +37,6 @@ public class OnlineListener {
 
 	final static Logger logger = LoggerFactory.getLogger(OnlineListener.class);
 	public synchronized void onLine(final String id){
-		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();//事务定义类
     	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     	
@@ -49,9 +48,14 @@ public class OnlineListener {
 			userStatus = userStatusService.findOne(userInfo.getStatusId());
 		}
 		
+		System.out.println("onLine userStatus1:"+userStatus+",userId:"+id);
+		
 		if(userStatus==null){
 			userStatus = userStatusService.findOneByUserId(userInfo.getId());
 		}
+		
+		System.out.println("onLine userStatus2:"+userStatus+",userId:"+id);
+		
 		
 		if(userStatus==null){
 			userStatus = new UserStatus();
@@ -107,9 +111,13 @@ public class OnlineListener {
 		String statusId = userInfo.getStatusId();
 		UserStatus userStatus = userStatusService.findOne(statusId);
 		
+		System.out.println("downLine userStatus1:"+userStatus+",userId:"+id);
+		
 		if(userStatus==null){
 			userStatus = userStatusService.findOneByUserId(userInfo.getId());
 		}
+		
+		System.out.println("downLine userStatus2:"+userStatus+",userId:"+id);
 		
 		if(userStatus!=null){
 			Integer downLineCount = userStatus.getDownLineCount();

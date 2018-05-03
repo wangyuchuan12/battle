@@ -1,5 +1,8 @@
 package com.battle.service.other;
 
+import java.util.List;
+import java.util.Map;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import com.battle.service.BattlePeriodService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleUserService;
 import com.wyc.common.service.WxUserInfoService;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 @Service
@@ -31,7 +35,7 @@ public class RoomTakapertService {
 	
 	@Autowired
 	private BattlePeriodService battlePeriodService;
-	public void takepart(BattleRoom battleRoom,String...userIds){
+	public void takepart(BattleRoom battleRoom,List<Map<String, Object>> users){
 		
 		Integer num = battleRoom.getNum();
 		if(num==null){
@@ -40,9 +44,10 @@ public class RoomTakapertService {
 		
 		BattlePeriod battlePeriod = battlePeriodService.findOne(battleRoom.getPeriodId());
 		
-		System.out.println(".........userIds:"+userIds);
-		for(String userId:userIds){
-			System.out.print("....userId:"+userId);
+		for(Map<String, Object> user:users){
+			String userId = user.get("userId").toString();
+			
+			Object danId = user.get("danId");
 			num++;
 			UserInfo userInfo = userInfoService.findOne(userId);
 			BattleUser battleUser = battleUserService.findOneByUserIdAndBattleId(userId, battleRoom.getBattleId());
@@ -77,6 +82,10 @@ public class RoomTakapertService {
 			battlePeriodMember.setStatus(BattlePeriodMember.STATUS_IN);
 			battlePeriodMember.setTakepartAt(new DateTime());
 			battlePeriodMember.setUserId(userId);
+			
+			if(CommonUtil.isNotEmpty(danId)){
+				battlePeriodMember.setDanId(danId.toString());
+			}
 			
 			battlePeriodMemberService.add(battlePeriodMember);
 			

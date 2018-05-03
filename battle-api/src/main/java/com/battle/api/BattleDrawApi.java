@@ -18,15 +18,22 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.battle.domain.BattleDan;
+import com.battle.domain.BattleDanPoint;
 import com.battle.domain.BattleDrawItem;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
+import com.battle.domain.BattleWait;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.BattleDanPointService;
+import com.battle.service.BattleDanService;
 import com.battle.service.BattleDrawItemService;
 import com.battle.service.BattlePeriodMemberService;
 import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
+import com.battle.service.BattleWaitService;
 import com.wyc.annotation.HandlerAnnotation;
 import com.wyc.common.domain.Account;
 import com.wyc.common.domain.vo.ResultVo;
@@ -53,6 +60,15 @@ public class BattleDrawApi {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BattleWaitService battleWaitService;
+	
+	@Autowired
+	private BattleDanService battleDanService;
+	
+	@Autowired
+	private BattleDanPointService battleDanPointService;
 	
 	@RequestMapping(value="list")
 	@ResponseBody
@@ -174,6 +190,8 @@ public class BattleDrawApi {
 	@Transactional
 	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
 	public ResultVo randomLevel(HttpServletRequest httpServletRequest){
+		
+		/*
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0,5,sort);
 		
@@ -205,11 +223,48 @@ public class BattleDrawApi {
 					}
 				}
 			}
+		}*/
+		
+		
+		List<BattleDanPoint> battleDanPoints = battleDanPointService.findAllByIsRun(1);
+		List<BattleWait> battleWaits = battleWaitService.findAllByStatus(BattleWait.CALL_STATUS);
+		BattleDanPoint battleDanPoint = null;
+		if(battleDanPoints!=null&&battleDanPoints.size()==1){
+			battleDanPoint = battleDanPoints.get(0);
+		}else if(battleDanPoints.size()>0){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("关卡有多条记录并发");
+			return resultVo;
+		}else{
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setErrorMsg("关卡没卡记录");
+			return resultVo;
 		}
-	
+		List<BattleDan> battleDans = battleDanService.findAllByPointIdOrderByLevelAsc(battleDanPoint.getId());
+		
+		BattleDan battleDan = battleDans.get(new Random().nextInt(battleDans.size()));
+		BattleWait battleWait;
+		if(battleWaits==null||battleWaits.size()==0){
+			battleWait = new BattleWait();
+			battleWait.setActDelay(0);
+			battleWait.setBattleId(battleDan.getBattleId());
+			battleWait.setCreateTime(new DateTime());
+			battleWait.setIsPrepareStart(0);
+			battleWait.setMaxinum(battleDan.getMaxNum());
+			battleWait.setMininum(battleDan.getMinNum());
+			battleWait.setNum(0);
+			battleWait.setDanId(battleDan.getId());
+			battleWait.setPeriodId(battleDan.getPeriodId());
+			battleWait.setStatus(BattleWait.CALL_STATUS);
+			battleWaitService.add(battleWait);
+		}else{
+			battleWait = battleWaits.get(0);
+		}
 		
 		
-		if(battleRoom==null){
+		if(battleWait==null){
 			ResultVo resultVo = new ResultVo();
 			
 			resultVo.setSuccess(false);
@@ -218,7 +273,7 @@ public class BattleDrawApi {
 			
 			return resultVo;
 		}else{
-			List<BattleDrawItem> battleDrawItems = battleDrawItemService.findAllByBattleIdAndPeriodId(battleRoom.getBattleId(),battleRoom.getPeriodId());
+			List<BattleDrawItem> battleDrawItems = battleDrawItemService.findAllByBattleIdAndPeriodId(battleWait.getBattleId(),battleWait.getPeriodId());
 			
 			if(battleDrawItems==null||battleDrawItems.size()==0){
 				ResultVo resultVo = new ResultVo();
@@ -239,11 +294,9 @@ public class BattleDrawApi {
 				
 				Map<String, Object> data = new HashMap<String, Object>();
 				
-				data.put("roomId", battleRoom.getId());
+				data.put("waitId", battleWait.getId());
 				
 				data.put("level", battleDrawItem.getLevel());
-				
-				data.put("battleId", battleRoom.getBattleId());
 				
 				ResultVo resultVo = new ResultVo();
 				resultVo.setSuccess(true);

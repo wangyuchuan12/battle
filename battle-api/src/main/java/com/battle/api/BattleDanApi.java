@@ -32,6 +32,7 @@ import com.battle.domain.BattleDanUser;
 import com.battle.domain.BattlePeriodMember;
 import com.battle.domain.BattleRoom;
 import com.battle.domain.BattleRoomReward;
+import com.battle.domain.BattleWait;
 import com.battle.filter.api.BattleTakepartApiFilter;
 import com.battle.filter.element.CurrentAccountResultFilter;
 import com.battle.filter.element.LoginStatusFilter;
@@ -49,6 +50,7 @@ import com.battle.service.BattleRoomRewardService;
 import com.battle.service.BattleRoomService;
 import com.battle.service.BattleService;
 import com.battle.service.BattleUserService;
+import com.battle.service.BattleWaitService;
 import com.battle.service.other.BattleRoomHandleService;
 import com.battle.socket.service.InitRoomService;
 import com.wyc.AttrEnum;
@@ -119,6 +121,9 @@ public class BattleDanApi {
 	
 	@Autowired
 	private InitRoomService initRoomService;
+	
+	@Autowired
+	private BattleWaitService battleWaitService;
 	
 	final static Logger logger = LoggerFactory.getLogger(BattleDanApi.class);
 	
@@ -757,6 +762,8 @@ public class BattleDanApi {
 		statuses.add(BattleRoom.STATUS_FREE);
 		statuses.add(BattleRoom.STATUS_IN);
 		
+		
+		/*
 		Sort sort = new Sort(Direction.DESC,"createAt");
 		Pageable pageable = new PageRequest(0,1,sort);
 		BattleRoom battleRoom = null;
@@ -826,8 +833,28 @@ public class BattleDanApi {
 			battleDanUser.setRoomId(battleRoom.getId());
 			battleDanUserService.update(battleDanUser);
 
-		}
+		}*/
 		
+		
+		List<BattleWait> battleWaits = battleWaitService.findAllByBattleIdAndStatus(battleDan.getBattleId(),BattleWait.CALL_STATUS);
+		
+		BattleWait battleWait;
+		if(battleWaits==null||battleWaits.size()==0){
+			
+			battleWait = new BattleWait();
+			battleWait.setActDelay(2000);
+			battleWait.setBattleId(battleDan.getBattleId());
+			battleWait.setIsPrepareStart(0);
+			battleWait.setMaxinum(battleDan.getMaxNum());
+			battleWait.setMininum(battleDan.getMinNum());
+			battleWait.setNum(0);
+			battleWait.setPeriodId(battleDan.getPeriodId());
+			battleWait.setStatus(BattleWait.CALL_STATUS);
+			battleWait.setDanId(battleDan.getId());
+			battleWaitService.add(battleWait);
+		}else{
+			battleWait = battleWaits.get(0);
+		}
 		
 		
 		battleDanUser.setSignCount(battleDanUser.getSignCount()+1);
@@ -837,17 +864,13 @@ public class BattleDanApi {
 		
 		accountService.update(account);
 		
-		sessionManager.setAttribute(AttrEnum.roomId, battleRoom.getId());
-		sessionManager.setAttribute(AttrEnum.battleId, battleRoom.getBattleId());
-		sessionManager.setAttribute(AttrEnum.periodId, battleRoom.getPeriodId());
 		
 		ResultVo resultVo = new ResultVo();
 		resultVo.setSuccess(true);
 		
 		Map<String, Object> data = new HashMap<>();
-		data.put("roomId", battleRoom.getId());
-		data.put("battleId", battleRoom.getBattleId());
-		data.put("periodId", battleRoom.getPeriodId());
+		data.put("waitId", battleWait.getId());
+		data.put("danUserId", battleDanUser.getId());
 		
 		resultVo.setData(data);
 		

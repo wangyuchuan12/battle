@@ -21,6 +21,10 @@ public class MessageVo {
 	public final static String ROOM_START_CODE = "roomStartCode";
 	
 	public final static String PK_STATUS_CODE = "pkStatusCode";
+	
+	public final static String WAIT_STATUS_CODE = "waitStatusCode";
+	public final static String WAIT_END_CODE = "waitEndCode";
+	
 	//调用编号
 	private String code;
 	
