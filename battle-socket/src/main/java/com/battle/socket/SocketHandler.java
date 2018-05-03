@@ -69,7 +69,7 @@ public class SocketHandler extends TextWebSocketHandler {
 			}
 		};
 		
-		timer.schedule(timerTask, 1000);
+		timer.schedule(timerTask, 100);
     	
 		SocketHandler.super.afterConnectionEstablished(session);
     	
@@ -93,7 +93,7 @@ public class SocketHandler extends TextWebSocketHandler {
 			}
 		};
 		
-		timer.schedule(timerTask, 500);
+		timer.schedule(timerTask,500);
 		
     	sessionMap.remove(token.toString());
         super.afterConnectionClosed(session, status);
