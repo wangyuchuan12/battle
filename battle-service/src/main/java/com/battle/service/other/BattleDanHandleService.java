@@ -67,6 +67,9 @@ public class BattleDanHandleService {
 		List<BattleRoomReward> battleRoomRewards = battleRoomRewardService.findAllByRoomIdAndIsReceiveOrderByRankAsc(battleRoom.getId(),0);
 
 		List<BattleDanUser> battleDanUsers = battleDanUserService.findAllByRoomId(battleRoom.getId());
+		
+		
+		System.out.println("battleDanUsers:"+battleDanUsers);
 
 		Map<String, BattleDanUser> battleDanUserMap = new HashMap<>();
 		
@@ -91,6 +94,8 @@ public class BattleDanHandleService {
 			battleRoomRewardMap.put(i, battleRoomReward);
 		}
 		
+		
+		System.out.println("battleRoomRewardMap:"+battleRoomRewardMap);
 		
 		
 		if(battlePeriodMembers!=null&&battlePeriodMembers.size()>0){
@@ -127,28 +132,14 @@ public class BattleDanHandleService {
 				}
 			}
 		}
-		
-		
-		
-		
-		if(CommonUtil.isNotEmpty(battleRoom.getDanId())){
-
-			BattleDan battleDan = battleDanService.findOne(battleRoom.getDanId());
-			
-			if(battleDan==null){
-				return new ArrayList<>();
-			}
-			
-			Integer places = battleDan.getPlaces();
-			
+		//if(CommonUtil.isNotEmpty(battleRoom.getDanId())){
 			for(Integer index = 0;index<battlePeriodMembers.size();index++){
 				BattlePeriodMember battlePeriodMember = battlePeriodMembers.get(index);
-				
 				BattleDanUser battleDanUser = battleDanUserMap.get(battlePeriodMember.getUserId());
-				
 				if(battleDanUser!=null){
+					BattleDan battleDan = battleDanService.findOne(battleDanUser.getDanId());
+					Integer places = battleDan.getPlaces();
 					battleDanUser.setRank(index+1);
-					
 					if(index<places){
 						battleDanUser.setStatus(BattleDanUser.STATUS_SUCCESS);
 						Integer level = battleDanUser.getLevel();
@@ -190,7 +181,7 @@ public class BattleDanHandleService {
 				}
 				
 			}
-		}
+		//}
 		
 		
 		return battlePeriodMembers;
