@@ -13,20 +13,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.battle.domain.PaymentVoucher;
 import com.battle.filter.api.WxPayApiFilter;
 import com.battle.filter.element.LoginStatusFilter;
+import com.battle.service.PaymentVoucherService;
 import com.battle.service.other.GoodPayConfigService;
 import com.battle.service.other.PayService;
 import com.wyc.annotation.HandlerAnnotation;
+import com.wyc.common.domain.Account;
 import com.wyc.common.domain.Good;
 import com.wyc.common.domain.Order;
 import com.wyc.common.domain.PaySuccess;
 import com.wyc.common.domain.vo.ResultVo;
 import com.wyc.common.domain.vo.TransfersResultVo;
+import com.wyc.common.service.AccountService;
 import com.wyc.common.service.GoodService;
 import com.wyc.common.service.OrderService;
 import com.wyc.common.service.PaySuccessService;
 import com.wyc.common.session.SessionManager;
+import com.wyc.common.util.CommonUtil;
 import com.wyc.common.wx.domain.UserInfo;
 
 
@@ -45,6 +51,12 @@ public class WxPayApi{
 	
 	@Autowired
 	private PaySuccessService paySuccessService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private PaymentVoucherService paymentVoucherService;
 	
 	@Autowired
 	private PayService payService;
@@ -180,5 +192,66 @@ public class WxPayApi{
 		TransfersResultVo transfersResultVo = payService.transfers(openid, amount, "10.2.3.10", "测试付款");
 		
 		return transfersResultVo;
+	}
+	
+	@RequestMapping(value="createPaymemberVoucher")
+	@ResponseBody
+	@Transactional
+	@HandlerAnnotation(hanlerFilter=LoginStatusFilter.class)
+	public Object createPaymemberVoucher(HttpServletRequest httpServletRequest)throws Exception{
+		
+		String costBean = httpServletRequest.getParameter("costBean");
+		String costLove = httpServletRequest.getParameter("costLove");
+		
+		Integer costBeanInt = 0;
+		
+		if(CommonUtil.isNotEmpty(costBean)){
+			costBeanInt = Integer.parseInt(costBean);
+		}
+		
+		Integer costLoveInt = 0;
+		
+		if(CommonUtil.isNotEmpty(costLove)){
+			costLoveInt = Integer.parseInt(costLove);
+		}
+		
+		SessionManager sessionManager = SessionManager.getFilterManager(httpServletRequest);
+		UserInfo userInfo = sessionManager.getObject(UserInfo.class);
+		
+		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		Long bean = account.getWisdomCount();
+		Integer love = account.getLoveLife();
+		
+		if(bean<costBeanInt){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setMsg("智慧豆不足");
+		}
+		if(love<costLoveInt){
+			ResultVo resultVo = new ResultVo();
+			resultVo.setSuccess(false);
+			resultVo.setMsg("爱心不足");
+		}
+		
+		bean = bean-costBeanInt;
+		love = love-costLoveInt;
+		
+		account.setLoveLife(love);
+		account.setWisdomCount(bean);
+		
+		accountService.update(account);
+		
+		PaymentVoucher paymentVoucher = new PaymentVoucher();
+		paymentVoucher.setCostBean(costBeanInt);
+		paymentVoucher.setCostLove(costLoveInt);
+		paymentVoucher.setUserId(userInfo.getId());
+		
+		paymentVoucherService.add(paymentVoucher);
+		
+		ResultVo resultVo = new ResultVo();
+		resultVo.setSuccess(true);
+		resultVo.setData(paymentVoucher);
+		
+		return resultVo;
 	}
 }

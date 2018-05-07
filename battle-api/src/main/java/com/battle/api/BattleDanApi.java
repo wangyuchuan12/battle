@@ -737,7 +737,7 @@ public class BattleDanApi {
 			beanCost = battleDanUser.getSign4BeanCost();
 		}
 		
-		Account account = accountService.fineOneSync(userInfo.getAccountId());
+		/*Account account = accountService.fineOneSync(userInfo.getAccountId());
 		
 		Long wisdomCount = account.getWisdomCount();
 		if(wisdomCount==null){
@@ -756,7 +756,7 @@ public class BattleDanApi {
 				wisdomCount = 0L;
 			}
 			account.setWisdomCount(wisdomCount);
-		}
+		}*/
 		
 		List<Integer> statuses = new ArrayList<>();
 		statuses.add(BattleRoom.STATUS_FREE);
@@ -862,7 +862,7 @@ public class BattleDanApi {
 		
 		battleDanUserService.update(battleDanUser);
 		
-		accountService.update(account);
+		//accountService.update(account);
 		
 		
 		ResultVo resultVo = new ResultVo();

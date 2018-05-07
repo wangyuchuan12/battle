@@ -209,10 +209,6 @@ public class BattlePkSyncApi {
 		
 		BattlePk battlePk = battlePkService.findOne(id);
 		
-		System.out.println("........id:"+id);
-		System.out.println("........battlePk:"+battlePk);
-		System.out.println("........userInfo:"+userInfo);
-		System.out.println("........battlePk.getHomeUserId():"+battlePk.getHomeUserId());
 		if(battlePk.getHomeUserId().equals(userInfo.getId())){
 			return homeInto(httpServletRequest);
 		}
@@ -245,6 +241,18 @@ public class BattlePkSyncApi {
 			
 			
 		}else{
+		}
+		
+		
+		if(battlePk.getRoomStatus().intValue()==BattlePk.ROOM_STATUS_BATTLE){
+			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+				battlePk.setBeatStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setRoomId("");
+				battlePkService.update(battlePk);
+			}
 		}
 		
 		Map<String, Object> data = new HashMap<>();
@@ -321,6 +329,18 @@ public class BattlePkSyncApi {
 			battlePk.setHomeUsername(userInfo.getNickname());
 			
 			battlePk.setHomeActiveTime(new DateTime());
+		}
+		
+		
+		if(battlePk.getRoomStatus().intValue()==BattlePk.ROOM_STATUS_BATTLE){
+			BattleRoom battleRoom = battleRoomService.findOne(battlePk.getRoomId());
+			if(battleRoom.getStatus().intValue()==BattleRoom.STATUS_END){
+				battlePk.setRoomStatus(BattlePk.ROOM_STATUS_FREE);
+				battlePk.setBeatStatus(BattlePk.STATUS_LEAVE);
+				battlePk.setHomeStatus(BattlePk.STATUS_INSIDE);
+				battlePk.setRoomId("");
+				battlePkService.update(battlePk);
+			}
 		}
 		
 		pkSocketService.statusPublish(battlePk);
